@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@svgr/webpack": "^8.1.0",
     "i18n": "^0.15.1",
     "i18next": "^23.10.1",
     "i18next-resources-to-backend": "^1.2.0",
+    "install": "^0.13.0",
     "next": "14.1.4",
     "next-i18n-router": "^5.3.1",
     "react": "^18",

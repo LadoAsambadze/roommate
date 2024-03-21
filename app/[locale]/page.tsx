@@ -1,6 +1,6 @@
 import Link from "next/link";
 import initTranslations from "../i18n";
-import TranslationsProvider from "@/components/TranslationsProvider";
+
 import ExampleClientComponent from "@/components/ExaplmeClientComponent";
 
 const i18nNamespaces = ["home"];

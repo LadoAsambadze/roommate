@@ -1,4 +1,3 @@
-import TranslationsProvider from "@/components/TranslationsProvider";
 import initTranslations from "@/app/i18n";
 
 const i18nNamespaces = ["home"];
