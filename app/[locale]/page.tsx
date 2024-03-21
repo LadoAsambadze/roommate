@@ -1,6 +1,5 @@
 import Link from "next/link";
 import initTranslations from "../i18n";
-
 import ExampleClientComponent from "@/components/ExaplmeClientComponent";
 import { BankIcon } from "@/components/svg";
 
@@ -12,12 +11,9 @@ async function Home({ params: { locale } }: { params: { locale: string } }) {
   return (
     <main>
       <h1>{t("hello")}</h1>
-
       <Link href="/about">{t("hello")}</Link>
       <ExampleClientComponent />
-      <div className="w-20 h-20 flex items-center justify-center">
-        <BankIcon className="" />
-      </div>
+      <BankIcon className="" />
     </main>
   );
 }
