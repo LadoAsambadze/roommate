@@ -10,7 +10,7 @@ async function Home({ params: { locale } }: { params: { locale: string } }) {
 
   return (
     <main>
-      <h1 className="font-firaGo">{t("hello")}</h1>
+      <h1 className="">{t("hello")}</h1>
       <Link href="/about">{t("hello")}</Link>
       <ExampleClientComponent />
       <BankIcon className="" />
