@@ -9,7 +9,7 @@ export default function ExampleClientComponent() {
   return (
     <>
       <h3>{t("hello")}</h3>
-      <BankIcon />
+ 
     </>
   );
 }
