@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { BankIcon } from "./svg";
+
 
 export default function ExampleClientComponent() {
   const { t } = useTranslation();
@@ -9,7 +9,7 @@ export default function ExampleClientComponent() {
   return (
     <>
       <h3>{t("hello")}</h3>
- 
+
     </>
   );
 }
