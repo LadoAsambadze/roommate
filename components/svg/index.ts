@@ -1,1 +1,1 @@
-export { default as BankIcon } from "./bankIcon.svg";
+export { default as BankIcon } from './BankIcon.svg'
