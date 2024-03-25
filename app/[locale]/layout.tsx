@@ -1,32 +1,23 @@
 import './globals.css'
-// import type { Metadata } from "next";
-import { Noto_Serif_Georgian } from 'next/font/google'
 import { ReactNode } from 'react'
 import { dir } from 'i18next'
 import TranslationsProvider from '@/components/translation/TranslationsProvider'
 import initTranslations from '../i18n'
-// import localfont from 'next/font/local'
-import { Italianno } from 'next/font/google'
+import localfont from 'next/font/local'
 
-const italianno = Italianno({
-    subsets: ['latin'],
-    weight: '400',
+const firaGo = localfont({
+    src: [
+        {
+            path: '../../public/fonts/FiraGO-Regular.otf',
+            weight: '400',
+        },
+        {
+            path: '../../public/fonts/FiraGO-Medium.otf',
+            weight: '500',
+        },
+    ],
+    variable: '--font-firaGo',
 })
-
-const roboto = Noto_Serif_Georgian({
-    subsets: ['latin'],
-    weight: '400',
-})
-
-// const firaGo = localfont({
-//   src: [
-//     {
-//       path: "../../public/fonts/FiraGO-Regular.otf",
-//       weight: "400",
-//     },
-//   ],
-//   variable: "--font-firaGo",
-// });
 
 export default async function RootLayout({
     children,
@@ -37,9 +28,9 @@ export default async function RootLayout({
 }) {
     const i18nNamespaces = ['home']
     const { resources } = await initTranslations(locale, i18nNamespaces)
-    const fontClass = locale === 'ka' ? roboto.className : italianno.className
+
     return (
-        <html lang={locale} dir={dir(locale)} className={fontClass}>
+        <html lang={locale} dir={dir(locale)} className={firaGo.className}>
             <body>
                 <TranslationsProvider
                     namespaces={i18nNamespaces}

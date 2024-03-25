@@ -1,8 +1,4 @@
-import Link from 'next/link'
 import initTranslations from '../i18n'
-import ExampleClientComponent from '@/components/ExaplmeClientComponent'
-import { BankIcon } from '@/components/svg'
-
 const i18nNamespaces = ['home']
 
 async function Home({ params: { locale } }: { params: { locale: string } }) {
@@ -10,10 +6,10 @@ async function Home({ params: { locale } }: { params: { locale: string } }) {
 
     return (
         <main>
-            <h1 className="w-full text-xl hover:text-white">{t('hello')}</h1>
-            <Link href="/about">{t('hello')}</Link>
-            <ExampleClientComponent />
-            <BankIcon className="" />
+            <p className="font-firaGo">{t('hello')}</p>
+            <p className="font-bgCaps">შემთხვევითად გენერირებული ტექსტი</p>
+            <p className="font-firaGo">Hello my name is </p>
+            <p className="font-bgCaps">Hello my name is </p>
         </main>
     )
 }
