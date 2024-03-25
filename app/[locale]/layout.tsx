@@ -2,7 +2,7 @@ import './globals.css'
 import { ReactNode } from 'react'
 import { dir } from 'i18next'
 import TranslationsProvider from '@/components/translation/TranslationsProvider'
-import initTranslations from '../i18n'
+import initTranslations from '../../components/translation/i18n'
 import localfont from 'next/font/local'
 
 const firaGo = localfont({

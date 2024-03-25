@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import initTranslations from '../i18n'
+import initTranslations from '../../components/translation/i18n'
 const i18nNamespaces = ['home']
 
 async function Home({ params: { locale } }: { params: { locale: string } }) {
