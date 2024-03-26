@@ -1,9 +1,9 @@
-import './globals.css'
+import TranslationsProvider from '@/components/translation/TranslationsProvider'
+import initTranslations from '../../utils/i18n'
+import localfont from 'next/font/local'
 import { ReactNode } from 'react'
 import { dir } from 'i18next'
-import TranslationsProvider from '@/components/translation/TranslationsProvider'
-import initTranslations from '../../components/translation/i18n'
-import localfont from 'next/font/local'
+import './globals.css'
 
 const firaGo = localfont({
     src: [

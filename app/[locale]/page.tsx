@@ -1,5 +1,5 @@
-import initTranslations from '../../components/translation/i18n'
 import { Button } from '@/components/ui/button'
+import initTranslations from '../../utils/i18n'
 import { BankIcon } from '@/components/svgs'
 const i18nNamespaces = ['home']
 
