@@ -1,4 +1,4 @@
-import TranslationsProvider from '@/components/translation/TranslationsProvider'
+import TranslationsProvider from '@/providers/TranslationsProvider'
 import initTranslations from '../../utils/i18n'
 import localfont from 'next/font/local'
 import { ReactNode } from 'react'
