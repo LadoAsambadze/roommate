@@ -1,4 +1,5 @@
 import TranslationsProvider from '@/providers/TranslationsProvider'
+import { ApolloWrapper } from '@/libs/apollo-provider'
 import initTranslations from '../../utils/i18n'
 import localfont from 'next/font/local'
 import { ReactNode } from 'react'
@@ -37,7 +38,7 @@ export default async function RootLayout({
                     locale={locale}
                     resources={resources}
                 >
-                    {children}
+                    <ApolloWrapper>{children}</ApolloWrapper>
                 </TranslationsProvider>
             </body>
         </html>
