@@ -13,6 +13,7 @@ const LangChoose = ({ className, spanClassname }: LangChooseProps) => {
         const newLocale = currentLocale === 'ka' ? 'en' : 'ka'
         router.replace(newLocale)
     }
+
     return (
         <>
             <div className={`${className}`} onClick={handleLangSwitch}>

@@ -1,5 +1,9 @@
 {
     "findRoommate": "იპოვე ოთახის მეზობელი",
     "rentApartment": "იქირავე ბინა",
-    "authorization": "ავტორიზაცია"
+    "authorization": "ავტორიზაცია",
+    "main": "მთავარი",
+    "becomePartner": "გახდი ჩვენი პარტნიორი",
+    "faq": "ხშირად დასმული შეკითხვები",
+    "howItWorks": "როგორ მუშაობს"
 }

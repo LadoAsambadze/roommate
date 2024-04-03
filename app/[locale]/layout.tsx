@@ -6,7 +6,9 @@ import { ReactNode } from 'react'
 import { dir } from 'i18next'
 import './globals.css'
 import Header from '@/components/header/Header'
+import { Noto_Sans_Georgian } from 'next/font/google'
 
+const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 const firaGo = localfont({
     src: [
         {
@@ -32,7 +34,7 @@ export default async function RootLayout({
     const { resources } = await initTranslations(locale, i18nNamespaces)
 
     return (
-        <html lang={locale} dir={dir(locale)} className={firaGo.className}>
+        <html lang={locale} dir={dir(locale)} className={georgian.className}>
             <body>
                 <TranslationsProvider
                     namespaces={i18nNamespaces}
