@@ -2,9 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    color: #484848;
+}
 @layer base {
     :root {
-        --background: 0 0% 100%;
+        --headerBg: 0, 0%, 100%;
         --foreground: 222.2 84% 4.9%;
 
         --card: 0 0% 100%;
@@ -90,4 +101,3 @@
             url('../../public/fonts/bpg-web-002-caps-webfont.svg#bpg_web_002_capsregular')
             format('svg'); /* Legacy iOS */
 }
-

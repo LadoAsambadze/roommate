@@ -11,7 +11,6 @@ const config = {
     prefix: '',
     theme: {
         fontFamily: {
-            firaGo: ['firaGo', 'sans-serif'],
             bgCaps: ['bgCaps', 'sans-serif'],
         },
         container: {
@@ -23,6 +22,8 @@ const config = {
         },
         extend: {
             colors: {
+                headerBg: 'hsl(var(--headerBg))',
+                textColor: 'hsl(var(--textColor))',
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',

@@ -5,6 +5,7 @@ import localfont from 'next/font/local'
 import { ReactNode } from 'react'
 import { dir } from 'i18next'
 import './globals.css'
+import Header from '@/components/header/Header'
 
 const firaGo = localfont({
     src: [
@@ -27,7 +28,7 @@ export default async function RootLayout({
     children: ReactNode
     params: { locale: string }
 }) {
-    const i18nNamespaces = ['home']
+    const i18nNamespaces = ['common']
     const { resources } = await initTranslations(locale, i18nNamespaces)
 
     return (
@@ -38,7 +39,10 @@ export default async function RootLayout({
                     locale={locale}
                     resources={resources}
                 >
-                    <ApolloWrapper>{children}</ApolloWrapper>
+                    <ApolloWrapper>
+                        <Header />
+                        {children}
+                    </ApolloWrapper>
                 </TranslationsProvider>
             </body>
         </html>
