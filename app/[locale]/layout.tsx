@@ -1,7 +1,7 @@
 import TranslationsProvider from '@/providers/TranslationsProvider'
 import { ApolloWrapper } from '@/libs/apollo-provider'
 import initTranslations from '../../utils/i18n'
-import localfont from 'next/font/local'
+// import localfont from 'next/font/local'
 import { ReactNode } from 'react'
 import { dir } from 'i18next'
 import './globals.css'
@@ -9,19 +9,19 @@ import Header from '@/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
-const firaGo = localfont({
-    src: [
-        {
-            path: '../../public/fonts/FiraGO-Regular.otf',
-            weight: '400',
-        },
-        {
-            path: '../../public/fonts/FiraGO-Medium.otf',
-            weight: '500',
-        },
-    ],
-    variable: '--font-firaGo',
-})
+// const firaGo = localfont({
+//     src: [
+//         {
+//             path: '../../public/fonts/FiraGO-Regular.otf',
+//             weight: '400',
+//         },
+//         {
+//             path: '../../public/fonts/FiraGO-Medium.otf',
+//             weight: '500',
+//         },
+//     ],
+//     variable: '--font-firaGo',
+// })
 
 export default async function RootLayout({
     children,

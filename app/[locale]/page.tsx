@@ -6,7 +6,7 @@ async function Home({ params: { locale } }: { params: { locale: string } }) {
 
     return (
         <main>
-            <h1>home</h1>
+            <h1>{t('main')}</h1>
         </main>
     )
 }
