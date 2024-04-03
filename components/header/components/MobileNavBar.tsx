@@ -1,11 +1,11 @@
 'use client'
 
-// import { Social } from './NewFooter'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 import { usePathname } from 'next/navigation'
 import { BurgerIcon, EmailIcon, PhoneIcon } from '@/components/svgs'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { SocialIcons } from '@/components/shared/SocialIcon'
 
 export default function MobileNavBar() {
     const { t } = useTranslation()
@@ -54,7 +54,7 @@ export default function MobileNavBar() {
                         <p className="ml-3  text-[14px] text-[#484848]">info@rommate.ge</p>
                     </div>
                 </Link>
-                {/* <Social /> */}
+                <SocialIcons />
                 <div className="h-[2px] w-full bg-[#DADDE7]"></div>
             </SheetContent>
         </Sheet>
