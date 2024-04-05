@@ -10,6 +10,8 @@ import { SocialIcons } from '@/components/shared/SocialIcons'
 export default function MobileNavBar() {
     const { t } = useTranslation()
     const pathname = usePathname()
+    const localePattern = /^\/(en|ka)(\/|$)/
+    const pathnameWithoutLocale = pathname.replace(localePattern, '/')
 
     return (
         <Sheet>
@@ -20,20 +22,20 @@ export default function MobileNavBar() {
                 <div className="mt-20 flex flex-col gap-y-6 text-[14px]">
                     <span
                         className="text-xs"
-                        style={{ fontWeight: pathname === '/' ? 'bold' : '' }}
+                        style={{ fontWeight: pathnameWithoutLocale === '/' ? 'bold' : '' }}
                     >
                         {t('main')}
                     </span>
                     <span
                         className="text-xs"
-                        style={{ fontWeight: pathname === '/search' ? 'bold' : '' }}
+                        style={{ fontWeight: pathnameWithoutLocale === '/login' ? 'bold' : '' }}
                     >
                         {t('findRoommate')}
                     </span>
                     <span
                         className="text-xs"
                         style={{
-                            fontWeight: pathname === '/houseSearch' ? 'bold' : '',
+                            fontWeight: pathnameWithoutLocale === '/houseSearch' ? 'bold' : '',
                         }}
                     >
                         {t('rentApartment')}

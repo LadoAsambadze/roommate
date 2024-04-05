@@ -57,11 +57,7 @@ export default function Footer() {
                         <span className="pointer text-xs hover:underline">
                             {t('becomePartner')}
                         </span>
-                        <Link
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href="https://roommate.blog/"
-                        >
+                        <Link target="_blank" href="https://roommate.blog/">
                             <span className="pointer text-xs hover:underline"> {t('blog')}</span>
                         </Link>
                         <span className="pointer text-xs hover:underline">{t('howItWorks')}</span>
@@ -96,7 +92,7 @@ export default function Footer() {
                                 : 'https://roommategeorgia.ge/en/Terms%20&%20Conditions%20&%20Payment%20&%20Refund%20Policy.pdf'
                         }
                     >
-                        <span className="pointer text-xs">{t('terms')}</span>
+                        <span className="pointer text-xs  hover:underline">{t('terms')}</span>
                     </Link>
                     <div className="h-3 w-[1px] bg-[#7D7D7D]"></div>
                     <Link
@@ -107,7 +103,9 @@ export default function Footer() {
                                 : 'https://roommategeorgia.ge/en/Personal%20Data%20Processing%20Policy%20(1).pdf'
                         }
                     >
-                        <span className=" pointer text-xs">{t('confidencial')}</span>
+                        <span className="pointer text-xs  hover:underline">
+                            {t('confidencial')}
+                        </span>
                     </Link>
                 </div>
                 <div className="mt-8 flex flex-col md:mt-0 lg:order-2 ">
