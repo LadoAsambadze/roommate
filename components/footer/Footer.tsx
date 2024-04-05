@@ -1,27 +1,27 @@
-// import React from 'react'
-// import FooterLogo from '../public/newImages/footer-logo.svg'
-// import FooterLogoDesk from '../public/newImages/footer-logo-desk.svg'
-// import Image from 'next/image'
-// import FooterPhone from '../public/newImages/footer-phone.svg'
+import React from 'react'
+import FooterLogo from '../public/newImages/footer-logo.svg'
+import FooterLogoDesk from '../public/newImages/footer-logo-desk.svg'
+import Image from 'next/image'
+import FooterPhone from '../public/newImages/footer-phone.svg'
 
-// import Footeremail from '../public/newImages/footer-email.svg'
+import Footeremail from '../public/newImages/footer-email.svg'
 
-// import Link from 'next/link'
+import Link from 'next/link'
 
-// import { useRouter } from 'next/router'
-// import { useTranslation } from 'react-i18next'
-// import { SocialIcons } from '../shared/SocialIcons'
-// import { useParams, usePathname } from 'next/navigation'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
+import { SocialIcons } from '../shared/SocialIcons'
+import { useParams, usePathname } from 'next/navigation'
 
 export default function Footer() {
-    // const { t } = useTranslation()
-    // const params = useParams()
-    // const pathname = usePathname()
-
+    const { t } = useTranslation()
+    const params = useParams()
+    const pathname = usePathname()
+    const currentPath = pathname || pathname + '/en'
 
     return (
         <div className="flex h-full w-full flex-col pt-12">
-            {/* <div className="flex flex-col px-6 sm:px-16 md:flex-row md:items-start md:justify-between md:px-20 xl:px-24">
+            <div className="flex flex-col px-6 sm:px-16 md:flex-row md:items-start md:justify-between md:px-20 xl:px-24">
                 <div>
                     <div className=" relative h-10  w-60 md:hidden">
                         <Image src={FooterLogo} layout="fill" objectFit="cover" />
@@ -34,7 +34,7 @@ export default function Footer() {
                     <Link href="/">
                         <p
                             className="pointer  text-xs hover:underline "
-                            style={{ fontWeight: router.pathname === '/' ? 'bold' : '' }}
+                            style={{ fontWeight: pathname === currentPath ? 'bold' : '' }}
                         >
                             {t('main')}
                         </p>
@@ -44,7 +44,7 @@ export default function Footer() {
                             <p
                                 className="pointer text-xs hover:underline"
                                 style={{
-                                    fontWeight: router.pathname === '/search' ? 'bold' : '',
+                                    fontWeight: pathname === currentPath ? 'bold' : '',
                                 }}
                             >
                                 {t('roommateFind')}
@@ -54,7 +54,7 @@ export default function Footer() {
                             <p
                                 className="pointer text-xs hover:underline"
                                 style={{
-                                    fontWeight: router.pathname === '/houseSearch' ? 'bold' : '',
+                                    fontWeight: pathname === currentPath ? 'bold' : '',
                                 }}
                             >
                                 {t('rentApartment')}
@@ -123,7 +123,7 @@ export default function Footer() {
                 <p className=" pointer text-[8px] lg:hidden">{t('terms')}</p>
                 <div className="h-3 w-[1px] bg-[#7D7D7D] lg:hidden"></div>
                 <p className=" pointer text-[8px] lg:hidden">{t('confidencial')}</p>
-            </div> */}
+            </div>
         </div>
     )
 }
