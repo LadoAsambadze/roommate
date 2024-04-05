@@ -41,7 +41,7 @@ export default function QuestionSection() {
 
     return (
         <section className="bg-[#f2f5ff] px-6 pb-12 pt-6 sm:px-16 md:px-20 xl:px-24 ">
-            <h1 className="font-bgCaps text-xl uppercase">{t('questionsHead')}</h1>
+            <h1 className="font-bgCaps text-xl">{t('questionsHead')}</h1>
             {items.map((item) => (
                 <Accordion
                     key={item.value}

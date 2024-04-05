@@ -39,7 +39,7 @@ export default function ReviewSection() {
     ]
     return (
         <section className="my-12 flex w-full flex-col items-start px-6 sm:px-16 md:px-20 xl:px-24">
-            <h1 className="font-bgCaps text-xl uppercase">{t('reviewsHead')}</h1>
+            <h1 className="font-bgCaps text-xl ">{t('reviewsHead')}</h1>
             <Carousel
                 opts={{
                     align: 'start',
