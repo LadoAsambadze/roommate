@@ -1,4 +1,5 @@
 import initTranslations from '../../utils/i18n'
+import FeaturesSection from './_components/FeaturesSection'
 const i18nNamespaces = ['common']
 
 async function Home({ params: { locale } }: { params: { locale: string } }) {
@@ -6,7 +7,8 @@ async function Home({ params: { locale } }: { params: { locale: string } }) {
 
     return (
         <main>
-            <h1>{t('main')}</h1>
+            <h1>{t('hello')}</h1>
+            <FeaturesSection />
         </main>
     )
 }
