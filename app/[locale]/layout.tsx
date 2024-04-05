@@ -7,6 +7,7 @@ import { dir } from 'i18next'
 import './globals.css'
 import Header from '@/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
+import Footer from '@/components/footer/Footer'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 // const firaGo = localfont({
@@ -44,6 +45,7 @@ export default async function RootLayout({
                     <ApolloWrapper>
                         <Header />
                         {children}
+                        <Footer />
                     </ApolloWrapper>
                 </TranslationsProvider>
             </body>

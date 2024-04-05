@@ -1,14 +1,6 @@
-import React from 'react'
-import FooterLogo from '../public/newImages/footer-logo.svg'
-import FooterLogoDesk from '../public/newImages/footer-logo-desk.svg'
-import Image from 'next/image'
-import FooterPhone from '../public/newImages/footer-phone.svg'
-
-import Footeremail from '../public/newImages/footer-email.svg'
-
+'use client'
 import Link from 'next/link'
 
-import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 import { SocialIcons } from '../shared/SocialIcons'
 import { useParams, usePathname } from 'next/navigation'
@@ -17,30 +9,32 @@ export default function Footer() {
     const { t } = useTranslation()
     const params = useParams()
     const pathname = usePathname()
-    const currentPath = pathname || pathname + '/en'
+    const localePattern = /^\/(en|ka)(\/|$)/
+    const pathnameWithoutLocale = pathname.replace(localePattern, '/')
+    console.log(pathnameWithoutLocale)
 
     return (
         <div className="flex h-full w-full flex-col pt-12">
             <div className="flex flex-col px-6 sm:px-16 md:flex-row md:items-start md:justify-between md:px-20 xl:px-24">
                 <div>
                     <div className=" relative h-10  w-60 md:hidden">
-                        <Image src={FooterLogo} layout="fill" objectFit="cover" />
+                        {/* <Image src={FooterLogo} layout="fill" objectFit="cover" /> */}
                     </div>
                     <div className=" relative hidden  h-12 w-60 md:block">
-                        <Image src={FooterLogoDesk} layout="fill" objectFit="cover" />
+                        {/* <Image src={FooterLogoDesk} layout="fill" objectFit="cover" /> */}
                     </div>
                 </div>
                 <div className="mt-8 flex flex-col  gap-y-4 md:mt-0">
                     <Link href="/">
                         <p
                             className="pointer  text-xs hover:underline "
-                            style={{ fontWeight: pathname === currentPath ? 'bold' : '' }}
+                            style={{ fontWeight: pathnameWithoutLocale === '/' ? 'bold' : '' }}
                         >
                             {t('main')}
                         </p>
                     </Link>
                     <div className="grid gap-y-4 lg:grid-cols-2 lg:gap-x-20">
-                        <Link href={user ? '/search' : '/signup'}>
+                        {/* <Link href={user ? '/search' : '/signup'}>
                             <p
                                 className="pointer text-xs hover:underline"
                                 style={{
@@ -49,12 +43,12 @@ export default function Footer() {
                             >
                                 {t('roommateFind')}
                             </p>
-                        </Link>
+                        </Link> */}
                         <Link href="/houseSearch">
                             <p
                                 className="pointer text-xs hover:underline"
                                 style={{
-                                    fontWeight: pathname === currentPath ? 'bold' : '',
+                                    fontWeight: pathnameWithoutLocale === '/login' ? 'bold' : '',
                                 }}
                             >
                                 {t('rentApartment')}
@@ -72,13 +66,13 @@ export default function Footer() {
                     <div className="mt-4 grid  grid-cols-2 gap-4 md:grid-cols-1 ">
                         <Link href="tel:+995599976385">
                             <div className="pointer flex  flex-row items-center rounded-lg bg-[#F2F5FF] px-2 py-3">
-                                <Image src={FooterPhone} width={16} height={16} />
+                                {/* <Image src={FooterPhone} width={16} height={16} /> */}
                                 <p className="ml-2 text-xs">599 976 385</p>
                             </div>
                         </Link>
                         <Link href="mailto:info@roommate.ge">
                             <div className="pointer flex  flex-row items-center rounded-lg bg-[#F2F5FF] px-2 py-3">
-                                <Image src={Footeremail} width={16} height={16} />
+                                {/* <Image src={Footeremail} width={16} height={16} /> */}
                                 <p className="ml-2 text-xs">info@roommate.ge</p>
                             </div>
                         </Link>
