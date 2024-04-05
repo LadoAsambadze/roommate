@@ -10,3 +10,4 @@ export { default as WhatsappIcon } from '../../public/svg/WhatsappIcon.svg'
 export { default as LinkedinIcon } from '../../public/svg/LinkedinIcon.svg'
 export { default as RateStar } from '../../public/svg/RateStar.svg'
 export { default as RateStars } from '../../public/svg/RateStars.svg'
+

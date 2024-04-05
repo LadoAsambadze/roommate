@@ -21,6 +21,10 @@ const config = {
             },
         },
         extend: {
+            backgroundImage: {
+                connectFirstBg: `url("/images/ConnectFirstBg.jpg")`,
+                connectSecondBg: `url("/images/ConnectSecondBg.jpg")`,
+            },
             colors: {
                 headerBg: 'hsl(var(--headerBg))',
                 textColor: 'hsl(var(--textColor))',
