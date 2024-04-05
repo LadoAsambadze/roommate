@@ -10,7 +10,7 @@ export default function ContactSection() {
     return (
         <section className="lg:mt- mt-10 flex w-full flex-col items-center bg-[#F2F5FF] px-6 py-5 sm:px-16 md:flex-row md:px-20 md:py-10 xl:px-24">
             <div className="w-full lg:w-[30%] ">
-                <h1 className="font-bgCaps  text-2xl lg:text-xl">{t('contactUs')}</h1>
+                <h1 className="font-bgCaps text-xl lg:text-xl">{t('contactUs')}</h1>
                 <p className="mt-2 text-xs  lg:text-base">{t('contactUsText')}</p>
             </div>
             <div className="mt-6 grid w-full grid-cols-2 justify-end gap-x-4 gap-y-4 lg:mt-0 lg:flex lg:gap-x-6">

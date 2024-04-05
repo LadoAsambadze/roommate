@@ -16,6 +16,7 @@
     "@svgr/webpack": "^8.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "embla-carousel-react": "^8.0.1",
     "graphql": "^16.8.1",
     "i18n": "^0.15.1",
     "i18next": "^23.10.1",

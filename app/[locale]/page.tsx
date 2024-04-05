@@ -2,6 +2,7 @@ import initTranslations from '../../utils/i18n'
 import ConnectSection from './_components/ConnectSection'
 import ContactSection from './_components/ContactSection'
 import FeaturesSection from './_components/FeaturesSection'
+import ReviewsSection from './_components/ReviewsSection'
 const i18nNamespaces = ['common']
 
 async function Home({ params: { locale } }: { params: { locale: string } }) {
@@ -13,6 +14,7 @@ async function Home({ params: { locale } }: { params: { locale: string } }) {
             <FeaturesSection />
             <ConnectSection />
             <ContactSection />
+            <ReviewsSection />
         </main>
     )
 }
