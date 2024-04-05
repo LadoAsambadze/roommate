@@ -13,7 +13,7 @@ import MaleAvatar from '../../../public/images/MaleAvatar.jpg'
 import Image from 'next/image'
 import { RateStar } from '@/components/svgs'
 
-export default function ReviewsSection() {
+export default function ReviewSection() {
     const { t } = useTranslation()
     const data = [
         {
@@ -39,7 +39,7 @@ export default function ReviewsSection() {
     ]
     return (
         <section className="my-12 flex w-full flex-col items-start px-6 sm:px-16 md:px-20 xl:px-24">
-            <h1 className="font-bgCaps text-xl font-normal text-[#484848]">{t('reviewsHead')}</h1>
+            <h1 className="font-bgCaps text-xl uppercase">{t('reviewsHead')}</h1>
             <Carousel
                 opts={{
                     align: 'start',
@@ -63,11 +63,10 @@ export default function ReviewsSection() {
                                             alt="Female/male avatar"
                                         />
                                     </div>
-
                                     <h1 className="ml-4 text-xs font-bold">{item.header}</h1>
                                     <div className="ml-14 flex flex-row items-center">
                                         <RateStar className="relative h-4 w-4" />
-                                        <p className="ml-1 text-[14px] font-semibold ">5.0</p>
+                                        <span className="ml-1 text-[14px] font-semibold ">5.0</span>
                                     </div>
                                 </div>
                                 <p className="text-[ #484848] mt-4 text-xs">{item.text}</p>

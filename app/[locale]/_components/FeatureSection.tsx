@@ -3,7 +3,7 @@
 import { BankIcon, RateStar, RateStars } from '@/components/svgs'
 import { useTranslation } from 'react-i18next'
 
-export default function FeaturesSection() {
+export default function FeatureSection() {
     const { t } = useTranslation()
     return (
         <>
