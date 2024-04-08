@@ -1,7 +1,13 @@
 'use client'
 
+import { signupMutation } from '@/graphql/queries/signupMutation'
+import { useMutation } from '@apollo/client'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { PopUp } from './Popup'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default function MultiStepCard({ countries, gender, questions }: any) {
@@ -11,45 +17,46 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
     const [formData, setFormData] = useState<any>({ answeredQuestions: {} })
     const secondStep = questions?.slice(0, 7)
     const thirthStep = questions?.slice(8, 13)
+    const [signUp] = useMutation(signupMutation)
+    const router = useRouter()
 
-
-   
+    const showErrorWithHelp = () => {
+        alert(t('serverError'))
+        if (confirm('Go to support')) {
+            window.open(
+                'https://www.facebook.com/share/E3WJ5xzYtAQ4itRd/?mibextid=WC7FNe',
+                '_blank'
+            )
+        }
+    }
 
     const updateFormData = (newData: any) => {
-        setFormData((prevData) => ({ ...prevData, ...newData }))
+        setFormData((prevData: any) => ({ ...prevData, ...newData }))
     }
 
     const submit = async () => {
         const modifiedFormData: any = {
             ...formData,
         }
-
         delete modifiedFormData.code
-
         if (modifiedFormData.countryId) {
             modifiedFormData.countryId = Number(modifiedFormData.countryId.value)
         }
-        // if (modifiedFormData.birthDate) {
-        //   modifiedFormData.birthDate = Number(modifiedFormData.birthDate.value);
-        // }
         if (modifiedFormData.genderId) {
             modifiedFormData.genderId = Number(modifiedFormData.genderId.value)
         }
         if (modifiedFormData.email === '') {
             delete modifiedFormData.email
         }
-        let answeredQuestions = []
-
-        for (let key in modifiedFormData.answeredQuestions) {
-            let value = modifiedFormData.answeredQuestions[key]
-
+        const answeredQuestions = []
+        for (const key in modifiedFormData.answeredQuestions) {
+            const value = modifiedFormData.answeredQuestions[key]
             if (typeof value === 'string') {
                 answeredQuestions.push({ questionId: key, data: value })
             } else if (Array.isArray(value)) {
                 if (typeof value[0] === 'object') {
-                    // Array of objects
-                    let questionId = value[0]['questionId']
-                    let answerIds = value.map((item) => item['value'])
+                    const questionId = value[0]['questionId']
+                    const answerIds = value.map((item) => item['value'])
                     answeredQuestions.push({
                         questionId: questionId,
                         answerIds: answerIds,
@@ -67,34 +74,18 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                 })
             }
         }
-
         modifiedFormData.answeredQuestions = answeredQuestions
 
-        const requestBody = {
-            query: `mutation SignUp($userAndAnsweredQuestions: UserAndAnsweredQuestionsInput!) {
-        signUp(userAndAnsweredQuestions: $userAndAnsweredQuestions) {
-          accessToken
-        }
-      }`,
-            variables: {
-                userAndAnsweredQuestions: modifiedFormData,
-            },
-        }
-
         try {
-            const response = await axios.post(BASE_URL_GRAPHQL, requestBody, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+            const response = await signUp({
+                variables: { userAndAnsweredQuestions: modifiedFormData },
             })
 
             if (response?.data?.data && response?.data?.data?.signUp.accessToken) {
-                dispatch(
-                    setCurrentUser({
-                        user: null,
-                        token: response.data.data.signUp.accessToken,
-                    })
-                )
+                console.log({
+                    user: null,
+                    token: response.data.data.signUp.accessToken,
+                })
                 if (step === 3) {
                     setIsOpen(true)
                 }
@@ -120,9 +111,9 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                         range={formData.answeredQuestions[7]}
                         country={formData?.countryId?.value}
                     />
-                    <SignupStepsHeader step={step} />
+                    {/* <SignupStepsHeader step={step} /> */}
                     <CardContent className="bg-white px-10 pb-16  pt-8  sm:px-28">
-                        {step === 1 && (
+                        {/* {step === 1 && (
                             <div>
                                 <SignupFirst
                                     countries={countries}
@@ -158,7 +149,8 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                                     next={t('submit')}
                                 />
                             </div>
-                        )}
+                        )} */}
+                        <Button onClick={() => submit()}>clicksssssssss </Button>
                     </CardContent>
                 </Card>
             </div>
