@@ -1,5 +1,6 @@
 // import { getClient } from '@/libs/client'
 import initTranslations from '../../utils/i18n'
+import BlogSection from './_components/BlogSection'
 import ConnectSection from './_components/ConnectSection'
 import ContactSection from './_components/ContactSection'
 import FeatureSection from './_components/FeatureSection'
@@ -30,11 +31,12 @@ async function Home({ params: { locale } }: { params: { locale: string } }) {
     // const client = getClient()
     // const { data } = await client.query({ query })
     // console.log(data)
-    
+
     return (
         <main>
             <h1>{t('hello')}</h1>
             <FeatureSection />
+            <BlogSection />
             <SuggestSection />
             <ConnectSection />
             <ContactSection />
