@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslation } from 'react-i18next'
-import { Bell, UserIcon } from '../svgs'
+import { Bell, Logo, UserIcon } from '../svgs'
 import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 
@@ -10,8 +10,7 @@ export default function Header() {
 
     return (
         <header className="flex  w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md sm:px-16  md:px-20 md:py-3 xl:px-24 xl:py-6">
-            <div className="pointer hidden items-center xl:flex">Here Will Be Logo</div>
-            <div className="pointer flex  items-center xl:hidden">Here Will be Logo</div>
+            <Logo className="h-6  w-[120px] cursor-pointer xl:block xl:h-10 xl:w-[200px]" />
             <div className="flex flex-row items-center">
                 <span className="mr-4 hidden   cursor-pointer   rounded-lg md:block md:text-xs  xl:text-base">
                     {t('findRoommate')}
