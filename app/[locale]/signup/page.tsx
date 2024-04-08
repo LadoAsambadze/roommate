@@ -1,12 +1,18 @@
 import MultiStepCard from './_components/MultiStepCard'
 import { getClient } from '@/libs/client'
 import { SearchParams } from '@/types/types'
-import { signupCombinedQuery } from '@/graphql/queries/signupCombined'
+import { signup_combined } from '@/graphql/queries/suspenses/signupCombined'
+
+
 
 export default async function Signup(searchParams: SearchParams) {
     const client = getClient()
     const locale = searchParams.params.locale || 'ka'
-    const { data } = await client.query({ query: signupCombinedQuery, variables: { locale } })
+
+    const data = await client.query({
+        query: signup_combined,
+        variables: { locale: locale, lang: locale, getCountriesLocale2: locale },
+    })
 
     return (
         <>

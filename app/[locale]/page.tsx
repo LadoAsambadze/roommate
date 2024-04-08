@@ -30,6 +30,7 @@ async function Home({ params: { locale } }: { params: { locale: string } }) {
     // const client = getClient()
     // const { data } = await client.query({ query })
     // console.log(data)
+    
     return (
         <main>
             <h1>{t('hello')}</h1>

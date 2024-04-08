@@ -1,4 +1,5 @@
-"use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
@@ -7,7 +8,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
-export function PopUp({ isOpen, range, country }) {
+export function PopUp({ isOpen, range, country }: any) {
     const router = useRouter()
     const { t } = useTranslation()
 

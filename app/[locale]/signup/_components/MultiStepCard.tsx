@@ -1,13 +1,14 @@
 'use client'
 
-import { signupMutation } from '@/graphql/queries/signupMutation'
+import { signup_submit } from '@/graphql/queries/mutations/signupSubmit'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PopUp } from './Popup'
+import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import dynamic from 'next/dynamic'
+const StepOne = dynamic(() => import('./steps/StepOne'), { ssr: false })
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default function MultiStepCard({ countries, gender, questions }: any) {
@@ -15,10 +16,11 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
     const [step, setStep] = useState(1)
     const [isOpen, setIsOpen] = useState(false)
     const [formData, setFormData] = useState<any>({ answeredQuestions: {} })
-    const secondStep = questions?.slice(0, 7)
-    const thirthStep = questions?.slice(8, 13)
-    const [signUp] = useMutation(signupMutation)
+    // const secondStep = questions?.slice(0, 7)
+    // const thirthStep = questions?.slice(8, 13)
+    const [signUp] = useMutation(signup_submit)
     const router = useRouter()
+    console.log(questions, 'this')
 
     const showErrorWithHelp = () => {
         alert(t('serverError'))
@@ -101,7 +103,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
             showErrorWithHelp()
         }
     }
-
+    console.log(submit)
     return (
         <>
             <div className="flex min-h-screen w-full items-center justify-center  md:px-[10%] md:pb-16 md:pt-20 lg:px-[15%] lg:pt-36 xl:px-[334px]">
@@ -113,9 +115,9 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                     />
                     {/* <SignupStepsHeader step={step} /> */}
                     <CardContent className="bg-white px-10 pb-16  pt-8  sm:px-28">
-                        {/* {step === 1 && (
+                        {step === 1 && (
                             <div>
-                                <SignupFirst
+                                <StepOne
                                     countries={countries}
                                     gender={gender}
                                     setStep={setStep}
@@ -124,7 +126,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                                 />
                             </div>
                         )}
-                        {step === 2 && (
+                        {/* {step === 2 && (
                             <div>
                                 <SignupSecond
                                     questions={secondStep}
@@ -150,7 +152,6 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                                 />
                             </div>
                         )} */}
-                        <Button onClick={() => submit()}>clicksssssssss </Button>
                     </CardContent>
                 </Card>
             </div>

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export  const signupCombinedQuery = gql`
+export const signup_combined = gql`
     query CombinedQuery($locale: Language, $getCountriesLocale2: Language, $lang: Language) {
         getGenders(locale: $locale) {
             id
