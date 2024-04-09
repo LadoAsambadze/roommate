@@ -24,7 +24,7 @@ export default function ConnectSection() {
                         <Button className="mt-7 text-xs   ">{t('startSearch')}</Button>
                     </div>
                     <div className="hidden w-1/2 xl:block">
-                        <Image src={FirstBg} layout="responsive" objectFit="cover" alt="123" />
+                        <Image src={FirstBg} className="h-auto max-w-full object-cover" alt="123" />
                     </div>
                 </div>
             </div>
@@ -43,7 +43,11 @@ export default function ConnectSection() {
                         </Link>
                     </div>
                     <div className="hidden w-1/2 xl:block">
-                        <Image src={SecondBg} layout="responsive" objectFit="cover" alt="123" />
+                        <Image
+                            src={SecondBg}
+                            className="h-auto max-w-full object-cover"
+                            alt="123"
+                        />
                     </div>
                 </div>
             </div>

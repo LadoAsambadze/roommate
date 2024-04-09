@@ -56,10 +56,9 @@ export default function ReviewSection() {
                                 <div className="flex w-full flex-row items-center">
                                     <div className="relative h-14 w-14 rounded-full">
                                         <Image
-                                            className="rounded-full"
+
                                             src={item.image}
-                                            layout="fill"
-                                            objectFit="cover"
+                                           className="h-full max-w-full object-cover  rounded-full"
                                             alt="Female/male avatar"
                                         />
                                     </div>
