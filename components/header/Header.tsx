@@ -4,17 +4,20 @@ import { useTranslation } from 'react-i18next'
 import { Bell, Logo, UserIcon } from '../svgs'
 import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
+import Link from 'next/link'
 
 export default function Header() {
     const { t } = useTranslation()
 
     return (
         <header className="flex  w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md sm:px-16  md:px-20 md:py-3 xl:px-24 xl:py-6">
-            <Logo className="h-6  w-[120px] cursor-pointer xl:block xl:h-10 xl:w-[200px]" />
+            <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
             <div className="flex flex-row items-center">
-                <span className="mr-4 hidden   cursor-pointer   rounded-lg md:block md:text-xs  xl:text-base">
-                    {t('findRoommate')}
-                </span>
+                <Link href="/signup">
+                    <span className="mr-4 hidden   cursor-pointer   rounded-lg md:block md:text-xs  xl:text-base">
+                        {t('findRoommate')}
+                    </span>
+                </Link>
 
                 <span className="mr-4  hidden cursor-pointer rounded-lg md:block md:text-xs xl:text-base">
                     {t('rentApartment')}

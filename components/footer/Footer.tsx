@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 import { SocialIcons } from '../shared/SocialIcons'
 import { useParams, usePathname } from 'next/navigation'
-import { EmailIcon, PhoneIcon } from '../svgs'
+import { EmailIcon, Logo, PhoneIcon } from '../svgs'
 
 export default function Footer() {
     const { t } = useTranslation()
@@ -17,12 +17,7 @@ export default function Footer() {
         <div className="flex h-full w-full flex-col pt-12">
             <div className="flex flex-col px-6 sm:px-16 md:flex-row md:items-start md:justify-between md:px-20 xl:px-24">
                 <div>
-                    <div className=" relative h-10  w-60 md:hidden">
-                        <span>here will be logo</span>
-                    </div>
-                    <div className=" relative hidden  h-12 w-60 md:block">
-                        <span>here will be logo</span>
-                    </div>
+                    <Logo className="h-6  w-[120px] cursor-pointer md:h-9 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
                 </div>
                 <div className="mt-8 flex flex-col  gap-y-4 md:mt-0">
                     <Link href="/">
