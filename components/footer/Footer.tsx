@@ -17,7 +17,9 @@ export default function Footer() {
         <div className="flex h-full w-full flex-col pt-12">
             <div className="flex flex-col px-6 sm:px-16 md:flex-row md:items-start md:justify-between md:px-20 xl:px-24">
                 <div>
-                    <Logo className="h-6  w-[120px] cursor-pointer md:h-9 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
+                    <Link href="/">
+                        <Logo className="h-6  w-[120px] cursor-pointer md:h-9 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
+                    </Link>
                 </div>
                 <div className="mt-8 flex flex-col  gap-y-4 md:mt-0">
                     <Link href="/">

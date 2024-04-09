@@ -11,7 +11,9 @@ export default function Header() {
 
     return (
         <header className="flex  w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md sm:px-16  md:px-20 md:py-3 xl:px-24 xl:py-6">
-            <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
+            <Link href="/">
+                <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
+            </Link>
             <div className="flex flex-row items-center">
                 <Link href="/signup">
                     <span className="mr-4 hidden   cursor-pointer   rounded-lg md:block md:text-xs  xl:text-base">
