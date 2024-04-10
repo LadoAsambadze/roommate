@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/components/ui/card'
 import dynamic from 'next/dynamic'
+import StepTwo from './steps/StepTwo'
 const StepOne = dynamic(() => import('./steps/StepOne'), { ssr: false })
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -16,11 +17,10 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
     const [step, setStep] = useState(1)
     const [isOpen, setIsOpen] = useState(false)
     const [formData, setFormData] = useState<any>({ answeredQuestions: {} })
-    // const secondStep = questions?.slice(0, 7)
-    // const thirthStep = questions?.slice(8, 13)
+    const secondStep = questions?.slice(0, 7)
+    const thirthStep = questions?.slice(8, 13)
     const [signUp] = useMutation(signup_submit)
     const router = useRouter()
-    console.log(questions, 'this')
 
     const showErrorWithHelp = () => {
         alert(t('serverError'))
@@ -77,33 +77,32 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
             }
         }
         modifiedFormData.answeredQuestions = answeredQuestions
+        console.log(modifiedFormData)
 
         try {
             const response = await signUp({
                 variables: { userAndAnsweredQuestions: modifiedFormData },
             })
 
-            if (response?.data?.data && response?.data?.data?.signUp.accessToken) {
-                console.log({
-                    user: null,
-                    token: response.data.data.signUp.accessToken,
-                })
+            if (response?.data && response?.data?.signUp.accessToken) {
                 if (step === 3) {
                     setIsOpen(true)
                 }
                 if (formData?.countryId?.value === '145') {
                     router.push('/')
                 }
-            } else if (response?.data?.errors[0]?.message === 'PHONE_EXISTS') {
-                alert(t('phoneExist'))
-            } else if (response?.data?.errors[0]?.message === 'EMAIL_EXISTS') {
-                alert(t('emailExist'))
             }
-        } catch (error) {
-            showErrorWithHelp()
+        } catch (error: any) {
+            if (error?.message === 'PHONE_EXISTS') {
+                alert(t('phoneExist'))
+            } else if (error?.message === 'EMAIL_EXISTS') {
+                alert(t('emailExist'))
+            } else {
+                showErrorWithHelp()
+            }
         }
     }
-    console.log(submit)
+
     return (
         <>
             <div className="flex min-h-screen w-full items-center justify-center  md:px-[10%] md:pb-16 md:pt-20 lg:px-[15%] lg:pt-36 xl:px-[334px]">
@@ -126,9 +125,9 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                                 />
                             </div>
                         )}
-                        {/* {step === 2 && (
+                        {step === 2 && (
                             <div>
-                                <SignupSecond
+                                <StepTwo
                                     questions={secondStep}
                                     updateFormData={updateFormData}
                                     submit={submit}
@@ -141,7 +140,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                         )}
                         {step === 3 && (
                             <div>
-                                <SignupSecond
+                                <StepTwo
                                     questions={thirthStep}
                                     updateFormData={updateFormData}
                                     submit={submit}
@@ -151,7 +150,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                                     next={t('submit')}
                                 />
                             </div>
-                        )} */}
+                        )}
                     </CardContent>
                 </Card>
             </div>

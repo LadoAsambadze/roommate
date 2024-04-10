@@ -43,36 +43,45 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
         }
         updateFormData(modifiedFormData)
 
-        const input = {
-            phone: form.watch('phone'),
-            code: modifedForCode.code,
-        }
-
         try {
-            const response = await smsCheck({ variables: input })
-            if (response.data.data.checkCode === 'VALID') {
+            const response = await smsCheck({
+                variables: {
+                    input: {
+                        phone: form.watch('phone'),
+                        code: modifedForCode.code,
+                    },
+                },
+            })
+            if (response.data.checkCode === 'VALID') {
                 setStep(2)
-            } else if (response.data.data.checkCode === 'INVALID') {
+            } else if (response.data.checkCode === 'INVALID') {
                 form.setError('code', { message: t('codeExpired') })
-            } else if (response.data.data.checkCode === 'NOT_FOUND') {
+            } else if (response.data.checkCode === 'NOT_FOUND') {
                 form.setError('code', { message: t('incorrectCode') })
             }
+            console.log(response)
         } catch (error) {
             form.setError('code', { message: t('fillCode') })
+            console.log(error)
         }
     }
 
     const getCodeHandler = async () => {
         await form.handleSubmit(async () => {
             setClicked(true)
-            const input = {
-                phone: form.watch('phone'),
-            }
+
             try {
-                const response = await smsSend({ variables: input })
-                if (response.data.data.sendCode === 'ALREADY_SENT') {
+                const response = await smsSend({
+                    variables: {
+                        input: {
+                            phone: form.watch('phone'),
+                        },
+                    },
+                })
+                if (response.data.sendCode === 'ALREADY_SENT') {
                     form.setError('code', { message: t('codeAlreadySent') })
                 }
+                console.log(response)
             } catch (error) {
                 console.error('GraphQL error:', error)
             }

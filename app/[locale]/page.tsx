@@ -35,6 +35,7 @@ async function Home({ params: { locale } }: { params: { locale: string } }) {
     return (
         <main>
             <h1>{t('hello')}</h1>
+
             <FeatureSection />
             <BlogSection />
             <SuggestSection />
