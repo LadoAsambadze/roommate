@@ -75,12 +75,14 @@ export const SignupDatePicker: React.FC<Props> = ({
                                         format(newDate.from, 'yyyy-MM-dd'),
                                         format(newDate.to, 'yyyy-MM-dd'),
                                     ])
-                                    updateUseForm({
-                                        [id]: [
-                                            format(newDate.from, 'yyyy-MM-dd'),
-                                            format(newDate.to, 'yyyy-MM-dd'),
-                                        ],
-                                    })
+                                    if (id !== undefined) {
+                                        updateUseForm({
+                                            [id]: [
+                                                format(newDate.from, 'yyyy-MM-dd'),
+                                                format(newDate.to, 'yyyy-MM-dd'),
+                                            ],
+                                        })
+                                    }
                                 }
 
                                 setDate(newDate)
@@ -132,12 +134,14 @@ export const SignupDatePicker: React.FC<Props> = ({
                                     format(newDate.from, 'yyyy-MM-dd'),
                                     format(newDate.to, 'yyyy-MM-dd'),
                                 ])
-                                updateUseForm({
-                                    [id]: [
-                                        format(newDate.from, 'yyyy-MM-dd'),
-                                        format(newDate.to, 'yyyy-MM-dd'),
-                                    ],
-                                })
+                                if (id !== undefined) {
+                                    updateUseForm({
+                                        [id]: [
+                                            format(newDate.from, 'yyyy-MM-dd'),
+                                            format(newDate.to, 'yyyy-MM-dd'),
+                                        ],
+                                    })
+                                }
                             }
 
                             setDate(newDate)
