@@ -230,7 +230,7 @@ export default function StepTwo({
                             )
                         })}
                         <div className="mt-8 flex flex-col items-start justify-between ">
-                            <Button variant="default" size="default" type="submit">
+                            <Button className="mt-4 w-full" size="lg" type="submit">
                                 {next}
                             </Button>
                             <div

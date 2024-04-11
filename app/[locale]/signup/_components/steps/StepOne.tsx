@@ -321,7 +321,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                                 )}
                             />
                         </div>
-                        <Button className="mt-4" variant="default" size="default" type="submit">
+                        <Button className="mt-4 w-full" size="lg" type="submit">
                             {t('next')}
                         </Button>
                     </form>

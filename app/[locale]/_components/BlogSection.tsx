@@ -53,7 +53,7 @@ export default function BlogSection() {
     })
     return (
         <section className="my-12 flex h-full w-full flex-col items-start px-6 sm:px-16 md:px-20 lg:my-24 xl:px-24">
-            <h1 className="text-2xl text-[#484848]">{t('blogMainHead')}</h1>
+            <h1 className="font-bgCaps text-xl text-[#484848]">{t('blogMainHead')}</h1>
 
             <Carousel
                 opts={{

@@ -31,6 +31,10 @@ const config = {
                 pressedGreen: 'hsl(var(--pressedGreen))',
                 headerBg: 'hsl(var(--headerBg))',
                 textColor: 'hsl(var(--textColor))',
+                borderColor: 'hsl(var(--borderColor))',
+                placeholderColor: 'hsl(var(--placeholderColor))',
+                inputFocusColor: 'hsl(var(--inputFocusColor))',
+
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',
