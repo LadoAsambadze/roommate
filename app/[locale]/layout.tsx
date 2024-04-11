@@ -1,4 +1,4 @@
-import TranslationsProvider from '@/providers/TranslationsProvider'
+import TranslationsProvider from '@/libs/TranslationsProvider'
 import { ApolloWrapper } from '@/libs/apollo-provider'
 import initTranslations from '../../utils/i18n'
 // import localfont from 'next/font/local'
@@ -31,7 +31,7 @@ export default async function RootLayout({
     children: ReactNode
     params: { locale: string }
 }) {
-    const i18nNamespaces = ['common']
+    const i18nNamespaces = ['home', 'shared', 'signup']
     const { resources } = await initTranslations(locale, i18nNamespaces)
 
     return (

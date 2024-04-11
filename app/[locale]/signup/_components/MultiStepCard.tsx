@@ -9,6 +9,7 @@ import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/components/ui/card'
 import dynamic from 'next/dynamic'
 import StepTwo from './steps/StepTwo'
+import SignupHeader from './header/SignupHeader'
 const StepOne = dynamic(() => import('./steps/StepOne'), { ssr: false })
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -21,6 +22,8 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
     const thirthStep = questions?.slice(8, 13)
     const [signUp] = useMutation(signup_submit)
     const router = useRouter()
+
+   
 
     const showErrorWithHelp = () => {
         alert(t('serverError'))
@@ -105,7 +108,8 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
 
     return (
         <>
-            <div className="flex min-h-screen w-full items-center justify-center  md:px-[10%] md:pb-16 md:pt-20 lg:px-[15%] lg:pt-36 xl:px-[334px]">
+            <div className="flex min-h-screen w-full flex-col items-center justify-center  md:px-[10%] md:pb-16 md:pt-20 lg:px-[15%] lg:pt-36 xl:px-[334px]">
+                <SignupHeader />
                 <Card>
                     <PopUp
                         isOpen={isOpen}

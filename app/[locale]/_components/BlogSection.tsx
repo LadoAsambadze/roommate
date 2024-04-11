@@ -71,7 +71,7 @@ export default function BlogSection() {
                                     <div className="mt-2 flex h-full  flex-col justify-end md:mt-2 md:justify-end">
                                         <span className="z-50 text-xs ">{item.text}</span>
                                         <Link href={item.link}>
-                                            <Button className="bottom-0 z-50 mt-4 w-32 text-xs">
+                                            <Button className="bottom-0 z-50 mt-4 w-32">
                                                 {item.buttonText}
                                             </Button>
                                         </Link>

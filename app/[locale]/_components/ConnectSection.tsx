@@ -21,7 +21,9 @@ export default function ConnectSection() {
                         <p className="z-50 mt-4 overflow-auto text-xs text-[#fff] xl:text-base xl:text-[#484848] ">
                             {t('partnersText1')}
                         </p>
-                        <Button className="mt-7 text-xs   ">{t('startSearch')}</Button>
+                        <Button size="lg" variant="large" className="mt-7">
+                            {t('startSearch')}
+                        </Button>
                     </div>
                     <div className="hidden w-1/2 xl:block">
                         <Image src={FirstBg} className="h-auto max-w-full object-cover" alt="123" />
@@ -39,7 +41,9 @@ export default function ConnectSection() {
                             {t('partnersText2')}
                         </p>
                         <Link target="_blank" href="https://form.jotform.com/240432625356049">
-                            <Button className="mt-7 text-xs">{t('leaveFlat')}</Button>
+                            <Button size="lg" variant="large" className="mt-7">
+                                {t('leaveFlat')}
+                            </Button>
                         </Link>
                     </div>
                     <div className="hidden w-1/2 xl:block">

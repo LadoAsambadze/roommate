@@ -1,5 +1,4 @@
 // import { getClient } from '@/libs/client'
-import initTranslations from '../../utils/i18n'
 import BlogSection from './_components/BlogSection'
 import ConnectSection from './_components/ConnectSection'
 import ContactSection from './_components/ContactSection'
@@ -24,18 +23,13 @@ import SuggestSection from './_components/SuggestSection'
 //     }
 // `
 
-const i18nNamespaces = ['common']
-
-async function Home({ params: { locale } }: { params: { locale: string } }) {
-    const { t } = await initTranslations(locale, i18nNamespaces)
+async function Home() {
     // const client = getClient()
     // const { data } = await client.query({ query })
     // console.log(data)
 
     return (
         <main>
-            <h1>{t('hello')}</h1>
-
             <FeatureSection />
             <BlogSection />
             <SuggestSection />
