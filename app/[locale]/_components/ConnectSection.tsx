@@ -14,14 +14,14 @@ export default function ConnectSection() {
             <div className="relative mt-4 h-60 w-full overflow-hidden rounded-xl xl:h-full  xl:w-[90%] xl:bg-[#f2f5ff]">
                 <div className="absolute inset-0 bg-connectFirstBg bg-cover bg-center bg-no-repeat  xl:hidden"></div>
                 <div className="absolute inset-0 flex flex-row items-center justify-between rounded-xl bg-[#5e666ebf] bg-opacity-50 p-10 md:py-[10%] xl:relative xl:items-end xl:bg-[#f2f5ff] xl:py-4 xl:pl-12 xl:pr-4 ">
-                    <div className="flex h-full w-full flex-col items-start justify-between overflow-hidden xl:w-1/2 xl:pb-20 xl:pr-14">
+                    <div className="flex h-full w-full flex-col items-center justify-between overflow-hidden md:items-start xl:w-1/2 xl:pb-20 xl:pr-14">
                         <h1 className="z-50  font-semibold text-[#fff] xl:text-xl xl:text-[#484848]">
                             {t('partnersHead1')}
                         </h1>
-                        <p className="z-50 mt-4 overflow-auto text-xs text-[#fff] xl:text-base xl:text-[#484848] ">
+                        <p className="z-50 mt-4 overflow-auto text-center text-xs text-[#fff] md:text-start xl:text-base xl:text-[#484848] ">
                             {t('partnersText1')}
                         </p>
-                        <Button size="lg" variant="large" className="mt-7">
+                        <Button size="lg" className="mt-7">
                             {t('startSearch')}
                         </Button>
                     </div>
@@ -33,15 +33,15 @@ export default function ConnectSection() {
             <div className="relative mt-4 h-60 w-full overflow-hidden rounded-xl xl:h-full  xl:w-[90%] xl:bg-[#f2f5ff]">
                 <div className="absolute inset-0 bg-connectSecondBg bg-cover bg-center bg-no-repeat  xl:hidden"></div>
                 <div className="absolute inset-0 flex flex-row items-center  justify-between rounded-xl bg-[#5e666ebf] bg-opacity-50 p-10 md:py-[10%] xl:relative xl:items-end xl:bg-[#f2f5ff] xl:py-4 xl:pl-12 xl:pr-4">
-                    <div className="flex  h-full flex-col items-start justify-between overflow-hidden  xl:w-1/2 xl:pb-20  xl:pr-14">
+                    <div className="flex  h-full flex-col items-center justify-between overflow-hidden md:items-start  xl:w-1/2 xl:pb-20  xl:pr-14">
                         <h1 className="z-50  font-semibold text-[#fff] xl:text-xl  xl:text-[#484848]">
                             {t('partnersHead2')}
                         </h1>
-                        <p className="z-50 mt-4 overflow-auto text-xs text-[#fff] xl:text-base xl:text-[#484848] ">
+                        <p className="z-50 mt-4 overflow-auto text-center text-xs text-[#fff] md:text-start xl:text-base xl:text-[#484848] ">
                             {t('partnersText2')}
                         </p>
                         <Link target="_blank" href="https://form.jotform.com/240432625356049">
-                            <Button size="lg" variant="large" className="mt-7">
+                            <Button size="lg" className="mt-7">
                                 {t('leaveFlat')}
                             </Button>
                         </Link>
