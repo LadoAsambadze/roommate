@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useTranslation } from 'react-i18next'
+import "./index.css"
 
 export default function SignupHeader({ step }: any) {
     const { t } = useTranslation()

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { components } from 'react-select'
-import { IconDropdown } from '../svgs'
+import { IconDropdown } from '../../svgs'
+import './index.css'
 
 export const DropdownIndicator = (props: any) => {
     return (

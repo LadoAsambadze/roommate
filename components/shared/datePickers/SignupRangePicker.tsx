@@ -20,7 +20,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
     filterData?: any
 }
 
-export const SignupDatePicker: React.FC<Props> = ({
+export const SignupRangePicker: React.FC<Props> = ({
     className,
     updateUseForm,
     field,

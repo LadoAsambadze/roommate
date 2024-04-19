@@ -95,106 +95,11 @@ body {
 
 @font-face {
     font-family: 'bgCaps';
-    src: url('../../public/fonts/bpg-web-002-caps-webfont.eot'); /* IE9 Compat Modes */
-
+    src: url('../../public/fonts/bpg-web-002-caps-webfont.eot');
     src:
         url('../../public/fonts/bpg-web-002-caps-webfont.eot?#iefix') format('embedded-opentype'),
-        /* IE6-IE8 */ url('../../public/fonts/bpg-web-002-caps-webfont.woff2') format('woff2'),
-        /* Super Modern Browsers */ url('../../public/fonts/bpg-web-002-caps-webfont.woff')
-            format('woff'),
-        /* Pretty Modern Browsers */ url('../../public/fonts/bpg-web-002-caps-webfont.ttf')
-            format('truetype'),
-        /* Safari, Android, iOS */
-            url('../../public/fonts/bpg-web-002-caps-webfont.svg#bpg_web_002_capsregular')
-            format('svg'); /* Legacy iOS */
-}
-
-.arrow {
-    width: 100%;
-    height: 40px;
-    position: relative;
-    background: #19a463;
-    margin-right: 5px;
-    opacity: 0.55;
-}
-.arrow:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 0;
-    border-left: 20px solid white;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-}
-.arrow:before {
-    content: '';
-    position: absolute;
-    right: -20px;
-    bottom: 0;
-    width: 0;
-    height: 0;
-    border-left: 20px solid #19a463;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-}
-
-.arrow1:after {
-    border-left: 0px solid red !important;
-}
-
-.PhoneInput {
-    display: flex;
-    justify-content: center !important;
-    padding: 4px 12px 4px 12px !important;
-    height: 48px !important;
-    width: 100% !important;
-    border-radius: 8px !important;
-    border: 1px solid hsl(227, 20%, 59%) !important;
-    font-size: 14px !important;
-    color: #484848 !important;
-}
-
-.PhoneInput--focus {
-    outline: #c5758a auto !important;
-}
-
-.PhoneInputInput {
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
-}
-
-.PhoneInputCountrySelect {
-    color: #484848 !important;
-    font-size: 12px !important;
-    font-family: 'Courier New', Courier, monospace !important;
-    padding: 10px 12px 10px 12px !important;
-}
-
-@media (min-width: 768px) {
-    .PhoneInput {
-        font-size: 14px !important;
-    }
-    .PhoneInputCountrySelect {
-        font-size: 14px !important;
-    }
-}
-
-.css-b62m3t-container {
-    font-size: 14px !important;
-}
-
-.css-1jqq78o-placeholder {
-    margin: 0px !important;
-    font-size: 14px !important;
-}
-
-.css-1fdsijx-ValueContainer {
-    padding: 0px !important;
-    font-size: 14px !important;
-}
-
-.css-1xc3v61-indicatorContainer {
-    padding: 0px !important;
+        url('../../public/fonts/bpg-web-002-caps-webfont.woff2') format('woff2'),
+        url('../../public/fonts/bpg-web-002-caps-webfont.woff') format('woff'),
+        url('../../public/fonts/bpg-web-002-caps-webfont.ttf') format('truetype'),
+        url('../../public/fonts/bpg-web-002-caps-webfont.svg#bpg_web_002_capsregular') format('svg');
 }

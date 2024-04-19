@@ -17,11 +17,12 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import PhoneInputWithCountrySelect from 'react-phone-number-input'
 import Select from 'react-select'
-import { BirthDatePicker } from '@/components/shared/BirthDatePicker'
-import { DropdownIndicator, customStyles } from '@/components/shared/SelectUI'
+
+import { DropdownIndicator, customStyles } from '@/components/shared/Select/SelectUI'
 import Image from 'next/image'
+import PhoneInput from '../../../../../components/shared/phoneInput/PhoneInput'
+import { DatePicker } from '@/components/shared/datePickers/DatePicker'
 
 export default function StepOne({ countries, gender, setStep, updateFormData, formData }: any) {
     const form = StepOneValidator({ formData })
@@ -31,7 +32,6 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
     const labels = params.locale === 'ka' ? undefined : undefined
     const [smsCheck] = useMutation(sms_check)
     const [smsSend] = useMutation(sms_send)
-    console.log('ha', gender)
 
     const handleSubmit = async (data: any) => {
         const modifiedFormData = {
@@ -216,7 +216,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                                     <FormItem>
                                         <FormLabel>{t('age')}</FormLabel>
                                         <FormControl>
-                                            <BirthDatePicker field={field} />
+                                            <DatePicker field={field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -286,13 +286,14 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                                     <FormItem>
                                         <FormLabel>{t('Phonenumber')}</FormLabel>
                                         <FormControl>
-                                            <PhoneInputWithCountrySelect
-                                                {...field}
+                                            <PhoneInput
+                                                field={field}
                                                 labels={labels}
                                                 defaultCountry="GE"
                                                 international
                                                 value={field.value}
-                                                onChange={(phone) => {
+                                                form={form}
+                                                onChange={(phone: any) => {
                                                     form.setValue('phone', phone)
                                                 }}
                                             />

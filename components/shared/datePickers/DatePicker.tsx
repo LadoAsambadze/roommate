@@ -7,13 +7,13 @@ import { Calendar as CalendarIcon } from 'lucide-react'
 
 import { cn } from '@/utils/cn'
 
-import { Calendar } from '../ui/calendar'
+import { Calendar } from '../../ui/calendar'
 
 import { useTranslation } from 'react-i18next'
-import { Button } from '../ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { Button } from '../../ui/button'
+import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover'
 
-export function BirthDatePicker({ field }: any) {
+export function DatePicker({ field }: any) {
     const [date, setDate] = React.useState<Date>(field.value)
     const { t } = useTranslation()
 

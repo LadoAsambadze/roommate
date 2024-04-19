@@ -1,6 +1,6 @@
 'use client'
 
-import i18nConfig from '@/configs/i18nConfig'
+import i18nConfig from '@/libs/i18next/i18nConfig'
 import { LangChooseProps } from '@/types/types'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
@@ -22,7 +22,7 @@ const LangChoose = ({ className, spanClassname }: LangChooseProps) => {
 
         router.refresh()
     }
-   
+
     return (
         <>
             <div className={`${className}`} onClick={handleLangSwitch}>

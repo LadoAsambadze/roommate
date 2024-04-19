@@ -1,5 +1,5 @@
 import MultiStepCard from './_components/MultiStepCard'
-import { getClient } from '@/libs/client'
+import { getClient } from '@/libs/graphql/client'
 import { SearchParams } from '@/types/types'
 import { signup_combined } from '@/graphql/queries/suspenses/signupCombined'
 
