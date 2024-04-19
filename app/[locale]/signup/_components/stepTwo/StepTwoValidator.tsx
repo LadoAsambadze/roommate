@@ -75,20 +75,25 @@ export default function StepTwoValidator({
     const defaultValues = {
         ...questions.reduce((acc: any, item: any) => {
             if (item.uiFieldInfo) {
-                if (formData.answeredQuestions && formData.answeredQuestions[item.id]) {
-                    if (item.uiFieldInfo.input.variant === 'multiple') {
-                        acc[item.id] = formData.answeredQuestions[item.id] || null
-                    } else if (item.uiFieldInfo.input.variant === 'single') {
-                        acc[item.id] = formData.answeredQuestions[item.id]
-                            ? formData.answeredQuestions[item.id]
-                            : null
-                    } else if (item.uiFieldInfo.input.variant === 'calendar') {
-                        acc[item.id] = formData.answeredQuestions[item.id]
-                            ? formData.answeredQuestions[item.id]
-                            : []
-                    } else {
-                        acc[item.id] = formData.answeredQuestions[item.id] || ''
-                    }
+                if (formData.answeredQuestions && item.uiFieldInfo.input.variant === 'multiple') {
+                    acc[item.id] = formData.answeredQuestions[item.id] || null
+                } else if (
+                    formData.answeredQuestions &&
+                    item.uiFieldInfo.input.variant === 'single'
+                ) {
+                    acc[item.id] = formData.answeredQuestions[item.id]
+                        ? formData.answeredQuestions[item.id]
+                        : null
+                } else if (
+                    formData.answeredQuestions &&
+                    item.uiFieldInfo.input.variant === 'calendar'
+                ) {
+                    acc[item.id] = formData.answeredQuestions[item.id]
+                        ? formData.answeredQuestions[item.id]
+                        : []
+                } else {
+                    acc[item.id] =
+                        (formData.answeredQuestions && formData.answeredQuestions[item.id]) || ''
                 }
             }
             return acc

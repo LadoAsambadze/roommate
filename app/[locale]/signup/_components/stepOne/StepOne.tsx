@@ -2,7 +2,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { StepOneValidator } from '../validations/StepOneValidator'
+import { StepOneValidator } from './StepOneValidator'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'

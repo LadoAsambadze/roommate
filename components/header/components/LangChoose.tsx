@@ -1,9 +1,14 @@
 'use client'
 
 import i18nConfig from '@/libs/i18next/i18nConfig'
-import { LangChooseProps } from '@/types/langChoose/types'
+
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
+
+interface LangChooseProps {
+    className: string
+    spanClassname: string
+}
 
 const LangChoose = ({ className, spanClassname }: LangChooseProps) => {
     const currentPathname = usePathname()

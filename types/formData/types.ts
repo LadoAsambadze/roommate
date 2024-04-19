@@ -1,5 +1,5 @@
 interface AnsweredQuestion {
-    [key: string]: string | object | Array<string | object> | number | Question | null
+    [key: string | number]: string | object | Array<string | object> | number | Question | null
 }
 
 interface Question {

@@ -10,7 +10,7 @@ import { SignupRangePicker } from '../../../../../components/shared/datePickers/
 import { useTranslation } from 'react-i18next'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import StepTwoValidator from '../validations/StepTwoValidator'
+import StepTwoValidator from './StepTwoValidator'
 import { FormDataProps } from '@/types/formData/types'
 
 export default function StepTwo({
@@ -42,9 +42,9 @@ export default function StepTwo({
         }
     }
 
-    const updateUseForm = async (data: FormDataProps) => {
+    const updateUseForm = async (data: any) => {
         const { answeredQuestions } = formData
-        const updatedData = answeredQuestions ? [...answeredQuestions, data] : [data]
+        const updatedData = { ...answeredQuestions, ...data }
         updateFormData({ ...formData, answeredQuestions: updatedData })
     }
 
@@ -72,7 +72,6 @@ export default function StepTwo({
                                                                     {...field}
                                                                     onChange={(e) => {
                                                                         updateUseForm({
-                                                                            ...formData,
                                                                             [item.id]:
                                                                                 e.target.value,
                                                                         })
@@ -120,7 +119,6 @@ export default function StepTwo({
                                                                     {...field}
                                                                     onChange={(e) => {
                                                                         updateUseForm({
-                                                                            ...formData,
                                                                             [item.id]:
                                                                                 e.target.value,
                                                                         })
@@ -150,7 +148,6 @@ export default function StepTwo({
                                                                     {...field}
                                                                     onChange={(e) => {
                                                                         updateUseForm({
-                                                                            ...formData,
                                                                             [item.id]:
                                                                                 e.target.value,
                                                                         })
@@ -212,7 +209,6 @@ export default function StepTwo({
                                                             onChange={(value) => {
                                                                 field.onChange(value)
                                                                 updateUseForm({
-                                                                    ...formData,
                                                                     [item.id]: value,
                                                                 })
                                                             }}

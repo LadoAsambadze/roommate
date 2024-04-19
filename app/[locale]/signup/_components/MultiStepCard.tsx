@@ -8,11 +8,11 @@ import { useTranslation } from 'react-i18next'
 import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/components/ui/card'
 import dynamic from 'next/dynamic'
-import StepTwo from './steps/StepTwo'
+import StepTwo from './stepTwo/StepTwo'
 import SignupHeader from './header/SignupHeader'
 import { FormDataProps } from '@/types/formData/types'
 import { CustomError } from '@/types/error/types'
-const StepOne = dynamic(() => import('./steps/StepOne'), { ssr: false })
+const StepOne = dynamic(() => import('./stepOne/StepOne'), { ssr: false })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function MultiStepCard({ countries, gender, questions }: any) {
@@ -24,6 +24,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
     const thirthStep = questions?.slice(8, 13)
     const [signUp] = useMutation(signup_submit)
     const router = useRouter()
+    console.log(formData)
 
     const showErrorWithHelp = () => {
         alert(t('serverError'))
@@ -43,18 +44,21 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
             ...formData,
         }
         delete modifiedFormData.code
-        if (typeof modifiedFormData.countryId === 'object') {
+        if (typeof modifiedFormData.countryId === 'object' && modifiedFormData.countryId !== null) {
             modifiedFormData.countryId = Number(modifiedFormData.countryId.value)
         }
-        if (typeof modifiedFormData.genderId === 'object') {
+        if (typeof modifiedFormData.genderId === 'object' && modifiedFormData.genderId !== null) {
             modifiedFormData.genderId = Number(modifiedFormData.genderId.value)
         }
         if (modifiedFormData?.email === '') {
             delete modifiedFormData.email
         }
         const answeredQuestions = []
-        for (const key in modifiedFormData.answeredQuestions) {
-            const value = modifiedFormData.answeredQuestions[key]
+        for (const key in modifiedFormData?.answeredQuestions) {
+            const value =
+                modifiedFormData?.answeredQuestions[
+                    key as keyof typeof modifiedFormData.answeredQuestions
+                ]
             if (typeof value === 'string') {
                 answeredQuestions.push({ questionId: key, data: value })
             } else if (Array.isArray(value)) {
@@ -100,6 +104,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                 alert(t('emailExist'))
             } else {
                 showErrorWithHelp()
+                console.log(error)
             }
         }
     }
@@ -111,7 +116,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                 <Card>
                     <PopUp
                         isOpen={isOpen}
-                        range={formData?.answeredQuestions[7]}
+                        range={formData.answeredQuestions && formData?.answeredQuestions[7]}
                         country={formData?.countryId}
                     />
                     <CardContent className="bg-white px-10 pb-16  pt-8  sm:px-28">

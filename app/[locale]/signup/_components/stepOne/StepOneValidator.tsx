@@ -24,8 +24,11 @@ export function StepOneValidator({ formData }: { formData: FormDataProps }) {
             }),
         countryId: z
             .object({
-                value: z.union([z.string(), z.number()]).optional(),
-                label: z.string().optional(),
+                value: z
+                    .string()
+                    .min(1, { message: t('selectCountry') })
+                    .optional(),
+                label: z.any().optional(),
             })
             .refine((obj) => Object.keys(obj).length >= 1, {
                 message: t('selectCountry'),

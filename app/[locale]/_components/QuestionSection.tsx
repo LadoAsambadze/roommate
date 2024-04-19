@@ -6,9 +6,14 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion'
-import { AccordionItems } from '@/types/accordion/types'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
+interface AccordionItems {
+    value: string
+    question: string
+    answer: string
+}
 
 export default function QuestionSection() {
     const { t } = useTranslation()
