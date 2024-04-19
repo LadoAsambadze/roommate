@@ -44,7 +44,7 @@ export default function StepTwo({
 
     const updateUseForm = async (data: FormDataProps) => {
         const { answeredQuestions } = formData
-        const updatedData = { ...answeredQuestions, ...data }
+        const updatedData = answeredQuestions ? [...answeredQuestions, data] : [data]
         updateFormData({ ...formData, answeredQuestions: updatedData })
     }
 

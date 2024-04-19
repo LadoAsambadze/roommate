@@ -4,8 +4,15 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import 'react-phone-number-input/style.css'
 import { useTranslation } from 'react-i18next'
+import { FormDataProps } from '@/types/formData/types'
 
-export default function StepTwoValidator({ questions, formData }: any) {
+export default function StepTwoValidator({
+    questions,
+    formData,
+}: {
+    questions: any
+    formData: FormDataProps
+}) {
     const { t } = useTranslation()
 
     const formSchema = z.object(
@@ -68,18 +75,20 @@ export default function StepTwoValidator({ questions, formData }: any) {
     const defaultValues = {
         ...questions.reduce((acc: any, item: any) => {
             if (item.uiFieldInfo) {
-                if (item.uiFieldInfo.input.variant === 'multiple') {
-                    acc[item.id] = formData.answeredQuestions[item.id] || null
-                } else if (item.uiFieldInfo.input.variant === 'single') {
-                    acc[item.id] = formData.answeredQuestions[item.id]
-                        ? formData.answeredQuestions[item.id]
-                        : null
-                } else if (item.uiFieldInfo.input.variant === 'calendar') {
-                    acc[item.id] = formData.answeredQuestions[item.id]
-                        ? formData.answeredQuestions[item.id]
-                        : []
-                } else {
-                    acc[item.id] = formData.answeredQuestions[item.id] || ''
+                if (formData.answeredQuestions && formData.answeredQuestions[item.id]) {
+                    if (item.uiFieldInfo.input.variant === 'multiple') {
+                        acc[item.id] = formData.answeredQuestions[item.id] || null
+                    } else if (item.uiFieldInfo.input.variant === 'single') {
+                        acc[item.id] = formData.answeredQuestions[item.id]
+                            ? formData.answeredQuestions[item.id]
+                            : null
+                    } else if (item.uiFieldInfo.input.variant === 'calendar') {
+                        acc[item.id] = formData.answeredQuestions[item.id]
+                            ? formData.answeredQuestions[item.id]
+                            : []
+                    } else {
+                        acc[item.id] = formData.answeredQuestions[item.id] || ''
+                    }
                 }
             }
             return acc

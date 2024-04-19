@@ -1,10 +1,10 @@
 interface AnsweredQuestion {
-    [key: string]: string | object | Array<string | object>
+    [key: string]: string | object | Array<string | object> | number | Question | null
 }
 
 interface Question {
-    value: string | number
-    label: string
+    value?: string | number
+    label?: string
 }
 
 export type FormDataProps = {
@@ -14,9 +14,9 @@ export type FormDataProps = {
     phone?: string
     password?: string
     confirmPassword?: string
-    countryId?: Question | number
-    genderId?: Question | number
+    countryId?: Question | number | null
+    genderId?: Question | number | null
     email?: string
     code?: number | string
-    answeredQuestions: AnsweredQuestion[]
+    answeredQuestions?: AnsweredQuestion[]
 }
