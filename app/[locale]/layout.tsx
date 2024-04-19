@@ -7,6 +7,7 @@ import './globals.css'
 import Header from '@/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/components/footer/Footer'
+const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 
 export default async function RootLayout({
     children,
@@ -18,7 +19,7 @@ export default async function RootLayout({
     params: { locale: string }
 }) {
     const i18nNamespaces = ['home', 'shared', 'signup']
-    const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
+
     const { resources } = await initTranslations(locale, i18nNamespaces)
 
     return (
