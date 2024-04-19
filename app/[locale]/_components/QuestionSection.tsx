@@ -6,7 +6,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion'
-import { AccordionItems } from '@/types/types'
+import { AccordionItems } from '@/types/accordion/types'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

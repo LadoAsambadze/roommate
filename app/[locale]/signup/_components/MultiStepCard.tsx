@@ -10,20 +10,20 @@ import { Card, CardContent } from '@/components/ui/card'
 import dynamic from 'next/dynamic'
 import StepTwo from './steps/StepTwo'
 import SignupHeader from './header/SignupHeader'
+import { FormDataProps } from '@/types/formData/types'
+import { CustomError } from '@/types/error/types'
 const StepOne = dynamic(() => import('./steps/StepOne'), { ssr: false })
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function MultiStepCard({ countries, gender, questions }: any) {
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
     const [isOpen, setIsOpen] = useState(false)
-    const [formData, setFormData] = useState<any>({ answeredQuestions: {} })
+    const [formData, setFormData] = useState<FormDataProps>({ answeredQuestions: [] })
     const secondStep = questions?.slice(0, 7)
     const thirthStep = questions?.slice(8, 13)
     const [signUp] = useMutation(signup_submit)
     const router = useRouter()
-
-   
 
     const showErrorWithHelp = () => {
         alert(t('serverError'))
@@ -35,22 +35,22 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
         }
     }
 
-    const updateFormData = (newData: any) => {
-        setFormData((prevData: any) => ({ ...prevData, ...newData }))
+    const updateFormData = (newData: FormDataProps) => {
+        setFormData((prevData: FormDataProps) => ({ ...prevData, ...newData }))
     }
 
     const submit = async () => {
-        const modifiedFormData: any = {
+        const modifiedFormData: FormDataProps = {
             ...formData,
         }
         delete modifiedFormData.code
-        if (modifiedFormData.countryId) {
+        if (typeof modifiedFormData.countryId === 'object') {
             modifiedFormData.countryId = Number(modifiedFormData.countryId.value)
         }
-        if (modifiedFormData.genderId) {
+        if (typeof modifiedFormData.genderId === 'object') {
             modifiedFormData.genderId = Number(modifiedFormData.genderId.value)
         }
-        if (modifiedFormData.email === '') {
+        if (modifiedFormData?.email === '') {
             delete modifiedFormData.email
         }
         const answeredQuestions = []
@@ -80,7 +80,6 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
             }
         }
         modifiedFormData.answeredQuestions = answeredQuestions
-        console.log(modifiedFormData)
 
         try {
             const response = await signUp({
@@ -91,14 +90,14 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                 if (step === 3) {
                     setIsOpen(true)
                 }
-                if (formData?.countryId?.value === '145') {
+                if (typeof formData?.countryId === 'number' && formData.countryId === 145) {
                     router.push('/')
                 }
             }
-        } catch (error: any) {
-            if (error?.message === 'PHONE_EXISTS') {
+        } catch (error: unknown | CustomError) {
+            if ((error as CustomError)?.message === 'PHONE_EXISTS') {
                 alert(t('phoneExist'))
-            } else if (error?.message === 'EMAIL_EXISTS') {
+            } else if ((error as CustomError)?.message === 'EMAIL_EXISTS') {
                 alert(t('emailExist'))
             } else {
                 showErrorWithHelp()
@@ -114,9 +113,8 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                     <PopUp
                         isOpen={isOpen}
                         range={formData.answeredQuestions[7]}
-                        country={formData?.countryId?.value}
+                        country={formData?.countryId}
                     />
-                    {/* <SignupStepsHeader step={step} /> */}
                     <CardContent className="bg-white px-10 pb-16  pt-8  sm:px-28">
                         {step === 1 && (
                             <div>

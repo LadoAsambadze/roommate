@@ -9,6 +9,7 @@ import 'react-phone-number-input/style.css'
 import { isValidPhoneNumber } from 'react-phone-number-input'
 import { useTranslation } from 'react-i18next'
 
+
 export function StepOneValidator({ formData }: any) {
     const { t } = useTranslation()
 

@@ -1,5 +1,5 @@
 'use client'
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useParams } from 'next/navigation'
 import { StepOneValidator } from '../validations/StepOneValidator'
 import { useTranslation } from 'react-i18next'
@@ -23,8 +23,21 @@ import { DropdownIndicator, customStyles } from '@/components/shared/Select/Sele
 import Image from 'next/image'
 import PhoneInput from '../../../../../components/shared/phoneInput/PhoneInput'
 import { DatePicker } from '@/components/shared/datePickers/DatePicker'
+import { FormDataProps } from '@/types/formData/types'
 
-export default function StepOne({ countries, gender, setStep, updateFormData, formData }: any) {
+export default function StepOne({
+    countries,
+    gender,
+    setStep,
+    updateFormData,
+    formData,
+}: {
+    countries: any
+    gender: any
+    setStep: any
+    updateFormData: any
+    formData: FormDataProps
+}) {
     const form = StepOneValidator({ formData })
     const params = useParams()
     const { t } = useTranslation()
@@ -33,7 +46,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
     const [smsCheck] = useMutation(sms_check)
     const [smsSend] = useMutation(sms_send)
 
-    const handleSubmit = async (data: any) => {
+    const handleSubmit = async (data: FormDataProps) => {
         const modifiedFormData = {
             ...data,
         }
@@ -97,13 +110,13 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="firstname"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('name')}</FormLabel>
                                         <FormControl>
                                             <Input
                                                 {...field}
-                                                hasError={form.formState.errors.firstname}
+                                                // hasError={form.formState.errors.firstname}
                                                 isSuccess={
                                                     !form.formState.errors.firstname &&
                                                     form.formState.touchedFields.firstname &&
@@ -118,13 +131,13 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="lastname"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('surname')}</FormLabel>
                                         <FormControl>
                                             <Input
                                                 {...field}
-                                                hasError={form.formState.errors.lastname}
+                                                // hasError={form.formState.errors.lastname}
                                                 isSuccess={
                                                     !form.formState.errors.lastname &&
                                                     form.formState.touchedFields.lastname &&
@@ -139,7 +152,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="countryId"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('country')}</FormLabel>
                                         <Select
@@ -147,13 +160,14 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                                             styles={customStyles}
                                             components={{ DropdownIndicator }}
                                             placeholder={t('selectCountry')}
-                                            onChange={(value: any) => {
+                                            onChange={(value) => {
                                                 field.onChange(value)
+                                                console.log(value)
                                             }}
                                             options={
                                                 countries &&
                                                 countries
-                                                    .sort((a: any, b: any) => {
+                                                    .sort((a: string, b: string) => {
                                                         if (a.position === 1) return -1
                                                         if (b.position === 1) return 1
                                                         return 0
@@ -190,7 +204,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="genderId"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('gender')}</FormLabel>
                                         <Select
@@ -198,10 +212,10 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                                             styles={customStyles}
                                             components={{ DropdownIndicator }}
                                             placeholder={t('selectGender')}
-                                            onChange={(value: any) => {
+                                            onChange={(value) => {
                                                 field.onChange(value)
                                             }}
-                                            options={gender?.map((gender: any) => ({
+                                            options={gender?.map((gender) => ({
                                                 value: gender.id,
                                                 label: gender?.translations[0].sex,
                                             }))}
@@ -212,7 +226,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="birthDate"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('age')}</FormLabel>
                                         <FormControl>
@@ -225,7 +239,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="email"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('mail')}</FormLabel>
                                         <FormControl>
@@ -238,14 +252,14 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="password"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('Password')}</FormLabel>
                                         <FormControl>
                                             <Input
                                                 type="password"
                                                 {...field}
-                                                hasError={form.formState.errors.password}
+                                                // hasError={form.formState.errors.password}
                                                 isSuccess={
                                                     !form.formState.errors.password &&
                                                     form.formState.touchedFields.password &&
@@ -260,7 +274,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="confirmPassword"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('PasswordRepeat')}</FormLabel>
                                         <FormControl>
@@ -282,7 +296,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="phone"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('Phonenumber')}</FormLabel>
                                         <FormControl>
@@ -293,7 +307,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                                                 international
                                                 value={field.value}
                                                 form={form}
-                                                onChange={(phone: any) => {
+                                                onChange={(phone) => {
                                                     form.setValue('phone', phone)
                                                 }}
                                             />
@@ -305,7 +319,7 @@ export default function StepOne({ countries, gender, setStep, updateFormData, fo
                             <FormField
                                 control={form.control}
                                 name="code"
-                                render={({ field }: any) => (
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('fillCode')}</FormLabel>
                                         <FormControl>
