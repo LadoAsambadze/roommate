@@ -1,42 +1,32 @@
 'use client'
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
 import 'react-phone-number-input/style.css'
 import { isValidPhoneNumber } from 'react-phone-number-input'
 import { useTranslation } from 'react-i18next'
 
+import { StepOneProps } from '@/types/signupValidator/types'
 
-export function StepOneValidator({ formData }: any) {
+export function StepOneValidator({ formData }: { formData: StepOneProps }) {
     const { t } = useTranslation()
 
-    const formSchema: any = z.object({
+    const formSchema: z.ZodSchema<StepOneProps> = z.object({
         firstname: z.string().min(2, { message: t('nameError') }),
         lastname: z.string().min(2, { message: t('surnameError') }),
         genderId: z
             .object({
-                value: z
-                    .string()
-                    .min(1, { message: t('selectGender') })
-                    .optional(),
-                label: z
-                    .string()
-                    .min(1, { message: t('selectGender') })
-                    .optional(),
+                value: z.union([z.string(), z.number()]).optional(),
+                label: z.string().optional(),
             })
             .refine((obj) => Object.keys(obj).length >= 1, {
-                message: t('selectGender'),
+                message: t('selectCountry'),
             }),
         countryId: z
             .object({
-                value: z
-                    .string()
-                    .min(1, { message: t('selectCountry') })
-                    .optional(),
-                label: z.any().optional(),
+                value: z.union([z.string(), z.number()]).optional(),
+                label: z.string().optional(),
             })
             .refine((obj) => Object.keys(obj).length >= 1, {
                 message: t('selectCountry'),

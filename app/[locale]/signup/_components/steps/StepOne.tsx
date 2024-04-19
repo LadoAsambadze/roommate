@@ -24,6 +24,7 @@ import Image from 'next/image'
 import PhoneInput from '../../../../../components/shared/phoneInput/PhoneInput'
 import { DatePicker } from '@/components/shared/datePickers/DatePicker'
 import { FormDataProps } from '@/types/formData/types'
+import { StepOneProps } from '@/types/signupValidator/types'
 
 export default function StepOne({
     countries,
@@ -38,7 +39,7 @@ export default function StepOne({
     updateFormData: any
     formData: FormDataProps
 }) {
-    const form = StepOneValidator({ formData })
+    const form = StepOneValidator({ formData: StepOneProps })
     const params = useParams()
     const { t } = useTranslation()
     const [clicked, setClicked] = useState(false)
