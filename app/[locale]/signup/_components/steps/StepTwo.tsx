@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import StepTwoValidator from '../validations/StepTwoValidator'
+import { FormDataProps } from '@/types/formData/types'
 
 export default function StepTwo({
     questions,
@@ -20,7 +21,15 @@ export default function StepTwo({
     next,
     updateFormData,
     submit,
-}: any) {
+}: {
+    questions: any
+    setStep: (value: number) => void
+    formData: FormDataProps
+    step: number
+    next: string
+    updateFormData: (newData: FormDataProps) => void
+    submit: () => Promise<void>
+}) {
     const { t } = useTranslation()
     const form = StepTwoValidator({ questions, formData })
 
@@ -33,7 +42,7 @@ export default function StepTwo({
         }
     }
 
-    const updateUseForm = async (data: any) => {
+    const updateUseForm = async (data: FormDataProps) => {
         const { answeredQuestions } = formData
         const updatedData = { ...answeredQuestions, ...data }
         updateFormData({ ...formData, answeredQuestions: updatedData })
@@ -53,7 +62,7 @@ export default function StepTwo({
                                                 <FormField
                                                     control={form.control}
                                                     name={item.id}
-                                                    render={({ field }: any) => (
+                                                    render={({ field }) => (
                                                         <FormItem>
                                                             <FormLabel className="leading-5">
                                                                 {item.translations[0].title}
@@ -61,8 +70,9 @@ export default function StepTwo({
                                                             <FormControl>
                                                                 <Input
                                                                     {...field}
-                                                                    onChange={(e: any) => {
+                                                                    onChange={(e) => {
                                                                         updateUseForm({
+                                                                            ...formData,
                                                                             [item.id]:
                                                                                 e.target.value,
                                                                         })
@@ -98,7 +108,7 @@ export default function StepTwo({
                                                 <FormField
                                                     control={form.control}
                                                     name={item.id}
-                                                    render={({ field }: any) => (
+                                                    render={({ field }) => (
                                                         <FormItem>
                                                             <FormLabel className="leading-5">
                                                                 {item.translations[0].title}
@@ -110,6 +120,7 @@ export default function StepTwo({
                                                                     {...field}
                                                                     onChange={(e) => {
                                                                         updateUseForm({
+                                                                            ...formData,
                                                                             [item.id]:
                                                                                 e.target.value,
                                                                         })
@@ -129,7 +140,7 @@ export default function StepTwo({
                                                 <FormField
                                                     control={form.control}
                                                     name={item.id}
-                                                    render={({ field }: any) => (
+                                                    render={({ field }) => (
                                                         <FormItem>
                                                             <FormLabel className="leading-5">
                                                                 {item.translations[0].title}
@@ -137,8 +148,9 @@ export default function StepTwo({
                                                             <FormControl>
                                                                 <Input
                                                                     {...field}
-                                                                    onChange={(e: any) => {
+                                                                    onChange={(e) => {
                                                                         updateUseForm({
+                                                                            ...formData,
                                                                             [item.id]:
                                                                                 e.target.value,
                                                                         })
@@ -175,7 +187,7 @@ export default function StepTwo({
                                             <FormField
                                                 control={form.control}
                                                 name={item.id}
-                                                render={({ field }: any) => (
+                                                render={({ field }) => (
                                                     <FormItem>
                                                         <FormLabel className="leading-5 ">
                                                             {item.translations[0].title}
@@ -199,7 +211,10 @@ export default function StepTwo({
                                                             )}
                                                             onChange={(value) => {
                                                                 field.onChange(value)
-                                                                updateUseForm({ [item.id]: value })
+                                                                updateUseForm({
+                                                                    ...formData,
+                                                                    [item.id]: value,
+                                                                })
                                                             }}
                                                         />
                                                     </FormItem>
@@ -212,7 +227,7 @@ export default function StepTwo({
                                             <FormField
                                                 control={form.control}
                                                 name={item.id}
-                                                render={({ field }: any) => (
+                                                render={({ field }) => (
                                                     <FormItem className="flex flex-col">
                                                         <FormLabel className="leading-5">
                                                             {item.translations[0].title}
