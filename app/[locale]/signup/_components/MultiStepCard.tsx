@@ -38,7 +38,6 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
     const updateFormData = (newData: FormDataProps) => {
         setFormData((prevData: FormDataProps) => ({ ...prevData, ...newData }))
     }
-
     const submit = async () => {
         const modifiedFormData: FormDataProps = {
             ...formData,

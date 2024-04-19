@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useParams } from 'next/navigation'
@@ -18,7 +19,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Select from 'react-select'
-
 import { DropdownIndicator, customStyles } from '@/components/shared/Select/SelectUI'
 import Image from 'next/image'
 import PhoneInput from '../../../../../components/shared/phoneInput/PhoneInput'
@@ -72,10 +72,8 @@ export default function StepOne({
             } else if (response.data.checkCode === 'NOT_FOUND') {
                 form.setError('code', { message: t('incorrectCode') })
             }
-            console.log(response)
         } catch (error) {
             form.setError('code', { message: t('fillCode') })
-            console.log(error)
         }
     }
 
@@ -162,13 +160,12 @@ export default function StepOne({
                                             placeholder={t('selectCountry')}
                                             onChange={(value) => {
                                                 field.onChange(value)
-                                                console.log(value)
                                             }}
                                             options={
                                                 countries &&
                                                 countries
-                                                    .sort((a: string, b: string) => {
-                                                        if (a.position === 1) return -1
+                                                    .sort((a: any, b: any) => {
+                                                        if (a?.position === 1) return -1
                                                         if (b.position === 1) return 1
                                                         return 0
                                                     })
@@ -215,7 +212,7 @@ export default function StepOne({
                                             onChange={(value) => {
                                                 field.onChange(value)
                                             }}
-                                            options={gender?.map((gender) => ({
+                                            options={gender?.map((gender: any) => ({
                                                 value: gender.id,
                                                 label: gender?.translations[0].sex,
                                             }))}
@@ -307,7 +304,7 @@ export default function StepOne({
                                                 international
                                                 value={field.value}
                                                 form={form}
-                                                onChange={(phone) => {
+                                                onChange={(phone: string) => {
                                                     form.setValue('phone', phone)
                                                 }}
                                             />

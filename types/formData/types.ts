@@ -17,7 +17,6 @@ export type FormDataProps = {
         | number
 
     email?: string
-    phone?: string
     code?: number
     answeredQuestions: AnsweredQuestion[]
 }
