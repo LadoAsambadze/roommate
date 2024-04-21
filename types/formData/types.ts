@@ -5,6 +5,7 @@ interface AnsweredQuestion {
 interface Question {
     value?: string | number
     label?: string
+    
 }
 
 export type FormDataProps = {
@@ -18,5 +19,5 @@ export type FormDataProps = {
     genderId?: Question | number | null
     email?: string
     code?: number | string
-    answeredQuestions?: AnsweredQuestion[]
+    answeredQuestions: AnsweredQuestion[]
 }

@@ -54,11 +54,8 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
             delete modifiedFormData.email
         }
         const answeredQuestions = []
-        for (const key in modifiedFormData?.answeredQuestions) {
-            const value =
-                modifiedFormData?.answeredQuestions[
-                    key as keyof typeof modifiedFormData.answeredQuestions
-                ]
+        for (const key in modifiedFormData.answeredQuestions || {}) {
+            const value = modifiedFormData?.answeredQuestions[key]
             if (typeof value === 'string') {
                 answeredQuestions.push({ questionId: key, data: value })
             } else if (Array.isArray(value)) {
