@@ -24,7 +24,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
     const thirthStep = questions?.slice(8, 13)
     const [signUp] = useMutation(signup_submit)
     const router = useRouter()
-    console.log(formData)
+
 
     const showErrorWithHelp = () => {
         alert(t('serverError'))
@@ -101,7 +101,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                 alert(t('emailExist'))
             } else {
                 showErrorWithHelp()
-                console.log(error)
+             
             }
         }
     }
