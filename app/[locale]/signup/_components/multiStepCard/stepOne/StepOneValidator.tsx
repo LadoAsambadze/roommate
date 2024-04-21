@@ -6,12 +6,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import 'react-phone-number-input/style.css'
 import { isValidPhoneNumber } from 'react-phone-number-input'
 import { useTranslation } from 'react-i18next'
-import { FormDataProps } from '@/types/formData/types'
+import { FormDataPropsOne } from './types'
 
-export function StepOneValidator({ formData }: { formData: FormDataProps }) {
+export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
     const { t } = useTranslation()
 
-    const formSchema: z.ZodSchema<FormDataProps> = z.object({
+    const formSchema: z.ZodSchema<FormDataPropsOne> = z.object({
         firstname: z.string().min(2, { message: t('nameError') }),
         lastname: z.string().min(2, { message: t('surnameError') }),
         genderId: z

@@ -5,7 +5,7 @@ interface AnsweredQuestion {
 interface Question {
     value?: string | number
     label?: string
-    
+
 }
 
 export type FormDataProps = {

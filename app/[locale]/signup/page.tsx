@@ -1,4 +1,4 @@
-import MultiStepCard from './_components/MultiStepCard'
+import MultiStepCard from './_components/multiStepCard/MultiStepCard'
 import { getClient } from '@/libs/graphql/client'
 import { signup_combined } from '@/graphql/queries/suspenses/signupCombined'
 

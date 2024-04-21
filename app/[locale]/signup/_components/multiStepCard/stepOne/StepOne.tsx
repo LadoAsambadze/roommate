@@ -21,9 +21,9 @@ import { Button } from '@/components/ui/button'
 import Select from 'react-select'
 import { DropdownIndicator, customStyles } from '@/components/shared/Select/SelectUI'
 import Image from 'next/image'
-import PhoneInput from '../../../../../components/shared/phoneInput/PhoneInput'
+import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { DatePicker } from '@/components/shared/datePickers/DatePicker'
-import { FormDataProps } from '@/types/formData/types'
+import { FormDataPropsOne } from './types'
 
 export default function StepOne({
     countries,
@@ -36,7 +36,7 @@ export default function StepOne({
     gender: any
     setStep: any
     updateFormData: any
-    formData: FormDataProps
+    formData: FormDataPropsOne
 }) {
     const form = StepOneValidator({ formData })
     const params = useParams()
@@ -46,7 +46,7 @@ export default function StepOne({
     const [smsCheck] = useMutation(sms_check)
     const [smsSend] = useMutation(sms_send)
 
-    const handleSubmit = async (data: FormDataProps) => {
+    const handleSubmit = async (data: FormDataPropsOne) => {
         const modifiedFormData = {
             ...data,
         }

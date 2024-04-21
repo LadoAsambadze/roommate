@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import dynamic from 'next/dynamic'
 import StepTwo from './stepTwo/StepTwo'
 import SignupHeader from './header/SignupHeader'
-import { FormDataProps } from '@/types/formData/types'
+import { FormDataProps } from './types'
 import { CustomError } from '@/types/error/types'
 const StepOne = dynamic(() => import('./stepOne/StepOne'), { ssr: false })
 

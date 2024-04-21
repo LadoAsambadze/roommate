@@ -6,12 +6,12 @@ import Select from 'react-select'
 // import arroLeft from '../public/newImages/arrow-left.svg'
 // import Image from 'next/image'
 import { DropdownIndicator, customStyles } from '@/components/shared/Select/SelectUI'
-import { SignupRangePicker } from '../../../../../components/shared/datePickers/SignupRangePicker'
+import { SignupRangePicker } from '../../../../../../components/shared/datePickers/SignupRangePicker'
 import { useTranslation } from 'react-i18next'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import StepTwoValidator from './StepTwoValidator'
-import { FormDataProps } from '@/types/formData/types'
+import { FormDataPropsTwo } from './types'
 
 export default function StepTwo({
     questions,
@@ -24,10 +24,10 @@ export default function StepTwo({
 }: {
     questions: any
     setStep: (value: number) => void
-    formData: FormDataProps
+    formData: FormDataPropsTwo
     step: number
     next: string
-    updateFormData: (newData: FormDataProps) => void
+    updateFormData: (newData: FormDataPropsTwo) => void
     submit: () => Promise<void>
 }) {
     const { t } = useTranslation()

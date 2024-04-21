@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import { SocialIcons } from '../shared/SocialIcons'
+import { SocialIcons } from '../shared/socialIcons/SocialIcons'
 import { useParams, usePathname } from 'next/navigation'
 import { EmailIcon, Logo, PhoneIcon } from '../svgs'
 

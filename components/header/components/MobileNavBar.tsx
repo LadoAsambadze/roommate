@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { usePathname } from 'next/navigation'
 import { BurgerIcon, EmailIcon, PhoneIcon } from '@/components/svgs'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { SocialIcons } from '@/components/shared/SocialIcons'
+import { SocialIcons } from '@/components/shared/socialIcons/SocialIcons'
 
 export default function MobileNavBar() {
     const { t } = useTranslation()
