@@ -25,7 +25,6 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
     const [signUp] = useMutation(signup_submit)
     const router = useRouter()
 
-
     const showErrorWithHelp = () => {
         alert(t('serverError'))
         if (confirm('Go to support')) {
@@ -101,22 +100,21 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                 alert(t('emailExist'))
             } else {
                 showErrorWithHelp()
-             
             }
         }
     }
 
     return (
         <>
-            <div className="flex min-h-screen w-full flex-col items-center justify-center  md:px-[10%] md:pb-16 md:pt-20 lg:px-[15%] lg:pt-36 xl:px-[334px]">
-                <SignupHeader />
-                <Card>
+            <div className="flex h-auto w-full flex-col items-center justify-center  md:px-[10%] md:pb-16  lg:px-[15%]  xl:px-[334px]">
+                <SignupHeader step={step} />
+                <Card className='w-full'>
                     <PopUp
                         isOpen={isOpen}
                         range={formData.answeredQuestions && formData?.answeredQuestions[7]}
                         country={formData?.countryId}
                     />
-                    <CardContent className="bg-white px-10 pb-16  pt-8  sm:px-28">
+                    <CardContent className="bg-white px-10 pb-16  pt-8  sm:px-10 w-full">
                         {step === 1 && (
                             <div>
                                 <StepOne
