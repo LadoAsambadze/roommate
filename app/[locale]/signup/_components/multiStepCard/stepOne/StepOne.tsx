@@ -4,7 +4,7 @@
 import { useParams } from 'next/navigation'
 import { StepOneValidator } from './StepOneValidator'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { sms_check } from '@/graphql/queries/mutations/smsCheck'
 import { sms_send } from '@/graphql/queries/mutations/smsSend'

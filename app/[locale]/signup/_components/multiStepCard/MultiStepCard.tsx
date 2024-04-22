@@ -11,8 +11,8 @@ import dynamic from 'next/dynamic'
 import SignupHeader from './header/SignupHeader'
 import { FormDataProps } from './types'
 import { CustomError } from '@/types/error/types'
-const StepOne = dynamic(() => import('./stepOne/StepOne'), { ssr: false })
-const StepTwo = dynamic(() => import('./stepTwo/StepTwo'), { ssr: false })
+const StepOne = dynamic(() => import('./stepOne/StepOne'), { ssr: true })
+const StepTwo = dynamic(() => import('./stepTwo/StepTwo'), { ssr: true })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function MultiStepCard({ countries, gender, questions }: any) {
