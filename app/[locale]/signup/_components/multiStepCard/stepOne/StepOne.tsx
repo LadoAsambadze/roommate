@@ -28,11 +28,13 @@ import { FormDataPropsOne } from './types'
 export default function StepOne({
     countries,
     gender,
+    step,
     setStep,
     updateFormData,
     formData,
 }: {
     countries: any
+    step: any
     gender: any
     setStep: any
     updateFormData: any
@@ -45,6 +47,9 @@ export default function StepOne({
     const labels = params.locale === 'ka' ? undefined : undefined
     const [smsCheck] = useMutation(sms_check)
     const [smsSend] = useMutation(sms_send)
+    if (step !== 1) {
+        return null
+    }
 
     const handleSubmit = async (data: FormDataPropsOne) => {
         const modifiedFormData = {
@@ -100,7 +105,7 @@ export default function StepOne({
 
     return (
         <>
-            <main className="flex flex-col  items-center ">
+           {step === 1 &&  <main className="flex flex-col  items-center ">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleSubmit)} className=" w-full">
                         <div className="mb-3  grid grid-cols-1 items-start gap-x-6 gap-y-6 md:grid-cols-2 lg:justify-center">
@@ -338,6 +343,7 @@ export default function StepOne({
                     </form>
                 </Form>
             </main>
+            }
         </>
     )
 }

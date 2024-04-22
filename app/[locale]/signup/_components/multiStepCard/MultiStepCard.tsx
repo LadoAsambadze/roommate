@@ -7,14 +7,12 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/components/ui/card'
-// import dynamic from 'next/dynamic'
-import StepTwo from './stepTwo/StepTwo'
+import dynamic from 'next/dynamic'
 import SignupHeader from './header/SignupHeader'
 import { FormDataProps } from './types'
 import { CustomError } from '@/types/error/types'
-
-// const StepOne = dynamic(() => import('./stepOne/StepOne'), { ssr: false })
-import StepOne from './stepOne/StepOne'
+const StepOne = dynamic(() => import('./stepOne/StepOne'), { ssr: false })
+const StepTwo = dynamic(() => import('./stepTwo/StepTwo'), { ssr: false })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function MultiStepCard({ countries, gender, questions }: any) {
@@ -118,27 +116,23 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
 
                 <Card className="w-full">
                     <CardContent className="w-full bg-white px-10  pb-16  pt-8 sm:px-10">
-                        {step === 1 && (
-                            <div>
-                                <StepOne
-                                    countries={countries}
-                                    gender={gender}
-                                    setStep={setStep}
-                                    formData={formData}
-                                    updateFormData={updateFormData}
-                                />
-                            </div>
-                        )}
-
+                        <StepOne
+                            step={step}
+                            countries={countries}
+                            gender={gender}
+                            setStep={setStep}
+                            formData={formData}
+                            updateFormData={updateFormData}
+                        />
                         {step === 2 && (
                             <div>
                                 <StepTwo
+                                    step={step}
                                     questions={secondStep}
                                     updateFormData={updateFormData}
                                     submit={submit}
                                     setStep={setStep}
                                     formData={formData}
-                                    step={step}
                                     next={t('next')}
                                 />
                             </div>
@@ -146,12 +140,12 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                         {step === 3 && (
                             <div>
                                 <StepTwo
+                                    step={step}
                                     questions={thirthStep}
                                     updateFormData={updateFormData}
                                     submit={submit}
                                     setStep={setStep}
                                     formData={formData}
-                                    step={step}
                                     next={t('submit')}
                                 />
                             </div>
