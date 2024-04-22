@@ -47,11 +47,6 @@ export default function StepOne({
     const labels = params.locale === 'ka' ? undefined : undefined
     const [smsCheck] = useMutation(sms_check)
     const [smsSend] = useMutation(sms_send)
-    const [isClient, setIsClient] = useState(false)
-
-    useEffect(() => {
-        setIsClient(true)
-    }, [])
 
     if (step !== 1) {
         return null
@@ -109,10 +104,9 @@ export default function StepOne({
         })()
     }
 
-
     return (
         <>
-            {step === 1 && isClient && (
+            {step === 1 && (
                 <main className="flex flex-col  items-center ">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(handleSubmit)} className=" w-full">
