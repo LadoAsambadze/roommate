@@ -92,7 +92,6 @@ export default function StepOne({
                 if (response.data.sendCode === 'ALREADY_SENT') {
                     form.setError('code', { message: t('codeAlreadySent') })
                 }
-                
             } catch (error) {
                 console.error('GraphQL error:', error)
             }

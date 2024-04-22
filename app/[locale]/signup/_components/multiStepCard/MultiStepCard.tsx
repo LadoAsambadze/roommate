@@ -7,12 +7,14 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/components/ui/card'
-import dynamic from 'next/dynamic'
+// import dynamic from 'next/dynamic'
 import StepTwo from './stepTwo/StepTwo'
 import SignupHeader from './header/SignupHeader'
 import { FormDataProps } from './types'
 import { CustomError } from '@/types/error/types'
-const StepOne = dynamic(() => import('./stepOne/StepOne'), { ssr: false })
+
+// const StepOne = dynamic(() => import('./stepOne/StepOne'), { ssr: false })
+import StepOne from './stepOne/StepOne'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function MultiStepCard({ countries, gender, questions }: any) {
@@ -106,15 +108,16 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
 
     return (
         <>
-            <div className="flex h-auto w-full flex-col items-center justify-center  md:px-[10%] md:pb-16  lg:px-[15%]  xl:px-[334px]">
+            <div className="flex h-auto w-full flex-col items-center justify-center  px-6 md:px-[10%] md:pb-16  lg:px-[15%]  xl:px-[334px]">
                 <SignupHeader step={step} />
-                <Card className='w-full'>
-                    <PopUp
-                        isOpen={isOpen}
-                        range={formData.answeredQuestions && formData?.answeredQuestions[7]}
-                        country={formData?.countryId}
-                    />
-                    <CardContent className="bg-white px-10 pb-16  pt-8  sm:px-10 w-full">
+                <PopUp
+                    isOpen={isOpen}
+                    range={formData.answeredQuestions && formData?.answeredQuestions[7]}
+                    country={formData?.countryId}
+                />
+
+                <Card className="w-full">
+                    <CardContent className="w-full bg-white px-10  pb-16  pt-8 sm:px-10">
                         {step === 1 && (
                             <div>
                                 <StepOne
@@ -126,6 +129,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                                 />
                             </div>
                         )}
+
                         {step === 2 && (
                             <div>
                                 <StepTwo

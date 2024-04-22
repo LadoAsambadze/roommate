@@ -26,10 +26,11 @@ export default function Header() {
                 </span>
                 <div className="mr-2  flex cursor-pointer flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
                     <UserIcon className=" h-4 w-4 fill-[#838CAC] xl:h-5 xl:w-5" />
-
-                    <span className="ml-1 text-xs  text-[#838CAC] xl:text-base">
-                        <span>{t('authorization')}</span>
-                    </span>
+                    <Link href="/login">
+                        <span className="ml-1 text-xs  text-[#838CAC] xl:text-base">
+                            <span>{t('authorization')}</span>
+                        </span>
+                    </Link>
                 </div>
 
                 <LangChoose
