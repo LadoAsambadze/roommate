@@ -7,12 +7,11 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/components/ui/card'
-import dynamic from 'next/dynamic'
 import SignupHeader from './header/SignupHeader'
 import { FormDataProps } from './types'
 import { CustomError } from '@/types/error/types'
-const StepOne = dynamic(() => import('./stepOne/StepOne'), { ssr: false })
-const StepTwo = dynamic(() => import('./stepTwo/StepTwo'), { ssr: false })
+import StepOne from './stepOne/StepOne'
+import StepTwo from './stepTwo/StepTwo'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function MultiStepCard({ countries, gender, questions }: any) {

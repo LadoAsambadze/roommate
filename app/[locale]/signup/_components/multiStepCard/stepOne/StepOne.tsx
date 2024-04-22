@@ -24,6 +24,11 @@ import Image from 'next/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { DatePicker } from '@/components/shared/datePickers/DatePicker'
 import { FormDataPropsOne } from './types'
+// import dynamic from 'next/dynamic'
+// const PhoneInput = dynamic(
+//     () => import('../../../../../../components/shared/phoneInput/PhoneInput'),
+//     { ssr: false }
+// )
 
 export default function StepOne({
     countries,
@@ -120,6 +125,7 @@ export default function StepOne({
                                             <FormControl>
                                                 <Input
                                                     {...field}
+                                                    value={field.value || ''}
                                                     // hasError={form.formState.errors.firstname}
                                                     isSuccess={
                                                         !form.formState.errors.firstname &&
@@ -141,6 +147,7 @@ export default function StepOne({
                                             <FormControl>
                                                 <Input
                                                     {...field}
+                                                    value={field.value || ''}
                                                     // hasError={form.formState.errors.lastname}
                                                     isSuccess={
                                                         !form.formState.errors.lastname &&
@@ -246,7 +253,7 @@ export default function StepOne({
                                         <FormItem>
                                             <FormLabel>{t('mail')}</FormLabel>
                                             <FormControl>
-                                                <Input {...field} />
+                                                <Input {...field} value={field.value || ''} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -262,6 +269,7 @@ export default function StepOne({
                                                 <Input
                                                     type="password"
                                                     {...field}
+                                                    value={field.value || ''}
                                                     // hasError={form.formState.errors.password}
                                                     isSuccess={
                                                         !form.formState.errors.password &&
@@ -284,6 +292,7 @@ export default function StepOne({
                                                 <Input
                                                     type="password"
                                                     {...field}
+                                                    value={field.value || ''}
                                                     hasError={
                                                         !!form.formState.errors.confirmPassword
                                                     }
@@ -332,6 +341,7 @@ export default function StepOne({
                                                 <Input
                                                     type="number"
                                                     {...field}
+                                                    value={field.value || ''}
                                                     getCode
                                                     clicked={clicked}
                                                     onGetCodeClick={getCodeHandler}
