@@ -4,7 +4,7 @@
 import { useParams } from 'next/navigation'
 import { StepOneValidator } from './StepOneValidator'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { sms_check } from '@/graphql/queries/mutations/smsCheck'
 import { sms_send } from '@/graphql/queries/mutations/smsSend'
@@ -24,11 +24,7 @@ import Image from 'next/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { DatePicker } from '@/components/shared/datePickers/DatePicker'
 import { FormDataPropsOne } from './types'
-// import dynamic from 'next/dynamic'
-// const PhoneInput = dynamic(
-//     () => import('../../../../../../components/shared/phoneInput/PhoneInput'),
-//     { ssr: false }
-// )
+import Loading from '../../../loading'
 
 export default function StepOne({
     countries,
@@ -52,6 +48,11 @@ export default function StepOne({
     const labels = params.locale === 'ka' ? undefined : undefined
     const [smsCheck] = useMutation(sms_check)
     const [smsSend] = useMutation(sms_send)
+    const [isClient, setIsClient] = useState(false)
+
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
 
     if (step !== 1) {
         return null
@@ -111,7 +112,7 @@ export default function StepOne({
 
     return (
         <>
-            {step === 1 && (
+            {isClient ? (
                 <main className="flex flex-col  items-center ">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(handleSubmit)} className=" w-full">
@@ -358,6 +359,8 @@ export default function StepOne({
                         </form>
                     </Form>
                 </main>
+            ) : (
+                <Loading />
             )}
         </>
     )
