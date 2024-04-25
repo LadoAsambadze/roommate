@@ -8,13 +8,13 @@ import { useTranslation } from 'react-i18next'
 import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/components/ui/card'
 import SignupHeader from './header/SignupHeader'
-import { FormDataProps } from '../../types'
+import { FormDataProps } from '../types'
 import { CustomError } from '@/types/error/types'
 import StepTwo from './stepTwo/StepTwo'
 import StepOne from './stepOne/StepOne'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function MultiStepCard({ countries, gender, questions }: any) {
+export default function PageWrapper({ countries, gender, questions }: any) {
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
     const [isOpen, setIsOpen] = useState(false)
@@ -105,7 +105,7 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
 
     return (
         <>
-            <div className="flex h-auto w-full flex-col items-center justify-center  px-6 md:px-[10%] md:pb-16  lg:px-[15%]  xl:px-[334px]">
+            <main className="flex h-auto w-full flex-col items-center justify-center  px-6 md:px-[10%] md:pb-16  lg:px-[15%]  xl:px-[334px]">
                 <SignupHeader step={step} />
                 <PopUp
                     isOpen={isOpen}
@@ -127,34 +127,30 @@ export default function MultiStepCard({ countries, gender, questions }: any) {
                         )}
 
                         {step === 2 && (
-                            <div>
-                                <StepTwo
-                                    step={step}
-                                    questions={secondStep}
-                                    updateFormData={updateFormData}
-                                    submit={submit}
-                                    setStep={setStep}
-                                    formData={formData}
-                                    next={t('next')}
-                                />
-                            </div>
+                            <StepTwo
+                                step={step}
+                                questions={secondStep}
+                                updateFormData={updateFormData}
+                                submit={submit}
+                                setStep={setStep}
+                                formData={formData}
+                                next={t('next')}
+                            />
                         )}
                         {step === 3 && (
-                            <div>
-                                <StepTwo
-                                    step={step}
-                                    questions={thirthStep}
-                                    updateFormData={updateFormData}
-                                    submit={submit}
-                                    setStep={setStep}
-                                    formData={formData}
-                                    next={t('submit')}
-                                />
-                            </div>
+                            <StepTwo
+                                step={step}
+                                questions={thirthStep}
+                                updateFormData={updateFormData}
+                                submit={submit}
+                                setStep={setStep}
+                                formData={formData}
+                                next={t('submit')}
+                            />
                         )}
                     </CardContent>
                 </Card>
-            </div>
+            </main>
         </>
     )
 }

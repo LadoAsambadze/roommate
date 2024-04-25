@@ -1,6 +1,6 @@
-import MultiStepCard from './_components/multiStepCard/MultiStepCard'
 import { getClient } from '@/libs/graphql/client'
 import { signup_combined } from '@/graphql/queries/suspenses/signupCombined'
+import PageWrapper from './_components/PageWrapper'
 
 export default async function Signup({ params }: { params: { locale?: string } }) {
     const client = getClient()
@@ -17,7 +17,7 @@ export default async function Signup({ params }: { params: { locale?: string } }
 
     return (
         <>
-            <MultiStepCard
+            <PageWrapper
                 countries={data?.data?.getCountries}
                 gender={data?.data?.getGenders}
                 questions={data?.data?.getQuestionsWithAnswers}

@@ -21,10 +21,10 @@ import { Button } from '@/components/ui/button'
 import Select from 'react-select'
 import { DropdownIndicator, customStyles } from '@/components/shared/Select/SelectUI'
 import Image from 'next/image'
-import PhoneInput from '../../../../../../../components/shared/phoneInput/PhoneInput'
+import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { DatePicker } from '@/components/shared/datePickers/DatePicker'
 import { FormDataPropsOne } from './types'
-import Loading from '../../../loading'
+import Loading from '../../loading'
 
 export default function StepOne({
     countries,
