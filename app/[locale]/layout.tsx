@@ -4,7 +4,7 @@ import initTranslations from '../../libs/i18next/i18n'
 import { ReactNode } from 'react'
 import { dir } from 'i18next'
 import './globals.css'
-import Header from '@/components/header/Header'
+// import Header from '@/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/components/footer/Footer'
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
@@ -31,7 +31,7 @@ export default async function RootLayout({
                     resources={resources}
                 >
                     <ApolloWrapper>
-                        <Header />
+                        {/* <Header /> */}
                         {children}
                         <Footer />
                     </ApolloWrapper>
