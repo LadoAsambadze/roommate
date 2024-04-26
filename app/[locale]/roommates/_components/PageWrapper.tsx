@@ -16,7 +16,7 @@ export default function PageWrapper() {
                         Filter
                     </Button>
                 </div>
-                <div className="hidden w-1/4 h-full md:block">
+                <div className="hidden h-full w-1/4 md:block">
                     <Filter isOpen={isOpen} setIsOpen={setIsOpen} />
                 </div>
                 <MobileFilter isOpen={isOpen} setIsOpen={setIsOpen} />
