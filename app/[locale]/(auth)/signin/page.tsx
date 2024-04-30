@@ -1,12 +1,5 @@
-import { SignInForm } from '@/components/auth/SignInfForm'
+import { SignInForm } from '@/app/[locale]/(auth)/signin/_components/SignInForm'
 
 export default async function Signin() {
-    return (
-        <div className="stack">
-            <h1>SignIn</h1>
-            123123
-            <div>or</div>
-            <SignInForm />
-        </div>
-    )
+    return <SignInForm />
 }

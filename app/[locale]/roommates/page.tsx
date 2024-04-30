@@ -1,5 +1,5 @@
-import PageWrapper from './_components/PageWrapper'
+import ClientWrapper from './_components/ClientWrapper'
 
 export default async function Roommates() {
-    return <PageWrapper />
+    return <ClientWrapper />
 }

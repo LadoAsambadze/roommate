@@ -5,12 +5,26 @@ import Filter from './filter/Filter'
 import UserCard from './userCard/UserCard'
 import MobileFilter from './filter/MobileFilter'
 import { FilterIcon } from '@/components/svgs'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import Loading from '../../loading'
 
-export default function PageWrapper() {
+export default function ClientWrapper() {
     const [isOpen, setIsOpen] = useState(false)
+    const { data: session, status } = useSession()
+    const router = useRouter()
+
+    if (status === 'loading') {
+        return <Loading />
+    }
+
+    if (!session) {
+        router.push('/signin')
+        return null
+    }
     return (
         <>
-            <main className="flex min-h-screen w-full flex-col  gap-4  xl:flex-row md:gap-6 md:px-24 md:py-10">
+            <main className="flex min-h-screen w-full flex-col  gap-4  md:gap-6 md:px-24 md:py-10 xl:flex-row">
                 <div className="h-auto w-full px-6 pt-4 sm:pl-32  md:pl-24 lg:pl-0 xl:hidden">
                     <button
                         onClick={() => setIsOpen(!isOpen)}

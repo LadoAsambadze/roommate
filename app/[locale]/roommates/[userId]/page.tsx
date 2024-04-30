@@ -13,8 +13,15 @@ import {
     Verified,
     Wallet,
 } from '@/components/svgs'
+import { auth } from '@/libs/next-auth/auth'
+import { redirect } from 'next/navigation'
 
 export default async function UserId() {
+    const session = await auth()
+
+    if (!session) {
+        return redirect('/signin')
+    }
     return (
         <main className="m flex min-h-screen w-full flex-col bg-[#F5F5F5] md:gap-6 md:px-20 md:pb-24  md:pt-8 xl:px-[320px]">
             <section className="flex  h-full w-full flex-col  md:h-[280px] md:flex-row  md:gap-3 lg:gap-6 ">
