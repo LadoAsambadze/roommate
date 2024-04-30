@@ -12,6 +12,7 @@ import { FormDataProps } from '../types'
 import { CustomError } from '@/types/error/types'
 import StepTwo from './stepTwo/StepTwo'
 import StepOne from './stepOne/StepOne'
+import { signIn } from 'next-auth/react'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function PageWrapper({ countries, gender, questions }: any) {
@@ -85,9 +86,14 @@ export default function PageWrapper({ countries, gender, questions }: any) {
             })
 
             if (response?.data && response?.data?.signUp.accessToken) {
+                signIn('signup', {
+                    accessToken: response?.data?.signUp.accessToken,
+                    redirect: false,
+                })
                 if (step === 3) {
                     setIsOpen(true)
                 }
+
                 if (typeof formData?.countryId === 'number' && formData.countryId === 145) {
                     router.push('/')
                 }

@@ -9,6 +9,7 @@ import SuggestSection from './_components/SuggestSection'
 async function Home() {
     return (
         <main className="h-full w-full">
+
             <FeatureSection />
             <BlogSection />
             <SuggestSection />

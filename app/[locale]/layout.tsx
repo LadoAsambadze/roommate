@@ -7,6 +7,8 @@ import './globals.css'
 import Header from '@/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/components/footer/Footer'
+import SessionWrapper from '@/libs/next-auth/SessionWrapper'
+
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 
 export default async function RootLayout({
@@ -23,20 +25,22 @@ export default async function RootLayout({
     const { resources } = await initTranslations(locale, i18nNamespaces)
 
     return (
-        <html lang={locale} dir={dir(locale)} className={georgian.className}>
-            <body>
-                <TranslationsProvider
-                    namespaces={i18nNamespaces}
-                    locale={locale}
-                    resources={resources}
-                >
-                    <ApolloWrapper>
-                        <Header />
-                        {children}
-                        <Footer />
-                    </ApolloWrapper>
-                </TranslationsProvider>
-            </body>
-        </html>
+        <SessionWrapper>
+            <html lang={locale} dir={dir(locale)} className={georgian.className}>
+                <body>
+                    <TranslationsProvider
+                        namespaces={i18nNamespaces}
+                        locale={locale}
+                        resources={resources}
+                    >
+                        <ApolloWrapper>
+                            <Header />
+                            {children}
+                            <Footer />
+                        </ApolloWrapper>
+                    </TranslationsProvider>
+                </body>
+            </html>
+        </SessionWrapper>
     )
 }
