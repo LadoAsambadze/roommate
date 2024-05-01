@@ -5,12 +5,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
         CredentialsProvider({
             id: 'credentials',
-
             credentials: {
                 phone: {
                     label: 'phone',
                     type: 'text',
-                    placeholder: 'youremail@example.com',
+                    placeholder: 'phone number',
                     required: true,
                 },
                 password: {
@@ -28,26 +27,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        phone: phone, // assuming the phone number is provided in the email field
+                        phone: phone,
                         password: password,
                     }),
                 })
-
-                console.log(response)
-
-                // Check if the request was successful
                 if (response.ok) {
                     const data = await response.json()
-                    console.log(data)
-                    // Return the token and user info
+
                     return {
-                        token: data.access_token,
-                        id: 'test-id', // Replace with actual user ID from API response
-                        name: 'test-name', // Replace with actual user name from API response
-                        email: 'test-email', // Replace with actual user email from API response
+                        accessToken: data.access_token,
+                        id: 'test-id',
+                        name: 'test-name',
+                        email: 'test-email',
                     }
                 } else {
-                    // Handle error (you can customize this part)
                     throw new Error('Failed to log in')
                 }
             },
@@ -55,56 +48,43 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         CredentialsProvider({
             id: 'signup',
-
             credentials: {
                 accessToken: {
                     label: 'phone',
                     type: 'text',
-                    placeholder: 'youremail@example.com',
                     required: true,
                 },
             },
             async authorize(credentials) {
                 const { accessToken } = credentials
-
-                console.log(credentials)
-
-                // Check if the request was successful
                 if (accessToken) {
                     return {
-                        token: accessToken,
-                        id: 'test-id', // Replace with actual user ID from API response
-                        name: 'test-name', // Replace with actual user name from API response
-                        email: 'test-email', // Replace with actual user email from API response
+                        accessToken: accessToken,
+                        id: 'test-id',
+                        name: 'test-name',
+                        email: 'test-email',
                     }
                 } else {
-                    // Handle error (you can customize this part)
                     throw new Error('Failed to log in')
                 }
             },
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        async jwt({ token, user }: { token: any; user: any }) {
             if (user) {
-                // Add the token to the JWT
-                token.accessToken = user.token
+                token.accessToken = user.accessToken
             }
+
             return token
         },
-        async session({ session, token }) {
-            // Add the token to the session
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        async session({ session, token }: { session: any; token: any }) {
             session.accessToken = token.accessToken
+
             return session
         },
     },
-    secret: process.env.NEXTAUTH_SECRET, // Replace with a secure secret
-    // ... other NextAuth options (e.g., session, jwt)
-  
-    events: {
-        async signIn({ user }) {
-            // Handle successful login events (optional, e.g., analytics)
-            console.log('User signed in:', user)
-        },
-    },
+    secret: process.env.NEXTAUTH_SECRET,
 })
