@@ -13,7 +13,6 @@ export default function ClientWrapper() {
     const [isOpen, setIsOpen] = useState(false)
     const { data: session, status } = useSession()
     const router = useRouter()
-
     if (status === 'loading') {
         return <Loading />
     }
