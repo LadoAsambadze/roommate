@@ -15,7 +15,7 @@ import StepOne from './stepOne/StepOne'
 import { signIn } from 'next-auth/react'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function PageWrapper({ countries, gender, questions }: any) {
+export default function ClientWrapper({ countries, gender, questions }: any) {
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
     const [isOpen, setIsOpen] = useState(false)

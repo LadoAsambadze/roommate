@@ -5,7 +5,6 @@ import './index.css'
 
 export default function SignupHeader({ step }: any) {
     const { t } = useTranslation()
-    console.log(step)
 
     return (
         <div className="flex w-full flex-col bg-[##F2F5FF]   pb-4 pt-8 ">
