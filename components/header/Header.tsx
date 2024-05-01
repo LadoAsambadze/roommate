@@ -17,12 +17,12 @@ export default function Header() {
                 <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
             </Link>
             <div className="flex flex-row items-center">
-                <Link href={session ? '/roommates' : '/signup'}>
+                <Link href={session.status === 'authenticated' ? '/roommates' : '/signup'}>
                     <span className="mr-4 hidden   cursor-pointer   rounded-lg md:block md:text-xs  xl:text-base">
                         {t('findRoommate')}
                     </span>
                 </Link>
-                <Link href="/nest">
+                <Link href="#">
                     <span className="mr-4  hidden cursor-pointer rounded-lg md:block md:text-xs xl:text-base">
                         {t('rentApartment')}
                     </span>

@@ -100,9 +100,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     secret: process.env.NEXTAUTH_SECRET, // Replace with a secure secret
     // ... other NextAuth options (e.g., session, jwt)
-    page: {
-        signIn: ['/signin', '/nest'],
-    },
+  
     events: {
         async signIn({ user }) {
             // Handle successful login events (optional, e.g., analytics)
