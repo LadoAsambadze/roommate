@@ -5,7 +5,7 @@ import * as React from 'react'
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 
-import { cn } from '@/utils/cn'
+import { cn } from '@/src/utils/cn'
 
 import { Calendar } from '../../ui/calendar'
 
@@ -47,7 +47,7 @@ export function DatePicker({ field }: any) {
                     toYear={2005}
                     mode="single"
                     selected={date}
-                    onSelect={(newDate:any) => {
+                    onSelect={(newDate: any) => {
                         const formattedDate = format(newDate, 'yyyy-MM-dd')
                         field.onChange(formattedDate.toString())
                         setDate(newDate)

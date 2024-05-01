@@ -6,12 +6,12 @@ import {
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-} from '@/components/ui/carousel'
+} from '@/src/components/ui/carousel'
 import { useTranslation } from 'react-i18next'
 import FemaleAvatar from '../../../../public/images/FemaleAvatar.jpg'
 import MaleAvatar from '../../../../public/images/MaleAvatar.jpg'
 import Image from 'next/image'
-import { RateStar } from '@/components/svgs'
+import { RateStar } from '@/src/components/svgs'
 
 export default function ReviewSection() {
     const { t } = useTranslation()
@@ -56,9 +56,8 @@ export default function ReviewSection() {
                                 <div className="flex w-full flex-row items-center">
                                     <div className="relative h-14 w-14 rounded-full">
                                         <Image
-
                                             src={item.image}
-                                           className="h-full max-w-full object-cover  rounded-full"
+                                            className="h-full max-w-full rounded-full  object-cover"
                                             alt="Female/male avatar"
                                         />
                                     </div>

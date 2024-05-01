@@ -6,8 +6,8 @@ import {
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-} from '@/components/ui/carousel'
-import { BankIcon } from '@/components/svgs'
+} from '@/src/components/ui/carousel'
+import { BankIcon } from '@/src/components/svgs'
 import { useTranslation } from 'react-i18next'
 
 export default function SuggestSection() {
@@ -38,7 +38,9 @@ export default function SuggestSection() {
     return (
         <section className="flex w-full flex-col items-start bg-[#F2F5FF] p-6 sm:px-16 md:px-20 lg:flex-row lg:items-center lg:py-12 xl:px-24">
             <div className="flex flex-col items-start lg:w-2/3 ">
-                <h1 className="font-bgCaps text-2xl   text-[#484848] lg:text-[28px]">{t('whyUs')}</h1>
+                <h1 className="font-bgCaps text-2xl   text-[#484848] lg:text-[28px]">
+                    {t('whyUs')}
+                </h1>
             </div>
             <Carousel
                 opts={{

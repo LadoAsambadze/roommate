@@ -2,14 +2,12 @@
 'use client'
 
 import Link from 'next/link'
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { Carousel, CarouselContent, CarouselItem } from '@/src/components/ui/carousel'
 import { useTranslation } from 'react-i18next'
-
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
 export default function ApartmentSection({ flats }: any) {
     const { t } = useTranslation()
-
 
     return (
         <>

@@ -1,6 +1,6 @@
 'use client'
 
-import { EmailIcon, PhoneIcon, WhatsappIcon } from '@/components/svgs'
+import { EmailIcon, PhoneIcon, WhatsappIcon } from '@/src/components/svgs'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 

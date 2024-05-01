@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Temporary from '../../../../../../public/images/Temporary.jpg'
 import Avatar from '../../../../../../public/images/MaleAvatar.jpg'
-import { Heart, Location, Sms } from '@/components/svgs'
+import { Heart, Location, Sms } from '@/src/components/svgs'
 import Link from 'next/link'
 
 export default function UserCard() {

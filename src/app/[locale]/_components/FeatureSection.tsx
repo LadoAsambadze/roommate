@@ -1,6 +1,6 @@
 'use client'
 
-import { BankIcon, RateStar, RateStars } from '@/components/svgs'
+import { BankIcon, RateStar, RateStars } from '@/src/components/svgs'
 import { useTranslation } from 'react-i18next'
 
 export default function FeatureSection() {

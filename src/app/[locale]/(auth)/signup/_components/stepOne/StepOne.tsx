@@ -15,14 +15,14 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+} from '@/src/components/ui/form'
+import { Input } from '@/src/components/ui/input'
+import { Button } from '@/src/components/ui/button'
 import Select from 'react-select'
-import { DropdownIndicator, customStyles } from '@/components/shared/Select/SelectUI'
+import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
 import Image from 'next/image'
-import PhoneInput from '../../../../../../../components/shared/phoneInput/PhoneInput'
-import { DatePicker } from '@/components/shared/datePickers/DatePicker'
+import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
+import { DatePicker } from '@/src/components/shared/datePickers/DatePicker'
 import { FormDataPropsOne } from './types'
 import Loading from '../../loading'
 

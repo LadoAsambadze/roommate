@@ -1,4 +1,4 @@
-import { getClient } from '@/libs/graphql/client'
+import { getClient } from '@/src/libs/graphql/client'
 import { signup_combined } from '@/graphql/queries/suspenses/signupCombined'
 import PageWrapper from './_components/PageWrapper'
 

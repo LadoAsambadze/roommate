@@ -11,11 +11,11 @@ import {
     Success,
     Verified,
     Wallet,
-} from '@/components/svgs'
-import { auth } from '@/libs/next-auth/auth'
+} from '@/src/components/svgs'
+import { auth } from '@/src/libs/next-auth/auth'
 import { redirect } from 'next/navigation'
-import initTranslations from '@/libs/i18next/i18n'
-import TranslationsProvider from '@/libs/i18next/TranslationsProvider'
+import initTranslations from '@/src/libs/i18next/i18n'
+import TranslationsProvider from '@/src/libs/i18next/TranslationsProvider'
 
 const i18nNamespaces = ['home']
 export default async function UserId({ params: { locale } }: { params: { locale: string } }) {

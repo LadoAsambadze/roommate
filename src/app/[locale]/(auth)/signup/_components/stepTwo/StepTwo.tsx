@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/src/components/ui/button'
 
 import Select from 'react-select'
 // import arroLeft from '../public/newImages/arrow-left.svg'
 // import Image from 'next/image'
-import { DropdownIndicator, customStyles } from '@/components/shared/Select/SelectUI'
-import { SignupRangePicker } from '../../../../../../../components/shared/datePickers/SignupRangePicker'
+import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
+import { SignupRangePicker } from '../../../../../../components/shared/datePickers/SignupRangePicker'
 import { useTranslation } from 'react-i18next'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
+import { Input } from '@/src/components/ui/input'
 import StepTwoValidator from './StepTwoValidator'
 import { FormDataPropsTwo } from './types'
 import Loading from '../../loading'

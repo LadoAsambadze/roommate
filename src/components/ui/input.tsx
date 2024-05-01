@@ -1,10 +1,10 @@
 /* eslint-disable react/display-name */
 import * as React from 'react'
-import { cn } from '@/utils/cn'
+import { cn } from '@/src/utils/cn'
 // import errorIcon from '../../../public/imgs/Error.svg'
 // import successIcon from '../../../public/imgs/Success.svg'
 // import Image from 'next/image'
-import { Button } from '../ui/button'
+import { Button } from './button'
 import { useTranslation } from 'react-i18next'
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -23,7 +23,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 <input
                     type={type}
                     className={cn(
-                        'border-borderColor placeholder:text-placeholderColor focus-visible:outline-inputFocusColor flex h-11 w-full rounded-lg border bg-[#FFFFFF] px-3 py-3  text-sm focus-visible:border-none',
+                        'flex h-11 w-full rounded-lg border border-borderColor bg-[#FFFFFF] px-3 py-3 text-sm placeholder:text-placeholderColor  focus-visible:border-none focus-visible:outline-inputFocusColor',
                         className
                     )}
                     ref={ref}

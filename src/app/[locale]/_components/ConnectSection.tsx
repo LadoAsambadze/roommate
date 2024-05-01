@@ -2,7 +2,7 @@
 
 import FirstBg from '../../../../public/images/ConnectFirstBg.jpg'
 import SecondBg from '../../../../public/images/ConnectSecondBg.jpg'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/src/components/ui/button'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 import Image from 'next/image'
