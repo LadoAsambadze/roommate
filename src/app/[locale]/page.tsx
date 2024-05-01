@@ -1,10 +1,10 @@
-import BlogSection from './_components/BlogSection'
-import ConnectSection from './_components/ConnectSection'
-import ContactSection from './_components/ContactSection'
-import FeatureSection from './_components/FeatureSection'
-import QuestionSection from './_components/QuestionSection'
-import ReviewSection from './_components/ReviewSection'
-import SuggestSection from './_components/SuggestSection'
+import BlogSection from '../../components/home/BlogSection'
+import ConnectSection from '../../components/home/ConnectSection'
+import ContactSection from '../../components/home/ContactSection'
+import FeatureSection from '../../components/home/FeatureSection'
+import QuestionSection from '../../components/home/QuestionSection'
+import ReviewSection from '../../components/home/ReviewSection'
+import SuggestSection from '../../components/home/SuggestSection'
 
 async function Home() {
     return (
