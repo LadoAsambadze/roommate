@@ -27,15 +27,12 @@ const SignInForm = () => {
     }
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="flex min-h-screen w-full flex-col items-center justify-center"
-        >
-            <Input className="w-[400px]" type="text" name="phone" required />
-            <Input className="w-[400px]" type="password" name="password" required />
-            <button className="w-[400px]" type="submit">
-                Sign In
-            </button>
+        <form onSubmit={handleSubmit} className="flex flex-row items-center justify-center">
+            <div className="flex min-h-screen w-1/3  flex-col items-center justify-center gap-6 ">
+                <Input type="text" name="phone" required />
+                <Input type="password" name="password" required />
+                <button type="submit">Sign In</button>
+            </div>
         </form>
     )
 }
