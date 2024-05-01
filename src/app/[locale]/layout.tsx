@@ -1,6 +1,6 @@
 import TranslationsProvider from '@/libs/i18next/TranslationsProvider'
 import { ApolloWrapper } from '@/libs/graphql/apollo-provider'
-import initTranslations from '../../libs/i18next/i18n'
+import initTranslations from '../../../libs/i18next/i18n'
 import { ReactNode } from 'react'
 import { dir } from 'i18next'
 import './globals.css'

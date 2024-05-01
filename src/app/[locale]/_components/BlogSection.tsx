@@ -11,9 +11,9 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import BlogFirst from '../../../public/images/BlogFirst.png'
-import BlogSecond from '../../../public/images/BlogSecond.png'
-import BlogThirth from '../../../public/images/BlogThirth.png'
+import BlogFirst from '../../../../public/images/BlogFirst.png'
+import BlogSecond from '../../../../public/images/BlogSecond.png'
+import BlogThirth from '../../../../public/images/BlogThirth.png'
 import { useMediaQuery } from 'react-responsive'
 
 export default function BlogSection() {

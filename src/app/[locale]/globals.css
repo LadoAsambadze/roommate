@@ -95,11 +95,12 @@ body {
 
 @font-face {
     font-family: 'bgCaps';
-    src: url('../../public/fonts/bpg-web-002-caps-webfont.eot');
+    src: url('../../../public/fonts/bpg-web-002-caps-webfont.eot');
     src:
-        url('../../public/fonts/bpg-web-002-caps-webfont.eot?#iefix') format('embedded-opentype'),
-        url('../../public/fonts/bpg-web-002-caps-webfont.woff2') format('woff2'),
-        url('../../public/fonts/bpg-web-002-caps-webfont.woff') format('woff'),
-        url('../../public/fonts/bpg-web-002-caps-webfont.ttf') format('truetype'),
-        url('../../public/fonts/bpg-web-002-caps-webfont.svg#bpg_web_002_capsregular') format('svg');
+        url('../../../public/fonts/bpg-web-002-caps-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../../../public/fonts/bpg-web-002-caps-webfont.woff2') format('woff2'),
+        url('../../../public/fonts/bpg-web-002-caps-webfont.woff') format('woff'),
+        url('../../../public/fonts/bpg-web-002-caps-webfont.ttf') format('truetype'),
+        url('../../../public/fonts/bpg-web-002-caps-webfont.svg#bpg_web_002_capsregular')
+            format('svg');
 }

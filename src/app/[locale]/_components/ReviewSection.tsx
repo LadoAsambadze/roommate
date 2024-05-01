@@ -8,8 +8,8 @@ import {
     CarouselPrevious,
 } from '@/components/ui/carousel'
 import { useTranslation } from 'react-i18next'
-import FemaleAvatar from '../../../public/images/FemaleAvatar.jpg'
-import MaleAvatar from '../../../public/images/MaleAvatar.jpg'
+import FemaleAvatar from '../../../../public/images/FemaleAvatar.jpg'
+import MaleAvatar from '../../../../public/images/MaleAvatar.jpg'
 import Image from 'next/image'
 import { RateStar } from '@/components/svgs'
 
