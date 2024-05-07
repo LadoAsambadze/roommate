@@ -12,6 +12,7 @@ body {
     width: 100%;
     min-height: 100vh;
     color: #484848;
+    font-size: 14px;
 }
 @layer base {
     :root {

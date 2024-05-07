@@ -5,5 +5,7 @@
     "main": "Main",
     "becomePartner": "Become our partner",
     "faq": "F.A.Q",
-    "howItWorks": "How it works"
+    "howItWorks": "How it works",
+    "notifications": "notifications",
+    "logOut": "Log out"
 }
