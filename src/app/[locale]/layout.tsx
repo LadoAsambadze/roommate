@@ -11,6 +11,32 @@ import SessionWrapper from '@/src/libs/next-auth/SessionWrapper'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 
+export async function generateStaticParams() {
+    return [{ locale: 'en' }, { locale: 'ka' }]
+}
+
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+    const i18nNamespaces = ['meta']
+
+    const { t } = await initTranslations(locale, i18nNamespaces)
+    return {
+        title: {
+            default: t('title'),
+            template: '%s | roommate website ',
+        },
+
+        description: t('description'),
+        openGraph: {
+            title: t('title'),
+            description: t('description'),
+            type: 'website',
+            locale: locale,
+            url: 'rommate.ge',
+            siteName: 'roommate',
+        },
+    }
+}
+
 export default async function RootLayout({
     children,
 

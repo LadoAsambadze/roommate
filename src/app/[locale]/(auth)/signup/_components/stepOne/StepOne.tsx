@@ -49,6 +49,7 @@ export default function StepOne({
     const [smsCheck] = useMutation(sms_check)
     const [smsSend] = useMutation(sms_send)
     const [isClient, setIsClient] = useState(false)
+    const [phoneFormat, setPhoneFormat] = useState(false)
 
     useEffect(() => {
         setIsClient(true)
@@ -116,51 +117,60 @@ export default function StepOne({
                 <main className="flex flex-col  items-center ">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(handleSubmit)} className=" w-full">
-                            <div className="mb-3  grid grid-cols-1 items-start gap-x-6 gap-y-6 md:grid-cols-2 lg:justify-center">
+                            <div className="mb-3 grid grid-cols-1 items-start gap-x-6 gap-y-6 md:grid-cols-2 lg:justify-center">
                                 <FormField
                                     control={form.control}
                                     name="firstname"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{t('name')}</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    value={field.value || ''}
-                                                    // hasError={form.formState.errors.firstname}
-                                                    isSuccess={
-                                                        !form.formState.errors.firstname &&
-                                                        form.formState.touchedFields.firstname &&
-                                                        field.value !== ''
-                                                    }
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
+                                            <Input
+                                                {...field}
+                                                value={field.value || undefined}
+                                                hasError={
+                                                    !!form.formState.errors.firstname &&
+                                                    form.formState.dirtyFields.firstname
+                                                }
+                                                isSuccess={
+                                                    !form.formState.errors.firstname &&
+                                                    form.formState.dirtyFields.firstname
+                                                }
+                                                onChange={(e) => {
+                                                    field.onChange(e)
+                                                    form.trigger('firstname')
+                                                }}
+                                            />
                                         </FormItem>
                                     )}
                                 />
+
                                 <FormField
                                     control={form.control}
                                     name="lastname"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{t('surname')}</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    value={field.value || ''}
-                                                    // hasError={form.formState.errors.lastname}
-                                                    isSuccess={
-                                                        !form.formState.errors.lastname &&
-                                                        form.formState.touchedFields.lastname &&
-                                                        field.value !== ''
-                                                    }
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
+                                            <Input
+                                                type="string"
+                                                {...field}
+                                                value={field.value || undefined}
+                                                hasError={
+                                                    !!form.formState.errors.lastname &&
+                                                    form.formState.dirtyFields.lastname
+                                                }
+                                                isSuccess={
+                                                    !form.formState.errors.lastname &&
+                                                    form.formState.dirtyFields.lastname
+                                                }
+                                                onChange={(e) => {
+                                                    field.onChange(e)
+                                                    form.trigger('lastname')
+                                                }}
+                                            />
                                         </FormItem>
                                     )}
                                 />
+
                                 <FormField
                                     control={form.control}
                                     name="countryId"
@@ -240,10 +250,7 @@ export default function StepOne({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{t('age')}</FormLabel>
-                                            <FormControl>
-                                                <DatePicker field={field} />
-                                            </FormControl>
-                                            <FormMessage />
+                                            <DatePicker field={field} />
                                         </FormItem>
                                     )}
                                 />
@@ -253,10 +260,22 @@ export default function StepOne({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{t('mail')}</FormLabel>
-                                            <FormControl>
-                                                <Input {...field} value={field.value || ''} />
-                                            </FormControl>
-                                            <FormMessage />
+                                            <Input
+                                                {...field}
+                                                value={field.value || undefined}
+                                                hasError={
+                                                    !!form.formState.errors.email &&
+                                                    form.formState.dirtyFields.email
+                                                }
+                                                isSuccess={
+                                                    !form.formState.errors.email &&
+                                                    form.formState.dirtyFields.email
+                                                }
+                                                onChange={(e) => {
+                                                    field.onChange(e)
+                                                    form.trigger('email')
+                                                }}
+                                            />
                                         </FormItem>
                                     )}
                                 />
@@ -266,20 +285,28 @@ export default function StepOne({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{t('Password')}</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="password"
-                                                    {...field}
-                                                    value={field.value || ''}
-                                                    // hasError={form.formState.errors.password}
-                                                    isSuccess={
-                                                        !form.formState.errors.password &&
-                                                        form.formState.touchedFields.password &&
-                                                        field.value !== ''
-                                                    }
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
+
+                                            <Input
+                                                type="password"
+                                                {...field}
+                                                value={field.value || undefined}
+                                                hasError={
+                                                    !!form.formState.errors.password &&
+                                                    form.formState.dirtyFields.password
+                                                }
+                                                isSuccess={
+                                                    !form.formState.errors.password &&
+                                                    form.formState.dirtyFields.password
+                                                }
+                                                onChange={(e) => {
+                                                    field.onChange(e)
+                                                    form.trigger('password')
+                                                }}
+                                            />
+
+                                            {field.value !== undefined && field.value !== '' && (
+                                                <FormMessage />
+                                            )}
                                         </FormItem>
                                     )}
                                 />
@@ -289,23 +316,28 @@ export default function StepOne({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{t('PasswordRepeat')}</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="password"
-                                                    {...field}
-                                                    value={field.value || ''}
-                                                    hasError={
-                                                        !!form.formState.errors.confirmPassword
-                                                    }
-                                                    isSuccess={
-                                                        !form.formState.errors.confirmPassword &&
-                                                        form.formState.touchedFields
-                                                            .confirmPassword &&
-                                                        field.value !== ''
-                                                    }
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
+
+                                            <Input
+                                                type="password"
+                                                {...field}
+                                                value={field.value || undefined}
+                                                hasError={
+                                                    !!form.formState.errors.confirmPassword &&
+                                                    form.formState.dirtyFields.confirmPassword
+                                                }
+                                                isSuccess={
+                                                    !form.formState.errors.confirmPassword &&
+                                                    form.formState.dirtyFields.confirmPassword
+                                                }
+                                                onChange={(e) => {
+                                                    field.onChange(e)
+                                                    form.trigger('confirmPassword')
+                                                }}
+                                            />
+
+                                            {field.value !== undefined && field.value !== '' && (
+                                                <FormMessage />
+                                            )}
                                         </FormItem>
                                     )}
                                 />
@@ -315,7 +347,11 @@ export default function StepOne({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{t('Phonenumber')}</FormLabel>
-                                            <FormControl>
+                                            <div
+                                                onClick={() => {
+                                                    setPhoneFormat(false), form.trigger('phone')
+                                                }}
+                                            >
                                                 <PhoneInput
                                                     field={field}
                                                     labels={labels}
@@ -327,8 +363,12 @@ export default function StepOne({
                                                         form.setValue('phone', phone)
                                                     }}
                                                 />
-                                            </FormControl>
-                                            <FormMessage />
+                                            </div>
+                                            {phoneFormat &&
+                                            field.value !== undefined &&
+                                            field.value !== '' ? (
+                                                <FormMessage />
+                                            ) : null}
                                         </FormItem>
                                     )}
                                 />
@@ -342,8 +382,9 @@ export default function StepOne({
                                                 <Input
                                                     type="number"
                                                     {...field}
-                                                    value={field.value || ''}
+                                                    value={field.value || undefined}
                                                     getCode
+                                                    setPhoneFormat={setPhoneFormat}
                                                     clicked={clicked}
                                                     onGetCodeClick={getCodeHandler}
                                                 />
@@ -353,7 +394,12 @@ export default function StepOne({
                                     )}
                                 />
                             </div>
-                            <Button className="mt-4 w-full" size="lg" type="submit">
+                            <Button
+                                onClick={() => setPhoneFormat(true)}
+                                className="mt-4 w-full"
+                                size="lg"
+                                type="submit"
+                            >
                                 {t('next')}
                             </Button>
                         </form>

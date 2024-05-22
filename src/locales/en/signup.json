@@ -31,6 +31,7 @@
     "incorrectCode": "Incorrect Code",
     "codeAlreadySent": "Code is sent",
     "resend": "Resend",
+    "emailError": "Incorrect format",
     "phoneExist": "An account already exists with this phone number.",
     "emailExist": "An account already exists with this email."
 }

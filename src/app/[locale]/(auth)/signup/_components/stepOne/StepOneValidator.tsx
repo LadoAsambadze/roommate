@@ -12,7 +12,7 @@ export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
     const { t } = useTranslation()
 
     const formSchema: z.ZodSchema<FormDataPropsOne> = z.object({
-        firstname: z.string().min(2, { message: t('nameError') }),
+        firstname: z.string().min(3, { message: t('nameError') }),
         lastname: z.string().min(2, { message: t('surnameError') }),
         genderId: z
             .object({
@@ -35,12 +35,9 @@ export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
             }),
         birthDate: z.string().min(1, { message: t('selectAge') }),
 
-        phone: z
-            .string()
-            .min(1, t('PhonenumberError'))
-            .refine((value) => isValidPhoneNumber(value), {
-                message: t('incorrectFormat'),
-            }),
+        phone: z.string().refine((value) => isValidPhoneNumber(value), {
+            message: t('incorrectFormat'),
+        }),
         email: z.string().email(t('emailError')).optional().or(z.literal('')),
         password: z
             .string()
@@ -57,16 +54,16 @@ export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            firstname: formData.firstname ? formData.firstname : '',
-            lastname: formData.lastname ? formData.lastname : '',
-            genderId: formData.genderId ? formData.genderId : null,
-            countryId: formData?.countryId ? formData.countryId : null,
+            firstname: formData.firstname ? formData.firstname : undefined,
+            lastname: formData.lastname ? formData.lastname : undefined,
+            genderId: formData.genderId ? formData.genderId : undefined,
+            countryId: formData?.countryId ? formData.countryId : undefined,
             birthDate: formData.birthDate ? formData.birthDate : '',
-            email: formData.email ? formData.email : '',
-            phone: formData.phone ? formData.phone : '',
-            password: formData.password ? formData.password : '',
-            confirmPassword: formData.confirmPassword ? formData.confirmPassword : '',
-            code: formData.code ? formData.code : '',
+            email: formData.email ? formData.email : undefined,
+            phone: formData.phone ? formData.phone : undefined,
+            password: formData.password ? formData.password : undefined,
+            confirmPassword: formData.confirmPassword ? formData.confirmPassword : undefined,
+            code: formData.code ? formData.code : undefined,
         },
     })
 

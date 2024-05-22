@@ -30,3 +30,5 @@ export { default as Note } from '../../../public/svg/Note.svg'
 export { default as Setting } from '../../../public/svg/Setting.svg'
 export { default as Logout } from '../../../public/svg/Logout.svg'
 export { default as ShieldSlash } from '../../../public/svg/ShieldSlash.svg'
+export { default as Error } from '../../../public/svg/Error.svg'
+

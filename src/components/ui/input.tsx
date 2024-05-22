@@ -1,11 +1,10 @@
 /* eslint-disable react/display-name */
 import * as React from 'react'
 import { cn } from '@/src/utils/cn'
-// import errorIcon from '../../../public/imgs/Error.svg'
-// import successIcon from '../../../public/imgs/Success.svg'
-// import Image from 'next/image'
-import { Button } from './button'
+import { Success } from '../svgs'
+import { Error } from '../svgs'
 import { useTranslation } from 'react-i18next'
+import { Button } from './button'
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     hasError?: boolean
@@ -13,11 +12,27 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
     getCode?: boolean
     clicked?: boolean
     onGetCodeClick?: () => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setPhoneFormat?: any
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ className, type, hasError, isSuccess, getCode, onGetCodeClick, clicked, ...props }, ref) => {
+    (
+        {
+            className,
+            type,
+            hasError,
+            isSuccess,
+            setPhoneFormat,
+            getCode,
+            onGetCodeClick,
+            clicked,
+            ...props
+        },
+        ref
+    ) => {
         const { t } = useTranslation()
+
         return (
             <div className="relative flex w-full items-center">
                 <input
@@ -31,12 +46,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 />
                 {hasError && (
                     <div className="absolute right-4 top-3">
-                        {/* <Image src={errorIcon} alt="Error Icon" width={24} height={24} /> */}
+                        <Error className="h-6 w-6" />
                     </div>
                 )}
                 {isSuccess && (
                     <div className="absolute right-4 top-3">
-                        {/* <Image src={successIcon} alt="Success Icon" width={24} height={24} /> */}
+                        <Success className="h-6 w-6" />
                     </div>
                 )}
                 {getCode && (
@@ -48,6 +63,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                             onClick={() => {
                                 if (onGetCodeClick) {
                                     onGetCodeClick()
+                                }
+
+                                if (setPhoneFormat) {
+                                    setPhoneFormat(true)
                                 }
                             }}
                         >

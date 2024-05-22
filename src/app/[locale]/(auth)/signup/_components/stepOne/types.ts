@@ -4,14 +4,14 @@ interface Question {
 }
 
 export type FormDataPropsOne = {
-    firstname?: string
-    lastname?: string
-    birthDate?: string
-    phone?: string
-    password?: string
-    confirmPassword?: string
-    countryId?: Question | number | null
-    genderId?: Question | number | null
-    email?: string
-    code?: number | string
+    firstname?: string | undefined
+    lastname?: string | undefined
+    birthDate?: string | undefined
+    phone?: string | undefined
+    password?: string | undefined
+    confirmPassword?: string | undefined
+    countryId?: Question | number | null | undefined
+    genderId?: Question | number | null | undefined
+    email?: string | undefined
+    code?: number | string | undefined
 }
