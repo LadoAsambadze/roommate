@@ -1,8 +1,8 @@
 .PhoneInput {
     display: flex;
     justify-content: center !important;
-    padding: 4px 12px 4px 12px !important;
-    height: 48px !important;
+    padding: 8px 12px 8px 12px !important;
+    height: 40px !important;
     width: 100% !important;
     border-radius: 8px !important;
     border: 1px solid hsl(227, 20%, 59%) !important;
@@ -11,12 +11,14 @@
 }
 
 .PhoneInput--focus {
-    outline: #c5758a auto !important;
+    outline: 1px solid #3dae8c !important;
 }
 
 .PhoneInputInput {
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    border: none !important ;
+    outline: none !important;
 }
 
 .PhoneInputCountrySelect {

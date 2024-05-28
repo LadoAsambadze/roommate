@@ -55,11 +55,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     </div>
                 )}
                 {getCode && (
-                    <div className="absolute right-4">
+                    <div className="absolute right-3">
                         <Button
-                            variant="default"
                             type="button"
-                            className="right-2"
+                            className="h-8 w-auto px-2 text-xs lg:text-sm "
                             onClick={() => {
                                 if (onGetCodeClick) {
                                     onGetCodeClick()

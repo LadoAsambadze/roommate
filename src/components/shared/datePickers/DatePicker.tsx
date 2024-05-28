@@ -23,7 +23,7 @@ export function DatePicker({ field }: any) {
                 <Button
                     variant={'outline'}
                     className={cn(
-                        'flex h-[48px] w-full justify-start rounded-lg border border-[#828bab] px-3  py-2 text-left font-normal outline-none hover:bg-white md:w-full',
+                        'flex h-10 w-full justify-start rounded-lg border border-[#828bab] px-3  py-2 text-left font-normal hover:bg-white  focus:outline-[#3dae8c] md:w-full',
                         !date && 'text-muted-foreground'
                     )}
                 >
