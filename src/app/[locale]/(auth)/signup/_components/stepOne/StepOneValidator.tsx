@@ -12,7 +12,7 @@ export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
     const { t } = useTranslation()
 
     const formSchema: z.ZodSchema<FormDataPropsOne> = z.object({
-        firstname: z.string().min(3, { message: t('nameError') }),
+        firstname: z.string().min(2, { message: t('nameError') }),
         lastname: z.string().min(2, { message: t('surnameError') }),
         genderId: z
             .object({

@@ -109,6 +109,7 @@ export default function ClientWrapper({ countries, gender, questions }: any) {
         }
     }
 
+
     return (
         <>
             <main className="flex h-auto w-full flex-col items-center justify-center  px-6 md:px-[10%] md:pb-16  lg:px-[15%]  xl:px-[334px]">

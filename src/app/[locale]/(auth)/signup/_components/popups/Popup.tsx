@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-
+import { Popup } from '@/src/components/svgs'
 import { Button } from '@/src/components/ui/button'
 import { Dialog, DialogContent } from '@/src/components/ui/dialog'
-
-// import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
@@ -13,12 +11,10 @@ export function PopUp({ isOpen, range, country }: any) {
     const { t } = useTranslation()
 
     return (
-        <Dialog open={isOpen && country !== '145'}>
-            <DialogContent className="flex flex-col overflow-hidden   bg-white sm:max-w-[470px] ">
-                <div className="relative h-40 w-full">
-                    {/* <Image src={popupBack} layout="fill" objectFit="cover" /> */}
-                </div>
-                <div className="flex flex-col  gap-4 px-2 pb-2 text-center text-sm md:px-6 md:pb-4">
+        <Dialog  open={isOpen && country !== '145'}>
+            <DialogContent className="flex w-auto flex-col   overflow-hidden bg-white ">
+                <Popup className="h-40 w-full object-fill rounded-sm" />
+                <div className="flex flex-col  gap-4 pb-2 text-center text-sm md:px-6 md:pb-4">
                     <span>
                         {range < 135
                             ? t('135-1')
@@ -99,13 +95,17 @@ export function PopUp({ isOpen, range, country }: any) {
                         {range > 435 ? t('500-7') : null}
                     </span>
 
-                    <div className="mt-2 flex flex-row gap-2 ">
+                    <div className="mt-2 flex flex-row gap-2  justify-center ">
                         {range < 135 ? (
-                            <Button onClick={() => router.push('/')}>{t('135-no')}</Button>
+                            <Button className="w-auto px-2" onClick={() => router.push('/')}>
+                                {t('135-no')}
+                            </Button>
                         ) : range > 135 && range < 270 ? (
-                            <Button onClick={() => router.push('/')}>{t('270-no')}</Button>
+                            <Button className="w-auto px-2" onClick={() => router.push('/')}>
+                                {t('270-no')}
+                            </Button>
                         ) : null}
-                        <Button onClick={() => router.push('/')}>
+                        <Button className="w-auto px-2" onClick={() => router.push('/')}>
                             {range < 135
                                 ? t('135-yes')
                                 : range > 135 && range < 270

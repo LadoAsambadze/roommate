@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Button } from '@/src/components/ui/button'
-
 import Select from 'react-select'
-// import arroLeft from '../public/newImages/arrow-left.svg'
-// import Image from 'next/image'
 import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
 import { SignupRangePicker } from '../../../../../../components/shared/datePickers/SignupRangePicker'
 import { useTranslation } from 'react-i18next'
@@ -14,6 +10,7 @@ import StepTwoValidator from './StepTwoValidator'
 import { FormDataPropsTwo } from './types'
 import Loading from '../../loading'
 import { useEffect, useState } from 'react'
+import { ArrowLeft } from '@/src/components/svgs'
 
 export default function StepTwo({
     questions,
@@ -162,9 +159,13 @@ export default function StepTwo({
                                                                             field.onChange(e)
                                                                         }}
                                                                         value={field.value}
+                                                                        onWheel={(event) =>
+                                                                            event.currentTarget.blur()
+                                                                        }
+                                                                        min={1}
                                                                         type="number"
-                                                                        min="1"
                                                                         inputMode="numeric"
+                                                                        className="number-input"
                                                                         hasError={
                                                                             !!form.formState.errors[
                                                                                 item.id
@@ -253,10 +254,10 @@ export default function StepTwo({
                                     {next}
                                 </Button>
                                 <div
-                                    className="pointer mt-6 flex flex-row items-center text-base"
+                                    className="mt-6 flex cursor-pointer flex-row items-center text-base"
                                     onClick={() => setStep(step - 1)}
                                 >
-                                    {/* <Image width={24} height={24} src={arroLeft} alt="Arrow back" /> */}
+                                    <ArrowLeft className="h-6 w-6" />
                                     <p className="ml-4 leading-6 text-[#838CAC]">{t('back')}</p>
                                 </div>
                             </div>

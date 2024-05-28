@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { Button } from '../../ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover'
 
-export function DatePicker({ field }: any) {
+export function BirthDatePicker({ field }: any) {
     const [date, setDate] = React.useState<Date>(field.value)
     const { t } = useTranslation()
 

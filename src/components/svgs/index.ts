@@ -31,4 +31,5 @@ export { default as Setting } from '../../../public/svg/Setting.svg'
 export { default as Logout } from '../../../public/svg/Logout.svg'
 export { default as ShieldSlash } from '../../../public/svg/ShieldSlash.svg'
 export { default as Error } from '../../../public/svg/Error.svg'
-
+export { default as ArrowLeft } from '../../../public/svg/ArrowLeft.svg'
+export { default as Popup } from '../../../public/svg/Popup.svg'

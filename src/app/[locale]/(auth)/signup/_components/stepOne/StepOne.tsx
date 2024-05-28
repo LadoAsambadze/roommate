@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-
 import { useParams } from 'next/navigation'
 import { StepOneValidator } from './StepOneValidator'
 import { useTranslation } from 'react-i18next'
@@ -22,7 +21,7 @@ import Select from 'react-select'
 import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
 import Image from 'next/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
-import { DatePicker } from '@/src/components/shared/datePickers/DatePicker'
+import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
 import { FormDataPropsOne } from './types'
 import Loading from '../../loading'
 
@@ -90,6 +89,7 @@ export default function StepOne({
         }
     }
 
+
     const getCodeHandler = async () => {
         await form.handleSubmit(async () => {
             setClicked(true)
@@ -102,6 +102,7 @@ export default function StepOne({
                         },
                     },
                 })
+             
                 if (response.data.sendCode === 'ALREADY_SENT') {
                     form.setError('code', { message: t('codeAlreadySent') })
                 }
@@ -125,6 +126,7 @@ export default function StepOne({
                                         <FormItem>
                                             <FormLabel>{t('name')}</FormLabel>
                                             <Input
+                                                type="string"
                                                 {...field}
                                                 value={field.value || undefined}
                                                 hasError={
@@ -250,7 +252,7 @@ export default function StepOne({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{t('age')}</FormLabel>
-                                            <DatePicker field={field} />
+                                            <BirthDatePicker field={field} />
                                         </FormItem>
                                     )}
                                 />
@@ -261,6 +263,7 @@ export default function StepOne({
                                         <FormItem>
                                             <FormLabel>{t('mail')}</FormLabel>
                                             <Input
+                                                type="email"
                                                 {...field}
                                                 value={field.value || undefined}
                                                 hasError={
@@ -353,6 +356,7 @@ export default function StepOne({
                                                 }}
                                             >
                                                 <PhoneInput
+                                                    type="number"
                                                     field={field}
                                                     labels={labels}
                                                     defaultCountry="GE"

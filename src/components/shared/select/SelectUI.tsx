@@ -27,7 +27,7 @@ export const customStyles = {
         cursor: 'pointer',
         fontSize: '12px',
         boxShadow: 'none',
-        height: '40px',
+        height: '40px auto',
 
         '&:hover': {
             outline: state.isFocused ? '1px solid #3dae8c' : 'none',

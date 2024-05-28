@@ -105,3 +105,10 @@ body {
         url('../../../public/fonts/bpg-web-002-caps-webfont.svg#bpg_web_002_capsregular')
             format('svg');
 }
+
+
+.number-input::-webkit-inner-spin-button,
+.number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Optional: Adjust spacing if needed */
+}

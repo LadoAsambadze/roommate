@@ -31,9 +31,34 @@ export const SignupRangePicker: React.FC<Props> = ({
         to: field.value[1],
     })
     const { t } = useTranslation()
+
+    const handleDateChange = (newDate: DateRange | undefined) => {
+        setDate(newDate)
+
+        if (newDate?.from && newDate?.to) {
+            const formattedFrom = format(newDate.from, 'yyyy-MM-dd')
+            const formattedTo = format(newDate.to, 'yyyy-MM-dd')
+            field.onChange([formattedFrom, formattedTo])
+            if (id !== undefined) {
+                updateUseForm({
+                    [id]: [formattedFrom, formattedTo],
+                })
+            }
+        } else {
+            field.onChange([])
+            if (id !== undefined) {
+                updateUseForm({
+                    [id]: [],
+                })
+            } else {
+                updateUseForm(undefined)
+            }
+        }
+    }
+
     return (
         <>
-            <div className={cn(' hidden gap-2 md:grid', className)}>
+            <div className={cn('hidden gap-2 md:grid', className)}>
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
@@ -41,7 +66,7 @@ export const SignupRangePicker: React.FC<Props> = ({
                             id="date"
                             variant={'outline'}
                             className={cn(
-                                'flex h-[48px] w-full justify-start rounded-lg border border-[#828bab]  px-3  py-2 text-left font-normal outline-none hover:bg-white md:w-full'
+                                'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3 py-2 text-left font-normal hover:bg-white md:w-full'
                             )}
                         >
                             <div className="p flex h-[48px] flex-row items-center justify-center text-sm">
@@ -69,29 +94,11 @@ export const SignupRangePicker: React.FC<Props> = ({
                             pagedNavigation
                             defaultMonth={new Date()}
                             selected={date}
-                            onSelect={(newDate) => {
-                                if (newDate?.from && newDate?.to) {
-                                    field.onChange([
-                                        format(newDate.from, 'yyyy-MM-dd'),
-                                        format(newDate.to, 'yyyy-MM-dd'),
-                                    ])
-                                    if (id !== undefined) {
-                                        updateUseForm({
-                                            [id]: [
-                                                format(newDate.from, 'yyyy-MM-dd'),
-                                                format(newDate.to, 'yyyy-MM-dd'),
-                                            ],
-                                        })
-                                    }
-                                }
-
-                                setDate(newDate)
-                            }}
+                            onSelect={handleDateChange}
                         />
                     </PopoverContent>
                 </Popover>
             </div>
-
             <Drawer>
                 <DrawerTrigger className="mt-2 w-full">
                     <Button
@@ -99,10 +106,10 @@ export const SignupRangePicker: React.FC<Props> = ({
                         id="date"
                         variant={'outline'}
                         className={cn(
-                            'flex h-[48px] w-full justify-start rounded-lg border border-[#828bab] px-3 py-2  text-left font-normal outline-none hover:bg-white md:hidden md:w-full'
+                            'flex h-[48px] w-full justify-start rounded-lg border border-[#828bab] px-3 py-2 text-left font-normal outline-none hover:bg-white md:hidden md:w-full'
                         )}
                     >
-                        <div className="p   flex h-[48px] flex-row items-center justify-center text-sm">
+                        <div className="p flex h-[48px] flex-row items-center justify-center text-sm">
                             <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
                             {date?.from ? (
                                 date.to ? (
@@ -121,31 +128,14 @@ export const SignupRangePicker: React.FC<Props> = ({
                 </DrawerTrigger>
                 <DrawerContent>
                     <Calendar
-                        className="flex flex-row justify-center"
+                        className="flex flex-row justify-center "
                         initialFocus
                         numberOfMonths={2}
                         mode="range"
                         pagedNavigation
                         defaultMonth={new Date()}
                         selected={date}
-                        onSelect={(newDate) => {
-                            if (newDate?.from && newDate?.to) {
-                                field.onChange([
-                                    format(newDate.from, 'yyyy-MM-dd'),
-                                    format(newDate.to, 'yyyy-MM-dd'),
-                                ])
-                                if (id !== undefined) {
-                                    updateUseForm({
-                                        [id]: [
-                                            format(newDate.from, 'yyyy-MM-dd'),
-                                            format(newDate.to, 'yyyy-MM-dd'),
-                                        ],
-                                    })
-                                }
-                            }
-
-                            setDate(newDate)
-                        }}
+                        onSelect={handleDateChange}
                     />
                     <DrawerClose>
                         <Button variant="default" type="button" className="w-4/5">
