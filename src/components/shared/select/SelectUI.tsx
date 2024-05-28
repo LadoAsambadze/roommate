@@ -19,18 +19,18 @@ export const DropdownIndicator = (props: any) => {
 export const customStyles = {
     control: (provided: any, state: any) => ({
         ...provided,
+        border: '1px solid #828bab',
+        outline: state.isFocused ? '1px solid #3dae8c' : 'none',
 
-        border: state.isFocused ? '1px solid #e75a80' : '1px solid #828bab',
-        outline: state.isFocused ? '1px solid #e75a80' : 'none',
-
-        padding: state.isFocused ? '8px 12px 8px 12px' : '8px 12px 8px 12px',
+        padding: '8px 12px 8px 12px',
         borderRadius: '8px',
         cursor: 'pointer',
-        fontSize: '14px',
+        fontSize: '12px',
         boxShadow: 'none',
+        height: '40px',
 
         '&:hover': {
-            outline: state.isFocused ? '1px solid #e75a80' : 'none',
+            outline: state.isFocused ? '1px solid #3dae8c' : 'none',
         },
     }),
     DropdownIndicator,

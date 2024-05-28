@@ -120,7 +120,7 @@ export default function ClientWrapper({ countries, gender, questions }: any) {
                 />
 
                 <Card className="w-full">
-                    <CardContent className="relative w-full bg-white px-10  pb-16  pt-8 sm:px-10">
+                    <CardContent className="relative w-full bg-white px-6  pb-16  pt-8 sm:px-14">
                         {step === 1 && (
                             <StepOne
                                 step={step}
