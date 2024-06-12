@@ -89,7 +89,6 @@ export default function StepOne({
         }
     }
 
-
     const getCodeHandler = async () => {
         await form.handleSubmit(async () => {
             setClicked(true)
@@ -102,7 +101,7 @@ export default function StepOne({
                         },
                     },
                 })
-             
+
                 if (response.data.sendCode === 'ALREADY_SENT') {
                     form.setError('code', { message: t('codeAlreadySent') })
                 }
@@ -357,6 +356,7 @@ export default function StepOne({
                                             >
                                                 <PhoneInput
                                                     type="number"
+
                                                     field={field}
                                                     labels={labels}
                                                     defaultCountry="GE"
