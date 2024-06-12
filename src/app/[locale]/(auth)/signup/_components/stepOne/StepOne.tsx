@@ -349,14 +349,9 @@ export default function StepOne({
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{t('Phonenumber')}</FormLabel>
-                                            <div
-                                                onClick={() => {
-                                                    setPhoneFormat(false), form.trigger('phone')
-                                                }}
-                                            >
+                                            <div onClick={() => setPhoneFormat(false)}>
                                                 <PhoneInput
                                                     type="number"
-
                                                     field={field}
                                                     labels={labels}
                                                     defaultCountry="GE"
