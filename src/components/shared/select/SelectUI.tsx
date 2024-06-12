@@ -21,7 +21,7 @@ export const DropdownIndicator = (
 export const customStyles = {
     control: (provided: any, state: { isFocused: any }) => ({
         ...provided,
-        border: '1px solid #828bab',
+        border: '1px solid #828bab ',
         outline: state.isFocused ? '1px solid #3dae8c' : 'none',
         padding: '8px 12px 8px 12px',
         borderRadius: '8px',
