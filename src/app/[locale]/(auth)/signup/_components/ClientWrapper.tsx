@@ -15,7 +15,7 @@ import StepOne from './stepOne/StepOne'
 import { signIn } from 'next-auth/react'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function ClientWrapper({ countries, gender, questions }: any) {
+export default function ClientWrapper({ countries, genders, questions }: any) {
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
     const [isOpen, setIsOpen] = useState(false)
@@ -109,7 +109,6 @@ export default function ClientWrapper({ countries, gender, questions }: any) {
         }
     }
 
-
     return (
         <>
             <main className="flex h-auto w-full flex-col items-center justify-center  px-6 md:px-[10%] md:pb-16  lg:px-[15%]  xl:px-[334px]">
@@ -126,7 +125,7 @@ export default function ClientWrapper({ countries, gender, questions }: any) {
                             <StepOne
                                 step={step}
                                 countries={countries}
-                                gender={gender}
+                                genders={genders}
                                 setStep={setStep}
                                 formData={formData}
                                 updateFormData={updateFormData}

@@ -1,7 +1,16 @@
-import { gql } from '@apollo/client'
+import {
+    Query,
+    QueryGetCountriesArgs,
+    QueryGetGendersArgs,
+    QueryGetQuestionsWithAnswersArgs,
+} from '@/graphql/types/graphql'
+import { TypedDocumentNode, gql } from '@apollo/client'
 
-export const signup_combined = gql`
-    query CombinedQuery($locale: Language, $getCountriesLocale2: Language, $lang: Language) {
+export const getGendersQuery: TypedDocumentNode<
+    { getGenders: Query[`getGenders`] },
+    QueryGetGendersArgs
+> = gql`
+    query GetGenders($locale: Language) {
         getGenders(locale: $locale) {
             id
             translations {
@@ -10,7 +19,15 @@ export const signup_combined = gql`
                 sex
             }
         }
-        getCountries(locale: $getCountriesLocale2) {
+    }
+`
+
+export const getCountriesQuery: TypedDocumentNode<
+    { getCountries: Query['getCountries'] },
+    QueryGetCountriesArgs
+> = gql`
+    query GetCountries($locale: Language) {
+        getCountries(locale: $locale) {
             id
             alpha2Code
             position
@@ -20,6 +37,14 @@ export const signup_combined = gql`
                 name
             }
         }
+    }
+`
+
+export const getQuestionsWithAnswersQuery: TypedDocumentNode<
+    { getQuestionsWithAnswers: Query['getQuestionsWithAnswers'] },
+    QueryGetQuestionsWithAnswersArgs
+> = gql`
+    query GetQuestionsWithAnswers($lang: Language) {
         getQuestionsWithAnswers(lang: $lang) {
             answers {
                 id

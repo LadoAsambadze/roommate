@@ -27,7 +27,7 @@ import Loading from '../../loading'
 
 export default function StepOne({
     countries,
-    gender,
+    genders,
     step,
     setStep,
     updateFormData,
@@ -35,7 +35,7 @@ export default function StepOne({
 }: {
     countries: any
     step: any
-    gender: any
+    genders: any
     setStep: any
     updateFormData: any
     formData: FormDataPropsOne
@@ -57,6 +57,8 @@ export default function StepOne({
     if (step !== 1) {
         return null
     }
+
+    console.log(countries)
 
     const handleSubmit = async (data: FormDataPropsOne) => {
         const modifiedFormData = {
@@ -186,33 +188,30 @@ export default function StepOne({
                                                 onChange={(value) => {
                                                     field.onChange(value)
                                                 }}
-                                                options={
-                                                    countries &&
-                                                    countries
-                                                        .sort((a: any, b: any) => {
-                                                            if (a?.position === 1) return -1
-                                                            if (b.position === 1) return 1
-                                                            return 0
-                                                        })
-                                                        .map((country: any) => ({
-                                                            value: country.id,
-                                                            label: (
-                                                                <div className="flex w-full items-center">
-                                                                    <Image
-                                                                        src={`https://flagcdn.com/${country.alpha2Code.toLowerCase()}.svg`}
-                                                                        width={22}
-                                                                        height={16}
-                                                                        alt={
-                                                                            country?.translations[0]
-                                                                                ?.name
-                                                                        }
-                                                                    />
-                                                                    <span>&nbsp; &nbsp;</span>
-                                                                    {country?.translations[0]?.name}
-                                                                </div>
-                                                            ),
-                                                        }))
-                                                }
+                                                options={countries
+                                                    ?.sort((a: any, b: any) => {
+                                                        if (a?.position === 1) return -1
+                                                        if (b.position === 1) return 1
+                                                        return 0
+                                                    })
+                                                    .map((country: any) => ({
+                                                        value: country.id,
+                                                        label: (
+                                                            <div className="flex w-full items-center">
+                                                                <Image
+                                                                    src={`https://flagcdn.com/${country.alpha2Code.toLowerCase()}.svg`}
+                                                                    width={22}
+                                                                    height={16}
+                                                                    alt={
+                                                                        country?.translations[0]
+                                                                            ?.name
+                                                                    }
+                                                                />
+                                                                <span>&nbsp; &nbsp;</span>
+                                                                {country?.translations[0]?.name}
+                                                            </div>
+                                                        ),
+                                                    }))}
                                                 filterOption={(option: any, inputValue: string) =>
                                                     option.label.props.children[2]
                                                         .toLowerCase()
@@ -237,8 +236,8 @@ export default function StepOne({
                                                 onChange={(value) => {
                                                     field.onChange(value)
                                                 }}
-                                                options={gender?.map((gender: any) => ({
-                                                    value: gender.id,
+                                                options={genders?.map((gender: any) => ({
+                                                    value: genders.id,
                                                     label: gender?.translations[0].sex,
                                                 }))}
                                             />

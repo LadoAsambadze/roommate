@@ -1,34 +1,43 @@
 import { getClient } from '@/src/libs/graphql/client'
-import { signup_combined } from '@/graphql/queries/suspenses/signupCombined'
+import {
+    getCountriesQuery,
+    getGendersQuery,
+    getQuestionsWithAnswersQuery,
+} from '@/graphql/queries/suspenses/signupCombined'
 import ClientWrapper from './_components/ClientWrapper'
+import { Language } from '@/graphql/types/graphql'
 
-export default async function Signup({ params }: { params: { locale?: string } }) {
+export default async function Signup({ params }: { params: { locale: string } }) {
     const server = getClient()
 
-
-    const locale = params.locale || 'ka'
-    const variables = {
-        locale: locale,
-        lang: locale,
-        getCountriesLocale2: locale,
-    }
-    const data = await server.query({
-        query: signup_combined,
-        variables,
+    const countriesResponse = await server.query({
+        query: getCountriesQuery,
+        variables: {
+            locale: params.locale as Language,
+        },
     })
 
-   
+    const gendersResponse = await server.query({
+        query: getGendersQuery,
+        variables: {
+            locale: params.locale as Language,
+        },
+    })
 
+    const questionsWithAnswersResponse = await server.query({
+        query: getQuestionsWithAnswersQuery,
+        variables: {
+            lang: params.locale as Language,
+        },
+    })
 
-
+    const countries = countriesResponse?.data.getCountries
+    const genders = gendersResponse?.data.getGenders
+    const questions = questionsWithAnswersResponse?.data.getQuestionsWithAnswers
 
     return (
         <>
-            <ClientWrapper
-                countries={data?.data?.getCountries}
-                gender={data?.data?.getGenders}
-                questions={data?.data?.getQuestionsWithAnswers}
-            />
+            <ClientWrapper countries={countries} genders={genders} questions={questions} />
         </>
     )
 }

@@ -1,4 +1,4 @@
-import initTranslations from '@/src/libs/i18next/i18n'
+import initTranslations from '@/src/libs/i18n/i18n'
 import ClientWrapper from './_components/ClientWrapper'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
