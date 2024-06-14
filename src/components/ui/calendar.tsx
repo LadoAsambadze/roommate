@@ -1,23 +1,29 @@
 'use client'
 
-import * as React from 'react'
-// import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { DayPicker } from 'react-day-picker'
-
 import { cn } from '@/src/utils/cn'
 import { buttonVariants } from '@/src/components/ui/button'
+import { ka } from 'date-fns/locale/ka'
+import { useParams } from 'next/navigation'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
 function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+    const params = useParams()
+    const lang = params.locale === 'en' ? undefined : ka
     return (
         <DayPicker
+            locale={lang}
             showOutsideDays={showOutsideDays}
             className={cn(' p-3', className)}
             classNames={{
-                months: 'flex flex-col sm:flex-row space-y-2 sm:space-x-4 sm:space-y-0',
-                month: 'space-y-2',
-                caption: 'flex justify-center flex-row pt-1 relative items-center',
+                months: 'flex flex-col sm:flex-row space-y-2  sm:space-y-0  ',
+                dropdown_month: 'flex flex-row   justify-start items-start  mr-2',
+                month: 'space-y-2 ',
+                caption: 'flex justify-center flex-row pt-1 relative items-center justify-center',
+                caption_dropdowns: 'w-full flex flex-row justify-start items-center px-1 gap-2',
+                dropdown: ' border-none focus:border-none ring-0 outline-none cursor-pointer gap-0',
+                vhidden: 'hidden',
                 caption_label: 'text-sm font-medium',
                 nav: 'space-x-1 flex items-center',
                 nav_button: cn(
@@ -37,7 +43,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
                 ),
                 day_range_end: 'day-range-end',
                 day_selected:
-                    ' text-primary-foreground hover:bg-hoverGreen hover:text-primary-foreground focus:bg-mainGreen focus:text-primary-foreground',
+                    ' text-primary-foreground  hover:bg-hoverGreen hover:text-primary-foreground focus:bg-mainGreen focus:text-primary-foreground',
                 day_today: 'bg-mainGreen text-accent-foreground',
                 day_outside:
                     'day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30',
@@ -46,10 +52,6 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
                 day_hidden: 'invisible',
                 ...classNames,
             }}
-            // components={{
-            //     IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
-            //     IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
-            // }}
             {...props}
         />
     )

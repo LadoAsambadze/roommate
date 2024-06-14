@@ -6,6 +6,8 @@ import QuestionSection from '../../components/home/QuestionSection'
 import ReviewSection from '../../components/home/ReviewSection'
 import SuggestSection from '../../components/home/SuggestSection'
 
+
+
 async function Home() {
     return (
         <main className="h-full w-full">

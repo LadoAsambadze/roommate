@@ -12,10 +12,10 @@ import {
     Verified,
     Wallet,
 } from '@/src/components/svgs'
-import { auth } from '@/src/libs/next-auth/auth'
+import { auth } from '@/src/libs/auth/auth'
 import { redirect } from 'next/navigation'
-import initTranslations from '@/src/libs/i18next/i18n'
-import TranslationsProvider from '@/src/libs/i18next/TranslationsProvider'
+import initTranslations from '@/src/libs/i18n/i18n'
+import TranslationsProvider from '@/src/libs/i18n/TranslationsProvider'
 
 const i18nNamespaces = ['home']
 export default async function UserId({ params: { locale } }: { params: { locale: string } }) {

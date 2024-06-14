@@ -1,13 +1,13 @@
-import TranslationsProvider from '@/src/libs/i18next/TranslationsProvider'
+import TranslationsProvider from '@/src/libs/i18n/TranslationsProvider'
 import { ApolloWrapper } from '@/src/libs/graphql/apollo-provider'
-import initTranslations from '../../libs/i18next/i18n'
+import initTranslations from '../../libs/i18n/i18n'
 import { ReactNode } from 'react'
 import { dir } from 'i18next'
 import './globals.css'
 import Header from '@/src/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/src/components/footer/Footer'
-import SessionWrapper from '@/src/libs/next-auth/SessionWrapper'
+import SessionWrapper from '@/src/libs/auth/SessionWrapper'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 
