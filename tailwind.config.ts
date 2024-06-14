@@ -25,6 +25,7 @@ const config = {
                 connectFirstBg: `url("/images/ConnectFirstBg.jpg")`,
                 connectSecondBg: `url("/images/ConnectSecondBg.jpg")`,
             },
+            
             colors: {
                 mainGreen: 'hsl(var(--mainGreen))',
                 hoverGreen: 'hsl(var(--hoverGreen))',
