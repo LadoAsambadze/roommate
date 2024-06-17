@@ -6,14 +6,14 @@ import { Dialog, DialogContent } from '@/src/components/ui/dialog'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
-export function PopUp({ isOpen, range, country }: any) {
+export function PopUp({ popupIsOpen, range, country }: any) {
     const router = useRouter()
     const { t } = useTranslation()
 
     return (
-        <Dialog  open={isOpen && country !== '145'}>
+        <Dialog open={popupIsOpen && country !== '145'}>
             <DialogContent className="flex w-auto flex-col   overflow-hidden bg-white ">
-                <Popup className="h-40 w-full object-fill rounded-sm" />
+                <Popup className="h-40 w-full rounded-sm object-fill" />
                 <div className="flex flex-col  gap-4 pb-2 text-center text-sm md:px-6 md:pb-4">
                     <span>
                         {range < 135
@@ -95,7 +95,7 @@ export function PopUp({ isOpen, range, country }: any) {
                         {range > 435 ? t('500-7') : null}
                     </span>
 
-                    <div className="mt-2 flex flex-row gap-2  justify-center ">
+                    <div className="mt-2 flex flex-row justify-center  gap-2 ">
                         {range < 135 ? (
                             <Button className="w-auto px-2" onClick={() => router.push('/')}>
                                 {t('135-no')}

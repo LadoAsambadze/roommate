@@ -58,8 +58,6 @@ export default function StepOne({
         return null
     }
 
-    console.log(countries)
-
     const handleSubmit = async (data: FormDataPropsOne) => {
         const modifiedFormData = {
             ...data,
@@ -112,7 +110,7 @@ export default function StepOne({
             }
         })()
     }
-
+    console.log(formData)
     return (
         <>
             {isClient ? (
@@ -237,13 +235,14 @@ export default function StepOne({
                                                     field.onChange(value)
                                                 }}
                                                 options={genders?.map((gender: any) => ({
-                                                    value: genders.id,
+                                                    value: gender.id,
                                                     label: gender?.translations[0].sex,
                                                 }))}
                                             />
                                         </FormItem>
                                     )}
                                 />
+
                                 <FormField
                                     control={form.control}
                                     name="birthDate"
@@ -251,6 +250,9 @@ export default function StepOne({
                                         <FormItem>
                                             <FormLabel>{t('age')}</FormLabel>
                                             <BirthDatePicker field={field} />
+                                            {field.value !== undefined && field.value !== '' && (
+                                                <FormMessage />
+                                            )}
                                         </FormItem>
                                     )}
                                 />
@@ -262,6 +264,7 @@ export default function StepOne({
                                             <FormLabel>{t('mail')}</FormLabel>
                                             <Input
                                                 type="email"
+                                                placeholder={t('optional')}
                                                 {...field}
                                                 value={field.value || undefined}
                                                 hasError={

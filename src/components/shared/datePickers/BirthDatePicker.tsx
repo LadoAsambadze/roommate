@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import * as React from 'react'
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { cn } from '@/src/utils/cn'
@@ -9,9 +8,10 @@ import { Calendar } from '../../ui/calendar'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../../ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover'
+import { useState } from 'react'
 
 export function BirthDatePicker({ field }: any) {
-    const [date, setDate] = React.useState<Date>(field.value)
+    const [date, setDate] = useState<Date>(field.value)
     const { t } = useTranslation()
 
     return (
@@ -41,7 +41,7 @@ export function BirthDatePicker({ field }: any) {
                     }}
                     captionLayout="dropdown-buttons" // Renders dropdowns for years and months
                     fromYear={1960}
-                    toYear={2005}
+                    toYear={2009}
                     mode="single"
                     selected={date}
                     onSelect={(newDate: any) => {

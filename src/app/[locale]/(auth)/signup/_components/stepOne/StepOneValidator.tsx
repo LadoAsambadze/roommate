@@ -33,7 +33,17 @@ export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
             .refine((obj) => Object.keys(obj).length >= 1, {
                 message: t('selectCountry'),
             }),
-        birthDate: z.string().min(1, { message: t('selectAge') }),
+            birthDate: z.string().min(1)
+            .refine((value) => {
+                const today = new Date();
+                const birthDate = new Date(value);
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                return age >= 18;
+            }, { message: t('ageValidationError') }),
 
         phone: z.string().refine((value) => isValidPhoneNumber(value), {
             message: t('incorrectFormat'),
@@ -66,6 +76,8 @@ export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
             code: formData.code ? formData.code : undefined,
         },
     })
+
+
 
     return form
 }

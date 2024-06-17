@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import * as React from 'react'
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
@@ -11,13 +10,18 @@ import { Calendar } from '@/src/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/src/components/ui/popover'
 import { useTranslation } from 'react-i18next'
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/components/ui/drawer'
+import { ControllerRenderProps } from 'react-hook-form'
+import { useState } from 'react'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-    setFilterData?: any
-    updateUseForm?: any
-    field?: any
+    field: ControllerRenderProps<
+        {
+            [x: string]: any
+        },
+        any
+    >
     id?: string
-    filterData?: any
+    updateUseForm: (data: any) => Promise<void>
 }
 
 export const SignupRangePicker: React.FC<Props> = ({
@@ -26,7 +30,7 @@ export const SignupRangePicker: React.FC<Props> = ({
     field,
     id,
 }: Props) => {
-    const [date, setDate] = React.useState<DateRange | undefined>({
+    const [date, setDate] = useState<DateRange | undefined>({
         from: field.value[0],
         to: field.value[1],
     })
@@ -139,7 +143,7 @@ export const SignupRangePicker: React.FC<Props> = ({
                     />
                     <DrawerClose>
                         <Button variant="default" type="button" className="w-4/5">
-                            Submit
+                            {t('save')}
                         </Button>
                     </DrawerClose>
                 </DrawerContent>

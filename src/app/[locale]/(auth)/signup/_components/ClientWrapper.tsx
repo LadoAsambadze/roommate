@@ -13,31 +13,25 @@ import { CustomError } from '@/src/types/error/types'
 import StepTwo from './stepTwo/StepTwo'
 import StepOne from './stepOne/StepOne'
 import { signIn } from 'next-auth/react'
+import { SignupAlert } from './popups/SignupAlert'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ClientWrapper({ countries, genders, questions }: any) {
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
-    const [isOpen, setIsOpen] = useState(false)
+    const [popupIsOpen, setPopupIsOpen] = useState(false)
+    const [alertIsOpen, setAlertIsOpen] = useState(false)
+    const [alertType, setAlertType] = useState('')
     const [formData, setFormData] = useState<FormDataProps>({ answeredQuestions: [] })
     const secondStep = questions?.slice(0, 7)
     const thirthStep = questions?.slice(8, 13)
     const [signUp] = useMutation(signup_submit)
     const router = useRouter()
 
-    const showErrorWithHelp = () => {
-        alert(t('serverError'))
-        if (confirm('Go to support')) {
-            window.open(
-                'https://www.facebook.com/share/E3WJ5xzYtAQ4itRd/?mibextid=WC7FNe',
-                '_blank'
-            )
-        }
-    }
-
     const updateFormData = (newData: FormDataProps) => {
         setFormData((prevData: FormDataProps) => ({ ...prevData, ...newData }))
     }
+
     const submit = async () => {
         const modifiedFormData: FormDataProps = {
             ...formData,
@@ -91,7 +85,7 @@ export default function ClientWrapper({ countries, genders, questions }: any) {
                     redirect: false,
                 })
                 if (step === 3) {
-                    setIsOpen(true)
+                    setPopupIsOpen(true)
                 }
 
                 if (typeof formData?.countryId === 'number' && formData.countryId === 145) {
@@ -99,12 +93,13 @@ export default function ClientWrapper({ countries, genders, questions }: any) {
                 }
             }
         } catch (error: unknown | CustomError) {
+            setAlertIsOpen(true)
             if ((error as CustomError)?.message === 'PHONE_EXISTS') {
-                alert(t('phoneExist'))
+                setAlertType('PHONE_EXISTS')
             } else if ((error as CustomError)?.message === 'EMAIL_EXISTS') {
-                alert(t('emailExist'))
+                setAlertType('EMAIL_EXISTS')
             } else {
-                showErrorWithHelp()
+                setAlertType('ERROR')
             }
         }
     }
@@ -114,9 +109,14 @@ export default function ClientWrapper({ countries, genders, questions }: any) {
             <main className="flex h-auto w-full flex-col items-center justify-center  px-6 md:px-[10%] md:pb-16  lg:px-[15%]  xl:px-[334px]">
                 <SignupHeader step={step} />
                 <PopUp
-                    isOpen={isOpen}
+                    popupIsOpen={popupIsOpen}
                     range={formData.answeredQuestions && formData?.answeredQuestions[7]}
                     country={formData?.countryId}
+                />
+                <SignupAlert
+                    alertIsOpen={alertIsOpen}
+                    alertType={alertType}
+                    setAlertIsOpen={setAlertIsOpen}
                 />
 
                 <Card className="w-full">
