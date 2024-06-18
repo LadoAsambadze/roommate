@@ -119,6 +119,7 @@ export default function StepTwo({
                                                                 </FormLabel>
                                                                 <FormControl>
                                                                     <textarea
+                                                                        spellCheck="false"
                                                                         className="w-full rounded-md border border-[#828bab] px-3 py-2 text-sm  focus:border-2 focus:border-[#c5758a] focus:outline-none"
                                                                         rows={4}
                                                                         {...field}

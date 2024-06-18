@@ -89,7 +89,7 @@ export default function ClientWrapper({ countries, genders, questions }: any) {
                 }
 
                 if (typeof formData?.countryId === 'number' && formData.countryId === 145) {
-                    router.push('/')
+                    router.push('/roommates')
                 }
             }
         } catch (error: unknown | CustomError) {

@@ -110,7 +110,7 @@ export default function StepOne({
             }
         })()
     }
-    console.log(formData)
+
     return (
         <>
             {isClient ? (

@@ -97,15 +97,21 @@ export function PopUp({ popupIsOpen, range, country }: any) {
 
                     <div className="mt-2 flex flex-row justify-center  gap-2 ">
                         {range < 135 ? (
-                            <Button className="w-auto px-2" onClick={() => router.push('/')}>
+                            <Button
+                                className="w-auto px-2"
+                                onClick={() => router.push('/roommates')}
+                            >
                                 {t('135-no')}
                             </Button>
                         ) : range > 135 && range < 270 ? (
-                            <Button className="w-auto px-2" onClick={() => router.push('/')}>
+                            <Button
+                                className="w-auto px-2"
+                                onClick={() => router.push('/roommates')}
+                            >
                                 {t('270-no')}
                             </Button>
                         ) : null}
-                        <Button className="w-auto px-2" onClick={() => router.push('/')}>
+                        <Button className="w-auto px-2" onClick={() => router.push('/roommates')}>
                             {range < 135
                                 ? t('135-yes')
                                 : range > 135 && range < 270

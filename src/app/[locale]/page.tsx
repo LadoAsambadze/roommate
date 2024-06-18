@@ -1,3 +1,4 @@
+import CoverSection from '@/src/components/home/CoverSection'
 import BlogSection from '../../components/home/BlogSection'
 import ConnectSection from '../../components/home/ConnectSection'
 import ContactSection from '../../components/home/ContactSection'
@@ -6,11 +7,10 @@ import QuestionSection from '../../components/home/QuestionSection'
 import ReviewSection from '../../components/home/ReviewSection'
 import SuggestSection from '../../components/home/SuggestSection'
 
-
-
 async function Home() {
     return (
         <main className="h-full w-full">
+            <CoverSection />
             <FeatureSection />
             <BlogSection />
             <SuggestSection />
