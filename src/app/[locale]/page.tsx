@@ -25,11 +25,11 @@ async function Home() {
 
     return (
         <main className="h-full w-full">
-            <ApartmentSection flats={flats} />
             <CoverSection />
             <FeatureSection />
             <BlogSection />
             <SuggestSection />
+            <ApartmentSection flats={flats} />
             <ConnectSection />
             <ContactSection />
             <ReviewSection />

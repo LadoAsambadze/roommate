@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from '../ui/carousel'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -32,7 +38,10 @@ export default function ApartmentSection({ flats }: any) {
                         <CarouselContent className="pr-12 lg:pr-16">
                             {flats &&
                                 flats.map((item: Flat) => (
-                                    <CarouselItem key={item.id} className="pointer basis-1/4  ">
+                                    <CarouselItem
+                                        key={item.id}
+                                        className=" cursor-pointer sm:basis-1/2   lg:basis-1/3 xl:basis-1/4  "
+                                    >
                                         <div className=" flex w-auto cursor-pointer flex-col items-start justify-start overflow-auto text-ellipsis whitespace-nowrap rounded-xl border">
                                             <div className="relative h-[250px] w-full overflow-hidden ">
                                                 <Image
@@ -90,19 +99,23 @@ export default function ApartmentSection({ flats }: any) {
                                     </CarouselItem>
                                 ))}
                         </CarouselContent>
-                        {/* {media ? null : <CarouselPrevious />}
-                        {media ? null : <CarouselNext />} */}
+                        <div className="hidden md:block">
+                            <CarouselPrevious />
+                            <CarouselNext />
+                        </div>
                     </Carousel>
-                    <Link href="/houseSearch">
+                    {/* <Link href="/houseSearch">
                         <p className="pointer absolute -bottom-5 right-24 hidden text-sm text-[#484848] underline md:block">
                             {t('viewAll')}
                         </p>
-                    </Link>
-                    <Link href="/houseSearch">
-                        <div className="mt-6 flex w-[92%] items-center justify-center rounded-md border border-[#838CAC] py-2 text-sm text-[#838CAC] md:hidden">
-                            {t('viewAll')}
-                        </div>
-                    </Link>
+                    </Link> */}
+                </div>
+                <div className=" flex w-full items-center justify-center overflow-hidden   px-6 sm:px-16 md:items-end md:justify-end md:px-20 xl:px-24 ">
+                    <button className=" w-full rounded-md border border-[#838CAC]  py-2 text-sm   text-[#838CAC]   underline-offset-2 md:w-auto md:border-none md:text-[#484848] md:md:underline">
+                        <Link className="w-auto" href="/houseSearch">
+                            {t('viewAll')}{' '}
+                        </Link>
+                    </button>
                 </div>
             </section>
         </>
