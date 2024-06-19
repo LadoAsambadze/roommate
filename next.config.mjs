@@ -8,6 +8,10 @@ const nextConfig = {
 
         return config
     },
+
+    images: {
+        domains: ['img.roommategeorgia.ge'],
+    },
 }
 
 export default nextConfig

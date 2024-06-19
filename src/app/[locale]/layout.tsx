@@ -59,7 +59,7 @@ export default async function RootLayout({
                         locale={locale}
                         resources={resources}
                     >
-                        <ApolloWrapper>
+                        <ApolloWrapper >
                             <Header />
                             {children}
                             <Footer />
