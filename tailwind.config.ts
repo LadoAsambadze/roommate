@@ -24,8 +24,9 @@ const config = {
             backgroundImage: {
                 connectFirstBg: `url("/images/ConnectFirstBg.jpg")`,
                 connectSecondBg: `url("/images/ConnectSecondBg.jpg")`,
+                mobileCoverBg: `url("/images/CoverDesktop.jpg")`,
             },
-            
+
             colors: {
                 mainGreen: 'hsl(var(--mainGreen))',
                 hoverGreen: 'hsl(var(--hoverGreen))',
