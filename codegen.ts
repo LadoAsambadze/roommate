@@ -4,7 +4,7 @@ const config: CodegenConfig = {
     overwrite: true,
     schema: ['https://test-api.roommategeorgia.ge/graphql', './*/.graphql'],
     generates: {
-        'graphql/types/graphql.ts': {
+        'graphql/typesGraphql.ts': {
             plugins: ['typescript'],
             config: {
                 useTypeImports: true,

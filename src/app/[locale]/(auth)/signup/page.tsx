@@ -1,11 +1,8 @@
 import { getClient } from '@/src/libs/graphql/client'
-import {
-    getCountriesQuery,
-    getGendersQuery,
-    getQuestionsWithAnswersQuery,
-} from '@/graphql/queries/suspenses/signupCombined'
+
 import ClientWrapper from './_components/ClientWrapper'
-import { Language } from '@/graphql/types/graphql'
+import { getCountriesQuery, getGendersQuery, getQuestionsWithAnswersQuery } from '@/graphql/query'
+import { Language } from '@/graphql/typesGraphql'
 
 export default async function Signup({ params }: { params: { locale: string } }) {
     const server = getClient()

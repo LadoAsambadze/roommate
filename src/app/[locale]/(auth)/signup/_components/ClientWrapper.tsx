@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { signup_submit } from '@/graphql/queries/mutations/signupSubmit'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -8,37 +8,40 @@ import { useTranslation } from 'react-i18next'
 import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/src/components/ui/card'
 import SignupHeader from './header/SignupHeader'
-import { FormDataProps } from '../types'
 import { CustomError } from '@/src/types/error/types'
 import StepTwo from './stepTwo/StepTwo'
 import StepOne from './stepOne/StepOne'
 import { signIn } from 'next-auth/react'
 import { SignupAlert } from './popups/SignupAlert'
+import { SignupMutation } from '@/graphql/mutation'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ClientWrapper({ countries, genders, questions }: any) {
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
     const [popupIsOpen, setPopupIsOpen] = useState(false)
     const [alertIsOpen, setAlertIsOpen] = useState(false)
     const [alertType, setAlertType] = useState('')
-    const [formData, setFormData] = useState<FormDataProps>({ answeredQuestions: [] })
+    const [formData, setFormData] = useState<any>({
+        answeredQuestions: [],
+    })
     const secondStep = questions?.slice(0, 7)
     const thirthStep = questions?.slice(8, 13)
-    const [signUp] = useMutation(signup_submit)
+    const [signUp] = useMutation(SignupMutation, {
+        fetchPolicy: 'network-only',
+    })
     const router = useRouter()
 
-    const updateFormData = (newData: FormDataProps) => {
-        setFormData((prevData: FormDataProps) => ({ ...prevData, ...newData }))
+    const updateFormData = (newData: any) => {
+        setFormData((prevData: any) => ({ ...prevData, ...newData }))
     }
 
     const submit = async () => {
-        const modifiedFormData: FormDataProps = {
+        const modifiedFormData = {
             ...formData,
         }
         delete modifiedFormData.code
         if (typeof modifiedFormData.countryId === 'object' && modifiedFormData.countryId !== null) {
-            modifiedFormData.countryId = Number(modifiedFormData.countryId.value)
+            modifiedFormData.countryId = Number(modifiedFormData.countryId?.value)
         }
         if (typeof modifiedFormData.genderId === 'object' && modifiedFormData.genderId !== null) {
             modifiedFormData.genderId = Number(modifiedFormData.genderId.value)

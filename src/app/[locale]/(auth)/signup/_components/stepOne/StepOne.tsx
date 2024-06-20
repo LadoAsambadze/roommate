@@ -5,8 +5,6 @@ import { StepOneValidator } from './StepOneValidator'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { sms_check } from '@/graphql/queries/mutations/smsCheck'
-import { sms_send } from '@/graphql/queries/mutations/smsSend'
 import {
     Form,
     FormControl,
@@ -24,6 +22,7 @@ import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInpu
 import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
 import { FormDataPropsOne } from './types'
 import Loading from '../../loading'
+import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
 
 export default function StepOne({
     countries,
@@ -45,8 +44,12 @@ export default function StepOne({
     const { t } = useTranslation()
     const [clicked, setClicked] = useState(false)
     const labels = params.locale === 'ka' ? undefined : undefined
-    const [smsCheck] = useMutation(sms_check)
-    const [smsSend] = useMutation(sms_send)
+    const [smsCheck] = useMutation(CheckCodeMutation, {
+        fetchPolicy: 'network-only',
+    })
+    const [smsSend] = useMutation(SendCodeMutation, {
+        fetchPolicy: 'network-only',
+    })
     const [isClient, setIsClient] = useState(false)
     const [phoneFormat, setPhoneFormat] = useState(false)
 
@@ -72,16 +75,17 @@ export default function StepOne({
             const response = await smsCheck({
                 variables: {
                     input: {
-                        phone: form.watch('phone'),
+                        phone: form.watch('phone') ?? '',
                         code: modifedForCode.code,
                     },
                 },
             })
-            if (response.data.checkCode === 'VALID') {
+
+            if (response?.data?.checkCode === 'VALID') {
                 setStep(2)
-            } else if (response.data.checkCode === 'INVALID') {
+            } else if (response?.data?.checkCode === 'INVALID') {
                 form.setError('code', { message: t('codeExpired') })
-            } else if (response.data.checkCode === 'NOT_FOUND') {
+            } else if (response?.data?.checkCode === 'NOT_FOUND') {
                 form.setError('code', { message: t('incorrectCode') })
             }
         } catch (error) {
@@ -92,17 +96,16 @@ export default function StepOne({
     const getCodeHandler = async () => {
         await form.handleSubmit(async () => {
             setClicked(true)
-
             try {
                 const response = await smsSend({
                     variables: {
                         input: {
-                            phone: form.watch('phone'),
+                            phone: form.watch('phone') ?? '',
                         },
                     },
                 })
 
-                if (response.data.sendCode === 'ALREADY_SENT') {
+                if (response?.data?.sendCode === 'ALREADY_SENT') {
                     form.setError('code', { message: t('codeAlreadySent') })
                 }
             } catch (error) {

@@ -1,10 +1,6 @@
-import {
-    Query,
-    QueryGetCountriesArgs,
-    QueryGetGendersArgs,
-    QueryGetQuestionsWithAnswersArgs,
-} from '@/graphql/types/graphql'
+
 import { TypedDocumentNode, gql } from '@apollo/client'
+import { Query, QueryGetCountriesArgs, QueryGetGendersArgs, QueryGetQuestionsWithAnswersArgs } from './typesGraphql'
 
 export const getGendersQuery: TypedDocumentNode<
     { getGenders: Query[`getGenders`] },

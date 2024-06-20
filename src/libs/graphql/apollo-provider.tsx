@@ -11,7 +11,6 @@ import { ApolloLink, HttpLink } from '@apollo/client'
 function makeClient() {
     const httpLink = new HttpLink({
         uri: 'https://test-api.roommategeorgia.ge/graphql',
-        fetchOptions: { cache: 'cache-first' },
     })
 
     return new NextSSRApolloClient({

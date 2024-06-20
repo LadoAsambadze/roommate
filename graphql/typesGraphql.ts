@@ -369,6 +369,7 @@ export type UserAndAnsweredQuestionsInput = {
     lastname: Scalars['String']['input']
     password: Scalars['String']['input']
     phone: Scalars['PhoneNumber']['input']
+    profileImage?: InputMaybe<Scalars['String']['input']>
 }
 
 export type UserAnsweredQuestionObject = {

@@ -9,23 +9,13 @@ import {
 } from '../ui/carousel'
 import Link from 'next/link'
 import Image from 'next/image'
-
 import { useTranslation } from 'react-i18next'
-
-interface Flat {
-    id: number
-    title: string
-    street: string
-    price: number
-    images: { thumb: string; original: string }[]
-    description: string
-    room: number
-    area: number
-    district: { title: string }
-}
+import { Door, Location, Square } from '../svgs'
 
 export default function ApartmentSection({ flats }: any) {
     const { t } = useTranslation()
+
+    console.log(flats)
 
     return (
         <>
@@ -37,7 +27,7 @@ export default function ApartmentSection({ flats }: any) {
                     <Carousel className="w-full p-0">
                         <CarouselContent className="pr-12 lg:pr-16">
                             {flats &&
-                                flats.map((item: Flat) => (
+                                flats.map((item: any) => (
                                     <CarouselItem
                                         key={item.id}
                                         className=" cursor-pointer sm:basis-1/2   lg:basis-1/3 xl:basis-1/4  "
@@ -51,48 +41,29 @@ export default function ApartmentSection({ flats }: any) {
                                                     alt="123"
                                                 />
                                             </div>
-                                            <div className="relative flex w-full flex-col px-4 pb-4 pt-7">
+                                            <div className="relative flex w-full flex-col p-4">
                                                 <h1 className="text-xl font-bold text-[#484848]">
-                                                    {item.price} ₾/ {t('InMonth')}
+                                                    {item.price} ₾/ {t('inMonth')}
                                                 </h1>
-                                                <div className="mt-4 flex flex-row items-center">
+                                                <div className="mt-3 flex flex-row items-center">
                                                     <div className="flex flex-row items-center">
-                                                        {/* <Image
-                                                                src={Door}
-                                                                width={24}
-                                                                height={24}
-                                                            /> */}
+                                                        <Door />
                                                         <p className="ml-2 text-sm text-[#484848]">
-                                                            {t('room')}: {item.room}
+                                                            {t('room')}: 2
                                                         </p>
                                                     </div>
-                                                    <div className="ml-10 flex flex-row items-center">
-                                                        {/* <Image
-                                                                src={Square}
-                                                                width={24}
-                                                                height={24}
-                                                            /> */}
-                                                        <p className="ml-2 text-sm text-[#484848]">
-                                                            {t('area')} - {item.area}
+                                                    <div className="ml-10 flex flex-row items-center text-ellipsis">
+                                                        <Square />
+                                                        <p className="ml-2 text-ellipsis text-sm  text-[#484848]   ">
+                                                            {t('area')} - 55
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <div className="mt-2 flex flex-row items-center">
-                                                    {/* <Image
-                                                            src={Location}
-                                                            width={24}
-                                                            height={24}
-                                                        /> */}
-                                                    <p className="ml-2 text-sm text-[#484848]">
-                                                        {item.district?.title}
+                                                <div className="mt-2 flex flex-row items-center  ">
+                                                    <Location />
+                                                    <p className="ml-2 overflow-hidden text-ellipsis whitespace-nowrap text-sm text-[#484848]">
+                                                        {item.street}
                                                     </p>
-                                                </div>
-                                                <div className="absolute -top-5 right-4">
-                                                    {/* <Image
-                                                            src={Cursor}
-                                                            width={40}
-                                                            height={40}
-                                                        /> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -104,16 +75,11 @@ export default function ApartmentSection({ flats }: any) {
                             <CarouselNext />
                         </div>
                     </Carousel>
-                    {/* <Link href="/houseSearch">
-                        <p className="pointer absolute -bottom-5 right-24 hidden text-sm text-[#484848] underline md:block">
-                            {t('viewAll')}
-                        </p>
-                    </Link> */}
                 </div>
                 <div className=" flex w-full items-center justify-center overflow-hidden   px-6 sm:px-16 md:items-end md:justify-end md:px-20 xl:px-24 ">
                     <button className=" w-full rounded-md border border-[#838CAC]  py-2 text-sm   text-[#838CAC]   underline-offset-2 md:w-auto md:border-none md:text-[#484848] md:md:underline">
                         <Link className="w-auto" href="/houseSearch">
-                            {t('viewAll')}{' '}
+                            {t('viewAll')}
                         </Link>
                     </button>
                 </div>
