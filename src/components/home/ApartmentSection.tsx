@@ -15,8 +15,6 @@ import { Door, Location, Square } from '../svgs'
 export default function ApartmentSection({ flats }: any) {
     const { t } = useTranslation()
 
-    console.log(flats)
-
     return (
         <>
             <section>
