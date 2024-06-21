@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { Popup } from '@/src/components/svgs'
 import { Button } from '@/src/components/ui/button'
@@ -6,7 +5,13 @@ import { Dialog, DialogContent } from '@/src/components/ui/dialog'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
-export function PopUp({ popupIsOpen, range, country }: any) {
+type PopupProps = {
+    popupIsOpen: boolean
+    range: number
+    country: string
+}
+
+export function PopUp({ popupIsOpen, range, country }: PopupProps) {
     const router = useRouter()
     const { t } = useTranslation()
 
@@ -53,7 +58,7 @@ export function PopUp({ popupIsOpen, range, country }: any) {
                     <span>
                         {range < 135 ? (
                             <>
-                                {t('135-5')} (You can also search them on our website or in our{' '}
+                                {t('135-5')} (You can also search them on our website or in our
                                 <a
                                     href="https://www.facebook.com/RoommateGeorgia.ge"
                                     target="_blank"
@@ -65,7 +70,7 @@ export function PopUp({ popupIsOpen, range, country }: any) {
                             </>
                         ) : range >= 135 && range < 270 ? (
                             <>
-                                {t('270-5')} (You can also search them on our website or in our{' '}
+                                {t('270-5')} (You can also search them on our website or in our
                                 <a
                                     href="https://www.facebook.com/RoommateGeorgia.ge"
                                     target="_blank"

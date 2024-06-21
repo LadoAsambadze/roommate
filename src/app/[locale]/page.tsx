@@ -13,7 +13,6 @@ import { query } from '@/graphql/restLinkQuery'
 async function getFlats() {
     try {
         const response = await client.query({ query, fetchPolicy: 'cache-first' })
-
         return response?.data?.flats?.data
     } catch (error) {
         return null

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Error } from '@/src/components/svgs'
 import {
     AlertDialog,
@@ -10,14 +9,21 @@ import {
 } from '@/src/components/ui/alert-dialog'
 import { Button } from '@/src/components/ui/button'
 import Link from 'next/link'
+import { Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export function SignupAlert({ alertIsOpen, alertType, setAlertIsOpen }: any) {
+type SignupProps = {
+    alertIsOpen: boolean
+    alertType: string
+    setAlertIsOpen: Dispatch<SetStateAction<boolean>>
+}
+
+export function SignupAlert({ alertIsOpen, alertType, setAlertIsOpen }: SignupProps) {
     const { t } = useTranslation()
     const handleClose = () => {
         setAlertIsOpen(false)
     }
-    const handleClickOutside = (event: any) => {
+    const handleClickOutside = (event: { stopPropagation: () => void }) => {
         event.stopPropagation()
     }
 
@@ -56,18 +62,18 @@ export function SignupAlert({ alertIsOpen, alertType, setAlertIsOpen }: any) {
                             {t('close')}
                         </Button>
                         {alertType && alertType === 'ERROR' && (
-                            <Link
-                                href="https://www.facebook.com/share/E3WJ5xzYtAQ4itRd/?mibextid=WC7FNe"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Button
+                                className="w-auto text-xs md:text-sm lg:text-sm"
+                                onClick={handleClose}
                             >
-                                <Button
-                                    className="w-auto text-xs md:text-sm lg:text-sm"
-                                    onClick={handleClose}
+                                <Link
+                                    href="https://www.facebook.com/share/E3WJ5xzYtAQ4itRd/?mibextid=WC7FNe"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                 >
                                     {t('supportTeam')}
-                                </Button>
-                            </Link>
+                                </Link>
+                            </Button>
                         )}
                     </AlertDialogFooter>
                 </AlertDialogContent>

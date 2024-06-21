@@ -4,15 +4,14 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import 'react-phone-number-input/style.css'
 import { useTranslation } from 'react-i18next'
-import { FormDataPropsTwo } from './types'
+import { QuestionObject } from '@/graphql/typesGraphql'
 
-export default function StepTwoValidator({
-    questions,
-    formData,
-}: {
-    questions: any
-    formData: FormDataPropsTwo
-}) {
+type StepTwoValidatorProps = {
+    questions: QuestionObject[]
+    formData: any
+}
+
+export default function StepTwoValidator({ questions, formData }: StepTwoValidatorProps) {
     const { t } = useTranslation()
 
     const formSchema = z.object(
@@ -76,7 +75,7 @@ export default function StepTwoValidator({
         ...questions.reduce((acc: any, item: any) => {
             if (item.uiFieldInfo) {
                 if (formData.answeredQuestions && item.uiFieldInfo.input.variant === 'multiple') {
-                    acc[item.id] = formData.answeredQuestions[item.id] || null
+                    acc[item?.id] = formData.answeredQuestions[item.id] || null
                 } else if (
                     formData.answeredQuestions &&
                     item.uiFieldInfo.input.variant === 'single'

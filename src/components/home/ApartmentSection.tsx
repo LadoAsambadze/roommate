@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import {
     Carousel,
@@ -12,7 +11,22 @@ import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
 import { Door, Location, Square } from '../svgs'
 
-export default function ApartmentSection({ flats }: any) {
+type Flat = {
+    id: string
+    title: string
+    area: string
+    room: number
+    address: string
+    images: { original: string }[]
+    price: string
+    street: string
+}
+
+type ApartmentSectionProps = {
+    flats: Flat[]
+}
+
+export default function ApartmentSection({ flats }: ApartmentSectionProps) {
     const { t } = useTranslation()
 
     return (
@@ -25,7 +39,7 @@ export default function ApartmentSection({ flats }: any) {
                     <Carousel className="w-full p-0">
                         <CarouselContent className="pr-12 lg:pr-16">
                             {flats &&
-                                flats.map((item: any) => (
+                                flats.map((item) => (
                                     <CarouselItem
                                         key={item.id}
                                         className=" cursor-pointer sm:basis-1/2   lg:basis-1/3 xl:basis-1/4  "
@@ -36,7 +50,7 @@ export default function ApartmentSection({ flats }: any) {
                                                     layout="fill"
                                                     objectFit="cover"
                                                     src={item.images[0].original}
-                                                    alt="123"
+                                                    alt="Apartment image"
                                                 />
                                             </div>
                                             <div className="relative flex w-full flex-col p-4">
@@ -47,13 +61,13 @@ export default function ApartmentSection({ flats }: any) {
                                                     <div className="flex flex-row items-center">
                                                         <Door />
                                                         <p className="ml-2 text-sm text-[#484848]">
-                                                            {t('room')}: 2
+                                                            {t('room')}: {item.room}
                                                         </p>
                                                     </div>
                                                     <div className="ml-10 flex flex-row items-center text-ellipsis">
                                                         <Square />
                                                         <p className="ml-2 text-ellipsis text-sm  text-[#484848]   ">
-                                                            {t('area')} - 55
+                                                            {t('area')} - {item.area}
                                                         </p>
                                                     </div>
                                                 </div>

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -14,8 +13,15 @@ import StepOne from './stepOne/StepOne'
 import { signIn } from 'next-auth/react'
 import { SignupAlert } from './popups/SignupAlert'
 import { SignupMutation } from '@/graphql/mutation'
+import { CountryObject, GenderObject, QuestionObject } from '@/graphql/typesGraphql'
 
-export default function ClientWrapper({ countries, genders, questions }: any) {
+type ClientWrapperProps = {
+    countries: CountryObject[]
+    genders: GenderObject[]
+    questions: QuestionObject[]
+}
+
+export default function ClientWrapper({ countries, genders, questions }: ClientWrapperProps) {
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
     const [popupIsOpen, setPopupIsOpen] = useState(false)
@@ -24,13 +30,13 @@ export default function ClientWrapper({ countries, genders, questions }: any) {
     const [formData, setFormData] = useState<any>({
         answeredQuestions: [],
     })
+
     const secondStep = questions?.slice(0, 7)
     const thirthStep = questions?.slice(8, 13)
     const [signUp] = useMutation(SignupMutation, {
         fetchPolicy: 'network-only',
     })
     const router = useRouter()
-
     const updateFormData = (newData: any) => {
         setFormData((prevData: any) => ({ ...prevData, ...newData }))
     }
@@ -46,7 +52,7 @@ export default function ClientWrapper({ countries, genders, questions }: any) {
         if (typeof modifiedFormData.genderId === 'object' && modifiedFormData.genderId !== null) {
             modifiedFormData.genderId = Number(modifiedFormData.genderId.value)
         }
-        if (modifiedFormData?.email === '') {
+        if (!modifiedFormData?.email) {
             delete modifiedFormData.email
         }
         const answeredQuestions = []
@@ -55,12 +61,14 @@ export default function ClientWrapper({ countries, genders, questions }: any) {
             if (typeof value === 'string') {
                 answeredQuestions.push({ questionId: key, data: value })
             } else if (Array.isArray(value)) {
-                if (typeof value[0] === 'object') {
+                if (Array.isArray(value) && typeof value[0] === 'object') {
                     const questionId = value[0]['questionId']
-                    const answerIds = value.map((item) => item['value'])
+                    const answerIds = (value as unknown as Array<object>).map((item) =>
+                        Object.values(item)
+                    )
                     answeredQuestions.push({
-                        questionId: questionId,
-                        answerIds: answerIds,
+                        questionId,
+                        answerIds: answerIds.flat(),
                     })
                 } else {
                     answeredQuestions.push({
@@ -75,7 +83,9 @@ export default function ClientWrapper({ countries, genders, questions }: any) {
                 })
             }
         }
+
         modifiedFormData.answeredQuestions = answeredQuestions
+        console.log(modifiedFormData)
 
         try {
             const response = await signUp({
@@ -113,7 +123,7 @@ export default function ClientWrapper({ countries, genders, questions }: any) {
                 <SignupHeader step={step} />
                 <PopUp
                     popupIsOpen={popupIsOpen}
-                    range={formData.answeredQuestions && formData?.answeredQuestions[7]}
+                    range={formData?.answeredQuestions && formData?.answeredQuestions[7]}
                     country={formData?.countryId}
                 />
                 <SignupAlert

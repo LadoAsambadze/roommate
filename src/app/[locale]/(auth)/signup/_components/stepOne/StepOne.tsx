@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation'
 import { StepOneValidator } from './StepOneValidator'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import {
     Form,
@@ -20,25 +20,28 @@ import { DropdownIndicator, customStyles } from '@/src/components/shared/select/
 import Image from 'next/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
-import { FormDataPropsOne } from './types'
 import Loading from '../../loading'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
+import { CountryObject, GenderObject } from '@/graphql/typesGraphql'
+import { FormDataPropsOne } from './types'
+
+type StepOneProps = {
+    countries: CountryObject[]
+    genders: GenderObject[]
+    step: number
+    formData: any
+    setStep: Dispatch<SetStateAction<number>>
+    updateFormData: (newData: any) => void
+}
 
 export default function StepOne({
     countries,
     genders,
     step,
+    formData,
     setStep,
     updateFormData,
-    formData,
-}: {
-    countries: any
-    step: any
-    genders: any
-    setStep: any
-    updateFormData: any
-    formData: FormDataPropsOne
-}) {
+}: StepOneProps) {
     const form = StepOneValidator({ formData })
     const params = useParams()
     const { t } = useTranslation()

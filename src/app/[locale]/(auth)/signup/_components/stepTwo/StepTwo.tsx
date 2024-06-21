@@ -7,28 +7,30 @@ import { useTranslation } from 'react-i18next'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
 import StepTwoValidator from './StepTwoValidator'
-import { FormDataPropsTwo } from './types'
 import Loading from '../../loading'
 import { useEffect, useState } from 'react'
 import { ArrowLeft } from '@/src/components/svgs'
+import { QuestionObject } from '@/graphql/typesGraphql'
+
+type StepTwoProps = {
+    questions: QuestionObject[]
+    step: number
+    next: string
+    formData: any
+    setStep: (value: number) => void
+    updateFormData: (newData: any) => void
+    submit: () => Promise<void>
+}
 
 export default function StepTwo({
     questions,
-    setStep,
-    formData,
     step,
     next,
+    formData,
+    setStep,
     updateFormData,
     submit,
-}: {
-    questions: any
-    setStep: (value: number) => void
-    formData: FormDataPropsTwo
-    step: number
-    next: string
-    updateFormData: (newData: FormDataPropsTwo) => void
-    submit: () => Promise<void>
-}) {
+}: StepTwoProps) {
     const { t } = useTranslation()
     const form = StepTwoValidator({ questions, formData })
     const [isClient, setIsClient] = useState(false)
@@ -70,7 +72,7 @@ export default function StepTwo({
                                                         render={({ field }) => (
                                                             <FormItem>
                                                                 <FormLabel className="leading-5">
-                                                                    {item.translations[0].title}
+                                                                    {item?.translations[0]?.title}
                                                                 </FormLabel>
                                                                 <FormControl>
                                                                     <Input

@@ -8,6 +8,8 @@ export const query = gql`
                 title
                 street
                 price
+                area
+                room
                 images {
                     thumb
                     original

@@ -1,12 +1,10 @@
 import { getClient } from '@/src/libs/graphql/client'
-
 import ClientWrapper from './_components/ClientWrapper'
 import { getCountriesQuery, getGendersQuery, getQuestionsWithAnswersQuery } from '@/graphql/query'
-import { Language } from '@/graphql/typesGraphql'
+import { CountryObject, GenderObject, Language, QuestionObject } from '@/graphql/typesGraphql'
 
 export default async function Signup({ params }: { params: { locale: string } }) {
     const server = getClient()
-
     const countriesResponse = await server.query({
         query: getCountriesQuery,
         variables: {
@@ -28,9 +26,9 @@ export default async function Signup({ params }: { params: { locale: string } })
         },
     })
 
-    const countries = countriesResponse?.data.getCountries
-    const genders = gendersResponse?.data.getGenders
-    const questions = questionsWithAnswersResponse?.data.getQuestionsWithAnswers
+    const countries = countriesResponse?.data?.getCountries as CountryObject[]
+    const genders = gendersResponse?.data.getGenders as GenderObject[]
+    const questions = questionsWithAnswersResponse?.data.getQuestionsWithAnswers as QuestionObject[]
 
     return (
         <>

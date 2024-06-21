@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useTranslation } from 'react-i18next'
 import './index.css'
 
-export default function SignupHeader({ step }: any) {
+type SignupHeaderProps = {
+    step: number
+}
+
+export default function SignupHeader({ step }: SignupHeaderProps) {
     const { t } = useTranslation()
 
     return (
@@ -42,68 +44,9 @@ export default function SignupHeader({ step }: any) {
                             step === 3 ? 'rgba(25, 164, 99, 0.65)' : step > 3 ? '#19A463' : '',
                     }}
                 >
-                    {' '}
                     3 {t('step')}
                 </div>
             </div>
-            {/* <div className="mt-12 flex flex-row items-center justify-between gap-x-2 pl-5">
-                <div className="flex flex-col justify-center ">
-                    <div className="test flex h-8 w-8 items-center  justify-center rounded-full border-2 border-[#19A463]">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#19A463] text-xs font-semibold text-[#19A463] ">
-                            1
-                        </div>
-                    </div>
-                </div>
-                <div
-                    className={`h-[3px] w-full rounded-xl ${
-                        step >= 2 ? 'bg-[#19A463]' : 'bg-[#939AB6]'
-                    }`}
-                ></div>
-                <div className="flex flex-col justify-center">
-                    <div
-                        className={`flex h-8 w-8  items-center justify-center rounded-full border-2 ${
-                            step >= 2 ? 'border-[#19A463]' : 'border-[#838CAC]'
-                        }`}
-                    >
-                        <div
-                            className={`flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs font-semibold ${
-                                step >= 2
-                                    ? 'border-[#19A463] text-[#19A463]'
-                                    : 'border-[#838CAC] text-[#838CAC]'
-                            }`}
-                        >
-                            2
-                        </div>
-                    </div>
-                </div>
-                <div
-                    className={`h-[3px] w-full rounded-xl ${
-                        step >= 3 ? 'bg-[#19A463]' : 'bg-[#939AB6]'
-                    }`}
-                ></div>
-                <div
-                    className={`w-fullrounded-xl h-[3px] ${
-                        step >= 3 ? 'border-[#19A463]' : 'bg-[#939AB6]'
-                    }`}
-                ></div>
-                <div className="flex flex-col justify-center">
-                    <div
-                        className={`flex h-8 w-8  items-center justify-center rounded-full border-2 ${
-                            step >= 3 ? 'border-[#19A463]' : 'border-[#838CAC]'
-                        }`}
-                    >
-                        <div
-                            className={`flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs font-semibold ${
-                                step >= 3
-                                    ? 'border-[#19A463] text-[#19A463]'
-                                    : 'border-[#838CAC] text-[#838CAC]'
-                            }`}
-                        >
-                            3
-                        </div>
-                    </div>
-                </div>
-            </div> */}
         </div>
     )
 }

@@ -1,17 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import 'react-phone-number-input/style.css'
 import { isValidPhoneNumber } from 'react-phone-number-input'
 import { useTranslation } from 'react-i18next'
-import { FormDataPropsOne } from './types'
 
-export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
+export function StepOneValidator({ formData }: any) {
     const { t } = useTranslation()
 
-    const formSchema: z.ZodSchema<FormDataPropsOne> = z.object({
+    const formSchema: z.ZodSchema<any> = z.object({
         firstname: z.string().min(2, { message: t('nameError') }),
         lastname: z.string().min(2, { message: t('surnameError') }),
         genderId: z
@@ -33,17 +32,22 @@ export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
             .refine((obj) => Object.keys(obj).length >= 1, {
                 message: t('selectCountry'),
             }),
-            birthDate: z.string().min(1)
-            .refine((value) => {
-                const today = new Date();
-                const birthDate = new Date(value);
-                let age = today.getFullYear() - birthDate.getFullYear();
-                const m = today.getMonth() - birthDate.getMonth();
-                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                }
-                return age >= 18;
-            }, { message: t('ageValidationError') }),
+        birthDate: z
+            .string()
+            .min(1)
+            .refine(
+                (value) => {
+                    const today = new Date()
+                    const birthDate = new Date(value)
+                    let age = today.getFullYear() - birthDate.getFullYear()
+                    const m = today.getMonth() - birthDate.getMonth()
+                    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                        age--
+                    }
+                    return age >= 18
+                },
+                { message: t('ageValidationError') }
+            ),
 
         phone: z.string().refine((value) => isValidPhoneNumber(value), {
             message: t('incorrectFormat'),
@@ -68,7 +72,7 @@ export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
             lastname: formData.lastname ? formData.lastname : undefined,
             genderId: formData.genderId ? formData.genderId : undefined,
             countryId: formData?.countryId ? formData.countryId : undefined,
-            birthDate: formData.birthDate ? formData.birthDate : '',
+            birthDate: formData.birthDate ? formData.birthDate : undefined,
             email: formData.email ? formData.email : undefined,
             phone: formData.phone ? formData.phone : undefined,
             password: formData.password ? formData.password : undefined,
@@ -76,8 +80,6 @@ export function StepOneValidator({ formData }: { formData: FormDataPropsOne }) {
             code: formData.code ? formData.code : undefined,
         },
     })
-
-
 
     return form
 }
