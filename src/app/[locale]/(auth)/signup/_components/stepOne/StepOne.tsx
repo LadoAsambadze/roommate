@@ -23,7 +23,6 @@ import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePi
 import Loading from '../../loading'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
 import { CountryObject, GenderObject } from '@/graphql/typesGraphql'
-import { FormDataPropsOne } from './types'
 
 type StepOneProps = {
     countries: CountryObject[]
@@ -64,7 +63,7 @@ export default function StepOne({
         return null
     }
 
-    const handleSubmit = async (data: FormDataPropsOne) => {
+    const handleSubmit = async (data: any) => {
         const modifiedFormData = {
             ...data,
         }

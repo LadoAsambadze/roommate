@@ -1,6 +1,11 @@
-
 import { TypedDocumentNode, gql } from '@apollo/client'
-import { Query, QueryGetCountriesArgs, QueryGetGendersArgs, QueryGetQuestionsWithAnswersArgs } from './typesGraphql'
+import {
+    Query,
+    QueryGetCountriesArgs,
+    QueryGetFilteredUsersArgs,
+    QueryGetGendersArgs,
+    QueryGetQuestionsWithAnswersArgs,
+} from './typesGraphql'
 
 export const getGendersQuery: TypedDocumentNode<
     { getGenders: Query[`getGenders`] },
@@ -58,6 +63,43 @@ export const getQuestionsWithAnswersQuery: TypedDocumentNode<
                 id
                 lang
                 title
+            }
+        }
+    }
+`
+
+export const GetFilteredUsersQuery: TypedDocumentNode<
+    { getFilteredUsers: Query['getFilteredUsers'] },
+    QueryGetFilteredUsersArgs
+> = gql`
+    query GetFilteredUsers(
+        $pagination: PaginationInput
+        $locale: Language
+        $filters: [FilterInput!]
+    ) {
+        getFilteredUsers(pagination: $pagination, locale: $locale, filters: $filters) {
+            pageInfo {
+                hasNextPage
+                hasPrevious
+                offset
+                limit
+                total
+                page
+            }
+            list {
+                id
+                firstname
+                lastname
+                age
+                profileImage
+                createdAt
+                updatedAt
+                isFavourite
+                cardInfo {
+                    districtNames
+                    budget
+                    bio
+                }
             }
         }
     }

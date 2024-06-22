@@ -7,6 +7,16 @@ import {
     SSRMultipartLink,
 } from '@apollo/experimental-nextjs-app-support/ssr'
 import { ApolloLink, HttpLink } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
+
+const authLink = setContext(async () => {
+    const token = localStorage.getItem('token')
+    return {
+        headers: {
+            authorization: `Bearer ${token}`,
+        },
+    }
+})
 
 function makeClient() {
     const httpLink = new HttpLink({
@@ -21,9 +31,9 @@ function makeClient() {
                       new SSRMultipartLink({
                           stripDefer: true,
                       }),
-                      httpLink,
+                      authLink.concat(httpLink),
                   ])
-                : httpLink,
+                : authLink.concat(httpLink),
     })
 }
 

@@ -292,7 +292,6 @@ export type QueryGetUniversityArgs = {
 }
 
 export type QuestionObject = {
-    uiFieldInfo: any
     __typename?: 'QuestionObject'
     answers?: Maybe<Array<AnswerObject>>
     createdAt: Scalars['DateTime']['output']

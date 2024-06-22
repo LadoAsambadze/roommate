@@ -85,7 +85,7 @@ export default function ClientWrapper({ countries, genders, questions }: ClientW
         }
 
         modifiedFormData.answeredQuestions = answeredQuestions
-        console.log(modifiedFormData)
+       
 
         try {
             const response = await signUp({
