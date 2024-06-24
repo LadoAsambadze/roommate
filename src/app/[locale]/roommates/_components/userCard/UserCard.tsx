@@ -17,7 +17,7 @@ export default function UserCard({ data }: DataProps) {
                             key={index}
                             className="flex h-auto  w-full flex-col gap-6  overflow-hidden rounded-lg bg-[#FFFFFF]  shadow-md  lg:h-[232px] lg:w-full lg:flex-row lg:p-4 xl:w-[770px] "
                         >
-                            <Link href="/roommates/1">
+                            <Link href={`roommates/${item.id}`}>
                                 <Image
                                     src={item?.profileImage ? item?.profileImage : Avatar}
                                     width={400}
