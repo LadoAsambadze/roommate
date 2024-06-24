@@ -68,7 +68,7 @@ export const getQuestionsWithAnswersQuery: TypedDocumentNode<
     }
 `
 
-export const GetFilteredUsersQuery: TypedDocumentNode<
+export const getFilteredUsersQuery: TypedDocumentNode<
     { getFilteredUsers: Query['getFilteredUsers'] },
     QueryGetFilteredUsersArgs
 > = gql`

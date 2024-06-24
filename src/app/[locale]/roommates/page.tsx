@@ -1,10 +1,14 @@
 import initTranslations from '@/src/libs/i18n/i18n'
 import ClientWrapper from './_components/ClientWrapper'
 import { getClient } from '@/src/libs/graphql/client'
-import { GetFilteredUsersQuery } from '@/graphql/query'
+import { getFilteredUsersQuery } from '@/graphql/query'
 import { redirect } from 'next/navigation'
 import { auth } from '@/src/libs/auth/auth'
-import { Language } from '@/graphql/typesGraphql'
+import { FilterWithPaginationObject, Language } from '@/graphql/typesGraphql'
+
+interface QueryProps {
+    page: string
+}
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
     const i18nNamespaces = ['meta']
@@ -23,35 +27,43 @@ export async function generateMetadata({ params: { locale } }: { params: { local
     }
 }
 
-export default async function Roommates() {
+export default async function Roommates({
+    params: { locale },
+    searchParams,
+}: {
+    params: { locale: string }
+    searchParams: QueryProps
+}) {
     const session = await auth()
     if (!session) {
         return redirect('/signin')
     }
+
     const server = getClient()
+    const params = searchParams
+    const currentPage = params.page ? parseInt(params.page, 10) : 1
+    const limit = 10
+    const offset = (currentPage - 1) * limit
 
-    try {
-        const response = await server.query({
-            query: GetFilteredUsersQuery,
-            variables: {
-                pagination: {
-                    offset: 0,
-                    limit: 10,
-                },
-                locale: 'ka' as Language,
-                filters: [
-                    {
-                        questionId: '15',
-                        answerIds: ['1'],
-                    },
-                ],
+    const response = await server.query({
+        fetchPolicy: 'cache-first',
+        query: getFilteredUsersQuery,
+        variables: {
+            pagination: {
+                offset,
+                limit,
             },
-        })
+            locale: locale as Language,
+            filters: [
+                {
+                    questionId: '15',
+                    answerIds: ['1'],
+                },
+            ],
+        },
+    })
 
-        console.log(response.data)
-    } catch (error) {
-        return null
-    }
+    const filteredUsers = response?.data?.getFilteredUsers as FilterWithPaginationObject
 
-    return <ClientWrapper />
+    return <ClientWrapper data={filteredUsers} />
 }

@@ -10,17 +10,8 @@ import ApartmentSection from '@/src/components/home/ApartmentSection'
 import { client } from '../../libs/graphql/restLink'
 import { query } from '@/graphql/restLinkQuery'
 
-async function getFlats() {
-    try {
-        const response = await client.query({ query, fetchPolicy: 'cache-first' })
-        return response?.data?.flats?.data
-    } catch (error) {
-        return null
-    }
-}
-
 async function Home() {
-    const flats = await getFlats()
+    const response = await client.query({ query, fetchPolicy: 'cache-first' })
 
     return (
         <main className="h-full w-full">
@@ -28,7 +19,7 @@ async function Home() {
             <FeatureSection />
             <BlogSection />
             <SuggestSection />
-            <ApartmentSection flats={flats} />
+            <ApartmentSection flats={response?.data?.flats?.data} />
             <ConnectSection />
             <ContactSection />
             <ReviewSection />

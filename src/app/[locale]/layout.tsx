@@ -46,7 +46,7 @@ export default async function RootLayout({
 
     params: { locale: string }
 }) {
-    const i18nNamespaces = ['home', 'shared', 'signup', 'profile']
+    const i18nNamespaces = ['home', 'shared', 'signup', 'profile', 'roommates']
 
     const { resources } = await initTranslations(locale, i18nNamespaces)
 
@@ -59,7 +59,7 @@ export default async function RootLayout({
                         locale={locale}
                         resources={resources}
                     >
-                        <ApolloWrapper >
+                        <ApolloWrapper>
                             <Header />
                             {children}
                             <Footer />

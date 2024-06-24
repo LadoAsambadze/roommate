@@ -28,13 +28,13 @@ export type Scalars = {
 export type AnswerObject = {
     __typename?: 'AnswerObject'
     createdAt: Scalars['DateTime']['output']
+    deletedAt?: Maybe<Scalars['DateTime']['output']>
     id: Scalars['ID']['output']
     position: Scalars['Int']['output']
     question: QuestionObject
     questionId: Scalars['ID']['output']
     translations: Array<AnswerTranslatedObject>
     updatedAt: Scalars['DateTime']['output']
-    visible: Scalars['Boolean']['output']
 }
 
 export type AnswerTranslatedObject = {
@@ -295,17 +295,21 @@ export type QuestionObject = {
     __typename?: 'QuestionObject'
     answers?: Maybe<Array<AnswerObject>>
     createdAt: Scalars['DateTime']['output']
+    deletedAt?: Maybe<Scalars['DateTime']['output']>
     id: Scalars['ID']['output']
+    name: Scalars['String']['output']
     position: Scalars['Int']['output']
+    step: Scalars['Int']['output']
     translations?: Maybe<Array<QuestionTranslatedObject>>
     uiFieldInfo: Scalars['JSON']['output']
     updatedAt: Scalars['DateTime']['output']
-    visible: Scalars['Boolean']['output']
+    userAnsweredQuestions?: Maybe<Array<UserAnsweredQuestionObject>>
 }
 
 export type QuestionTranslatedObject = {
     __typename?: 'QuestionTranslatedObject'
     createdAt: Scalars['DateTime']['output']
+    deletedAt?: Maybe<Scalars['DateTime']['output']>
     filterTitle?: Maybe<Scalars['String']['output']>
     id: Scalars['ID']['output']
     lang: Language
@@ -378,6 +382,7 @@ export type UserAnsweredQuestionObject = {
     answerId?: Maybe<Scalars['ID']['output']>
     createdAt: Scalars['DateTime']['output']
     dateRangeData?: Maybe<Array<Scalars['DateTime']['output']>>
+    deletedAt?: Maybe<Scalars['DateTime']['output']>
     id: Scalars['ID']['output']
     intData?: Maybe<Scalars['Int']['output']>
     question?: Maybe<QuestionObject>
