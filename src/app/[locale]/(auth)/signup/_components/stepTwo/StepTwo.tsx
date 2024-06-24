@@ -215,7 +215,7 @@ export default function StepTwo({
                                                                         questionId: item.id,
                                                                         value: answer.id,
                                                                         label: answer
-                                                                            .translations[0].title,
+                                                                            .translations[0]?.title,
                                                                     })
                                                                 )}
                                                                 onChange={(value) => {

@@ -22,6 +22,7 @@ type ClientWrapperProps = {
 }
 
 export default function ClientWrapper({ countries, genders, questions }: ClientWrapperProps) {
+    console.log(questions)
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
     const [popupIsOpen, setPopupIsOpen] = useState(false)
@@ -85,7 +86,6 @@ export default function ClientWrapper({ countries, genders, questions }: ClientW
         }
 
         modifiedFormData.answeredQuestions = answeredQuestions
-       
 
         try {
             const response = await signUp({

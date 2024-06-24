@@ -29,6 +29,7 @@ export default function ClientWrapper({ data }: DataProps) {
 
                 <div className="hidden h-screen w-[1px] bg-[#E3E3E3] xl:block"></div>
                 <UserCard data={data} />
+
             </main>
         </>
     )

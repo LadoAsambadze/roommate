@@ -3,8 +3,8 @@ import Avatar from '../../../../../../public/images/MaleAvatar.jpg'
 import { Heart, Location, Sms } from '@/src/components/svgs'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import { RoommatesPagination } from '../pagination/Pagination'
 import { DataProps } from '../../types'
+import Pagination from '@/src/components/shared/pagination/Pagination'
 
 export default function UserCard({ data }: DataProps) {
     const { t } = useTranslation()
@@ -26,9 +26,12 @@ export default function UserCard({ data }: DataProps) {
                                     alt="test"
                                 />
                             </Link>
-                            <div className="flex h-full w-full flex-col gap-4 p-4 pb-3 pt-4 lg:p-0">
-                                <div className="flex w-full flex-row  items-start justify-between">
-                                    <div className="flex flex-col gap-1 md:flex-row">
+                            <div
+                                id="inside"
+                                className="flex h-full w-full flex-col gap-4 p-4 pb-3 pt-4 lg:p-0"
+                            >
+                                <div className="flex h-auto w-full flex-row  items-center justify-between">
+                                    <div className="flex flex-row  items-center gap-1 ">
                                         <span className="text-base font-semibold md:text-sm">
                                             {item.firstname} -
                                         </span>
@@ -44,11 +47,12 @@ export default function UserCard({ data }: DataProps) {
                                     </button>
                                 </div>
                                 <div className="hidden h-[1px] w-full bg-[#E3E3E3] md:block"></div>
-                                <span className="text-ellipsis text-sm ">
+
+                                <span className=" line-clamp-1 h-full overflow-clip text-ellipsis  text-sm md:line-clamp-2">
                                     {item?.cardInfo?.bio}
                                 </span>
-                                <div className="flex w-full flex-row  items-center justify-between">
-                                    <div className="flex flex-col gap-2 md:flex-row">
+                                <div className="flex h-auto w-full flex-row  items-center justify-between">
+                                    <div className="flex w-full flex-row gap-2 ">
                                         <span className="text-sm text-[#838CAC]">
                                             {t('userBudget')}
                                         </span>
@@ -58,14 +62,17 @@ export default function UserCard({ data }: DataProps) {
                                     </div>
                                 </div>
                                 <div className="h-[1px] w-full bg-[#E3E3E3]"></div>
-                                <div className="flex w-full  flex-row items-center justify-between">
-                                    <div className="flex flex-row items-center gap-3 ">
-                                        <Location />
-                                        <span className="text-sm">
-                                            {item?.cardInfo?.districtNames}
-                                        </span>
+                                <div className="flex h-auto w-full flex-row items-center justify-between">
+                                    <div className="flex w-full flex-row items-center gap-3 ">
+                                        <Location className="h-5 w-5" />
+
+                                        <div className="w-3/4">
+                                            <span className=" line-clamp-1 w-full  text-ellipsis text-sm">
+                                                {item?.cardInfo?.districtNames}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div className="mr-8 flex cursor-pointer flex-row items-center gap-3 ">
+                                    <div className=" flex cursor-pointer flex-row items-center gap-3 ">
                                         <Heart />
                                         <span className="text-sm">{t('fav')}</span>
                                     </div>
@@ -73,7 +80,7 @@ export default function UserCard({ data }: DataProps) {
                             </div>
                         </div>
                     ))}
-                <RoommatesPagination data={data} />
+                <Pagination data={data} />
             </section>
         </>
     )
