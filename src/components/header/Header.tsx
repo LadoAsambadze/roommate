@@ -11,7 +11,6 @@ export default function Header() {
     const { t } = useTranslation()
     const session = useSession()
 
-    console.log('code review console')
     return (
         <header className="flex  w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md   sm:px-16  md:px-20 md:py-3 xl:px-24 xl:py-6">
             <Link href="/">
