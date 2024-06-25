@@ -1,5 +1,5 @@
 import TranslationsProvider from '@/src/libs/i18n/TranslationsProvider'
-import { ApolloWrapper } from '@/src/libs/graphql/apollo-provider'
+import { ApolloWrapper } from '@/src/libs/apollo/wrapper'
 import initTranslations from '../../libs/i18n/i18n'
 import { ReactNode } from 'react'
 import { dir } from 'i18next'

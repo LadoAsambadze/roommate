@@ -7,11 +7,11 @@ import QuestionSection from '../../components/home/QuestionSection'
 import ReviewSection from '../../components/home/ReviewSection'
 import SuggestSection from '../../components/home/SuggestSection'
 import ApartmentSection from '@/src/components/home/ApartmentSection'
-import { client } from '../../libs/graphql/restLink'
+import { getClient } from '../../libs/apollo/rscClient'
 import { query } from '@/graphql/restLinkQuery'
 
 async function Home() {
-    const response = await client.query({ query, fetchPolicy: 'cache-first' })
+    const response = await getClient().query({ query, fetchPolicy: 'cache-first' })
 
     return (
         <main className="h-full w-full">

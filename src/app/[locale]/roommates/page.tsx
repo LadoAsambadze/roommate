@@ -1,6 +1,6 @@
 import initTranslations from '@/src/libs/i18n/i18n'
 import ClientWrapper from './_components/ClientWrapper'
-import { getClient } from '@/src/libs/graphql/client'
+import { getClient } from '@/src/libs/apollo/rscClient'
 import { getFilteredUsersQuery } from '@/graphql/query'
 import { redirect } from 'next/navigation'
 import { auth } from '@/src/libs/auth/auth'
