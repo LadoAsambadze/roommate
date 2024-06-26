@@ -3,5 +3,8 @@
     "yearsOld": "წლის",
     "perMonth": "თვეში",
     "userBudget": "ბიუჯეტი",
-    "sendMessage": "მიწერა"
+    "sendMessage": "მიწერა",
+    "filter": "ფილტრი",
+    "clearFilters": "ფილტრის გასუფთავება",
+    "searchBtn": "ძებნა"
 }

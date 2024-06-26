@@ -1,18 +1,49 @@
+
 import Image from 'next/image'
 import Avatar from '../../../../../../public/images/MaleAvatar.jpg'
 import { Heart, Location, Sms } from '@/src/components/svgs'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import { DataProps } from '../../types'
 import Pagination from '@/src/components/shared/pagination/Pagination'
+import { useQuery } from '@apollo/client'
+import { FilterWithPaginationObject, Language } from '@/graphql/typesGraphql'
+import { getFilteredUsersQuery } from '@/graphql/query'
+import { useParams, useSearchParams } from 'next/navigation'
 
-export default function UserCard({ data }: DataProps) {
+export default function UserCard() {
     const { t } = useTranslation()
+    const params = useParams()
+    const searchParams = useSearchParams()
+    const page = searchParams.get('page') || '1'
+    const locale = params.locale
+    const currentPage = page ? parseInt(page, 10) : 1
+    const limit = 10
+    const offset = (currentPage - 1) * limit
+    const { loading, error, data } = useQuery(getFilteredUsersQuery, {
+        variables: {
+            pagination: {
+                offset: offset,
+                limit,
+            },
+            locale: locale as Language,
+            filters: [
+                {
+                    questionId: '15',
+                    answerIds: ['1'],
+                },
+            ],
+        },
+    })
+
+    const FilteredUsers = data?.getFilteredUsers as FilterWithPaginationObject
+    if (loading) return <p>Loading...</p>
+    if (error) return <p>Error: {error.message}</p>
+
     return (
         <>
-            <section className="flex min-h-screen w-full flex-col items-center justify-center gap-6 px-6 sm:px-32 md:w-auto md:px-24  lg:px-0">
-                {data.list &&
-                    data.list.map((item, index) => (
+            <section className="flex min-h-screen w-full flex-col items-center justify-center gap-6 px-6 sm:px-32 lg:px-0  xl:w-auto">
+                {data?.getFilteredUsers?.list &&
+                    data.getFilteredUsers.list.map((item, index) => (
                         <div
                             key={index}
                             className="flex h-auto  w-full flex-col gap-6  overflow-hidden rounded-lg bg-[#FFFFFF]  shadow-md  lg:h-[232px] lg:w-full lg:flex-row lg:p-4 xl:w-[770px] "
@@ -80,7 +111,7 @@ export default function UserCard({ data }: DataProps) {
                             </div>
                         </div>
                     ))}
-                <Pagination data={data} />
+                <Pagination data={FilteredUsers} />
             </section>
         </>
     )

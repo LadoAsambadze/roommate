@@ -3,5 +3,8 @@
     "yearsOld": "years old",
     "perMonth": "per month",
     "userBudget": "Budget",
-    "sendMessage": "Message"
+    "sendMessage": "Message",
+    "filter": "Filter",
+    "clearFilters": "Clear filters",
+    "searchBtn": "Search"
 }

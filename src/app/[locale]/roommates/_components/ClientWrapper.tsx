@@ -3,33 +3,41 @@
 import { useState } from 'react'
 import Filter from './filter/Filter'
 import UserCard from './userCard/UserCard'
-import MobileFilter from './filter/MobileFilter'
 import { FilterIcon } from '@/src/components/svgs'
-import { DataProps } from '../types'
+import { useTranslation } from 'react-i18next'
 
-export default function ClientWrapper({ data }: DataProps) {
+export default function ClientWrapper() {
+    const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
 
     return (
         <>
-            <main className="flex min-h-screen w-full flex-col  gap-4  md:gap-6 md:px-20 md:py-10 lg:flex-row">
-                <div className="h-auto w-full px-6 pt-4 sm:pl-32  md:pl-24 lg:hidden lg:pl-0">
+            <main className="relative flex min-h-screen w-full  flex-col gap-4 md:py-10 lg:flex-row lg:px-20">
+                <div className="h-auto w-full px-6 pt-4 sm:pl-32  lg:hidden lg:pl-0">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="flex  flex-row items-center  rounded-lg border border-[#838CAC] bg-[#F2F5FF] px-4 py-2 "
                     >
                         <FilterIcon className="h-6 w-6" />
-                        <span className="ml-2 text-sm text-[#838CAC]">Filter</span>
+                        <span className="ml-2 text-sm text-[#838CAC]">{t('filter')}</span>
                     </button>
                 </div>
-                <div className="hidden h-full lg:block lg:w-1/3 xl:w-1/4">
-                    <Filter isOpen={isOpen} setIsOpen={setIsOpen} />
+                <div className="hidden h-full lg:block lg:w-1/2 xl:w-[30%] ">
+                    <Filter />
                 </div>
-                <MobileFilter isOpen={isOpen} setIsOpen={setIsOpen} />
-
+                {isOpen ? (
+                    <section className="fixed  h-full w-full  gap-6 bg-white p-6 sm:px-16  md:px-20 lg:hidden ">
+                        <div className="flex h-auto w-full flex-col items-end justify-center gap-5">
+                            <button className="flex" onClick={() => setIsOpen(!isOpen)}>
+                                x
+                            </button>
+                            <button>{t('clearFilters')}</button>
+                        </div>
+                        <Filter />
+                    </section>
+                ) : null}
                 <div className="hidden h-screen w-[1px] bg-[#E3E3E3] xl:block"></div>
-                <UserCard data={data} />
-
+                <UserCard />
             </main>
         </>
     )

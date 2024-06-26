@@ -45,8 +45,8 @@ export const getQuestionsWithAnswersQuery: TypedDocumentNode<
     { getQuestionsWithAnswers: Query['getQuestionsWithAnswers'] },
     QueryGetQuestionsWithAnswersArgs
 > = gql`
-    query GetQuestionsWithAnswers($lang: Language) {
-        getQuestionsWithAnswers(lang: $lang) {
+    query GetQuestionsWithAnswers($lang: Language, $getFor: QuestionsWithAnswersFor) {
+        getQuestionsWithAnswers(lang: $lang, getFor: $getFor) {
             answers {
                 id
                 questionId

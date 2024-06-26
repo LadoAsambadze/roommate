@@ -3,7 +3,7 @@ import ReactPaginate from 'react-paginate'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { FilterWithPaginationObject } from '@/graphql/typesGraphql'
 
-interface DataProps {
+type DataProps = {
     data: FilterWithPaginationObject
 }
 
@@ -23,11 +23,9 @@ export default function Pagination({ data }: DataProps) {
         },
         [searchParams]
     )
-
     const handlePageChange = (selectedPage: number) => {
         const nextPage = selectedPage + 1
         router.push(pathname + '?' + createQueryString('page', String(nextPage)))
-        console.log(createQueryString('page', String(nextPage)))
     }
 
     return (
@@ -41,7 +39,6 @@ export default function Pagination({ data }: DataProps) {
                 onPageChange={({ selected }) => handlePageChange(selected)}
                 previousClassName=" bg-[red] text-sm"
                 containerClassName="flex flex-row gap-2 px-6"
-
             />
         </>
     )
