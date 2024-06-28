@@ -42,8 +42,8 @@ export const FilterRangePicker = ({
     const updateRangeHandler = () => {
         if (formattedDateArray && formattedDateArray.every((date) => date !== undefined)) {
             rangeChangeHandler(questionId, formattedDateArray as string[])
-        } else if (!date) {
-            rangeChangeHandler(questionId, [])
+        } else {
+            rangeChangeHandler(questionId, formattedDateArray as string[])
         }
     }
 
@@ -62,8 +62,8 @@ export const FilterRangePicker = ({
     const matchingQuestion = ranges.find((item) => item.questionId === questionId)
 
     useEffect(() => {
-        if (matchingQuestion) {
-            console.log(matchingQuestion.dataRange)
+        if (matchingQuestion && matchingQuestion?.dataRange?.length > 0) {
+
             setDate({
                 from: new Date(matchingQuestion.dataRange[0]),
                 to: new Date(matchingQuestion.dataRange[1]),
@@ -85,7 +85,7 @@ export const FilterRangePicker = ({
                         >
                             <div className="p flex h-[48px] flex-row items-center justify-center text-sm">
                                 <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                                {date?.from && date?.to ? (
+                                {formattedDateArray && date?.from && date?.to ? (
                                     <>
                                         {format(date?.from, 'LLL dd, yyyy')} -
                                         {format(date?.to, 'LLL dd, yyyy')}

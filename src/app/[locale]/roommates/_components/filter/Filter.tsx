@@ -95,6 +95,8 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                 }
                 return updatedQueries
             })
+        } else if (existingIndex !== -1 && dataRange.length === 0) {
+            setRanges((prevQueries) => prevQueries.filter((item) => item.questionId !== questionId))
         } else {
             setRanges((prevQueries) => [
                 ...prevQueries,
@@ -102,6 +104,8 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
             ])
         }
     }
+
+
 
     const filterUpdateHandler = () => {
         const params = new URLSearchParams()
@@ -135,9 +139,33 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
     useEffect(() => {
         transformedParams.forEach((obj) => {
             if (obj.answerIds && obj.questionId) {
-                setAnswers([obj as AnswerIdProps])
+                setAnswers((prevAnswers) => {
+                    const index = prevAnswers.findIndex(
+                        (answer) => answer.questionId === obj.questionId
+                    )
+                    if (index !== -1) {
+
+                        return prevAnswers.map((answer) =>
+                            answer.questionId === obj.questionId ? (obj as AnswerIdProps) : answer
+                        )
+                    } else {
+
+                        return [...prevAnswers, obj as AnswerIdProps]
+                    }
+                })
             } else if (obj.dataRange && obj.questionId) {
-                setRanges([obj as RangeDataProps])
+                setRanges((prevRanges) => {
+                    const index = prevRanges.findIndex(
+                        (range) => range.questionId === obj.questionId
+                    )
+                    if (index !== -1) {
+                        return prevRanges.map((range) =>
+                            range.questionId === obj.questionId ? (obj as RangeDataProps) : range
+                        )
+                    } else {
+                        return [...prevRanges, obj as RangeDataProps]
+                    }
+                })
             }
         })
     }, [transformedParams])
@@ -204,7 +232,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                                                       }
                                                                     : null
                                                             })
-                                                            .filter(Boolean) // Remove null values
+                                                            .filter(Boolean)
 
                                                     return defaultOptions
                                                 }
@@ -256,6 +284,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                             <Slider
                                                 key={key}
                                                 questionId={item.id}
+                                                ranges={ranges}
                                                 rangeChangeHandler={rangeChangeHandler}
                                             />
                                         </>
