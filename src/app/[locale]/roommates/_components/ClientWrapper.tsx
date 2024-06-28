@@ -5,10 +5,35 @@ import Filter from './filter/Filter'
 import UserCard from './userCard/UserCard'
 import { FilterIcon } from '@/src/components/svgs'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'next/navigation'
+import { FilterInput } from '@/graphql/typesGraphql'
 
 export default function ClientWrapper() {
     const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
+    const searchParams = useSearchParams()
+
+    const getSearchParams = () => {
+        const searchObject = Object.fromEntries(searchParams.entries())
+        const transformedParams = Object.entries(searchObject)
+            .map(([key, value]) => {
+                if (key.startsWith('range_')) {
+                    return {
+                        questionId: key.replace('range_', ''),
+                        dataRange: value.split(','),
+                    }
+                } else if (key.startsWith('answer_')) {
+                    return {
+                        questionId: key.replace('answer_', ''),
+                        answerIds: value.split(','),
+                    }
+                }
+                return null
+            })
+            .filter((item) => item !== null) as FilterInput[]
+        return transformedParams
+    }
+    const transformedParams = getSearchParams()
 
     return (
         <>
@@ -23,7 +48,7 @@ export default function ClientWrapper() {
                     </button>
                 </div>
                 <div className="hidden h-full lg:block lg:w-1/2 xl:w-[30%] ">
-                    <Filter />
+                    <Filter transformedParams={transformedParams} />
                 </div>
                 {isOpen ? (
                     <section className="fixed  h-full w-full  gap-6 bg-white p-6 sm:px-16  md:px-20 lg:hidden ">
@@ -33,11 +58,11 @@ export default function ClientWrapper() {
                             </button>
                             <button>{t('clearFilters')}</button>
                         </div>
-                        <Filter />
+                        <Filter transformedParams={transformedParams} />
                     </section>
                 ) : null}
                 <div className="hidden h-screen w-[1px] bg-[#E3E3E3] xl:block"></div>
-                <UserCard />
+                <UserCard transformedParams={transformedParams} />
             </main>
         </>
     )

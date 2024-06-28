@@ -1,65 +1,87 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-
-import * as React from 'react'
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
-
 import { cn } from '@/src/utils/cn'
 import { useTranslation } from 'react-i18next'
 import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover'
 import { Button } from '../../ui/button'
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '../../ui/drawer'
 import { Calendar } from '../../ui/calendar'
+import { useEffect, useState } from 'react'
 
-interface Props extends React.HTMLAttributes<HTMLDivElement> {
-    setFilterDataBefore?: any
-    id?: string
-    filterDataBefore?: any // Assuming setFilterData can be of any type
+type FilterRangePickerProps = {
+    className: string
+    questionId: string
+    ranges: string[]
+    rangeChangeHandler: (questionId: string, dataRange: string[]) => void
 }
 
-export const FilterRangePicker: React.FC<Props> = ({
+export const FilterRangePicker = ({
     className,
-    setFilterDataBefore,
-    filterDataBefore,
-    id,
-}: Props) => {
-    const [date, setDate] = React.useState<DateRange | undefined>({
+    questionId,
+    ranges,
+    rangeChangeHandler,
+}: FilterRangePickerProps) => {
+    const { t } = useTranslation()
+
+    const [date, setDate] = useState<DateRange | undefined>({
         from: undefined,
         to: undefined,
     })
-    const { t } = useTranslation()
+    const [formattedDateArray, setFormattedDateArray] = useState<string[] | undefined>([])
+    const formatDate = (date: Date | undefined): string | undefined => {
+        return date ? format(date, 'dd-MM-yyyy') : undefined
+    }
+
+    const updateRangeHandler = () => {
+        if (formattedDateArray && formattedDateArray.every((date) => date !== undefined)) {
+            rangeChangeHandler(questionId, formattedDateArray as string[])
+        }
+    }
+
+    useEffect(() => {
+        if (date?.from && date?.to) {
+            const formattedData = date ? [formatDate(date.from), formatDate(date.to)] : undefined
+            const filteredData =
+                formattedData &&
+                (formattedData.filter((dateString) => dateString !== undefined) as string[])
+            setFormattedDateArray(filteredData)
+        } else {
+            setFormattedDateArray(undefined)
+        }
+    }, [date])
+
     return (
         <>
-            <div className={cn(' hidden gap-2 md:grid', className)}>
+            <div className={cn('hidden gap-2 md:grid', className)}>
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
                             id="date"
                             variant={'outline'}
                             className={cn(
-                                'flex h-[48px] w-full justify-start rounded-lg border border-[#828bab] px-3   py-2 text-left font-normal outline-none hover:bg-white md:w-full'
+                                'flex h-[48px] w-full justify-start rounded-lg border border-[#828bab] px-3 py-2 text-left font-normal outline-none hover:bg-white md:w-full'
                             )}
                         >
                             <div className="p flex h-[48px] flex-row items-center justify-center text-sm">
                                 <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                                {date?.from ? (
-                                    date.to ? (
-                                        <>
-                                            {format(date.from, 'LLL dd, y')} -{' '}
-                                            {format(date.to, 'LLL dd, y')}
-                                        </>
-                                    ) : (
-                                        format(date.from, 'LLL dd, y')
-                                    )
+                                {date?.from && date?.to ? (
+                                    <>
+                                        {format(date.from, 'LLL dd, yyyy')} -
+                                        {format(date.to, 'LLL dd, yyyy')}
+                                    </>
                                 ) : (
                                     <span className="text-muted-foreground">{t('chooseDate')}</span>
                                 )}
                             </div>
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent
+                        className="w-auto p-0"
+                        align="start"
+                        onBlur={updateRangeHandler}
+                    >
                         <Calendar
                             initialFocus
                             numberOfMonths={2}
@@ -68,34 +90,6 @@ export const FilterRangePicker: React.FC<Props> = ({
                             defaultMonth={new Date()}
                             selected={date}
                             onSelect={(newDate) => {
-                                if (newDate?.from && newDate?.to) {
-                                    const filtered = {
-                                        questionId: id,
-                                        dataRange: [
-                                            format(newDate.from, 'yyyy-MM-dd'),
-                                            format(newDate.to, 'yyyy-MM-dd'),
-                                        ],
-                                    }
-
-                                    // Create a new array based on the current filterData
-                                    const newFilterData = [...filterDataBefore]
-
-                                    // Find the index of the item with the same questionId
-                                    const index = newFilterData.findIndex(
-                                        (item) => item.questionId === id
-                                    )
-
-                                    if (index !== -1) {
-                                        // Replace the existing item
-                                        newFilterData[index] = filtered
-                                    } else {
-                                        // Add the new item
-                                        newFilterData.push(filtered)
-                                    }
-
-                                    // Update the state
-                                    setFilterDataBefore(newFilterData)
-                                }
                                 setDate(newDate)
                             }}
                         />
@@ -117,7 +111,7 @@ export const FilterRangePicker: React.FC<Props> = ({
                             {date?.from ? (
                                 date.to ? (
                                     <>
-                                        {format(date.from, 'LLL dd, y')} -{' '}
+                                        {format(date.from, 'LLL dd, y')} -
                                         {format(date.to, 'LLL dd, y')}
                                     </>
                                 ) : (
@@ -139,40 +133,12 @@ export const FilterRangePicker: React.FC<Props> = ({
                         defaultMonth={new Date()}
                         selected={date}
                         onSelect={(newDate) => {
-                            if (newDate?.from && newDate?.to) {
-                                const filtered = {
-                                    questionId: id,
-                                    dataRange: [
-                                        format(newDate.from, 'yyyy-MM-dd'),
-                                        format(newDate.to, 'yyyy-MM-dd'),
-                                    ],
-                                }
-
-                                // Create a new array based on the current filterData
-                                const newFilterData = [...filterDataBefore]
-
-                                // Find the index of the item with the same questionId
-                                const index = newFilterData.findIndex(
-                                    (item) => item.questionId === id
-                                )
-
-                                if (index !== -1) {
-                                    // Replace the existing item
-                                    newFilterData[index] = filtered
-                                } else {
-                                    // Add the new item
-                                    newFilterData.push(filtered)
-                                }
-
-                                // Update the state
-                                setFilterDataBefore(newFilterData)
-                            }
                             setDate(newDate)
                         }}
                     />
                     <DrawerClose>
-                        <Button variant="default" className="w-4/5">
-                            Submit
+                        <Button variant="default" className="w-4/5" onClick={updateRangeHandler}>
+                            {t('submit')}
                         </Button>
                     </DrawerClose>
                 </DrawerContent>

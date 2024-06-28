@@ -30,6 +30,8 @@ export default async function Signup({ params }: { params: { locale: string } })
     const genders = gendersResponse?.data.getGenders as GenderObject[]
     const questions = questionsWithAnswersResponse?.data.getQuestionsWithAnswers as QuestionObject[]
 
+    console.log(questions)
+
     return (
         <>
             <ClientWrapper countries={countries} genders={genders} questions={questions} />

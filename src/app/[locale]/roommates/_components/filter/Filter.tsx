@@ -1,30 +1,144 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
 import Select from 'react-select'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FilterRangePicker } from '@/src/components/shared/datePickers/FilterRangePicker'
 import { Slider } from '@/src/components/ui/slider'
-import { Language, QuestionsWithAnswersFor } from '@/graphql/typesGraphql'
+import { FilterInput, Language, QuestionsWithAnswersFor } from '@/graphql/typesGraphql'
 import { getQuestionsWithAnswersQuery } from '@/graphql/query'
 import { useQuery } from '@apollo/client'
 import { Button } from '@/src/components/ui/button'
-import { useParams } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 
-export default function Filter() {
+type RangeDataProps = {
+    questionId: string
+    dataRange: string[]
+}
+type AnswerIdProps = {
+    questionId: string
+    answerIds: string[] | string
+}
+type Option = { value: string }
+
+type FilterComponentProps = {
+    transformedParams: FilterInput[]
+}
+export default function Filter({ transformedParams }: FilterComponentProps) {
     const { t } = useTranslation()
     const params = useParams()
+    const router = useRouter()
+    const pathname = usePathname()
     const locale = params.locale
     const [key, setKey] = useState(0)
-    console.log(setKey)
-    const [filterDataBefore, setFilterDataBefore] = useState([])
+    const [ranges, setRanges] = useState<RangeDataProps[]>([])
+    const [answers, setAnswers] = useState<AnswerIdProps[]>([])
     const { loading, error, data } = useQuery(getQuestionsWithAnswersQuery, {
         variables: {
             lang: locale as Language,
             getFor: 'FILTER' as QuestionsWithAnswersFor,
         },
     })
-    const QuestionsWithAnswers = data?.getQuestionsWithAnswers
+
+    const selectedOptionsHandler = (
+        questionId: string,
+        selectedOptions: string | string[] | Option | Option[]
+    ) => {
+        if (Array.isArray(selectedOptions)) {
+            if (
+                selectedOptions.every((option) => typeof option === 'object' && 'value' in option)
+            ) {
+                selectChangeHandler(
+                    questionId,
+                    (selectedOptions as Option[]).map((option) => option.value)
+                )
+            } else {
+                selectChangeHandler(questionId, selectedOptions as string[])
+            }
+        } else if (
+            typeof selectedOptions === 'object' &&
+            selectedOptions &&
+            'value' in selectedOptions
+        ) {
+            selectChangeHandler(questionId, selectedOptions.value)
+        } else if (typeof selectedOptions === 'string') {
+            selectChangeHandler(questionId, selectedOptions)
+        }
+    }
+
+    const selectChangeHandler = (questionId: string, answerIds: string | string[]) => {
+        const existingIndex = answers.findIndex((query) => query.questionId === questionId)
+        if (existingIndex !== -1) {
+            setAnswers((prevQueries) => {
+                const updatedQueries = [...prevQueries]
+                updatedQueries[existingIndex] = {
+                    ...updatedQueries[existingIndex],
+                    answerIds: answerIds,
+                }
+                return updatedQueries
+            })
+        } else {
+            setAnswers((prevQueries) => [
+                ...prevQueries,
+                { questionId: questionId, answerIds: answerIds },
+            ])
+        }
+    }
+
+    const rangeChangeHandler = (questionId: string, dataRange: string[]) => {
+        const existingIndex = ranges.findIndex((query) => query.questionId === questionId)
+        if (existingIndex !== -1) {
+            setRanges((prevQueries) => {
+                const updatedQueries = [...prevQueries]
+                updatedQueries[existingIndex] = {
+                    ...updatedQueries[existingIndex],
+                    dataRange: dataRange,
+                }
+                return updatedQueries
+            })
+        } else {
+            setRanges((prevQueries) => [
+                ...prevQueries,
+                { questionId: questionId, dataRange: dataRange },
+            ])
+        }
+    }
+
+    const filterUpdateHandler = () => {
+        const params = new URLSearchParams()
+
+        ranges.forEach((query) => {
+            params.set(`range_${query.questionId}`, query.dataRange.join(','))
+        })
+
+        answers.forEach((query) => {
+            if (query.answerIds && query.answerIds.length > 0) {
+                if (Array.isArray(query.answerIds)) {
+                    params.set(`answer_${query.questionId}`, query.answerIds.join(','))
+                } else {
+                    params.set(`answer_${query.questionId}`, query.answerIds)
+                }
+            }
+        })
+
+        router.push(pathname + '?' + params.toString())
+    }
+
+    const filterClearHandler = () => {
+        setKey((prevKey) => prevKey + 1)
+        setRanges([])
+        setAnswers([])
+        router.push(pathname)
+    }
+
+    useEffect(() => {
+        transformedParams.forEach((obj) => {
+            if (obj.answerIds && obj.questionId) {
+                setAnswers([obj as AnswerIdProps])
+            } else if (obj.dataRange && obj.questionId) {
+                setRanges([obj as RangeDataProps])
+            }
+        })
+    }, [transformedParams])
 
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error: {error.message}</p>
@@ -32,11 +146,14 @@ export default function Filter() {
     return (
         <>
             <section className="h-full w-full  flex-col gap-6 bg-white p-0  md:flex ">
-                <button className=" cursor-pointer text-right hover:text-[#535050] hover:underline">
+                <button
+                    className=" cursor-pointer text-right hover:text-[#535050] hover:underline"
+                    onClick={filterClearHandler}
+                >
                     {t('clearFilters')}
                 </button>
-                {QuestionsWithAnswers &&
-                    [...QuestionsWithAnswers]
+                {data?.getQuestionsWithAnswers &&
+                    [...data?.getQuestionsWithAnswers]
                         .sort((a, b) => {
                             if (a.uiFieldInfo.filterInput.type === 'numeric') return 1
                             if (b.uiFieldInfo.filterInput.type === 'numeric') return -1
@@ -58,94 +175,92 @@ export default function Filter() {
                                             isMulti={
                                                 item.uiFieldInfo.filterInput.variant === 'multiple'
                                             }
-                                            // options={item.answers && item.answers.map((answer) => ({
-                                            //     questionId: item.id,
-                                            //     value: answer.id,
-                                            //     label: answer.translations[0].title,
-                                            // }))}
-                                            // onChange={(value: any) => {
-                                            //     setFilterDataBefore((prevFilterData) => {
-                                            //         const newFilterData = [...prevFilterData]
-                                            //         const existingIndex = newFilterData.findIndex(
-                                            //             (item) =>
-                                            //                 item.questionId === value.questionId
-                                            //         )
-                                            //         if (
-                                            //             item.uiFieldInfo.filterInput.variant ===
-                                            //             'multiple'
-                                            //         ) {
-                                            //             if (existingIndex !== -1) {
-                                            //                 const existingAnswerIndex =
-                                            //                     newFilterData[
-                                            //                         existingIndex
-                                            //                     ].answerIds.findIndex(
-                                            //                         (id) => id === value.value
-                                            //                     )
-                                            //                 if (existingAnswerIndex !== -1) {
-                                            //                     newFilterData[
-                                            //                         existingIndex
-                                            //                     ].answerIds.splice(
-                                            //                         existingAnswerIndex,
-                                            //                         1
-                                            //                     )
-                                            //                 } else {
-                                            //                     newFilterData[
-                                            //                         existingIndex
-                                            //                     ].answerIds.push(value.value)
-                                            //                 }
-                                            //             } else {
-                                            //                 newFilterData.push({
-                                            //                     questionId: value.questionId,
-                                            //                     answerIds: [value.value],
-                                            //                 })
-                                            //             }
-                                            //         } else {
-                                            //             if (existingIndex !== -1) {
-                                            //                 newFilterData[existingIndex].answerIds =
-                                            //                     [value.value]
-                                            //             } else {
-                                            //                 newFilterData.push({
-                                            //                     questionId: value.questionId,
-                                            //                     answerIds: [value.value],
-                                            //                 })
-                                            //             }
-                                            //         }
-                                            //         return newFilterData
-                                            //     })
-                                            // }}
+                                            defaultValue={() => {
+                                                const matchingQuestion = answers.find(
+                                                    (answer) => answer.questionId === item.id
+                                                )
+
+                                                if (
+                                                    matchingQuestion &&
+                                                    Array.isArray(matchingQuestion.answerIds)
+                                                ) {
+                                                    const defaultOptions =
+                                                        matchingQuestion.answerIds
+                                                            .map((answerId) => {
+                                                                const matchedAnswer =
+                                                                    item.answers &&
+                                                                    item.answers.find(
+                                                                        (answer) =>
+                                                                            answer.id === answerId
+                                                                    )
+                                                                return matchedAnswer
+                                                                    ? {
+                                                                          value: matchedAnswer.id,
+                                                                          label: matchedAnswer
+                                                                              .translations[0]
+                                                                              .title,
+                                                                      }
+                                                                    : null
+                                                            })
+                                                            .filter(Boolean)
+
+                                                    return defaultOptions
+                                                }
+                                                return []
+                                            }}
+                                            options={
+                                                item.answers
+                                                    ? item.answers.map((answer) => ({
+                                                          questionId: item.id,
+                                                          value: answer.id,
+                                                          label: answer.translations[0].title,
+                                                      }))
+                                                    : undefined
+                                            }
+                                            onChange={(selectedOptions: unknown) => {
+                                                selectedOptionsHandler(
+                                                    item.id,
+                                                    selectedOptions as
+                                                        | string
+                                                        | string[]
+                                                        | Option
+                                                        | Option[]
+                                                )
+                                            }}
                                         />
                                     </>
                                 )}
-                                {item.uiFieldInfo.filterInput.type === 'button' && (
-                                    <>
-                                        <label className="w-full text-sm">
-                                            {item.translations && item.translations[0]?.title}
-                                        </label>
-                                        <FilterRangePicker
-                                            key={key}
-                                            filterDataBefore={filterDataBefore}
-                                            setFilterDataBefore={setFilterDataBefore}
-                                            id={item.id}
-                                            className="mt-2 w-full"
-                                        />
-                                    </>
-                                )}
-                                {item.uiFieldInfo.filterInput.type === 'numeric' && (
-                                    <>
-                                        <label className="mb-4 w-full text-sm">
-                                            {item.translations && item.translations[0]?.title}
-                                        </label>
-                                        <Slider
-                                            key={key}
-                                            id={item.id}
-                                            filterDataBefore={filterDataBefore}
-                                            setFilterDataBefore={setFilterDataBefore}
-                                        />
-                                    </>
-                                )}
+                                {item.uiFieldInfo.filterInput.type === 'button' &&
+                                    item.uiFieldInfo.filterInput.renderAs === 'range' && (
+                                        <>
+                                            <label className="w-full text-sm">
+                                                {item.translations && item.translations[0]?.title}
+                                            </label>
+                                            <FilterRangePicker
+                                                key={key}
+                                                className="mt-2 w-full"
+                                                rangeChangeHandler={rangeChangeHandler}
+                                                questionId={item.id}
+                                                ranges={ranges}
+                                            />
+                                        </>
+                                    )}
+                                {item.uiFieldInfo.filterInput.type === 'numeric' &&
+                                    item.uiFieldInfo.filterInput.renderAs === 'range' && (
+                                        <>
+                                            <label className="mb-4 w-full text-sm">
+                                                {item.translations && item.translations[0]?.title}
+                                            </label>
+                                            <Slider
+                                                key={key}
+                                                questionId={item.id}
+                                                rangeChangeHandler={rangeChangeHandler}
+                                            />
+                                        </>
+                                    )}
                             </div>
                         ))}
-                <Button variant="default" className="mt-6 ">
+                <Button variant="default" className="mt-6 " onClick={filterUpdateHandler}>
                     {t('searchBtn')}
                 </Button>
             </section>

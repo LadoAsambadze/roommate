@@ -4,14 +4,16 @@ import * as SliderPrimitive from '@radix-ui/react-slider'
 import { cn } from '../../utils/cn'
 
 type SliderProps = React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & {
-    id: string
-    filterDataBefore: any // replace 'any' with the actual type
-    setFilterDataBefore: any // replace 'any' with the actual type
+    questionId: string
+    rangeChangeHandler: any
 }
 
 const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, SliderProps>(
-    ({ className, id, filterDataBefore, setFilterDataBefore, ...props }, ref) => {
+    ({ className, questionId, rangeChangeHandler, ...props }, ref) => {
         const [sliderValues, setSliderValues] = React.useState([0, 1000])
+        const updateRangeHandler = () => {
+            rangeChangeHandler(questionId, sliderValues as number[])
+        }
 
         return (
             <div>
@@ -26,34 +28,12 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
                         className
                     )}
                     onValueChange={(value) => {
-                        setSliderValues(value) // Update the slider values state
-
-                        const stringValues = value.map(String)
-                        const filtered = {
-                            questionId: id,
-                            dataRange: stringValues,
-                        }
-
-                        // Create a new array based on the current filterData
-                        const newFilterData = [...filterDataBefore]
-
-                        // Find the index of the item with the same questionId
-                        const index = newFilterData.findIndex((item) => item.questionId === id)
-
-                        if (index !== -1) {
-                            // Replace the existing item
-                            newFilterData[index] = filtered
-                        } else {
-                            // Add the new item
-                            newFilterData.push(filtered)
-                        }
-
-                        // Update the state
-                        setFilterDataBefore(newFilterData)
+                        setSliderValues(value)
                     }}
                     min={0}
                     max={1000}
                     defaultValue={[0, 1000]}
+                    onPointerUp={updateRangeHandler}
                     {...props}
                 >
                     <SliderPrimitive.Track className="pointer relative h-1 w-full grow overflow-hidden rounded-full bg-[#D9D9D9]">
