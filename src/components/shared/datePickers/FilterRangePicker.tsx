@@ -31,7 +31,7 @@ export const FilterRangePicker = ({
     })
     const [formattedDateArray, setFormattedDateArray] = useState<string[] | undefined>([])
     const formatDate = (date: Date | undefined): string | undefined => {
-        return date ? format(date, 'dd-MM-yyyy') : undefined
+        return date ? format(date, 'yyyy-MM-dd') : undefined
     }
 
     const updateRangeHandler = () => {
@@ -108,15 +108,11 @@ export const FilterRangePicker = ({
                     >
                         <div className="p   flex h-[48px] flex-row items-center justify-center text-sm">
                             <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                            {date?.from ? (
-                                date.to ? (
-                                    <>
-                                        {format(date.from, 'LLL dd, y')} -
-                                        {format(date.to, 'LLL dd, y')}
-                                    </>
-                                ) : (
-                                    format(date.from, 'LLL dd, y')
-                                )
+                            {date?.from && date?.to ? (
+                                <>
+                                    {format(date.from, 'LLL dd, yyyy')} -
+                                    {format(date.to, 'LLL dd, yyyy')}
+                                </>
                             ) : (
                                 <span className="text-muted-foreground">{t('chooseDate')}</span>
                             )}
