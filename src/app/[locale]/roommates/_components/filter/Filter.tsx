@@ -12,7 +12,7 @@ import { useParams, usePathname, useRouter } from 'next/navigation'
 
 type RangeDataProps = {
     questionId: string
-    dataRange: string[]
+    dataRange: string[] | string
 }
 type AnswerIdProps = {
     questionId: string
@@ -105,9 +105,12 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
 
     const filterUpdateHandler = () => {
         const params = new URLSearchParams()
-
         ranges.forEach((query) => {
-            params.set(`range_${query.questionId}`, query.dataRange.join(','))
+            if (query.dataRange && query.dataRange.length > 0 && Array.isArray(query.dataRange)) {
+                params.set(`range_${query.questionId}`, query.dataRange.join(','))
+            } else {
+                params.delete(`range_${query.questionId}`)
+            }
         })
 
         answers.forEach((query) => {
@@ -119,7 +122,6 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                 }
             }
         })
-
         router.push(pathname + '?' + params.toString())
     }
 
@@ -202,7 +204,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                                                       }
                                                                     : null
                                                             })
-                                                            .filter(Boolean)
+                                                            .filter(Boolean) // Remove null values
 
                                                     return defaultOptions
                                                 }

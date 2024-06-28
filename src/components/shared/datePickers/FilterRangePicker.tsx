@@ -10,10 +10,15 @@ import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '../../ui/draw
 import { Calendar } from '../../ui/calendar'
 import { useEffect, useState } from 'react'
 
+type RangeDataProps = {
+    questionId: string
+    dataRange: string[] | string
+}
+
 type FilterRangePickerProps = {
     className: string
     questionId: string
-    ranges: string[]
+    ranges: RangeDataProps[]
     rangeChangeHandler: (questionId: string, dataRange: string[]) => void
 }
 
@@ -37,6 +42,8 @@ export const FilterRangePicker = ({
     const updateRangeHandler = () => {
         if (formattedDateArray && formattedDateArray.every((date) => date !== undefined)) {
             rangeChangeHandler(questionId, formattedDateArray as string[])
+        } else if (!date) {
+            rangeChangeHandler(questionId, [])
         }
     }
 
@@ -51,6 +58,18 @@ export const FilterRangePicker = ({
             setFormattedDateArray(undefined)
         }
     }, [date])
+
+    const matchingQuestion = ranges.find((item) => item.questionId === questionId)
+
+    useEffect(() => {
+        if (matchingQuestion) {
+            console.log(matchingQuestion.dataRange)
+            setDate({
+                from: new Date(matchingQuestion.dataRange[0]),
+                to: new Date(matchingQuestion.dataRange[1]),
+            })
+        }
+    }, [matchingQuestion])
 
     return (
         <>
@@ -68,8 +87,8 @@ export const FilterRangePicker = ({
                                 <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
                                 {date?.from && date?.to ? (
                                     <>
-                                        {format(date.from, 'LLL dd, yyyy')} -
-                                        {format(date.to, 'LLL dd, yyyy')}
+                                        {format(date?.from, 'LLL dd, yyyy')} -
+                                        {format(date?.to, 'LLL dd, yyyy')}
                                     </>
                                 ) : (
                                     <span className="text-muted-foreground">{t('chooseDate')}</span>
@@ -106,7 +125,7 @@ export const FilterRangePicker = ({
                             'flex h-[48px] w-full justify-start rounded-lg border border-[#828bab] px-3  py-2  text-left font-normal outline-none hover:bg-white md:hidden md:w-full'
                         )}
                     >
-                        <div className="p   flex h-[48px] flex-row items-center justify-center text-sm">
+                        <div className="flex h-[48px] flex-row items-center justify-center text-sm">
                             <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
                             {date?.from && date?.to ? (
                                 <>
