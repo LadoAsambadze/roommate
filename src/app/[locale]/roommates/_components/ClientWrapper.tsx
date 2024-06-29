@@ -1,6 +1,5 @@
 'use client'
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Filter from './filter/Filter'
 import UserCard from './userCard/UserCard'
 import { FilterIcon } from '@/src/components/svgs'
@@ -12,8 +11,8 @@ export default function ClientWrapper() {
     const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
     const searchParams = useSearchParams()
-
-    const getSearchParams = () => {
+    const [transformedParams, setTransformedParams] = useState<FilterInput[]>([])
+    useEffect(() => {
         const searchObject = Object.fromEntries(searchParams.entries())
         const transformedParams = Object.entries(searchObject)
             .map(([key, value]) => {
@@ -31,9 +30,8 @@ export default function ClientWrapper() {
                 return null
             })
             .filter((item) => item !== null) as FilterInput[]
-        return transformedParams
-    }
-    const transformedParams = getSearchParams()
+        setTransformedParams(transformedParams)
+    }, [searchParams])
 
     return (
         <>

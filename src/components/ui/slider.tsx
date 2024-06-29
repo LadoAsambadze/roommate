@@ -32,7 +32,7 @@ const Slider = forwardRef<ElementRef<typeof Root>, SliderProps>(
 
         return (
             <div>
-                <div className="-mt-2 mb-3 flex flex-row items-center justify-between">
+                <div className="-mt-1 mb-3 flex flex-row items-center justify-between">
                     <div>{sliderValues[0]} $</div>
                     <div>{sliderValues[1]} $</div>
                 </div>
@@ -51,11 +51,11 @@ const Slider = forwardRef<ElementRef<typeof Root>, SliderProps>(
                     onPointerUp={updateRangeHandler}
                     {...props}
                 >
-                    <Track className="pointer relative h-1 w-full grow overflow-hidden rounded-full bg-[#D9D9D9]">
-                        <Range className="absolute h-full bg-primary" />
+                    <Track className="cursro-pointer  relative h-1 w-full grow overflow-hidden rounded-full bg-[#D9D9D9]">
+                        <Range className="absolute h-full bg-mainGreen" />
                     </Track>
-                    <Thumb className="pointer block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50" />
-                    <Thumb className="pointer block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50" />
+                    <Thumb className="block h-5 w-5 cursor-pointer rounded-full border-2 border-mainGreen  bg-white transition-colors focus-visible:outline-none active:ring-2 disabled:pointer-events-none disabled:opacity-50" />
+                    <Thumb className="block h-5 w-5 cursor-pointer rounded-full border-2 border-mainGreen bg-white transition-colors  focus-visible:outline-none active:ring-2 disabled:pointer-events-none disabled:opacity-50" />
                 </Root>
             </div>
         )

@@ -23,6 +23,7 @@ type Option = { value: string }
 type FilterComponentProps = {
     transformedParams: FilterInput[]
 }
+
 export default function Filter({ transformedParams }: FilterComponentProps) {
     const { t } = useTranslation()
     const params = useParams()
@@ -66,21 +67,16 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
     }
 
     const selectChangeHandler = (questionId: string, answerIds: string | string[]) => {
-        const existingIndex = answers.findIndex((query) => query.questionId === questionId)
-        if (existingIndex !== -1) {
+        const existingQuery = answers.find((query) => query.questionId === questionId)
+        if (existingQuery) {
             setAnswers((prevQueries) => {
-                const updatedQueries = [...prevQueries]
-                updatedQueries[existingIndex] = {
-                    ...updatedQueries[existingIndex],
-                    answerIds: answerIds,
-                }
+                const updatedQueries = prevQueries.map((query) =>
+                    query.questionId === questionId ? { ...query, answerIds } : query
+                )
                 return updatedQueries
             })
         } else {
-            setAnswers((prevQueries) => [
-                ...prevQueries,
-                { questionId: questionId, answerIds: answerIds },
-            ])
+            setAnswers((prevQueries) => [...prevQueries, { questionId, answerIds }])
         }
     }
 
@@ -104,8 +100,6 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
             ])
         }
     }
-
-
 
     const filterUpdateHandler = () => {
         const params = new URLSearchParams()
@@ -144,12 +138,10 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                         (answer) => answer.questionId === obj.questionId
                     )
                     if (index !== -1) {
-
                         return prevAnswers.map((answer) =>
                             answer.questionId === obj.questionId ? (obj as AnswerIdProps) : answer
                         )
                     } else {
-
                         return [...prevAnswers, obj as AnswerIdProps]
                     }
                 })
@@ -176,12 +168,6 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
     return (
         <>
             <section className="h-full w-full  flex-col gap-6 bg-white p-0  md:flex ">
-                <button
-                    className=" cursor-pointer text-right hover:text-[#535050] hover:underline"
-                    onClick={filterClearHandler}
-                >
-                    {t('clearFilters')}
-                </button>
                 {data?.getQuestionsWithAnswers &&
                     [...data?.getQuestionsWithAnswers]
                         .sort((a, b) => {
@@ -200,7 +186,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                             key={key}
                                             styles={customStyles}
                                             components={{ DropdownIndicator }}
-                                            className="mt-2 w-full text-sm"
+                                            className="mt-2 w-full cursor-pointer text-sm"
                                             placeholder={t('select')}
                                             isMulti={
                                                 item.uiFieldInfo.filterInput.variant === 'multiple'
@@ -278,7 +264,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                 {item.uiFieldInfo.filterInput.type === 'numeric' &&
                                     item.uiFieldInfo.filterInput.renderAs === 'range' && (
                                         <>
-                                            <label className="mb-4 w-full text-sm">
+                                            <label className=" w-full text-sm">
                                                 {item.translations && item.translations[0]?.title}
                                             </label>
                                             <Slider
@@ -291,8 +277,14 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                     )}
                             </div>
                         ))}
-                <Button variant="default" className="mt-6 " onClick={filterUpdateHandler}>
+                <Button variant="default" className="mt-6 w-full " onClick={filterUpdateHandler}>
                     {t('searchBtn')}
+                </Button>
+                <Button
+                    className=" w-full   bg-neutral-400 hover:bg-neutral-500"
+                    onClick={filterClearHandler}
+                >
+                    {t('clearFilters')}
                 </Button>
             </section>
         </>

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Avatar from '../../../../../../public/images/MaleAvatar.jpg'
+import Avatar from '@images/MaleAvatar.jpg'
 import { Heart, Location, Sms } from '@/src/components/svgs'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +12,7 @@ import { useParams, useSearchParams } from 'next/navigation'
 type UserCardProps = {
     transformedParams: FilterInput[]
 }
+
 export default function UserCard({ transformedParams }: UserCardProps) {
     const { t } = useTranslation()
     const params = useParams()
@@ -21,7 +22,6 @@ export default function UserCard({ transformedParams }: UserCardProps) {
     const currentPage = page ? parseInt(page, 10) : 1
     const limit = 10
     const offset = (currentPage - 1) * limit
-
     const { loading, error, data } = useQuery(getFilteredUsersQuery, {
         variables: {
             pagination: {
@@ -32,7 +32,6 @@ export default function UserCard({ transformedParams }: UserCardProps) {
             filters: transformedParams,
         },
     })
-
     const FilteredUsers = data?.getFilteredUsers as FilterWithPaginationObject
 
     if (loading) return <p>Loading...</p>
@@ -77,7 +76,6 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                                       </button>
                                   </div>
                                   <div className="hidden h-[1px] w-full bg-[#E3E3E3] md:block"></div>
-
                                   <span className=" line-clamp-1 h-full overflow-clip text-ellipsis  text-sm md:line-clamp-2">
                                       {item?.cardInfo?.bio}
                                   </span>

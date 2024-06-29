@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { DropdownIndicatorProps, GroupBase, components } from 'react-select'
 import { IconDropdown } from '../../svgs'
 import { JSX } from 'react'
@@ -19,7 +18,7 @@ export const DropdownIndicator = (
     )
 }
 export const customStyles = {
-    control: (provided: any, state: { isFocused: any }) => ({
+    control: (provided: any, state: { isFocused: boolean }) => ({
         ...provided,
         border: '1px solid #828bab ',
         outline: state.isFocused ? '1px solid #3dae8c' : 'none',
@@ -29,6 +28,7 @@ export const customStyles = {
         fontSize: '12px',
         boxShadow: 'none',
         height: '40px auto',
+
         '&:hover': {
             outline: state.isFocused ? '1px solid #3dae8c' : 'none',
         },

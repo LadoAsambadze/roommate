@@ -29,47 +29,34 @@ export const FilterRangePicker = ({
     rangeChangeHandler,
 }: FilterRangePickerProps) => {
     const { t } = useTranslation()
-
-    const [date, setDate] = useState<DateRange | undefined>({
-        from: undefined,
-        to: undefined,
-    })
     const [formattedDateArray, setFormattedDateArray] = useState<string[] | undefined>([])
+    const matchingQuestion = ranges.find((item) => item.questionId === questionId)
+    const [date, setDate] = useState<DateRange | undefined>(
+        matchingQuestion && matchingQuestion?.dataRange?.length > 0
+            ? {
+                  from: new Date(matchingQuestion.dataRange[0]),
+                  to: new Date(matchingQuestion.dataRange[1]),
+              }
+            : {
+                  from: undefined,
+                  to: undefined,
+              }
+    )
     const formatDate = (date: Date | undefined): string | undefined => {
         return date ? format(date, 'yyyy-MM-dd') : undefined
     }
-
     const updateRangeHandler = () => {
-        if (formattedDateArray && formattedDateArray.every((date) => date !== undefined)) {
-            rangeChangeHandler(questionId, formattedDateArray as string[])
-        } else {
-            rangeChangeHandler(questionId, formattedDateArray as string[])
-        }
+        rangeChangeHandler(questionId, formattedDateArray || [])
     }
 
     useEffect(() => {
         if (date?.from && date?.to) {
-            const formattedData = date ? [formatDate(date.from), formatDate(date.to)] : undefined
-            const filteredData =
-                formattedData &&
-                (formattedData.filter((dateString) => dateString !== undefined) as string[])
-            setFormattedDateArray(filteredData)
+            const formattedData = [formatDate(date.from), formatDate(date.to)]
+            setFormattedDateArray(formattedData.filter(Boolean) as string[])
         } else {
             setFormattedDateArray(undefined)
         }
     }, [date])
-
-    const matchingQuestion = ranges.find((item) => item.questionId === questionId)
-
-    useEffect(() => {
-        if (matchingQuestion && matchingQuestion?.dataRange?.length > 0) {
-
-            setDate({
-                from: new Date(matchingQuestion.dataRange[0]),
-                to: new Date(matchingQuestion.dataRange[1]),
-            })
-        }
-    }, [matchingQuestion])
 
     return (
         <>
@@ -80,7 +67,8 @@ export const FilterRangePicker = ({
                             id="date"
                             variant={'outline'}
                             className={cn(
-                                'flex h-[48px] w-full justify-start rounded-lg border border-[#828bab] px-3 py-2 text-left font-normal outline-none hover:bg-white md:w-full'
+                                'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3  py-2 text-left font-normal hover:bg-white  focus:outline-[#3dae8c] md:w-full',
+                                !date && 'text-muted-foreground'
                             )}
                         >
                             <div className="p flex h-[48px] flex-row items-center justify-center text-sm">
