@@ -12,10 +12,11 @@ type SliderProps = {
     rangeChangeHandler: (questionId: string, values: string[]) => void
     ranges: RangeDataProps[]
     className?: string
+    isOpen: boolean
 }
 
 const Slider = forwardRef<ElementRef<typeof Root>, SliderProps>(
-    ({ className, questionId, ranges, rangeChangeHandler, ...props }, ref) => {
+    ({ className, questionId, ranges, isOpen, rangeChangeHandler, ...props }, ref) => {
         const [sliderValues, setSliderValues] = useState([0, 1000])
         const updateRangeHandler = () => {
             const sliderValuesAsString = sliderValues.map(String)
@@ -28,7 +29,7 @@ const Slider = forwardRef<ElementRef<typeof Root>, SliderProps>(
                 const dataRangeAsNumbers = matchingQuestion.dataRange.map(Number)
                 setSliderValues(dataRangeAsNumbers)
             }
-        }, [ranges, questionId])
+        }, [ranges, questionId, isOpen])
 
         return (
             <div>

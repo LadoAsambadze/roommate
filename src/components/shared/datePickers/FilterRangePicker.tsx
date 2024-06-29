@@ -20,28 +20,21 @@ type FilterRangePickerProps = {
     questionId: string
     ranges: RangeDataProps[]
     rangeChangeHandler: (questionId: string, dataRange: string[]) => void
+    isOpen: boolean
 }
 
 export const FilterRangePicker = ({
     className,
     questionId,
     ranges,
+    isOpen,
     rangeChangeHandler,
 }: FilterRangePickerProps) => {
     const { t } = useTranslation()
     const [formattedDateArray, setFormattedDateArray] = useState<string[] | undefined>([])
     const matchingQuestion = ranges.find((item) => item.questionId === questionId)
-    const [date, setDate] = useState<DateRange | undefined>(
-        matchingQuestion && matchingQuestion?.dataRange?.length > 0
-            ? {
-                  from: new Date(matchingQuestion.dataRange[0]),
-                  to: new Date(matchingQuestion.dataRange[1]),
-              }
-            : {
-                  from: undefined,
-                  to: undefined,
-              }
-    )
+    const [date, setDate] = useState<DateRange | undefined>({ from: undefined, to: undefined })
+
     const formatDate = (date: Date | undefined): string | undefined => {
         return date ? format(date, 'yyyy-MM-dd') : undefined
     }
@@ -57,6 +50,14 @@ export const FilterRangePicker = ({
             setFormattedDateArray(undefined)
         }
     }, [date])
+
+    useEffect(() => {
+        if (matchingQuestion && matchingQuestion?.dataRange?.length > 0)
+            setDate({
+                from: new Date(matchingQuestion.dataRange[0]),
+                to: new Date(matchingQuestion.dataRange[1]),
+            })
+    }, [isOpen, matchingQuestion])
 
     return (
         <>

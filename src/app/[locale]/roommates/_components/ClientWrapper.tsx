@@ -31,7 +31,7 @@ export default function ClientWrapper() {
             })
             .filter((item) => item !== null) as FilterInput[]
         setTransformedParams(transformedParams)
-    }, [searchParams])
+    }, [searchParams, isOpen])
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function ClientWrapper() {
                     </button>
                 </div>
                 <div className="hidden h-full lg:block lg:w-1/2 xl:w-[30%] ">
-                    <Filter transformedParams={transformedParams} />
+                    <Filter transformedParams={transformedParams} isOpen={isOpen} />
                 </div>
                 {isOpen ? (
                     <section className="fixed  h-full w-full  gap-6 bg-white p-6 sm:px-16  md:px-20 lg:hidden ">
@@ -56,7 +56,7 @@ export default function ClientWrapper() {
                             </button>
                             <button>{t('clearFilters')}</button>
                         </div>
-                        <Filter transformedParams={transformedParams} />
+                        <Filter transformedParams={transformedParams} isOpen={isOpen} />
                     </section>
                 ) : null}
                 <div className="hidden h-screen w-[1px] bg-[#E3E3E3] xl:block"></div>

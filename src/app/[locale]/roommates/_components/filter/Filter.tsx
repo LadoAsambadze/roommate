@@ -22,9 +22,10 @@ type Option = { value: string }
 
 type FilterComponentProps = {
     transformedParams: FilterInput[]
+    isOpen: boolean
 }
 
-export default function Filter({ transformedParams }: FilterComponentProps) {
+export default function Filter({ transformedParams, isOpen }: FilterComponentProps) {
     const { t } = useTranslation()
     const params = useParams()
     const router = useRouter()
@@ -160,7 +161,8 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                 })
             }
         })
-    }, [transformedParams])
+    }, [transformedParams, isOpen])
+  
 
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error: {error.message}</p>
@@ -253,6 +255,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                                 {item.translations && item.translations[0]?.title}
                                             </label>
                                             <FilterRangePicker
+                                                isOpen={isOpen}
                                                 key={key}
                                                 className="mt-2 w-full"
                                                 rangeChangeHandler={rangeChangeHandler}
@@ -268,6 +271,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                                 {item.translations && item.translations[0]?.title}
                                             </label>
                                             <Slider
+                                                isOpen={isOpen}
                                                 key={key}
                                                 questionId={item.id}
                                                 ranges={ranges}
