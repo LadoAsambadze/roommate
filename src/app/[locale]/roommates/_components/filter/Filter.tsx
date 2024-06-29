@@ -277,11 +277,12 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                     )}
                             </div>
                         ))}
-                <Button variant="default" className="mt-6 w-full " onClick={filterUpdateHandler}>
+                <Button variant="filter" className="mt-6 w-full " onClick={filterUpdateHandler}>
                     {t('searchBtn')}
                 </Button>
                 <Button
-                    className=" w-full   bg-neutral-400 hover:bg-neutral-500"
+                    variant="filter"
+                    className=" w-full bg-neutral-400 hover:bg-neutral-500  "
                     onClick={filterClearHandler}
                 >
                     {t('clearFilters')}

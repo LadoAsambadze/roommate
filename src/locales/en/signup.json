@@ -20,6 +20,7 @@
     "getCode": "Get code",
     "next": "Next",
     "back": "Back",
+    "prev": "Previous",
     "nameError": "Name is required",
     "surnameError": "Last name is required",
     "selectField": "Select field",

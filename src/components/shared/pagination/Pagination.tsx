@@ -2,12 +2,15 @@ import React, { useCallback } from 'react'
 import ReactPaginate from 'react-paginate'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { FilterWithPaginationObject } from '@/graphql/typesGraphql'
+import { useTranslation } from 'react-i18next'
+import { ArrowRight } from '../../svgs'
 
 type DataProps = {
     data: FilterWithPaginationObject
 }
 
 export default function Pagination({ data }: DataProps) {
+    const { t } = useTranslation()
     const router = useRouter()
     const searchParams = useSearchParams()
     const pathname = usePathname()
@@ -34,11 +37,22 @@ export default function Pagination({ data }: DataProps) {
                 pageCount={pageCount}
                 pageRangeDisplayed={5}
                 marginPagesDisplayed={2}
-                previousLabel={'Previous'}
-                nextLabel={'Next'}
+                previousLabel={
+                    <div className="flex h-full items-center rounded-sm p-1 text-sm hover:bg-slate-300">
+                        <ArrowRight className="mr-1 h-5 w-5 rotate-180" />
+                        <span>{t('prev')}</span>
+                    </div>
+                }
+                nextLabel={
+                    <div className="flex  h-full items-center rounded-sm  p-1 text-sm hover:bg-slate-300">
+                        <span>{t('next')}</span>
+                        <ArrowRight className="h-5 w-5" />
+                    </div>
+                }
                 onPageChange={({ selected }) => handlePageChange(selected)}
-                previousClassName=" bg-[red] text-sm"
-                containerClassName="flex flex-row gap-2 px-6"
+                previousClassName="text-sm"
+                containerClassName="flex flex-row gap-2 px-6  items-center"
+                pageClassName="h-full items-center justify-center flex px-2 hover:bg-slate-300 cursor-pointer border border-[gray] rounded-sm text-sm"
             />
         </>
     )
