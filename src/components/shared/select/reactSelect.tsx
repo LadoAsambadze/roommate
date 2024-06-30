@@ -233,8 +233,6 @@ const Select = (props: SelectProps) => {
         }
     }
 
-    console.log(t('reactSelectPlaceholder'))
-
     return (
         <ReactSelect
             {...restReactSelectProps}
