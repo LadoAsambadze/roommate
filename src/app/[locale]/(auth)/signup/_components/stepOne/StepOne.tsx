@@ -16,7 +16,6 @@ import {
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
 import Select from 'react-select'
-import StyledSelect from '@/src/components/shared/select/reactSelect'
 import { DropdownIndicator, customStyles } from '@/src/components/shared/select/selectUI'
 import Image from 'next/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
@@ -119,18 +118,6 @@ export default function StepOne({
 
     return (
         <>
-            <StyledSelect
-                showFocusBorder={true}
-                isMulti={true}
-                options={[
-                    { value: 1, label: 'option 1' },
-                    { value: 2, label: 'option 2' },
-                    { value: 3, label: 'option 3' },
-                    { value: 4, label: 'option 4' },
-                    { value: 5, label: 'option 5' },
-                    { value: 6, label: 'option 6' },
-                ]}
-            />
             {isClient ? (
                 <main className="flex flex-col  items-center ">
                     <Form {...form}>
