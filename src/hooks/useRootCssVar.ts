@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const useRootCssVar = (varName: string) => {
+const useRootCssVar = (varName: string): string => {
     const [value, setValue] = useState('')
 
     useEffect(() => {

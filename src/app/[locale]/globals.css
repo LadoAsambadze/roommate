@@ -53,7 +53,11 @@ body {
 
         --radius: 0.5rem;
 
-        --primaryGreen: #3dae8c;
+        --mainGreen-100: 152, 73%, 93%;
+        --mainGreen-200: 152, 73%, 83%;
+        --mainGreen-300: 152, 73%, 73%;
+        --mainGreen-400: 152, 73%, 63%;
+        --mainGreen-500: 152, 73%, 53%;
     }
 
     .dark {
@@ -116,7 +120,6 @@ body {
 }
 
 /* phone input select */
-
 .PhoneInput {
     display: flex;
     justify-content: center !important;

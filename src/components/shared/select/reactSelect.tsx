@@ -1,17 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IconDropdown } from '../../svgs'
-import { X } from 'lucide-react'
+import { X, ChevronDown } from 'lucide-react'
 import ReactSelect, {
     DropdownIndicatorProps as ReactSelectDropdownIndicatorProps,
     ClearIndicatorProps as ReactSelectClearIndicatorProps,
+    MultiValueRemoveProps as ReactSelectMultiValueRemoveProps,
     GroupBase,
     components,
     Props as ReactSelectProps,
+    Theme,
 } from 'react-select'
 
 import { cn } from '@/src/utils/cn'
 import { useState } from 'react'
 import { useRootCssVar } from '@/src/hooks/useRootCssVar'
+import { useTranslation } from 'react-i18next'
+
+// !!! TODO: must return after setting up proper color design structure
 
 type DropdownIndicatorProps = ReactSelectDropdownIndicatorProps<
     unknown,
@@ -21,14 +25,14 @@ type DropdownIndicatorProps = ReactSelectDropdownIndicatorProps<
     isMenuOpen: boolean
 }
 
-export const DropdownIndicator = (props: DropdownIndicatorProps) => {
+const DropdownIndicator = (props: DropdownIndicatorProps) => {
     const { isMenuOpen, ...dropdownIndicatorProps } = props
 
     return (
         components.DropdownIndicator && (
             <components.DropdownIndicator {...dropdownIndicatorProps}>
-                <IconDropdown
-                    className={cn({
+                <ChevronDown
+                    className={cn('text-neutral-600', {
                         'rotate-180': isMenuOpen,
                     })}
                 />
@@ -39,34 +43,26 @@ export const DropdownIndicator = (props: DropdownIndicatorProps) => {
 
 type ClearIndicatorProps = ReactSelectClearIndicatorProps<unknown, boolean, GroupBase<unknown>>
 
-export const ClearIndicator = (props: ClearIndicatorProps) => {
+const ClearIndicator = (props: ClearIndicatorProps) => {
     return (
         components.ClearIndicator && (
             <components.ClearIndicator {...props}>
-                <X className="h-5 w-5" />
+                <X />
             </components.ClearIndicator>
         )
     )
 }
 
-export const customStyles = {
-    control: (provided: any, state: { isFocused: boolean }) => ({
-        ...provided,
-        border: !state.isFocused ? '1px solid #828bab' : '1px solid #3dae8c',
-        padding: '8px 12px 8px 12px',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        fontSize: '12px',
-        height: '40px',
-        boxShadow: state.isFocused ? 'inset 0 0 0 1px #3dae8c' : 'none',
-        transition: 0,
+type MultiValueRemoveProps = ReactSelectMultiValueRemoveProps<unknown, boolean, GroupBase<unknown>>
 
-        '&:hover': {},
-    }),
-    indicatorSeparator: (provided: any) => ({
-        ...provided,
-        display: 'none',
-    }),
+const MultiValueRemove = (props: MultiValueRemoveProps) => {
+    return (
+        components.MultiValueRemove && (
+            <components.MultiValueRemove {...props}>
+                <X size={14} />
+            </components.MultiValueRemove>
+        )
+    )
 }
 
 type SelectProps = ReactSelectProps & {
@@ -74,32 +70,51 @@ type SelectProps = ReactSelectProps & {
 }
 
 const Select = (props: SelectProps) => {
-    const { isMulti, showFocusBorder = false, ...restReactSelectProps } = props
-
-    const primaryGreenColor = useRootCssVar('--primaryGreen')
+    const {
+        isMulti,
+        loadingMessage,
+        noOptionsMessage,
+        placeholder,
+        showFocusBorder = false,
+        ...restReactSelectProps
+    } = props
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-    // state: { isFocused: boolean }
+    const mainGreenColor = useRootCssVar('--mainGreen')
+    const mainGreen100Color = useRootCssVar('--mainGreen-100')
+    const mainGreen300Color = useRootCssVar('--mainGreen-300')
+    const mainGreen500Color = useRootCssVar('--mainGreen-500')
+
+    const destructiveColor = useRootCssVar('--destructive')
+
+    const placeholderColor = useRootCssVar('--placeholderColor')
+
+    const { t } = useTranslation()
+
+    const multiValueVerticalMargin = 2
+    const multiValueHorizontalMargin = 3.5
 
     const customStyles = {
         // main container(wrapper)
-        control: (baseStyles: any) => {
+        control: (baseStyles: any, state: { isFocused: boolean }) => {
+            let shouldFocused = false
+
+            if (showFocusBorder) {
+                if (isMulti) {
+                    shouldFocused = state.isFocused
+                } else {
+                    shouldFocused = isMenuOpen
+                }
+            }
+
             return {
                 ...baseStyles,
-                border: showFocusBorder
-                    ? !isMenuOpen
-                        ? '1px solid #828bab'
-                        : `1px solid ${primaryGreenColor}`
-                    : '1px solid #828bab',
+                border: !shouldFocused ? '1px solid #828bab' : `1px solid hsl(${mainGreenColor})`,
                 borderRadius: 8,
                 cursor: 'pointer',
                 minHeight: 40,
-                boxShadow: showFocusBorder
-                    ? isMenuOpen
-                        ? `inset 0 0 0 1px ${primaryGreenColor}`
-                        : 'none'
-                    : 'none',
+                boxShadow: shouldFocused ? `inset 0 0 0 1px hsl(${mainGreenColor})` : 'none',
                 transition: 0,
 
                 '&:hover': {},
@@ -108,29 +123,49 @@ const Select = (props: SelectProps) => {
         valueContainer: (baseStyles: any) => ({
             ...baseStyles,
             padding: '8px 12px',
-            margin: isMulti ? '-2.5px -3.5px' : 0,
+            margin: isMulti ? `-${multiValueVerticalMargin}px -${multiValueHorizontalMargin}px` : 0,
         }),
 
         // input
         input: (baseStyles: any) => ({
             ...baseStyles,
             padding: 0,
-            margin: 0,
+            // because of gap, margin with minus value subtracts padding from valueContainer
+            // need to add same margin value input compensate overall padding sizing
+            // is only happens when "isMulti = false"
+            margin: isMulti ? `0 0 0 ${multiValueHorizontalMargin}px` : 0,
         }),
         placeholder: (baseStyles: any) => ({
+            ...baseStyles,
+            // because of gap, margin with minus value subtracts padding from valueContainer
+            // need to add same margin value input compensate overall padding sizing
+            // is only happens when "isMulti = false"
+            margin: isMulti ? `0 0 0 ${multiValueHorizontalMargin}px` : 0,
+            color: `hsl(${placeholderColor})`,
+        }),
+
+        // single value
+        singleValue: (baseStyles: any) => ({
             ...baseStyles,
             margin: 0,
         }),
 
-        // multi value items
+        // multi values
         multiValue: (baseStyles: any) => ({
             ...baseStyles,
-            margin: isMulti ? '2.5px 3.5px' : 0,
+            margin: isMulti ? `${multiValueVerticalMargin}px ${multiValueHorizontalMargin}px` : 0,
         }),
         multiValueLabel: (baseStyles: any) => ({
             ...baseStyles,
-            padding: 0,
             fontSize: '100%',
+            padding: '0 0 1px 0',
+            // react-select somehow sets "padding-left: 6px" even if "padding: 0".
+            // so need override by hand
+            paddingLeft: 3.5,
+        }),
+        multiValueRemove: (baseStyles: any) => ({
+            ...baseStyles,
+            padding: '1px 3.5px',
         }),
 
         // indicator(close, dropdown)
@@ -145,17 +180,45 @@ const Select = (props: SelectProps) => {
         clearIndicator: (baseStyles: any) => ({
             ...baseStyles,
             padding: 0,
-            marginRight: 7,
+            marginRight: 6,
         }),
         dropdownIndicator: (baseStyles: any) => ({
             ...baseStyles,
             padding: 0,
             width: 'auto',
         }),
+        menu: (baseStyles: any) => ({
+            ...baseStyles,
+            borderRadius: 8,
+            overflow: 'hidden',
+        }),
+        menuList: (baseStyles: any) => ({
+            ...baseStyles,
+            paddingTop: 0,
+            paddingBottom: 0,
+        }),
+        option: (baseStyles: any) => ({
+            ...baseStyles,
+            cursor: 'pointer',
+        }),
+    }
+
+    const customTheme = (props: Theme) => {
+        return {
+            ...props,
+            colors: {
+                ...props.colors,
+                primary: `hsl(${mainGreenColor})`,
+                primary75: `hsl(${mainGreen500Color})`,
+                primary50: `hsl(${mainGreen300Color})`,
+                primary25: `hsl(${mainGreen100Color})`,
+                danger: `hsl(${destructiveColor})`,
+            },
+        }
     }
 
     const handleMenuOpen = () => {
-        setIsMenuOpen((prevState: boolean) => !prevState)
+        setIsMenuOpen(true)
 
         if (typeof restReactSelectProps.onMenuOpen === 'function') {
             restReactSelectProps.onMenuOpen()
@@ -163,43 +226,36 @@ const Select = (props: SelectProps) => {
     }
 
     const handleMenuClose = () => {
-        setIsMenuOpen((prevState: boolean) => !prevState)
+        setIsMenuOpen(false)
 
         if (typeof restReactSelectProps.onMenuClose === 'function') {
             restReactSelectProps.onMenuClose()
         }
     }
 
+    console.log(t('reactSelectPlaceholder'))
+
     return (
         <ReactSelect
             {...restReactSelectProps}
             styles={customStyles}
+            theme={customTheme}
             components={{
                 ...restReactSelectProps.components,
                 DropdownIndicator: (props) => (
                     <DropdownIndicator {...props} isMenuOpen={isMenuOpen} />
                 ),
                 ClearIndicator: (props) => <ClearIndicator {...props} />,
+                MultiValueRemove: (props) => <MultiValueRemove {...props} />,
             }}
-            isMulti
+            isMulti={isMulti}
             onMenuOpen={handleMenuOpen}
             onMenuClose={handleMenuClose}
-            placeholder="placeholder"
-            options={[
-                { value: 1, label: 'option 1' },
-                { value: 2, label: 'option 2' },
-                { value: 3, label: 'option 3' },
-                { value: 4, label: 'option 4' },
-                { value: 5, label: 'option 5' },
-                { value: 6, label: 'option 6' },
-            ]}
+            loadingMessage={loadingMessage ?? (() => t('reactSelectLoadingMessage'))}
+            noOptionsMessage={noOptionsMessage ?? (() => t('reactSelectNoOptionsMessage'))}
+            placeholder={placeholder ?? t('reactSelectPlaceholder')}
         />
     )
 }
 
 export default Select
-
-/**
- * TODO:
- * 1. ReactSelect base props review/rewrite
- */
