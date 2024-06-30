@@ -1,4 +1,4 @@
-import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
+import { DropdownIndicator, customStyles } from '@/src/components/shared/select/selectUI'
 import Select from 'react-select'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'

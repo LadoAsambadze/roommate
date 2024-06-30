@@ -52,6 +52,8 @@ body {
         --ring: 222.2 84% 4.9%;
 
         --radius: 0.5rem;
+
+        --primaryGreen: #3dae8c;
     }
 
     .dark {
@@ -113,43 +115,6 @@ body {
     margin: 0;
 }
 
-/* select input */
-
-.css-b62m3t-container {
-    font-size: 14px !important;
-}
-
-.css-hlgwow {
-    padding: 0px !important;
-}
-
-.css-19bb58m {
-    padding: 0px !important;
-    margin: 0px !important;
-}
-.css-1jqq78o-placeholder {
-    margin: 0px !important;
-    font-size: 14px !important;
-}
-
-.css-1fdsijx-ValueContainer {
-    padding: 0px !important;
-    font-size: 14px !important;
-}
-
-.css-1xc3v61-indicatorContainer {
-    padding: 0px !important;
-}
-
-.css-qbdosj-Input {
-    margin: 0px !important;
-    padding: 0px !important;
-}
-
-.css-15lsz6c-indicatorContainer {
-    padding: 0px !important;
-}
-
 /* phone input select */
 
 .PhoneInput {
@@ -190,5 +155,3 @@ body {
         font-size: 14px !important;
     }
 }
-
-

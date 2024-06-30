@@ -16,7 +16,8 @@ import {
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
 import Select from 'react-select'
-import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
+import StyledSelect from '@/src/components/shared/select/reactSelect'
+import { DropdownIndicator, customStyles } from '@/src/components/shared/select/selectUI'
 import Image from 'next/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
@@ -118,6 +119,7 @@ export default function StepOne({
 
     return (
         <>
+            <StyledSelect showFocusBorder={true} isMulti={true} />
             {isClient ? (
                 <main className="flex flex-col  items-center ">
                     <Form {...form}>
