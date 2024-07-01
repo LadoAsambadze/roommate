@@ -16,7 +16,6 @@ import {
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
 import Select from 'react-select'
-import { DropdownIndicator, customStyles } from '@/src/components/shared/select/selectUI'
 import Image from 'next/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
@@ -203,8 +202,6 @@ export default function StepOne({
                                             <FormLabel>{t('country')}</FormLabel>
                                             <Select
                                                 {...field}
-                                                styles={customStyles}
-                                                components={{ DropdownIndicator }}
                                                 placeholder={t('selectCountry')}
                                                 onChange={(value) => {
                                                     field.onChange(value)
@@ -251,8 +248,6 @@ export default function StepOne({
                                             <FormLabel>{t('gender')}</FormLabel>
                                             <Select
                                                 {...field}
-                                                styles={customStyles}
-                                                components={{ DropdownIndicator }}
                                                 placeholder={t('selectGender')}
                                                 onChange={(value) => {
                                                     field.onChange(value)

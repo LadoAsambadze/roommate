@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@/src/components/ui/button'
 import Select from 'react-select'
-import { DropdownIndicator, customStyles } from '@/src/components/shared/select/selectUI'
 import { SignupRangePicker } from '../../../../../../components/shared/datePickers/SignupRangePicker'
 import { useTranslation } from 'react-i18next'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
@@ -203,8 +202,6 @@ export default function StepTwo({
                                                             </FormLabel>
                                                             <Select
                                                                 placeholder={t('select')}
-                                                                components={{ DropdownIndicator }}
-                                                                styles={customStyles}
                                                                 {...field}
                                                                 isMulti={
                                                                     item.uiFieldInfo.input
