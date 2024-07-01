@@ -25,7 +25,6 @@ type FilterComponentProps = {
 }
 
 export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterComponentProps) {
-
     const { t } = useTranslation()
     const params = useParams()
     const router = useRouter()
@@ -134,12 +133,16 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                 className={`${isOpen ? 'fixed h-screen w-full overflow-auto  border-t-2 px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'relative p-0'} flex h-full  w-full  flex-col gap-4 bg-white p-0  md:gap-6 `}
             >
                 {isOpen ? (
-                    <div className="flex h-auto w-full flex-col items-end justify-center">
+                    <div className="flex h-auto w-full flex-row items-center justify-end gap-3">
+                        <button onClick={filterClearHandler}>clear filters</button>
                         <button className="flex" onClick={() => setIsOpen(!isOpen)}>
-                            close icon
+                            X
                         </button>
                     </div>
                 ) : null}
+                <div className=" h-auto hidden lg:flex w-full flex-row items-center justify-end  hover:underline">
+                    <button>{t('clearFilters')}</button>
+                </div>
                 {data?.getQuestionsWithAnswers &&
                     [...data?.getQuestionsWithAnswers]
                         .sort((a, b) => {
@@ -202,13 +205,6 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                         ))}
                 <Button variant="filter" className="mt-6 w-full " onClick={filterUpdateHandler}>
                     {t('searchBtn')}
-                </Button>
-                <Button
-                    variant="filter"
-                    className=" w-full bg-neutral-400 hover:bg-neutral-500  "
-                    onClick={filterClearHandler}
-                >
-                    {t('clearFilters')}
                 </Button>
             </section>
         </>
