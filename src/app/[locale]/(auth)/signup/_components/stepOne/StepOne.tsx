@@ -16,7 +16,7 @@ import {
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
 import Select from 'react-select'
-import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
+import { DropdownIndicator, customStyles } from '@/src/components/shared/select/selectUI'
 import Image from 'next/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'

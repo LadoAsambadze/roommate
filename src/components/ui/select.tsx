@@ -1,151 +1,258 @@
-import * as React from 'react'
-import * as SelectPrimitive from '@radix-ui/react-select'
-import { Check, ChevronDown, ChevronUp } from 'lucide-react'
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { X, ChevronDown } from 'lucide-react'
+import ReactSelect, {
+    DropdownIndicatorProps as ReactSelectDropdownIndicatorProps,
+    ClearIndicatorProps as ReactSelectClearIndicatorProps,
+    MultiValueRemoveProps as ReactSelectMultiValueRemoveProps,
+    GroupBase,
+    components,
+    Props as ReactSelectProps,
+    Theme,
+} from 'react-select'
 import { cn } from '@/src/utils/cn'
+import { useState } from 'react'
+import { useRootCssVar } from '@/src/hooks/useRootCssVar'
+import { useTranslation } from 'react-i18next'
 
-const Select = SelectPrimitive.Root
+// !!! TODO: must return after setting up proper color design structure
 
-const SelectGroup = SelectPrimitive.Group
-
-const SelectValue = SelectPrimitive.Value
-
-const SelectTrigger = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitive.Trigger>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-    <SelectPrimitive.Trigger
-        ref={ref}
-        className={cn(
-            'flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
-            className
-        )}
-        {...props}
-    >
-        {children}
-        <SelectPrimitive.Icon asChild>
-            <ChevronDown className="h-4 w-4 opacity-50" />
-        </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
-))
-SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
-
-const SelectScrollUpButton = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
->(({ className, ...props }, ref) => (
-    <SelectPrimitive.ScrollUpButton
-        ref={ref}
-        className={cn('flex cursor-default items-center justify-center py-1', className)}
-        {...props}
-    >
-        <ChevronUp className="h-4 w-4" />
-    </SelectPrimitive.ScrollUpButton>
-))
-SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
-
-const SelectScrollDownButton = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
->(({ className, ...props }, ref) => (
-    <SelectPrimitive.ScrollDownButton
-        ref={ref}
-        className={cn('flex cursor-default items-center justify-center py-1', className)}
-        {...props}
-    >
-        <ChevronDown className="h-4 w-4" />
-    </SelectPrimitive.ScrollDownButton>
-))
-SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName
-
-const SelectContent = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitive.Content>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, position = 'popper', ...props }, ref) => (
-    <SelectPrimitive.Portal>
-        <SelectPrimitive.Content
-            ref={ref}
-            className={cn(
-                'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-                position === 'popper' &&
-                    'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
-                className
-            )}
-            position={position}
-            {...props}
-        >
-            <SelectScrollUpButton />
-            <SelectPrimitive.Viewport
-                className={cn(
-                    'p-1',
-                    position === 'popper' &&
-                        'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]'
-                )}
-            >
-                {children}
-            </SelectPrimitive.Viewport>
-            <SelectScrollDownButton />
-        </SelectPrimitive.Content>
-    </SelectPrimitive.Portal>
-))
-SelectContent.displayName = SelectPrimitive.Content.displayName
-
-const SelectLabel = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitive.Label>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
->(({ className, ...props }, ref) => (
-    <SelectPrimitive.Label
-        ref={ref}
-        className={cn('py-1.5 pl-8 pr-2 text-sm font-semibold', className)}
-        {...props}
-    />
-))
-SelectLabel.displayName = SelectPrimitive.Label.displayName
-
-const SelectItem = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitive.Item>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => (
-    <SelectPrimitive.Item
-        ref={ref}
-        className={cn(
-            'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-            className
-        )}
-        {...props}
-    >
-        <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-            <SelectPrimitive.ItemIndicator>
-                <Check className="h-4 w-4" />
-            </SelectPrimitive.ItemIndicator>
-        </span>
-
-        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-    </SelectPrimitive.Item>
-))
-SelectItem.displayName = SelectPrimitive.Item.displayName
-
-const SelectSeparator = React.forwardRef<
-    React.ElementRef<typeof SelectPrimitive.Separator>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
->(({ className, ...props }, ref) => (
-    <SelectPrimitive.Separator
-        ref={ref}
-        className={cn('-mx-1 my-1 h-px bg-muted', className)}
-        {...props}
-    />
-))
-SelectSeparator.displayName = SelectPrimitive.Separator.displayName
-
-export {
-    Select,
-    SelectGroup,
-    SelectValue,
-    SelectTrigger,
-    SelectContent,
-    SelectLabel,
-    SelectItem,
-    SelectSeparator,
-    SelectScrollUpButton,
-    SelectScrollDownButton,
+type DropdownIndicatorProps = ReactSelectDropdownIndicatorProps<
+    unknown,
+    boolean,
+    GroupBase<unknown>
+> & {
+    isMenuOpen: boolean
 }
+
+const DropdownIndicator = (props: DropdownIndicatorProps) => {
+    const { isMenuOpen, ...dropdownIndicatorProps } = props
+
+    return (
+        components.DropdownIndicator && (
+            <components.DropdownIndicator {...dropdownIndicatorProps}>
+                <ChevronDown
+                    className={cn('text-neutral-600', {
+                        'rotate-180': isMenuOpen,
+                    })}
+                />
+            </components.DropdownIndicator>
+        )
+    )
+}
+
+type ClearIndicatorProps = ReactSelectClearIndicatorProps<unknown, boolean, GroupBase<unknown>>
+
+const ClearIndicator = (props: ClearIndicatorProps) => {
+    return (
+        components.ClearIndicator && (
+            <components.ClearIndicator {...props}>
+                <X />
+            </components.ClearIndicator>
+        )
+    )
+}
+
+type MultiValueRemoveProps = ReactSelectMultiValueRemoveProps<unknown, boolean, GroupBase<unknown>>
+
+const MultiValueRemove = (props: MultiValueRemoveProps) => {
+    return (
+        components.MultiValueRemove && (
+            <components.MultiValueRemove {...props}>
+                <X size={14} />
+            </components.MultiValueRemove>
+        )
+    )
+}
+
+type SelectProps = ReactSelectProps & {
+    showFocusBorder?: boolean
+}
+
+const Select = (props: SelectProps) => {
+    const {
+        isMulti,
+        loadingMessage,
+        noOptionsMessage,
+        placeholder,
+        showFocusBorder = false,
+        ...restReactSelectProps
+    } = props
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    const mainGreenColor = useRootCssVar('--mainGreen')
+    const mainGreen100Color = useRootCssVar('--mainGreen-100')
+    const mainGreen300Color = useRootCssVar('--mainGreen-300')
+    const mainGreen500Color = useRootCssVar('--mainGreen-500')
+
+    const destructiveColor = useRootCssVar('--destructive')
+
+    const placeholderColor = useRootCssVar('--placeholderColor')
+
+    const { t } = useTranslation()
+
+    const multiValueVerticalMargin = 2
+    const multiValueHorizontalMargin = 3.5
+
+    const customStyles = {
+        // main container(wrapper)
+        control: (baseStyles: any, state: { isFocused: boolean }) => {
+            let shouldFocused = false
+
+            if (showFocusBorder) {
+                if (isMulti) {
+                    shouldFocused = state.isFocused
+                } else {
+                    shouldFocused = isMenuOpen
+                }
+            }
+
+            return {
+                ...baseStyles,
+                border: !shouldFocused ? '1px solid #828bab' : `1px solid hsl(${mainGreenColor})`,
+                borderRadius: 8,
+                cursor: 'pointer',
+                minHeight: 40,
+                boxShadow: shouldFocused ? `inset 0 0 0 1px hsl(${mainGreenColor})` : 'none',
+                transition: 0,
+
+                '&:hover': {},
+            }
+        },
+        valueContainer: (baseStyles: any) => ({
+            ...baseStyles,
+            padding: '8px 12px',
+            margin: isMulti ? `-${multiValueVerticalMargin}px -${multiValueHorizontalMargin}px` : 0,
+        }),
+
+        // input
+        input: (baseStyles: any) => ({
+            ...baseStyles,
+            padding: 0,
+            // because of gap, margin with minus value subtracts padding from valueContainer
+            // need to add same margin value input compensate overall padding sizing
+            // is only happens when "isMulti = false"
+            margin: isMulti ? `0 0 0 ${multiValueHorizontalMargin}px` : 0,
+        }),
+        placeholder: (baseStyles: any) => ({
+            ...baseStyles,
+            // because of gap, margin with minus value subtracts padding from valueContainer
+            // need to add same margin value input compensate overall padding sizing
+            // is only happens when "isMulti = false"
+            margin: isMulti ? `0 0 0 ${multiValueHorizontalMargin}px` : 0,
+            color: `hsl(${placeholderColor})`,
+        }),
+
+        // single value
+        singleValue: (baseStyles: any) => ({
+            ...baseStyles,
+            margin: 0,
+        }),
+
+        // multi values
+        multiValue: (baseStyles: any) => ({
+            ...baseStyles,
+            margin: isMulti ? `${multiValueVerticalMargin}px ${multiValueHorizontalMargin}px` : 0,
+        }),
+        multiValueLabel: (baseStyles: any) => ({
+            ...baseStyles,
+            fontSize: '100%',
+            padding: '0 0 1px 0',
+            // react-select somehow sets "padding-left: 6px" even if "padding: 0".
+            // so need override by hand
+            paddingLeft: 3.5,
+        }),
+        multiValueRemove: (baseStyles: any) => ({
+            ...baseStyles,
+            padding: '1px 3.5px',
+        }),
+
+        // indicator(close, dropdown)
+        indicatorsContainer: (baseStyles: any) => ({
+            ...baseStyles,
+            padding: '8px 12px 8px 0',
+        }),
+        indicatorSeparator: (baseStyles: any) => ({
+            ...baseStyles,
+            display: 'none',
+        }),
+        clearIndicator: (baseStyles: any) => ({
+            ...baseStyles,
+            padding: 0,
+            marginRight: 6,
+        }),
+        dropdownIndicator: (baseStyles: any) => ({
+            ...baseStyles,
+            padding: 0,
+            width: 'auto',
+        }),
+        menu: (baseStyles: any) => ({
+            ...baseStyles,
+            borderRadius: 8,
+            overflow: 'hidden',
+        }),
+        menuList: (baseStyles: any) => ({
+            ...baseStyles,
+            paddingTop: 0,
+            paddingBottom: 0,
+        }),
+        option: (baseStyles: any) => ({
+            ...baseStyles,
+            cursor: 'pointer',
+        }),
+    }
+
+    const customTheme = (props: Theme) => {
+        return {
+            ...props,
+            colors: {
+                ...props.colors,
+                primary: `hsl(${mainGreenColor})`,
+                primary75: `hsl(${mainGreen500Color})`,
+                primary50: `hsl(${mainGreen300Color})`,
+                primary25: `hsl(${mainGreen100Color})`,
+                danger: `hsl(${destructiveColor})`,
+            },
+        }
+    }
+
+    const handleMenuOpen = () => {
+        setIsMenuOpen(true)
+
+        if (typeof restReactSelectProps.onMenuOpen === 'function') {
+            restReactSelectProps.onMenuOpen()
+        }
+    }
+
+    const handleMenuClose = () => {
+        setIsMenuOpen(false)
+
+        if (typeof restReactSelectProps.onMenuClose === 'function') {
+            restReactSelectProps.onMenuClose()
+        }
+    }
+
+    return (
+        <ReactSelect
+            {...restReactSelectProps}
+            styles={customStyles}
+            theme={customTheme}
+            components={{
+                ...restReactSelectProps.components,
+                DropdownIndicator: (props) => (
+                    <DropdownIndicator {...props} isMenuOpen={isMenuOpen} />
+                ),
+                ClearIndicator: (props) => <ClearIndicator {...props} />,
+                MultiValueRemove: (props) => <MultiValueRemove {...props} />,
+            }}
+            isMulti={isMulti}
+            onMenuOpen={handleMenuOpen}
+            onMenuClose={handleMenuClose}
+            loadingMessage={loadingMessage ?? (() => t('reactSelectLoadingMessage'))}
+            noOptionsMessage={noOptionsMessage ?? (() => t('reactSelectNoOptionsMessage'))}
+            placeholder={placeholder ?? t('reactSelectPlaceholder')}
+        />
+    )
+}
+
+export default Select
