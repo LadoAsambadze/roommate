@@ -146,7 +146,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                     </div>
                 ) : null}
                 <div className=" hidden h-auto w-full flex-row items-center justify-end hover:underline  lg:flex">
-                    <button>{t('clearFilters')}</button>
+                    <button onClick={filterClearHandler}>{t('clearFilters')}</button>
                 </div>
                 {data?.getQuestionsWithAnswers &&
                     [...data?.getQuestionsWithAnswers]
