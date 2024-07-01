@@ -11,7 +11,7 @@ type AnswerIdProps = {
 }
 type FilterSelectComponentProps = {
     questionId: string
-    answersId?: AnswerObject[]
+    answersId?: AnswerObject[] | null
     answers: AnswerIdProps[]
     isMulti?: boolean
     setAnswers: Dispatch<SetStateAction<AnswerIdProps[]>>

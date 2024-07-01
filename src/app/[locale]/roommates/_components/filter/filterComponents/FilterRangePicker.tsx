@@ -4,11 +4,11 @@ import { Calendar as CalendarIcon } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
 import { cn } from '@/src/utils/cn'
 import { useTranslation } from 'react-i18next'
-import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover'
-import { Button } from '../../ui/button'
-import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '../../ui/drawer'
-import { Calendar } from '../../ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/src/components/ui/popover'
+import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/components/ui/drawer'
+import { Calendar } from '@/src/components/ui/calendar'
 import { useEffect, useState } from 'react'
+import { Button } from '@/src/components/ui/button'
 
 type RangeDataProps = {
     questionId: string

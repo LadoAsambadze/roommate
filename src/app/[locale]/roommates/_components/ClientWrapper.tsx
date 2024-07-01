@@ -48,9 +48,19 @@ export default function ClientWrapper() {
                     </button>
                 </div>
                 <div className="hidden h-full lg:block lg:w-1/2 xl:w-[30%] ">
-                    <Filter transformedParams={transformedParams} isOpen={isOpen} />
+                    <Filter
+                        transformedParams={transformedParams}
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
+                    />
                 </div>
-                {isOpen ? <Filter transformedParams={transformedParams} isOpen={isOpen} setIsOpen={setIsOpen} /> : null}
+                {isOpen ? (
+                    <Filter
+                        transformedParams={transformedParams}
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
+                    />
+                ) : null}
                 <div className="hidden h-screen w-[1px] bg-[#E3E3E3] xl:block"></div>
                 <UserCard transformedParams={transformedParams} />
             </main>
