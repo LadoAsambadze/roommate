@@ -31,12 +31,14 @@ export default function ClientWrapper() {
             })
             .filter((item) => item !== null) as FilterInput[]
         setTransformedParams(transformedParams)
-    }, [searchParams])
+    }, [searchParams, isOpen])
 
     return (
         <>
-            <main className="relative flex min-h-screen w-full  flex-col gap-4 md:py-10 lg:flex-row lg:px-20">
-                <div className="h-auto w-full px-6 pt-4 sm:pl-32  lg:hidden lg:pl-0">
+            <main
+                className={` ${!isOpen ? 'px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'px-0 py-0'} relative flex min-h-screen w-full  flex-col gap-4    lg:flex-row xl:px-24 `}
+            >
+                <div className="flex h-auto w-full justify-start   lg:hidden lg:pl-0">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="flex  flex-row items-center  rounded-lg border border-[#838CAC] bg-[#F2F5FF] px-4 py-2 "
@@ -46,18 +48,18 @@ export default function ClientWrapper() {
                     </button>
                 </div>
                 <div className="hidden h-full lg:block lg:w-1/2 xl:w-[30%] ">
-                    <Filter transformedParams={transformedParams} />
+                    <Filter
+                        transformedParams={transformedParams}
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
+                    />
                 </div>
                 {isOpen ? (
-                    <section className="fixed  h-full w-full  gap-6 bg-white p-6 sm:px-16  md:px-20 lg:hidden ">
-                        <div className="flex h-auto w-full flex-col items-end justify-center gap-5">
-                            <button className="flex" onClick={() => setIsOpen(!isOpen)}>
-                                x
-                            </button>
-                            <button>{t('clearFilters')}</button>
-                        </div>
-                        <Filter transformedParams={transformedParams} />
-                    </section>
+                    <Filter
+                        transformedParams={transformedParams}
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
+                    />
                 ) : null}
                 <div className="hidden h-screen w-[1px] bg-[#E3E3E3] xl:block"></div>
                 <UserCard transformedParams={transformedParams} />

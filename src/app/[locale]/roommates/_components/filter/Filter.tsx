@@ -1,14 +1,13 @@
-import { DropdownIndicator, customStyles } from '@/src/components/shared/select/selectUI'
-import Select from 'react-select'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
-import { FilterRangePicker } from '@/src/components/shared/datePickers/FilterRangePicker'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { FilterRangePicker } from '@/src/app/[locale]/roommates/_components/filter/filterComponents/FilterRangePicker'
 import { Slider } from '@/src/components/ui/slider'
 import { FilterInput, Language, QuestionsWithAnswersFor } from '@/graphql/typesGraphql'
 import { getQuestionsWithAnswersQuery } from '@/graphql/query'
 import { useQuery } from '@apollo/client'
 import { Button } from '@/src/components/ui/button'
 import { useParams, usePathname, useRouter } from 'next/navigation'
+import FilterSelectComponent from '@/src/app/[locale]/roommates/_components/filter/filterComponents/FilterSelectComponent'
 
 type RangeDataProps = {
     questionId: string
@@ -18,13 +17,14 @@ type AnswerIdProps = {
     questionId: string
     answerIds: string[] | string
 }
-type Option = { value: string }
 
 type FilterComponentProps = {
     transformedParams: FilterInput[]
+    isOpen: boolean
+    setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function Filter({ transformedParams }: FilterComponentProps) {
+export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterComponentProps) {
     const { t } = useTranslation()
     const params = useParams()
     const router = useRouter()
@@ -39,46 +39,6 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
             getFor: 'FILTER' as QuestionsWithAnswersFor,
         },
     })
-
-    const selectedOptionsHandler = (
-        questionId: string,
-        selectedOptions: string | string[] | Option | Option[]
-    ) => {
-        if (Array.isArray(selectedOptions)) {
-            if (
-                selectedOptions.every((option) => typeof option === 'object' && 'value' in option)
-            ) {
-                selectChangeHandler(
-                    questionId,
-                    (selectedOptions as Option[]).map((option) => option.value)
-                )
-            } else {
-                selectChangeHandler(questionId, selectedOptions as string[])
-            }
-        } else if (
-            typeof selectedOptions === 'object' &&
-            selectedOptions &&
-            'value' in selectedOptions
-        ) {
-            selectChangeHandler(questionId, selectedOptions.value)
-        } else if (typeof selectedOptions === 'string') {
-            selectChangeHandler(questionId, selectedOptions)
-        }
-    }
-
-    const selectChangeHandler = (questionId: string, answerIds: string | string[]) => {
-        const existingQuery = answers.find((query) => query.questionId === questionId)
-        if (existingQuery) {
-            setAnswers((prevQueries) => {
-                const updatedQueries = prevQueries.map((query) =>
-                    query.questionId === questionId ? { ...query, answerIds } : query
-                )
-                return updatedQueries
-            })
-        } else {
-            setAnswers((prevQueries) => [...prevQueries, { questionId, answerIds }])
-        }
-    }
 
     const rangeChangeHandler = (questionId: string, dataRange: string[]) => {
         const existingIndex = ranges.findIndex((query) => query.questionId === questionId)
@@ -102,6 +62,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
     }
 
     const filterUpdateHandler = () => {
+        setIsOpen(false)
         const params = new URLSearchParams()
         ranges.forEach((query) => {
             if (query.dataRange && query.dataRange.length > 0 && Array.isArray(query.dataRange)) {
@@ -160,14 +121,23 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                 })
             }
         })
-    }, [transformedParams])
+    }, [transformedParams, isOpen])
 
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error: {error.message}</p>
 
     return (
         <>
-            <section className="h-full w-full  flex-col gap-6 bg-white p-0  md:flex ">
+            <section
+                className={`${isOpen ? 'fixed h-screen w-full overflow-auto  border-t-2 px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'relative'} flex h-full  w-full  flex-col gap-4 bg-white p-0  md:gap-6 `}
+            >
+                {isOpen ? (
+                    <div className="flex h-auto w-full flex-col items-end justify-center">
+                        <button className="flex" onClick={() => setIsOpen(!isOpen)}>
+                            close icon
+                        </button>
+                    </div>
+                ) : null}
                 {data?.getQuestionsWithAnswers &&
                     [...data?.getQuestionsWithAnswers]
                         .sort((a, b) => {
@@ -182,67 +152,16 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                         <label className="w-full text-sm">
                                             {item.translations && item?.translations[0].title}
                                         </label>
-                                        <Select
+
+                                        <FilterSelectComponent
                                             key={key}
-                                            styles={customStyles}
-                                            components={{ DropdownIndicator }}
-                                            className="mt-2 w-full cursor-pointer text-sm"
-                                            placeholder={t('select')}
+                                            answers={answers}
+                                            questionId={item.id}
+                                            answersId={item.answers}
+                                            setAnswers={setAnswers}
                                             isMulti={
                                                 item.uiFieldInfo.filterInput.variant === 'multiple'
                                             }
-                                            defaultValue={() => {
-                                                const matchingQuestion = answers.find(
-                                                    (answer) => answer.questionId === item.id
-                                                )
-
-                                                if (
-                                                    matchingQuestion &&
-                                                    Array.isArray(matchingQuestion.answerIds)
-                                                ) {
-                                                    const defaultOptions =
-                                                        matchingQuestion.answerIds
-                                                            .map((answerId) => {
-                                                                const matchedAnswer =
-                                                                    item.answers &&
-                                                                    item.answers.find(
-                                                                        (answer) =>
-                                                                            answer.id === answerId
-                                                                    )
-                                                                return matchedAnswer
-                                                                    ? {
-                                                                          value: matchedAnswer.id,
-                                                                          label: matchedAnswer
-                                                                              .translations[0]
-                                                                              .title,
-                                                                      }
-                                                                    : null
-                                                            })
-                                                            .filter(Boolean)
-
-                                                    return defaultOptions
-                                                }
-                                                return []
-                                            }}
-                                            options={
-                                                item.answers
-                                                    ? item.answers.map((answer) => ({
-                                                          questionId: item.id,
-                                                          value: answer.id,
-                                                          label: answer.translations[0].title,
-                                                      }))
-                                                    : undefined
-                                            }
-                                            onChange={(selectedOptions: unknown) => {
-                                                selectedOptionsHandler(
-                                                    item.id,
-                                                    selectedOptions as
-                                                        | string
-                                                        | string[]
-                                                        | Option
-                                                        | Option[]
-                                                )
-                                            }}
                                         />
                                     </>
                                 )}
@@ -253,6 +172,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                                 {item.translations && item.translations[0]?.title}
                                             </label>
                                             <FilterRangePicker
+                                                isOpen={isOpen}
                                                 key={key}
                                                 className="mt-2 w-full"
                                                 rangeChangeHandler={rangeChangeHandler}
@@ -268,6 +188,7 @@ export default function Filter({ transformedParams }: FilterComponentProps) {
                                                 {item.translations && item.translations[0]?.title}
                                             </label>
                                             <Slider
+                                                isOpen={isOpen}
                                                 key={key}
                                                 questionId={item.id}
                                                 ranges={ranges}

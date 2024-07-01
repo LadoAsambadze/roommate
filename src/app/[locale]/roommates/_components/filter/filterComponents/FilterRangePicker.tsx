@@ -4,11 +4,11 @@ import { Calendar as CalendarIcon } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
 import { cn } from '@/src/utils/cn'
 import { useTranslation } from 'react-i18next'
-import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover'
-import { Button } from '../../ui/button'
-import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '../../ui/drawer'
-import { Calendar } from '../../ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/src/components/ui/popover'
+import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/components/ui/drawer'
+import { Calendar } from '@/src/components/ui/calendar'
 import { useEffect, useState } from 'react'
+import { Button } from '@/src/components/ui/button'
 
 type RangeDataProps = {
     questionId: string
@@ -20,28 +20,21 @@ type FilterRangePickerProps = {
     questionId: string
     ranges: RangeDataProps[]
     rangeChangeHandler: (questionId: string, dataRange: string[]) => void
+    isOpen: boolean
 }
 
 export const FilterRangePicker = ({
     className,
     questionId,
     ranges,
+    isOpen,
     rangeChangeHandler,
 }: FilterRangePickerProps) => {
     const { t } = useTranslation()
     const [formattedDateArray, setFormattedDateArray] = useState<string[] | undefined>([])
     const matchingQuestion = ranges.find((item) => item.questionId === questionId)
-    const [date, setDate] = useState<DateRange | undefined>(
-        matchingQuestion && matchingQuestion?.dataRange?.length > 0
-            ? {
-                  from: new Date(matchingQuestion.dataRange[0]),
-                  to: new Date(matchingQuestion.dataRange[1]),
-              }
-            : {
-                  from: undefined,
-                  to: undefined,
-              }
-    )
+    const [date, setDate] = useState<DateRange | undefined>({ from: undefined, to: undefined })
+
     const formatDate = (date: Date | undefined): string | undefined => {
         return date ? format(date, 'yyyy-MM-dd') : undefined
     }
@@ -57,6 +50,14 @@ export const FilterRangePicker = ({
             setFormattedDateArray(undefined)
         }
     }, [date])
+
+    useEffect(() => {
+        if (matchingQuestion && matchingQuestion?.dataRange?.length > 0)
+            setDate({
+                from: new Date(matchingQuestion.dataRange[0]),
+                to: new Date(matchingQuestion.dataRange[1]),
+            })
+    }, [isOpen, matchingQuestion])
 
     return (
         <>
@@ -110,7 +111,8 @@ export const FilterRangePicker = ({
                         id="date"
                         variant={'outline'}
                         className={cn(
-                            'flex h-[48px] w-full justify-start rounded-lg border border-[#828bab] px-3  py-2  text-left font-normal outline-none hover:bg-white md:hidden md:w-full'
+                            'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3  py-2 text-left font-normal hover:bg-white  focus:outline-[#3dae8c] md:w-full',
+                            !date && 'text-muted-foreground'
                         )}
                     >
                         <div className="flex h-[48px] flex-row items-center justify-center text-sm">
