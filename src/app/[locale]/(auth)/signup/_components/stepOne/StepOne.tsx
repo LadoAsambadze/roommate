@@ -23,6 +23,7 @@ import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePi
 import Loading from '../../loading'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
 import { CountryObject, GenderObject } from '@/graphql/typesGraphql'
+import ReactSelect from '@/src/components/ui/select'
 
 type StepOneProps = {
     countries: CountryObject[]
@@ -118,6 +119,23 @@ export default function StepOne({
 
     return (
         <>
+            <ReactSelect
+                showFocusBorder
+                options={[
+                    {
+                        value: 1,
+                        label: 'option 1',
+                    },
+                    {
+                        value: 2,
+                        label: 'option 2',
+                    },
+                    {
+                        value: 3,
+                        label: 'option 3',
+                    },
+                ]}
+            />
             {isClient ? (
                 <main className="flex flex-col  items-center ">
                     <Form {...form}>
