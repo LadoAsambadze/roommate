@@ -40,7 +40,7 @@ export default function UserCard({ transformedParams }: UserCardProps) {
 
     return (
         <>
-            <section className="flex min-h-screen w-full flex-col items-center justify-between gap-10 xl:w-auto">
+            <section className="flex min-h-screen w-full px-6 py-6 sm:px-16 md:px-20 md:py-10 lg:px-0  lg:py-0  flex-col items-center justify-between gap-10 xl:w-auto">
                 <div className="flex w-full  flex-col items-center justify-center gap-6  xl:w-auto">
                     {data?.getFilteredUsers?.list && data?.getFilteredUsers?.list.length ? (
                         data.getFilteredUsers.list.map((item, index) => (

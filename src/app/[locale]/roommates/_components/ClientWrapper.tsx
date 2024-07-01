@@ -37,13 +37,11 @@ export default function ClientWrapper() {
 
     return (
         <>
-            <main
-                className={` ${!isOpen ? 'px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'px-0 py-0'} relative flex min-h-screen w-full  flex-col gap-4    lg:flex-row xl:px-24 `}
-            >
-                <div className="flex h-auto w-full justify-start   lg:hidden lg:pl-0">
+            <main className="relative flex min-h-screen w-full  flex-col  lg:gap-4 lg:px-20 lg:py-10  lg:flex-row xl:px-24">
+                <div className="flex h-auto w-full justify-start px-6 pt-6 sm:px-16 md:px-20 md:pt-10    lg:hidden lg:px-0">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="flex  flex-row items-center  rounded-lg border border-[#838CAC] bg-[#F2F5FF] px-4 py-2 "
+                        className="flex  flex-row items-center   rounded-lg border border-[#838CAC] bg-[#F2F5FF] px-4 py-2 "
                     >
                         <FilterIcon className="h-6 w-6" />
                         <span className="ml-2 text-sm text-[#838CAC]">{t('filter')}</span>
