@@ -37,7 +37,7 @@ export default function ClientWrapper() {
 
     return (
         <>
-            <main className="relative flex min-h-screen w-full  flex-col  lg:gap-4 lg:px-20 lg:py-10  lg:flex-row xl:px-24">
+            <main className="relative flex min-h-screen w-full  flex-col  lg:flex-row lg:gap-4 lg:px-20  lg:py-10 xl:px-24">
                 <div className="flex h-auto w-full justify-start px-6 pt-6 sm:px-16 md:px-20 md:pt-10    lg:hidden lg:px-0">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
