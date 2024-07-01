@@ -31,6 +31,7 @@ const DropdownIndicator = (props: DropdownIndicatorProps) => {
         components.DropdownIndicator && (
             <components.DropdownIndicator {...dropdownIndicatorProps}>
                 <ChevronDown
+                    size={20}
                     className={cn('text-neutral-600', {
                         'rotate-180': isMenuOpen,
                     })}
@@ -46,7 +47,7 @@ const ClearIndicator = (props: ClearIndicatorProps) => {
     return (
         components.ClearIndicator && (
             <components.ClearIndicator {...props}>
-                <X />
+                <X size={20} />
             </components.ClearIndicator>
         )
     )
@@ -95,6 +96,9 @@ const Select = (props: SelectProps) => {
     const multiValueHorizontalMargin = 3.5
 
     const customStyles = {
+        container: (baseStyles: any) => ({
+            ...baseStyles,
+        }),
         // main container(wrapper)
         control: (baseStyles: any, state: { isFocused: boolean }) => {
             let shouldFocused = false
@@ -112,7 +116,7 @@ const Select = (props: SelectProps) => {
                 border: !shouldFocused ? '1px solid #828bab' : `1px solid hsl(${mainGreenColor})`,
                 borderRadius: 8,
                 cursor: 'pointer',
-                minHeight: 40,
+                minHeight: 38,
                 boxShadow: shouldFocused ? `inset 0 0 0 1px hsl(${mainGreenColor})` : 'none',
                 transition: 0,
 
@@ -121,7 +125,7 @@ const Select = (props: SelectProps) => {
         },
         valueContainer: (baseStyles: any) => ({
             ...baseStyles,
-            padding: '8px 12px',
+            padding: '7.5px 12px',
             margin: isMulti ? `-${multiValueVerticalMargin}px -${multiValueHorizontalMargin}px` : 0,
         }),
 
@@ -156,8 +160,8 @@ const Select = (props: SelectProps) => {
         }),
         multiValueLabel: (baseStyles: any) => ({
             ...baseStyles,
-            fontSize: '100%',
-            padding: '0 0 1px 0',
+            fontSize: 14,
+            padding: 0,
             // react-select somehow sets "padding-left: 6px" even if "padding: 0".
             // so need override by hand
             paddingLeft: 3.5,
@@ -165,6 +169,12 @@ const Select = (props: SelectProps) => {
         multiValueRemove: (baseStyles: any) => ({
             ...baseStyles,
             padding: '1px 3.5px',
+        }),
+
+        // menu
+        option: (baseStyles: any) => ({
+            ...baseStyles,
+            cursor: 'pointer',
         }),
 
         // indicator(close, dropdown)
@@ -195,10 +205,6 @@ const Select = (props: SelectProps) => {
             ...baseStyles,
             paddingTop: 0,
             paddingBottom: 0,
-        }),
-        option: (baseStyles: any) => ({
-            ...baseStyles,
-            cursor: 'pointer',
         }),
     }
 
