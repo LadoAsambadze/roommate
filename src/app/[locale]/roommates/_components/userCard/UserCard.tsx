@@ -34,6 +34,8 @@ export default function UserCard({ transformedParams }: UserCardProps) {
     })
     const FilteredUsers = data?.getFilteredUsers as FilterWithPaginationObject
 
+
+
     if (loading) return <p>Loading...</p>
     if (error) return <p>{error.message}</p>
 
@@ -117,7 +119,7 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                     {data?.getFilteredUsers?.list?.length ? (
                         <Pagination data={FilteredUsers} />
                     ) : null}
-           
+
             </section>
         </>
     )

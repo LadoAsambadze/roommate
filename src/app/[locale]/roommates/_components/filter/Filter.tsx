@@ -62,6 +62,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
     }
 
     const filterUpdateHandler = () => {
+        setIsOpen(false)
         const params = new URLSearchParams()
         ranges.forEach((query) => {
             if (query.dataRange && query.dataRange.length > 0 && Array.isArray(query.dataRange)) {
