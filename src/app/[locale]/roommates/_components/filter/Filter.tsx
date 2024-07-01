@@ -9,6 +9,7 @@ import { Button } from '@/src/components/ui/button'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import FilterSelectComponent from '@/src/app/[locale]/roommates/_components/filter/filterComponents/FilterSelectComponent'
 import FilterLoading from '../loaders/FilterLoading'
+import { CloseCircle } from '@/src/components/svgs'
 
 type RangeDataProps = {
     questionId: string
@@ -135,10 +136,13 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
             >
                 {isOpen ? (
                     <div className="flex h-auto w-full flex-row items-center justify-end gap-3">
-                        <button onClick={filterClearHandler}>{t('clearFilters')}</button>
-                        <button className="flex" onClick={() => setIsOpen(!isOpen)}>
-                            X
+                        <button
+                            className="underline underline-offset-1"
+                            onClick={filterClearHandler}
+                        >
+                            {t('clearFilters')}
                         </button>
+                        <CloseCircle className="h-6 w-6" onClick={() => setIsOpen(!isOpen)} />
                     </div>
                 ) : null}
                 <div className=" hidden h-auto w-full flex-row items-center justify-end hover:underline  lg:flex">
