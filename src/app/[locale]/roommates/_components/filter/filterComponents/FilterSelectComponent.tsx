@@ -1,5 +1,5 @@
 import Select from 'react-select'
-import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
+
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { AnswerObject } from '@/graphql/typesGraphql'
@@ -109,8 +109,6 @@ export default function FilterSelectComponent({
     return (
         <>
             <Select
-                styles={customStyles}
-                components={{ DropdownIndicator }}
                 className="mt-2 w-full cursor-pointer text-sm"
                 placeholder={t('select')}
                 isMulti={isMulti}
