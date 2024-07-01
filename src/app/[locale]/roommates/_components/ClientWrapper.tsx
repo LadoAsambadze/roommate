@@ -6,12 +6,14 @@ import { FilterIcon } from '@/src/components/svgs'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'next/navigation'
 import { FilterInput } from '@/graphql/typesGraphql'
+import { useLockBodyScroll } from '@/src/components/hooks/useLockBodyScroll'
 
 export default function ClientWrapper() {
     const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
     const searchParams = useSearchParams()
     const [transformedParams, setTransformedParams] = useState<FilterInput[]>([])
+    useLockBodyScroll(isOpen)
     useEffect(() => {
         const searchObject = Object.fromEntries(searchParams.entries())
         const transformedParams = Object.entries(searchObject)
