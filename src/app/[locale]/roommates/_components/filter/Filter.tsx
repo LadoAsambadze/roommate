@@ -34,6 +34,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
     const [ranges, setRanges] = useState<RangeDataProps[]>([])
     const [answers, setAnswers] = useState<AnswerIdProps[]>([])
     const { loading, error, data } = useQuery(getQuestionsWithAnswersQuery, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             lang: locale as Language,
             getFor: 'FILTER' as QuestionsWithAnswersFor,

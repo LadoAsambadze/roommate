@@ -23,6 +23,7 @@ export default function UserCard({ transformedParams }: UserCardProps) {
     const limit = 10
     const offset = (currentPage - 1) * limit
     const { loading, error, data } = useQuery(getFilteredUsersQuery, {
+        fetchPolicy: 'cache-and-network',
         variables: {
             pagination: {
                 offset,
@@ -33,8 +34,6 @@ export default function UserCard({ transformedParams }: UserCardProps) {
         },
     })
     const FilteredUsers = data?.getFilteredUsers as FilterWithPaginationObject
-
-
 
     if (loading) return <p>Loading...</p>
     if (error) return <p>{error.message}</p>
@@ -116,10 +115,7 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                     )}
                 </div>
 
-                    {data?.getFilteredUsers?.list?.length ? (
-                        <Pagination data={FilteredUsers} />
-                    ) : null}
-
+                {data?.getFilteredUsers?.list?.length ? <Pagination data={FilteredUsers} /> : null}
             </section>
         </>
     )
