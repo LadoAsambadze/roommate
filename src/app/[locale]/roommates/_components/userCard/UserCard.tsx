@@ -39,7 +39,7 @@ export default function UserCard({ transformedParams }: UserCardProps) {
 
     return (
         <>
-            <section className="flex min-h-screen w-full flex-col items-center justify-between gap-10    xl:w-auto">
+            <section className="flex min-h-screen w-full flex-col items-center justify-between gap-10 xl:w-auto">
                 <div className="flex w-full  flex-col items-center justify-center gap-6  xl:w-auto">
                     {data?.getFilteredUsers?.list && data?.getFilteredUsers?.list.length ? (
                         data.getFilteredUsers.list.map((item, index) => (
@@ -113,7 +113,11 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                         <div className="flex w-full justify-center xl:w-[770px]">no users </div>
                     )}
                 </div>
-                {/* {data?.getFilteredUsers?.list?.length ? <Pagination data={FilteredUsers} /> : null} */}
+
+                    {data?.getFilteredUsers?.list?.length ? (
+                        <Pagination data={FilteredUsers} />
+                    ) : null}
+           
             </section>
         </>
     )

@@ -35,8 +35,10 @@ export default function ClientWrapper() {
 
     return (
         <>
-            <main className="relative flex min-h-screen w-full  px-6 sm:px-14 flex-col gap-4 py-6 md:py-10 lg:flex-row lg:px-20">
-                <div className="h-auto w-full flex justify-start   lg:hidden lg:pl-0">
+            <main
+                className={` ${!isOpen ? 'px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'px-0 py-0'} relative flex min-h-screen w-full  flex-col gap-4    lg:flex-row xl:px-24 `}
+            >
+                <div className="flex h-auto w-full justify-start   lg:hidden lg:pl-0">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="flex  flex-row items-center  rounded-lg border border-[#838CAC] bg-[#F2F5FF] px-4 py-2 "
@@ -48,16 +50,7 @@ export default function ClientWrapper() {
                 <div className="hidden h-full lg:block lg:w-1/2 xl:w-[30%] ">
                     <Filter transformedParams={transformedParams} isOpen={isOpen} />
                 </div>
-                {isOpen ? (
-                    <section className="fixed  h-full w-full  gap-6 bg-white p-6 sm:px-16  md:px-20 lg:hidden ">
-                        <div className="flex h-auto w-full flex-col items-end justify-center">
-                            <button className="flex" onClick={() => setIsOpen(!isOpen)}>
-                                close icon
-                            </button>
-                        </div>
-                        <Filter transformedParams={transformedParams} isOpen={isOpen} />
-                    </section>
-                ) : null}
+                {isOpen ? <Filter transformedParams={transformedParams} isOpen={isOpen} setIsOpen={setIsOpen} /> : null}
                 <div className="hidden h-screen w-[1px] bg-[#E3E3E3] xl:block"></div>
                 <UserCard transformedParams={transformedParams} />
             </main>

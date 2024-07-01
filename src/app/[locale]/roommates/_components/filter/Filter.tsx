@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FilterRangePicker } from '@/src/components/shared/datePickers/FilterRangePicker'
 import { Slider } from '@/src/components/ui/slider'
 import { FilterInput, Language, QuestionsWithAnswersFor } from '@/graphql/typesGraphql'
@@ -21,9 +21,10 @@ type AnswerIdProps = {
 type FilterComponentProps = {
     transformedParams: FilterInput[]
     isOpen: boolean
+    setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function Filter({ transformedParams, isOpen }: FilterComponentProps) {
+export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterComponentProps) {
     const { t } = useTranslation()
     const params = useParams()
     const router = useRouter()
@@ -126,7 +127,16 @@ export default function Filter({ transformedParams, isOpen }: FilterComponentPro
 
     return (
         <>
-            <section className="flex h-full  w-full  flex-col gap-4 bg-white p-0  md:gap-6 ">
+            <section
+                className={`${isOpen ? 'fixed h-screen w-full overflow-auto  border-t-2 px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'relative'} flex h-full  w-full  flex-col gap-4 bg-white p-0  md:gap-6 `}
+            >
+                {isOpen ? (
+                    <div className="flex h-auto w-full flex-col items-end justify-center">
+                        <button className="flex" onClick={() => setIsOpen(!isOpen)}>
+                            close icon
+                        </button>
+                    </div>
+                ) : null}
                 {data?.getQuestionsWithAnswers &&
                     [...data?.getQuestionsWithAnswers]
                         .sort((a, b) => {
