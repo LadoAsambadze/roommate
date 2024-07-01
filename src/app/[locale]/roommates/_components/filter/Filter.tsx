@@ -1,5 +1,3 @@
-import { DropdownIndicator, customStyles } from '@/src/components/shared/select/SelectUI'
-import Select from 'react-select'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { FilterRangePicker } from '@/src/components/shared/datePickers/FilterRangePicker'
@@ -9,6 +7,7 @@ import { getQuestionsWithAnswersQuery } from '@/graphql/query'
 import { useQuery } from '@apollo/client'
 import { Button } from '@/src/components/ui/button'
 import { useParams, usePathname, useRouter } from 'next/navigation'
+import FilterSelectComponent from '@/src/components/shared/datePickers/FilterSelectComponent'
 
 type RangeDataProps = {
     questionId: string
@@ -18,7 +17,6 @@ type AnswerIdProps = {
     questionId: string
     answerIds: string[] | string
 }
-type Option = { value: string }
 
 type FilterComponentProps = {
     transformedParams: FilterInput[]
@@ -40,46 +38,6 @@ export default function Filter({ transformedParams, isOpen }: FilterComponentPro
             getFor: 'FILTER' as QuestionsWithAnswersFor,
         },
     })
-
-    const selectedOptionsHandler = (
-        questionId: string,
-        selectedOptions: string | string[] | Option | Option[]
-    ) => {
-        if (Array.isArray(selectedOptions)) {
-            if (
-                selectedOptions.every((option) => typeof option === 'object' && 'value' in option)
-            ) {
-                selectChangeHandler(
-                    questionId,
-                    (selectedOptions as Option[]).map((option) => option.value)
-                )
-            } else {
-                selectChangeHandler(questionId, selectedOptions as string[])
-            }
-        } else if (
-            typeof selectedOptions === 'object' &&
-            selectedOptions &&
-            'value' in selectedOptions
-        ) {
-            selectChangeHandler(questionId, selectedOptions.value)
-        } else if (typeof selectedOptions === 'string') {
-            selectChangeHandler(questionId, selectedOptions)
-        }
-    }
-
-    const selectChangeHandler = (questionId: string, answerIds: string | string[]) => {
-        const existingQuery = answers.find((query) => query.questionId === questionId)
-        if (existingQuery) {
-            setAnswers((prevQueries) => {
-                const updatedQueries = prevQueries.map((query) =>
-                    query.questionId === questionId ? { ...query, answerIds } : query
-                )
-                return updatedQueries
-            })
-        } else {
-            setAnswers((prevQueries) => [...prevQueries, { questionId, answerIds }])
-        }
-    }
 
     const rangeChangeHandler = (questionId: string, dataRange: string[]) => {
         const existingIndex = ranges.findIndex((query) => query.questionId === questionId)
@@ -162,7 +120,6 @@ export default function Filter({ transformedParams, isOpen }: FilterComponentPro
             }
         })
     }, [transformedParams, isOpen])
-  
 
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error: {error.message}</p>
@@ -184,67 +141,16 @@ export default function Filter({ transformedParams, isOpen }: FilterComponentPro
                                         <label className="w-full text-sm">
                                             {item.translations && item?.translations[0].title}
                                         </label>
-                                        <Select
+
+                                        <FilterSelectComponent
                                             key={key}
-                                            styles={customStyles}
-                                            components={{ DropdownIndicator }}
-                                            className="mt-2 w-full cursor-pointer text-sm"
-                                            placeholder={t('select')}
+                                            answers={answers}
+                                            questionId={item.id}
+                                            answersId={item.answers}
+                                            setAnswers={setAnswers}
                                             isMulti={
-                                                item.uiFieldInfo.filterInput.variant === 'multiple'
+                                                item.uiFieldInfo.filterInput.type === 'multiple'
                                             }
-                                            defaultValue={() => {
-                                                const matchingQuestion = answers.find(
-                                                    (answer) => answer.questionId === item.id
-                                                )
-
-                                                if (
-                                                    matchingQuestion &&
-                                                    Array.isArray(matchingQuestion.answerIds)
-                                                ) {
-                                                    const defaultOptions =
-                                                        matchingQuestion.answerIds
-                                                            .map((answerId) => {
-                                                                const matchedAnswer =
-                                                                    item.answers &&
-                                                                    item.answers.find(
-                                                                        (answer) =>
-                                                                            answer.id === answerId
-                                                                    )
-                                                                return matchedAnswer
-                                                                    ? {
-                                                                          value: matchedAnswer.id,
-                                                                          label: matchedAnswer
-                                                                              .translations[0]
-                                                                              .title,
-                                                                      }
-                                                                    : null
-                                                            })
-                                                            .filter(Boolean)
-
-                                                    return defaultOptions
-                                                }
-                                                return []
-                                            }}
-                                            options={
-                                                item.answers
-                                                    ? item.answers.map((answer) => ({
-                                                          questionId: item.id,
-                                                          value: answer.id,
-                                                          label: answer.translations[0].title,
-                                                      }))
-                                                    : undefined
-                                            }
-                                            onChange={(selectedOptions: unknown) => {
-                                                selectedOptionsHandler(
-                                                    item.id,
-                                                    selectedOptions as
-                                                        | string
-                                                        | string[]
-                                                        | Option
-                                                        | Option[]
-                                                )
-                                            }}
                                         />
                                     </>
                                 )}
