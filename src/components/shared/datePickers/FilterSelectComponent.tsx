@@ -13,8 +13,8 @@ type FilterSelectComponentProps = {
     questionId: string
     answersId?: AnswerObject[]
     answers: AnswerIdProps[]
-    setAnswers: Dispatch<SetStateAction<AnswerIdProps[]>>
     isMulti?: boolean
+    setAnswers: Dispatch<SetStateAction<AnswerIdProps[]>>
 }
 
 export default function FilterSelectComponent({
@@ -26,7 +26,7 @@ export default function FilterSelectComponent({
 }: FilterSelectComponentProps) {
     const { t } = useTranslation()
     const [selectedValue, setSelectedValue] = useState<Option | Option[] | null>(null)
-    console.log(isMulti)
+
     useEffect(() => {
         const matchingQuestion = answers.find((answer) => answer.questionId === questionId)
 

@@ -35,8 +35,8 @@ export default function ClientWrapper() {
 
     return (
         <>
-            <main className="relative flex min-h-screen w-full  flex-col gap-4 md:py-10 lg:flex-row lg:px-20">
-                <div className="h-auto w-full px-6 pt-4 sm:pl-32  lg:hidden lg:pl-0">
+            <main className="relative flex min-h-screen w-full  px-6 sm:px-14 flex-col gap-4 py-6 md:py-10 lg:flex-row lg:px-20">
+                <div className="h-auto w-full flex justify-start   lg:hidden lg:pl-0">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="flex  flex-row items-center  rounded-lg border border-[#838CAC] bg-[#F2F5FF] px-4 py-2 "
@@ -50,11 +50,10 @@ export default function ClientWrapper() {
                 </div>
                 {isOpen ? (
                     <section className="fixed  h-full w-full  gap-6 bg-white p-6 sm:px-16  md:px-20 lg:hidden ">
-                        <div className="flex h-auto w-full flex-col items-end justify-center gap-5">
+                        <div className="flex h-auto w-full flex-col items-end justify-center">
                             <button className="flex" onClick={() => setIsOpen(!isOpen)}>
-                                x
+                                close icon
                             </button>
-                            <button>{t('clearFilters')}</button>
                         </div>
                         <Filter transformedParams={transformedParams} isOpen={isOpen} />
                     </section>

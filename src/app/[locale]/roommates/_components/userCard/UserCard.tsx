@@ -39,30 +39,30 @@ export default function UserCard({ transformedParams }: UserCardProps) {
 
     return (
         <>
-            <section className="flex min-h-screen w-full flex-col items-center justify-between gap-10 px-6 sm:px-32 lg:px-0 xl:w-auto">
-                <div className="flex w-full  flex-col items-center justify-center gap-6 xl:w-auto">
+            <section className="flex min-h-screen w-full flex-col items-center justify-between gap-10    xl:w-auto">
+                <div className="flex w-full  flex-col items-center justify-center gap-6  xl:w-auto">
                     {data?.getFilteredUsers?.list && data?.getFilteredUsers?.list.length ? (
                         data.getFilteredUsers.list.map((item, index) => (
                             <div
                                 key={index}
-                                className="flex h-auto w-full flex-col gap-6 overflow-hidden rounded-lg bg-[#FFFFFF]  shadow-md  lg:h-[232px] lg:w-full lg:flex-row lg:p-4 xl:w-[770px] "
+                                className="flex h-auto w-full flex-col gap-6 overflow-hidden rounded-lg bg-[#FFFFFF]  shadow-md  sm:h-[232px] sm:w-full sm:flex-row sm:p-4 xl:w-[770px] "
                             >
                                 <Link href={`roommates/${item.id}`}>
                                     <Image
                                         src={item?.profileImage ? item?.profileImage : Avatar}
                                         width={400}
                                         height={600}
-                                        className="h-[200px] w-full rounded-lg  object-cover lg:h-full  lg:w-[332px]"
+                                        className="h-[200px] w-full rounded-lg  object-cover sm:h-full  sm:w-[332px]"
                                         alt="test"
                                     />
                                 </Link>
                                 <div
                                     id="inside"
-                                    className="flex h-full w-full flex-col gap-4 p-4 pb-3 pt-4 lg:p-0"
+                                    className="flex h-full w-full flex-col gap-4 p-4 pb-3 pt-4 sm:p-0"
                                 >
                                     <div className="flex h-auto w-full flex-row  items-center justify-between">
                                         <div className="flex flex-row  items-center gap-1 ">
-                                            <span className="text-base font-semibold md:text-sm">
+                                            <span className="text-base font-semibold sm:text-sm">
                                                 {item.firstname} -
                                             </span>
                                             <span className="text-sm text-[#838CAC]">
@@ -76,8 +76,8 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                                             </span>
                                         </button>
                                     </div>
-                                    <div className="hidden h-[1px] w-full bg-[#E3E3E3] md:block"></div>
-                                    <span className=" line-clamp-1 h-full overflow-clip text-ellipsis  text-sm md:line-clamp-2">
+                                    <div className="hidden h-[1px] w-full bg-[#E3E3E3] sm:block"></div>
+                                    <span className=" line-clamp-1 h-full overflow-clip text-ellipsis  text-sm sm:line-clamp-2">
                                         {item?.cardInfo?.bio}
                                     </span>
                                     <div className="flex h-auto w-full flex-row  items-center justify-between">
@@ -113,7 +113,7 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                         <div className="flex w-full justify-center xl:w-[770px]">no users </div>
                     )}
                 </div>
-                {data?.getFilteredUsers?.list?.length ? <Pagination data={FilteredUsers} /> : null}
+                {/* {data?.getFilteredUsers?.list?.length ? <Pagination data={FilteredUsers} /> : null} */}
             </section>
         </>
     )

@@ -126,7 +126,7 @@ export default function Filter({ transformedParams, isOpen }: FilterComponentPro
 
     return (
         <>
-            <section className="h-full w-full  flex-col gap-6 bg-white p-0  md:flex ">
+            <section className="flex h-full  w-full  flex-col gap-4 bg-white p-0  md:gap-6 ">
                 {data?.getQuestionsWithAnswers &&
                     [...data?.getQuestionsWithAnswers]
                         .sort((a, b) => {
@@ -149,7 +149,7 @@ export default function Filter({ transformedParams, isOpen }: FilterComponentPro
                                             answersId={item.answers}
                                             setAnswers={setAnswers}
                                             isMulti={
-                                                item.uiFieldInfo.filterInput.type === 'multiple'
+                                                item.uiFieldInfo.filterInput.variant === 'multiple'
                                             }
                                         />
                                     </>
