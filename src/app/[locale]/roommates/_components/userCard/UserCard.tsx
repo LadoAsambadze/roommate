@@ -8,6 +8,7 @@ import { useQuery } from '@apollo/client'
 import { FilterInput, FilterWithPaginationObject, Language } from '@/graphql/typesGraphql'
 import { getFilteredUsersQuery } from '@/graphql/query'
 import { useParams, useSearchParams } from 'next/navigation'
+import UserCardLoading from '../loaders/UserCardLoading'
 
 type UserCardProps = {
     transformedParams: FilterInput[]
@@ -35,12 +36,12 @@ export default function UserCard({ transformedParams }: UserCardProps) {
     })
     const FilteredUsers = data?.getFilteredUsers as FilterWithPaginationObject
 
-    if (loading) return <p>Loading...</p>
+    if (loading) return <UserCardLoading />
     if (error) return <p>{error.message}</p>
 
     return (
         <>
-            <section className="flex min-h-screen w-full px-6 py-6 sm:px-16 md:px-20 md:py-10 lg:px-0  lg:py-0  flex-col items-center justify-between gap-10 xl:w-auto">
+            <section className="flex min-h-screen w-full flex-col items-center justify-between gap-10 px-6 py-6  sm:px-16  md:px-20 md:py-10 lg:px-0 lg:py-0 xl:w-auto">
                 <div className="flex w-full  flex-col items-center justify-center gap-6  xl:w-auto">
                     {data?.getFilteredUsers?.list && data?.getFilteredUsers?.list.length ? (
                         data.getFilteredUsers.list.map((item, index) => (

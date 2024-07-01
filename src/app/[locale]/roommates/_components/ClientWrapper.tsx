@@ -54,6 +54,7 @@ export default function ClientWrapper() {
                         setIsOpen={setIsOpen}
                     />
                 </div>
+
                 {isOpen ? (
                     <Filter
                         transformedParams={transformedParams}

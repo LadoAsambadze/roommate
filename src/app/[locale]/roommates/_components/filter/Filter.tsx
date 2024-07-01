@@ -8,6 +8,7 @@ import { useQuery } from '@apollo/client'
 import { Button } from '@/src/components/ui/button'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import FilterSelectComponent from '@/src/app/[locale]/roommates/_components/filter/filterComponents/FilterSelectComponent'
+import FilterLoading from '../loaders/FilterLoading'
 
 type RangeDataProps = {
     questionId: string
@@ -124,7 +125,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
         })
     }, [transformedParams, isOpen])
 
-    if (loading) return <p>Loading...</p>
+    if (loading) return <FilterLoading />
     if (error) return <p>Error: {error.message}</p>
 
     return (
@@ -134,13 +135,13 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
             >
                 {isOpen ? (
                     <div className="flex h-auto w-full flex-row items-center justify-end gap-3">
-                        <button onClick={filterClearHandler}>clear filters</button>
+                        <button onClick={filterClearHandler}>{t('clearFilters')}</button>
                         <button className="flex" onClick={() => setIsOpen(!isOpen)}>
                             X
                         </button>
                     </div>
                 ) : null}
-                <div className=" h-auto hidden lg:flex w-full flex-row items-center justify-end  hover:underline">
+                <div className=" hidden h-auto w-full flex-row items-center justify-end hover:underline  lg:flex">
                     <button>{t('clearFilters')}</button>
                 </div>
                 {data?.getQuestionsWithAnswers &&
