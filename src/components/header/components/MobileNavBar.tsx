@@ -16,7 +16,9 @@ export default function MobileNavBar() {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <BurgerIcon />
+                <>
+                    <BurgerIcon />
+                </>
             </SheetTrigger>
             <SheetContent className="flex max-h-screen w-72 flex-col items-start overflow-y-auto bg-[#F2F5FF] px-6 pb-14 pt-3">
                 <div className="mt-20 flex flex-col gap-y-6 text-[14px]">

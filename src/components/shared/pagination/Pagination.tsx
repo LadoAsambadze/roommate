@@ -63,7 +63,7 @@ export default function Pagination({ data }: DataProps) {
             previousClassName="text-sm"
             containerClassName="flex flex-row gap-2 w-full justify-center items-center"
             pageClassName="h-full flex items-center justify-center bg-mainGreen hover:bg-hoverGreen text-white cursor-pointer rounded-full "
-            activeClassName="bg-pressedGreen "
+            activeClassName="bg-pressedGreen"
             pageLinkClassName=" h-7  w-7 lg:w-7 lg:h-6 flex items-center justify-center"
         />
     )

@@ -149,7 +149,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                     <button onClick={filterClearHandler}>{t('clearFilters')}</button>
                 </div>
                 {data?.getQuestionsWithAnswers &&
-                    [...data?.getQuestionsWithAnswers]
+                    [...data.getQuestionsWithAnswers]
                         .sort((a, b) => {
                             if (a.uiFieldInfo.filterInput.type === 'numeric') return 1
                             if (b.uiFieldInfo.filterInput.type === 'numeric') return -1

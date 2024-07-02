@@ -1,4 +1,5 @@
 'use client'
+
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
@@ -8,7 +9,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/src/components/ui/pop
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/components/ui/drawer'
 import { Calendar } from '@/src/components/ui/calendar'
 import { useEffect, useState } from 'react'
-import { Button } from '@/src/components/ui/button'
 
 type RangeDataProps = {
     questionId: string
@@ -64,11 +64,9 @@ export const FilterRangePicker = ({
             <div className={cn('hidden gap-2 md:grid', className)}>
                 <Popover>
                     <PopoverTrigger asChild>
-                        <Button
-                            id="date"
-                            variant={'outline'}
+                        <div
                             className={cn(
-                                'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3  py-2 text-left font-normal hover:bg-white  focus:outline-[#3dae8c] md:w-full',
+                                'inline-flex h-[38px] w-full cursor-pointer items-center rounded-lg border border-[#828bab] px-3 py-2 text-left font-normal hover:bg-white focus:outline-[#3dae8c] focus-visible:outline-none',
                                 !date && 'text-muted-foreground'
                             )}
                         >
@@ -83,7 +81,7 @@ export const FilterRangePicker = ({
                                     <span className="text-muted-foreground">{t('chooseDate')}</span>
                                 )}
                             </div>
-                        </Button>
+                        </div>
                     </PopoverTrigger>
                     <PopoverContent
                         className="w-auto p-0"
@@ -107,11 +105,10 @@ export const FilterRangePicker = ({
 
             <Drawer>
                 <DrawerTrigger className="mt-2 w-full md:hidden">
-                    <Button
+                    <div
                         id="date"
-                        variant={'outline'}
                         className={cn(
-                            'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3  py-2 text-left font-normal hover:bg-white  focus:outline-[#3dae8c] md:w-full',
+                            'inline-flex h-[38px] w-full cursor-pointer items-center rounded-lg border border-[#828bab] px-3 py-2 text-left font-normal hover:bg-white focus:outline-[#3dae8c] focus-visible:outline-none',
                             !date && 'text-muted-foreground'
                         )}
                     >
@@ -126,7 +123,7 @@ export const FilterRangePicker = ({
                                 <span className="text-muted-foreground">{t('chooseDate')}</span>
                             )}
                         </div>
-                    </Button>
+                    </div>
                 </DrawerTrigger>
                 <DrawerContent>
                     <Calendar
@@ -141,10 +138,13 @@ export const FilterRangePicker = ({
                             setDate(newDate)
                         }}
                     />
-                    <DrawerClose>
-                        <Button variant="default" className="w-4/5" onClick={updateRangeHandler}>
+                    <DrawerClose className="flex w-full justify-center">
+                        <div
+                            className="h-auto w-3/4 items-center justify-center rounded-md bg-mainGreen px-10 py-2 text-sm text-white focus:bg-pressedGreen"
+                            onClick={updateRangeHandler}
+                        >
                             {t('submit')}
-                        </Button>
+                        </div>
                     </DrawerClose>
                 </DrawerContent>
             </Drawer>

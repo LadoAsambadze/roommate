@@ -1,8 +1,9 @@
-import Select from 'react-select'
+
 
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { AnswerObject } from '@/graphql/typesGraphql'
+import Select from '@/src/components/ui/select';
 
 type Option = { value: string; label: string }
 type AnswerIdProps = {
