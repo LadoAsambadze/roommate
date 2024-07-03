@@ -17,7 +17,7 @@ export default function CoverSection() {
                         </p>
                     </div>
                     <div className=" hidden flex-row justify-start gap-x-4 pl-4 pt-6 md:flex xl:pt-12">
-                        <Link href={false ? '/search' : '/signup'}>
+                        <Link href={false ? '/#' : '/signup'}>
                             <Button className="w-auto   lg:text-base ">{t('findRoommate')}</Button>
                         </Link>
                         <Link href="/#">
@@ -26,7 +26,7 @@ export default function CoverSection() {
                     </div>
                 </div>
                 <div className="mt-4 flex flex-row justify-between gap-x-4 md:hidden">
-                    <Link className="w-full" href={false ? '/search' : '/signup'}>
+                    <Link className="w-full" href={false ? '/#' : '/signup'}>
                         <Button className="w-full px-2 md:text-base">{t('findRoommate')}</Button>
                     </Link>
                     <Link className="w-full" href="/#">

@@ -31,17 +31,17 @@ export default function Footer() {
                         </span>
                     </Link>
                     <div className="grid gap-y-4 lg:grid-cols-2 lg:gap-x-20">
-                        <Link href="/search">
+                        <Link href="/#">
                             <span
                                 className="pointer text-xs hover:underline"
                                 style={{
-                                    fontWeight: pathnameWithoutLocale === '/search' ? 'bold' : '',
+                                    fontWeight: pathnameWithoutLocale === '/#' ? 'bold' : '',
                                 }}
                             >
                                 {t('findRoommate')}
                             </span>
                         </Link>
-                        <Link href="/houseSearch">
+                        <Link href="/#">
                             <span
                                 className="pointer text-xs hover:underline"
                                 style={{
