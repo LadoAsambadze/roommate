@@ -104,7 +104,7 @@ export const FilterRangePicker = ({
             </div>
 
             <Drawer>
-                <DrawerTrigger className="mt-2 w-full md:hidden">
+                <DrawerTrigger className="mt-2 w-full  md:hidden">
                     <div
                         id="date"
                         className={cn(
