@@ -7,9 +7,10 @@ import {
     CarouselPrevious,
 } from '@/src/components/ui/carousel'
 import Link from 'next/link'
-import Image from 'next/image'
+
 import { useTranslation } from 'react-i18next'
 import { Door, Location, Square } from '@/src/components/svgs'
+import Image from 'next/legacy/image'
 
 type Flat = {
     id: string
@@ -47,7 +48,8 @@ export default function ApartmentSection({ flats }: ApartmentSectionProps) {
                                         <div className=" flex w-auto cursor-pointer flex-col items-start justify-start overflow-auto text-ellipsis whitespace-nowrap rounded-xl border">
                                             <div className="relative h-[250px] w-full overflow-hidden ">
                                                 <Image
-                                                    className="  h-full w-full object-cover"
+                                                    objectFit="cover"
+                                                    layout="fill"
                                                     src={item.images[0].original}
                                                     alt="Apartment image"
                                                 />

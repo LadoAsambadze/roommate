@@ -78,7 +78,7 @@ export default function BlogSection() {
                                     </div>
                                 </div>
                                 <Image
-                                    className="absolute -right-4 bottom-0 md:right-0"
+                                    className="absolute -right-4 bottom-0 h-auto w-auto md:right-0"
                                     width={item.width}
                                     height={item.height}
                                     src={item.image}
