@@ -9,7 +9,7 @@ import {
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-interface AccordionItems {
+type AccordionItems = {
     value: string
     question: string
     answer: string

@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import Avatar from '../../../../../../public/images/FemaleAvatar.jpg'
+import Avatar from '@images/FemaleAvatar.jpg'
 import { useTranslation } from 'react-i18next'
 import {
     ArrowRight,

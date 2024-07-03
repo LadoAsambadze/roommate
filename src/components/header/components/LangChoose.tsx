@@ -5,7 +5,7 @@ import i18nConfig from '@/src/libs/i18n/i18nConfig'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
-interface LangChooseProps {
+type LangChooseProps = {
     className: string
     spanClassname: string
 }
