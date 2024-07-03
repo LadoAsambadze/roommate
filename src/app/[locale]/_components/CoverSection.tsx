@@ -1,7 +1,8 @@
 'use client'
 
+import { Button } from '@/src/components/ui/button'
 import Link from 'next/link'
-import { Button } from '../ui/button'
+
 import { useTranslation } from 'react-i18next'
 
 export default function CoverSection() {
@@ -19,7 +20,7 @@ export default function CoverSection() {
                         <Link href={false ? '/search' : '/signup'}>
                             <Button className="w-auto   lg:text-base ">{t('findRoommate')}</Button>
                         </Link>
-                        <Link href="/houseSearch">
+                        <Link href="/#">
                             <Button className="w-auto lg:text-base">{t('rentApartment')}</Button>
                         </Link>
                     </div>
@@ -28,7 +29,7 @@ export default function CoverSection() {
                     <Link className="w-full" href={false ? '/search' : '/signup'}>
                         <Button className="w-full px-2 md:text-base">{t('findRoommate')}</Button>
                     </Link>
-                    <Link className="w-full" href="/houseSearch">
+                    <Link className="w-full" href="/#">
                         <Button className="w-full px-0 md:text-base">{t('rentApartment')}</Button>
                     </Link>
                 </div>

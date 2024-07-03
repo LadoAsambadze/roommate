@@ -1,7 +1,7 @@
 'use client'
 
-import FirstBg from '../../../public/images/ConnectFirstBg.jpg'
-import SecondBg from '../../../public/images/ConnectSecondBg.jpg'
+import FirstBg from '@images/ConnectFirstBg.jpg'
+import SecondBg from '@images/ConnectSecondBg.jpg'
 import { Button } from '@/src/components/ui/button'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
@@ -10,7 +10,7 @@ import Image from 'next/image'
 export default function ConnectSection() {
     const { t } = useTranslation()
     return (
-        <section className="mt-12 flex w-full flex-col px-6 sm:px-16 md:flex-row md:gap-10  md:px-20  xl:flex-row xl:px-24 ">
+        <section className="mt-12 flex w-full flex-col px-6 sm:px-16 md:flex-row md:gap-10  md:px-20  xl:flex-row xl:px-24">
             <div className="relative mt-4 h-60 w-full overflow-hidden rounded-xl xl:h-full  xl:w-[90%] xl:bg-[#f2f5ff]">
                 <div className="absolute inset-0 bg-connectFirstBg bg-cover bg-center bg-no-repeat  xl:hidden"></div>
                 <div className="absolute inset-0 flex flex-row items-center justify-between rounded-xl bg-[#5e666ebf] bg-opacity-50 p-10 md:py-[10%] xl:relative xl:items-end xl:bg-[#f2f5ff] xl:py-4 xl:pl-12 xl:pr-4 ">

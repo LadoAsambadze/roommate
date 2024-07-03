@@ -5,11 +5,11 @@ import {
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-} from '../ui/carousel'
+} from '@/src/components/ui/carousel'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
-import { Door, Location, Square } from '../svgs'
+import { Door, Location, Square } from '@/src/components/svgs'
 
 type Flat = {
     id: string
@@ -42,13 +42,12 @@ export default function ApartmentSection({ flats }: ApartmentSectionProps) {
                                 flats.map((item) => (
                                     <CarouselItem
                                         key={item.id}
-                                        className=" cursor-pointer sm:basis-1/2   lg:basis-1/3 xl:basis-1/4  "
+                                        className="cursor-pointer sm:basis-1/2 lg:basis-1/3 xl:basis-1/4  "
                                     >
                                         <div className=" flex w-auto cursor-pointer flex-col items-start justify-start overflow-auto text-ellipsis whitespace-nowrap rounded-xl border">
                                             <div className="relative h-[250px] w-full overflow-hidden ">
                                                 <Image
-                                                    layout="fill"
-                                                    objectFit="cover"
+                                                    className="  h-full w-full object-cover"
                                                     src={item.images[0].original}
                                                     alt="Apartment image"
                                                 />
@@ -66,12 +65,12 @@ export default function ApartmentSection({ flats }: ApartmentSectionProps) {
                                                     </div>
                                                     <div className="ml-10 flex flex-row items-center text-ellipsis">
                                                         <Square />
-                                                        <p className="ml-2 text-ellipsis text-sm  text-[#484848]   ">
+                                                        <p className="ml-2 text-ellipsis text-sm text-[#484848]   ">
                                                             {t('area')} - {item.area}
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <div className="mt-2 flex flex-row items-center  ">
+                                                <div className="mt-2 flex flex-row items-center">
                                                     <Location />
                                                     <p className="ml-2 overflow-hidden text-ellipsis whitespace-nowrap text-sm text-[#484848]">
                                                         {item.street}
@@ -88,9 +87,9 @@ export default function ApartmentSection({ flats }: ApartmentSectionProps) {
                         </div>
                     </Carousel>
                 </div>
-                <div className=" flex w-full items-center justify-center overflow-hidden   px-6 sm:px-16 md:items-end md:justify-end md:px-20 xl:px-24 ">
-                    <button className=" w-full rounded-md border border-[#838CAC]  py-2 text-sm   text-[#838CAC]   underline-offset-2 md:w-auto md:border-none md:text-[#484848] md:md:underline">
-                        <Link className="w-auto" href="/houseSearch">
+                <div className="flex w-full items-center justify-center overflow-hidden px-6 sm:px-16 md:items-end md:justify-end md:px-20 xl:px-24 ">
+                    <button className="w-full rounded-md border border-[#838CAC] py-2 text-sm text-[#838CAC] underline-offset-2 md:w-auto md:border-none md:text-[#484848] md:md:underline">
+                        <Link className="w-auto" href="/#">
                             {t('viewAll')}
                         </Link>
                     </button>

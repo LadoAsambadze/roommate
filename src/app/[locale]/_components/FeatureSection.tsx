@@ -7,7 +7,7 @@ export default function FeatureSection() {
     const { t } = useTranslation()
     return (
         <>
-            <section className="mt-12 flex w-full justify-between  px-6 sm:px-16 md:px-20 lg:mt-24  lg:grid  lg:grid-flow-col lg:grid-cols-4 lg:gap-x-12 xl:px-24">
+            <section className="mt-12 flex w-full justify-between  px-6 sm:px-16 md:px-20 lg:mt-24 lg:grid lg:grid-flow-col lg:grid-cols-4 lg:gap-x-12 xl:px-24">
                 <div className="flex w-16 flex-col items-center lg:w-full lg:items-start">
                     <BankIcon className="h-8 w-8" />
                     <div className="mt-4 flex flex-col">

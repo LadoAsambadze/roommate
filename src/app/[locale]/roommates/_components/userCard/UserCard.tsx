@@ -42,19 +42,19 @@ export default function UserCard({ transformedParams }: UserCardProps) {
     return (
         <>
             <section className="flex min-h-screen w-full flex-col items-center justify-between gap-10 px-6 py-6  sm:px-16  md:px-20 md:py-10 lg:px-0 lg:py-0 xl:w-auto">
-                <div className="flex w-full  flex-col items-center justify-center gap-6  xl:w-auto">
+                <div className="flex w-full  flex-col items-center justify-center gap-6 xl:w-auto">
                     {data?.getFilteredUsers?.list && data.getFilteredUsers.list.length ? (
                         data.getFilteredUsers.list.map((item, index) => (
                             <div
                                 key={index}
-                                className="flex h-auto w-full flex-col gap-6 overflow-hidden rounded-lg bg-[#FFFFFF]  shadow-md  sm:h-[232px] sm:w-full sm:flex-row sm:p-4 xl:w-[770px] "
+                                className="flex h-auto w-full flex-col gap-6 overflow-hidden rounded-lg bg-[#FFFFFF] shadow-md sm:h-[232px] sm:w-full sm:flex-row sm:p-4 xl:w-[770px] "
                             >
                                 <Link href={`roommates/${item.id}`}>
                                     <Image
                                         src={item?.profileImage ? item.profileImage : Avatar}
                                         width={400}
                                         height={600}
-                                        className="h-[200px] w-full rounded-lg  object-cover sm:h-full  sm:w-[332px]"
+                                        className="h-[200px] w-full rounded-lg object-cover sm:h-full  sm:w-[332px]"
                                         alt="test"
                                         priority
                                     />
@@ -80,10 +80,10 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                                         </button>
                                     </div>
                                     <div className="hidden h-[1px] w-full bg-[#E3E3E3] sm:block"></div>
-                                    <span className=" line-clamp-1 h-full overflow-clip text-ellipsis  text-sm sm:line-clamp-2">
+                                    <span className=" line-clamp-1 h-full overflow-clip text-ellipsis text-sm sm:line-clamp-2">
                                         {item?.cardInfo?.bio}
                                     </span>
-                                    <div className="flex h-auto w-full flex-row  items-center justify-between">
+                                    <div className="flex h-auto w-full flex-row items-center justify-between">
                                         <div className="flex w-full flex-row gap-2 ">
                                             <span className="text-sm text-[#838CAC]">
                                                 {t('userBudget')}
@@ -99,12 +99,12 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                                             <Location className="h-5 w-5" />
 
                                             <div className="w-3/4">
-                                                <span className=" line-clamp-1 w-full  text-ellipsis text-sm">
+                                                <span className="line-clamp-1 w-full text-ellipsis text-sm">
                                                     {item?.cardInfo?.districtNames}
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className=" flex cursor-pointer flex-row items-center gap-3 ">
+                                        <div className="flex cursor-pointer flex-row items-center gap-3">
                                             <Heart />
                                             <span className="text-sm">{t('fav')}</span>
                                         </div>

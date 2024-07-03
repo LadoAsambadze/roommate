@@ -11,9 +11,9 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import BlogFirst from '../../../public/images/BlogFirst.png'
-import BlogSecond from '../../../public/images/BlogSecond.png'
-import BlogThirth from '../../../public/images/BlogThirth.png'
+import BlogFirst from '@images/BlogFirst.png'
+import BlogSecond from '@images/BlogSecond.png'
+import BlogThirth from '@images/BlogThirth.png'
 import { useMediaQuery } from 'react-responsive'
 
 export default function BlogSection() {
@@ -60,16 +60,16 @@ export default function BlogSection() {
                     align: 'start',
                     watchDrag: dragMedia,
                 }}
-                className="mt-6 w-full p-0  "
+                className="mt-6 w-full p-0"
             >
-                <CarouselContent className="pr-6  lg:pr-16 xl:pr-0">
+                <CarouselContent className="pr-6 lg:pr-16 xl:pr-0">
                     {data.map((item, index) => (
                         <CarouselItem key={index} className="w-full md:basis-1/2 xl:basis-1/3">
-                            <div className="relative flex  h-full w-full flex-row  overflow-hidden rounded-xl bg-[#c0dbfc]   pb-10 pl-5 pr-[70px] pt-4 sm:pr-20 lg:pb-10 lg:pl-8 lg:pr-[140px] lg:pt-8 ">
+                            <div className="relative flex h-full w-full flex-row overflow-hidden rounded-xl bg-[#c0dbfc] pb-10 pl-5 pr-[70px] pt-4 sm:pr-20 lg:pb-10 lg:pl-8 lg:pr-[140px] lg:pt-8">
                                 <div className="flex flex-col">
                                     <span className="text-base font-semibold">{item.header}</span>
-                                    <div className="mt-2 flex h-full  flex-col justify-end md:mt-2 md:justify-end">
-                                        <span className="z-50 text-xs ">{item.text}</span>
+                                    <div className="mt-2 flex h-full flex-col justify-end md:mt-2 md:justify-end">
+                                        <span className="z-50 text-xs">{item.text}</span>
                                         <Link href={item.link}>
                                             <Button className="bottom-0 z-50 mt-4 w-32">
                                                 {item.buttonText}

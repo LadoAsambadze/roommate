@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { FbIcon, InstagramIcon, LinkedinIcon, WhatsappIcon } from '../../svgs'
+import { FbIcon, InstagramIcon, LinkedinIcon, WhatsappIcon } from '@/src/components/svgs'
 
 export const SocialIcons = () => {
     return (

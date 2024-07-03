@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { FilterWithPaginationObject } from '@/graphql/typesGraphql'
-import { ArrowRight } from '../../svgs'
+import { ArrowRight } from '@/src/components/svgs'
 
 type DataProps = {
     data: FilterWithPaginationObject
@@ -64,7 +64,7 @@ export default function Pagination({ data }: DataProps) {
             containerClassName="flex flex-row gap-2 w-full justify-center items-center"
             pageClassName="h-full flex items-center justify-center bg-mainGreen hover:bg-hoverGreen text-white cursor-pointer rounded-full "
             activeClassName="bg-pressedGreen"
-            pageLinkClassName=" h-7  w-7 lg:w-7 lg:h-6 flex items-center justify-center"
+            pageLinkClassName=" h-7 w-7 lg:w-7 lg:h-6 flex items-center justify-center"
         />
     )
 }

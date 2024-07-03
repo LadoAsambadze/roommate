@@ -8,8 +8,8 @@ import {
     CarouselPrevious,
 } from '@/src/components/ui/carousel'
 import { useTranslation } from 'react-i18next'
-import FemaleAvatar from '../../../public/images/FemaleAvatar.jpg'
-import MaleAvatar from '../../../public/images/MaleAvatar.jpg'
+import FemaleAvatar from '@images/FemaleAvatar.jpg'
+import MaleAvatar from '@images/MaleAvatar.jpg'
 import Image from 'next/image'
 import { RateStar } from '@/src/components/svgs'
 
@@ -46,18 +46,18 @@ export default function ReviewSection() {
                 }}
                 className="mt-6 w-full p-0"
             >
-                <CarouselContent className="ml-1 gap-4 pr-10 lg:pr-20 ">
+                <CarouselContent className="ml-1 gap-4 pr-10 lg:pr-20">
                     {data.map((item, index) => (
                         <CarouselItem
                             key={index}
-                            className="w-full rounded-xl border border-gray-300  bg-[#FFFFFF] md:basis-1/2 lg:basis-1/3 "
+                            className="w-full rounded-xl border border-gray-300 bg-[#FFFFFF] md:basis-1/2 lg:basis-1/3"
                         >
                             <div className="flex w-full flex-col px-4 py-6">
                                 <div className="flex w-full flex-row items-center">
                                     <div className="relative h-14 w-14 rounded-full">
                                         <Image
                                             src={item.image}
-                                            className="h-full max-w-full rounded-full  object-cover"
+                                            className="h-full max-w-full rounded-full object-cover"
                                             alt="Female/male avatar"
                                         />
                                     </div>

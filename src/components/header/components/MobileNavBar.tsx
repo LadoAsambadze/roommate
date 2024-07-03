@@ -37,7 +37,7 @@ export default function MobileNavBar() {
                     <span
                         className="text-xs"
                         style={{
-                            fontWeight: pathnameWithoutLocale === '/houseSearch' ? 'bold' : '',
+                            fontWeight: pathnameWithoutLocale === '/#' ? 'bold' : '',
                         }}
                     >
                         {t('rentApartment')}

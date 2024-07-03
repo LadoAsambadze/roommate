@@ -23,7 +23,7 @@ export default function ContactSection() {
                     </div>
                 </Link>
                 <Link target="_blank" href="https://wa.me/%2B995599976385">
-                    <div className=" flex cursor-pointer flex-row items-center justify-center rounded-lg bg-[#e6f9f0]  px-8 py-3 lg:flex-col lg:px-10 lg:py-4">
+                    <div className="flex cursor-pointer flex-row items-center justify-center rounded-lg bg-[#e6f9f0]  px-8 py-3 lg:flex-col lg:px-10 lg:py-4">
                         <WhatsappIcon className="h-6 w-6 lg:h-7 lg:w-7" />
                         <span className="ml-3 rounded-lg text-xs  text-[#19a463] lg:ml-0 lg:mt-3 lg:text-[14px]">
                             whatsapp

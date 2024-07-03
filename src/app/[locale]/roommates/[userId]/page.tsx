@@ -1,4 +1,4 @@
-import Temporary from '../../../../../public/images/Temporary.jpg'
+import Temporary from '@images/Temporary.jpg'
 import Image from 'next/image'
 import {
     Calendar,
@@ -27,7 +27,7 @@ export default async function UserId() {
                 <div className="  h-[300px] w-full overflow-hidden md:h-full  md:rounded-lg md:shadow-md ">
                     <Image src={Temporary} className="h-full w-full  object-cover " alt="123" />
                 </div>
-                <div className="z-50 -mt-4 flex h-auto w-full flex-col overflow-hidden rounded-t-3xl bg-[#FFFFFF]   px-6  pt-6  md:mt-0 md:rounded-xl md:border md:border-[#E3E3E3] md:p-6  md:shadow-sm ">
+                <div className="z-50 -mt-4 flex h-auto w-full flex-col overflow-hidden rounded-t-3xl bg-[#FFFFFF] px-6 pt-6 md:mt-0 md:rounded-xl md:border md:border-[#E3E3E3] md:p-6  md:shadow-sm ">
                     <div className="flex w-full flex-row  items-start justify-between">
                         <div className="flex flex-col gap-[6px] md:flex-row">
                             <span className="text-base font-semibold md:text-sm">
