@@ -6,7 +6,7 @@ import { FilterInput, Language, QuestionsWithAnswersFor } from '@/graphql/typesG
 import { getQuestionsWithAnswersQuery } from '@/graphql/query'
 import { useQuery } from '@apollo/client'
 import { Button } from '@/src/components/ui/button'
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation'
 import FilterSelectComponent from '@/src/app/[locale]/roommates/_components/filter/filterComponents/FilterSelectComponent'
 import FilterLoading from '../loaders/FilterLoading'
 import { CloseCircle } from '@/src/components/svgs'
@@ -31,6 +31,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
     const params = useParams()
     const router = useRouter()
     const pathname = usePathname()
+    const searchParams = useSearchParams()
     const locale = params.locale
     const [key, setKey] = useState(0)
     const [ranges, setRanges] = useState<RangeDataProps[]>([])
@@ -91,7 +92,9 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
         setKey((prevKey) => prevKey + 1)
         setRanges([])
         setAnswers([])
-        router.push(pathname)
+        const page = searchParams.get('page')
+        const newPathname = `${pathname}?page=${page}`
+        router.push(newPathname)
     }
 
     useEffect(() => {

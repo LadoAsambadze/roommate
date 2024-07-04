@@ -95,8 +95,8 @@ export default function StepOne({
         }
     }
 
-    const getCodeHandler = async () => {
-        await form.handleSubmit(async () => {
+    const getCodeHandler = () => {
+       form.handleSubmit(async () => {
             setClicked(true)
             try {
                 const response = await smsSend({

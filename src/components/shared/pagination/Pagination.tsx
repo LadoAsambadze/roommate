@@ -62,8 +62,8 @@ export default function Pagination({ data }: DataProps) {
             forcePage={currentPage}
             previousClassName="text-sm"
             containerClassName="flex flex-row gap-2 w-full justify-center items-center"
-            pageClassName="h-full flex items-center justify-center bg-mainGreen hover:bg-hoverGreen text-white cursor-pointer rounded-full "
-            activeClassName="bg-pressedGreen"
+            pageClassName="h-full flex items-center justify-center border border-slate-400 text-black hover:bg-slate-200 text-white rounded-sm cursor-pointer  "
+            activeClassName="bg-slate-300"
             pageLinkClassName=" h-7 w-7 lg:w-7 lg:h-6 flex items-center justify-center"
         />
     )
