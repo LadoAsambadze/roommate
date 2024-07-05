@@ -16,12 +16,11 @@ import { SignupMutation } from '@/graphql/mutation'
 import { CountryObject, GenderObject, QuestionObject } from '@/graphql/typesGraphql'
 
 type ClientWrapperProps = {
-    countries: CountryObject[]
     genders: GenderObject[]
     questions: QuestionObject[]
 }
 
-export default function ClientWrapper({ countries, genders, questions }: ClientWrapperProps) {
+export default function ClientWrapper({ genders, questions }: ClientWrapperProps) {
     // console.log(questions)
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
@@ -137,7 +136,6 @@ export default function ClientWrapper({ countries, genders, questions }: ClientW
                         {step === 1 && (
                             <StepOne
                                 step={step}
-                                countries={countries}
                                 genders={genders}
                                 setStep={setStep}
                                 formData={formData}

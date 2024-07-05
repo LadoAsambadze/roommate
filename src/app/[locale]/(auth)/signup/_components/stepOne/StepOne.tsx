@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation'
 import { StepOneValidator } from './StepOneValidator'
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import {
     Form,
     FormControl,
@@ -21,11 +21,11 @@ import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInpu
 import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
 import Loading from '../../loading'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
-import { CountryObject, GenderObject } from '@/graphql/typesGraphql'
+import { GenderObject, Language } from '@/graphql/typesGraphql'
 import ReactSelect from '@/src/components/ui/select'
+import { getCountriesQuery } from '@/graphql/query'
 
 type StepOneProps = {
-    countries: CountryObject[]
     genders: GenderObject[]
     step: number
     formData: any
@@ -34,26 +34,60 @@ type StepOneProps = {
 }
 
 export default function StepOne({
-    countries,
     genders,
     step,
     formData,
     setStep,
     updateFormData,
 }: StepOneProps) {
-    const form = StepOneValidator({ formData })
     const params = useParams()
     const { t } = useTranslation()
     const [clicked, setClicked] = useState(false)
-    const labels = params.locale === 'ka' ? undefined : undefined
+    const form = StepOneValidator({ formData })
+    const locale = params.locale as Language
     const [smsCheck] = useMutation(CheckCodeMutation, {
         fetchPolicy: 'network-only',
     })
     const [smsSend] = useMutation(SendCodeMutation, {
         fetchPolicy: 'network-only',
     })
+
+    const {
+        data: getCountries,
+        loading,
+        error,
+    } = useQuery(getCountriesQuery, {
+        variables: {
+            locale: locale,
+        },
+    })
+
     const [isClient, setIsClient] = useState(false)
     const [phoneFormat, setPhoneFormat] = useState(false)
+
+    const countrySelectOptions = Array.isArray(getCountries)
+        ? getCountries
+              .sort((a: any, b: any) => {
+                  if (a?.position === 1) return -1
+                  if (b.position === 1) return 1
+                  return 0
+              })
+              .map((country: any) => ({
+                  value: country.id,
+                  label: (
+                      <div className="flex w-full items-center">
+                          <Image
+                              src={`https://flagcdn.com/${country.alpha2Code.toLowerCase()}.svg`}
+                              width={22}
+                              height={16}
+                              alt={country?.translations[0]?.name}
+                          />
+                          <span>&nbsp; &nbsp;</span>
+                          {country?.translations[0]?.name}
+                      </div>
+                  ),
+              }))
+        : []
 
     useEffect(() => {
         setIsClient(true)
@@ -96,7 +130,7 @@ export default function StepOne({
     }
 
     const getCodeHandler = () => {
-       form.handleSubmit(async () => {
+        form.handleSubmit(async () => {
             setClicked(true)
             try {
                 const response = await smsSend({
@@ -115,6 +149,9 @@ export default function StepOne({
             }
         })()
     }
+
+    if (loading) return <div>loading</div>
+    if (error) return <div>error</div>
 
     return (
         <>
@@ -206,30 +243,7 @@ export default function StepOne({
                                                 onChange={(value) => {
                                                     field.onChange(value)
                                                 }}
-                                                options={countries
-                                                    ?.sort((a: any, b: any) => {
-                                                        if (a?.position === 1) return -1
-                                                        if (b.position === 1) return 1
-                                                        return 0
-                                                    })
-                                                    .map((country: any) => ({
-                                                        value: country.id,
-                                                        label: (
-                                                            <div className="flex w-full items-center">
-                                                                <Image
-                                                                    src={`https://flagcdn.com/${country.alpha2Code.toLowerCase()}.svg`}
-                                                                    width={22}
-                                                                    height={16}
-                                                                    alt={
-                                                                        country?.translations[0]
-                                                                            ?.name
-                                                                    }
-                                                                />
-                                                                <span>&nbsp; &nbsp;</span>
-                                                                {country?.translations[0]?.name}
-                                                            </div>
-                                                        ),
-                                                    }))}
+                                                options={countrySelectOptions}
                                                 filterOption={(option: any, inputValue: string) =>
                                                     option.label.props.children[2]
                                                         .toLowerCase()
@@ -373,7 +387,7 @@ export default function StepOne({
                                                 <PhoneInput
                                                     type="number"
                                                     field={field}
-                                                    labels={labels}
+                                                    labels={undefined}
                                                     defaultCountry="GE"
                                                     international
                                                     value={field.value}

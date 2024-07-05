@@ -1,16 +1,10 @@
 import { getClient } from '@/src/libs/apollo/rscClient'
 import ClientWrapper from './_components/ClientWrapper'
-import { getCountriesQuery, getGendersQuery, getQuestionsWithAnswersQuery } from '@/graphql/query'
-import { CountryObject, GenderObject, Language, QuestionObject } from '@/graphql/typesGraphql'
+import { getGendersQuery, getQuestionsWithAnswersQuery } from '@/graphql/query'
+import { GenderObject, Language, QuestionObject } from '@/graphql/typesGraphql'
 
-export default async function Signup({ params }: { params: { locale: string } }) {
+export default async function Signup({ params }: { params: { locale: Language } }) {
     const server = getClient()
-    const countriesResponse = await server.query({
-        query: getCountriesQuery,
-        variables: {
-            locale: params.locale as Language,
-        },
-    })
 
     const gendersResponse = await server.query({
         query: getGendersQuery,
@@ -26,7 +20,6 @@ export default async function Signup({ params }: { params: { locale: string } })
         },
     })
 
-    const countries = countriesResponse?.data?.getCountries as CountryObject[]
     const genders = gendersResponse?.data.getGenders as GenderObject[]
     const questions = questionsWithAnswersResponse?.data.getQuestionsWithAnswers as QuestionObject[]
 
@@ -34,7 +27,7 @@ export default async function Signup({ params }: { params: { locale: string } })
 
     return (
         <>
-            <ClientWrapper countries={countries} genders={genders} questions={questions} />
+            <ClientWrapper  genders={genders} questions={questions} />
         </>
     )
 }
