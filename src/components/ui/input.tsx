@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/display-name */
 import * as React from 'react'
 import { cn } from '@/src/utils/cn'
@@ -10,9 +11,8 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
     hasError?: boolean
     isSuccess?: boolean
     getCode?: boolean
-    clicked?: boolean
+    getCodeButtonClicked?: boolean
     onGetCodeClick?: () => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setPhoneFormat?: any
 }
 
@@ -26,7 +26,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             setPhoneFormat,
             getCode,
             onGetCodeClick,
-            clicked,
+            getCodeButtonClicked,
             ...props
         },
         ref
@@ -69,7 +69,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                                 }
                             }}
                         >
-                            {clicked ? t('resend') : t('getCode')}
+                            {getCodeButtonClicked ? t('resend') : t('getCode')}
                         </Button>
                     </div>
                 )}

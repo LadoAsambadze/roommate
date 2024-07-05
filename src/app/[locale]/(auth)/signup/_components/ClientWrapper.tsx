@@ -130,10 +130,9 @@ export default function ClientWrapper({ questions }: ClientWrapperProps) {
                 />
 
                 <Card className="w-full">
-                    <CardContent className="relative w-full bg-white px-6  pb-16  pt-8 sm:px-14">
+                    <CardContent className="relative w-full bg-white px-6 pb-16 pt-8 sm:px-14">
                         {step === 1 && (
                             <StepOne
-                                step={step}
                                 setStep={setStep}
                                 formData={formData}
                                 updateFormData={updateFormData}
