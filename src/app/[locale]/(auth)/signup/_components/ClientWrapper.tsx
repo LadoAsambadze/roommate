@@ -13,15 +13,13 @@ import StepOne from './stepOne/StepOne'
 import { signIn } from 'next-auth/react'
 import { SignupAlert } from './popups/SignupAlert'
 import { SignupMutation } from '@/graphql/mutation'
-import { CountryObject, GenderObject, QuestionObject } from '@/graphql/typesGraphql'
+import { QuestionObject } from '@/graphql/typesGraphql'
 
 type ClientWrapperProps = {
-    genders: GenderObject[]
     questions: QuestionObject[]
 }
 
-export default function ClientWrapper({ genders, questions }: ClientWrapperProps) {
-    // console.log(questions)
+export default function ClientWrapper({ questions }: ClientWrapperProps) {
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
     const [popupIsOpen, setPopupIsOpen] = useState(false)
@@ -136,7 +134,6 @@ export default function ClientWrapper({ genders, questions }: ClientWrapperProps
                         {step === 1 && (
                             <StepOne
                                 step={step}
-                                genders={genders}
                                 setStep={setStep}
                                 formData={formData}
                                 updateFormData={updateFormData}

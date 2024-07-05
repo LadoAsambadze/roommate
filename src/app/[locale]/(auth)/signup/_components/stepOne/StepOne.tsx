@@ -15,45 +15,39 @@ import {
 } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
-import Select from 'react-select'
 import Image from 'next/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
 import Loading from '../../loading'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
-import { GenderObject, Language } from '@/graphql/typesGraphql'
+import { CountryObject, GenderObject, Language } from '@/graphql/typesGraphql'
 import ReactSelect from '@/src/components/ui/select'
-import { getCountriesQuery } from '@/graphql/query'
+import { getCountriesQuery, getGendersQuery } from '@/graphql/query'
+import Select from '@/src/components/ui/select'
 
 type StepOneProps = {
-    genders: GenderObject[]
     step: number
     formData: any
     setStep: Dispatch<SetStateAction<number>>
     updateFormData: (newData: any) => void
 }
 
-export default function StepOne({
-    genders,
-    step,
-    formData,
-    setStep,
-    updateFormData,
-}: StepOneProps) {
-    const params = useParams()
+export default function StepOne({ step, formData, setStep, updateFormData }: StepOneProps) {
     const { t } = useTranslation()
+    const params = useParams()
     const [clicked, setClicked] = useState(false)
-    const form = StepOneValidator({ formData })
+    const [isClient, setIsClient] = useState(false)
+    const [phoneFormat, setPhoneFormat] = useState(false)
     const locale = params.locale as Language
+    const form = StepOneValidator({ formData })
     const [smsCheck] = useMutation(CheckCodeMutation, {
         fetchPolicy: 'network-only',
     })
     const [smsSend] = useMutation(SendCodeMutation, {
         fetchPolicy: 'network-only',
     })
-
     const {
-        data: getCountries,
+        data: countries,
         loading,
         error,
     } = useQuery(getCountriesQuery, {
@@ -61,33 +55,40 @@ export default function StepOne({
             locale: locale,
         },
     })
+    const { data: genders } = useQuery(getGendersQuery, {
+        variables: {
+            locale: locale,
+        },
+    })
 
-    const [isClient, setIsClient] = useState(false)
-    const [phoneFormat, setPhoneFormat] = useState(false)
+    const countrySelectOptions = countries?.getCountries
+        ?.slice()
+        .sort((a: CountryObject, b: CountryObject) => {
+            if (a.position === 1) return -1
+            if (b.position === 1) return 1
+            return 0
+        })
+        .map((country: CountryObject) => ({
+            value: country.id,
+            label: (
+                <div className="flex w-full items-center">
+                    <Image
+                        src={`https://flagcdn.com/${country.alpha2Code.toLowerCase()}.svg`}
+                        width={22}
+                        height={16}
+                        alt={country?.translations?.[0]?.name || 'Country flag'}
+                        className="mr-2"
+                    />
+                    <span></span>
+                    {country?.translations?.[0]?.name}
+                </div>
+            ),
+        }))
 
-    const countrySelectOptions = Array.isArray(getCountries)
-        ? getCountries
-              .sort((a: any, b: any) => {
-                  if (a?.position === 1) return -1
-                  if (b.position === 1) return 1
-                  return 0
-              })
-              .map((country: any) => ({
-                  value: country.id,
-                  label: (
-                      <div className="flex w-full items-center">
-                          <Image
-                              src={`https://flagcdn.com/${country.alpha2Code.toLowerCase()}.svg`}
-                              width={22}
-                              height={16}
-                              alt={country?.translations[0]?.name}
-                          />
-                          <span>&nbsp; &nbsp;</span>
-                          {country?.translations[0]?.name}
-                      </div>
-                  ),
-              }))
-        : []
+    const gendersSelectOptions = genders?.getGenders?.map((gender: GenderObject) => ({
+        value: gender.id,
+        label: gender?.translations[0].sex,
+    }))
 
     useEffect(() => {
         setIsClient(true)
@@ -266,10 +267,7 @@ export default function StepOne({
                                                 onChange={(value) => {
                                                     field.onChange(value)
                                                 }}
-                                                options={genders?.map((gender: any) => ({
-                                                    value: gender.id,
-                                                    label: gender?.translations[0].sex,
-                                                }))}
+                                                options={gendersSelectOptions}
                                             />
                                         </FormItem>
                                     )}
