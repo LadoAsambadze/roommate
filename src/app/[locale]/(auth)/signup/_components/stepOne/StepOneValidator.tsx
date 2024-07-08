@@ -68,16 +68,16 @@ export function StepOneValidator({ formData }: any) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            firstname: formData.firstname ? formData.firstname : undefined,
-            lastname: formData.lastname ? formData.lastname : undefined,
-            genderId: formData.genderId ? formData.genderId : undefined,
-            countryId: formData?.countryId ? formData.countryId : undefined,
-            birthDate: formData.birthDate ? formData.birthDate : undefined,
-            email: formData.email ? formData.email : undefined,
-            phone: formData.phone ? formData.phone : undefined,
-            password: formData.password ? formData.password : undefined,
-            confirmPassword: formData.confirmPassword ? formData.confirmPassword : undefined,
-            code: formData.code ? formData.code : undefined,
+            firstname: formData.firstname ? formData.firstname : '',
+            lastname: formData.lastname ? formData.lastname : '',
+            genderId: formData.genderId ? formData.genderId : '',
+            countryId: formData?.countryId ? formData.countryId : '',
+            birthDate: formData.birthDate ? formData.birthDate : '',
+            email: formData.email ? formData.email : '',
+            phone: formData.phone ? formData.phone : '',
+            password: formData.password ? formData.password : '',
+            confirmPassword: formData.confirmPassword ? formData.confirmPassword : '',
+            code: formData.code ? formData.code : '',
         },
     })
 

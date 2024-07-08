@@ -62,9 +62,9 @@ export default function Pagination({ data }: DataProps) {
             forcePage={currentPage}
             previousClassName="text-sm"
             containerClassName="flex flex-row gap-2 w-full justify-center items-center"
-            pageClassName="h-full flex items-center justify-center border border-slate-400 text-black hover:bg-slate-200 text-white rounded-sm cursor-pointer  "
-            activeClassName="bg-slate-300"
-            pageLinkClassName=" h-7 w-7 lg:w-7 lg:h-6 flex items-center justify-center"
+            pageClassName="h-full flex items-centerjustify-center border border-slate-400  hover:bg-slate-200 rounded-sm cursor-pointer  "
+            activeClassName="bg-slate-300  "
+            pageLinkClassName=" h-7 w-7 lg:w-7 lg:h-6 flex items-center justify-center text-[##484848]"
         />
     )
 }

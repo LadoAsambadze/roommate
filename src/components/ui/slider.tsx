@@ -52,7 +52,7 @@ const Slider = forwardRef<ElementRef<typeof Root>, SliderProps>(
                     onPointerUp={updateRangeHandler}
                     {...props}
                 >
-                    <Track className="cursro-pointer  relative h-1 w-full grow overflow-hidden rounded-full bg-[#D9D9D9]">
+                    <Track className="cursro-pointer relative h-1 w-full grow overflow-hidden rounded-full bg-[#D9D9D9]">
                         <Range className="absolute h-full bg-mainGreen" />
                     </Track>
                     <Thumb className="block h-5 w-5 cursor-pointer rounded-full border-2 border-mainGreen  bg-white transition-colors focus-visible:outline-none active:ring-2 disabled:pointer-events-none disabled:opacity-50" />

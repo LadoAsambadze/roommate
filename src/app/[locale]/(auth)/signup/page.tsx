@@ -1,6 +1,8 @@
+'use client'
+
 import ClientWrapper from './_components/ClientWrapper'
 
-export default async function Signup() {
+export default function Signup() {
     return (
         <>
             <ClientWrapper />

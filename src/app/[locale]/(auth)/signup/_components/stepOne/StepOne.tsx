@@ -124,7 +124,7 @@ export default function StepOne({ formData, setStep, updateFormData }: StepOnePr
         <>
             <main className="flex flex-col items-center">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className=" w-full">
+                    <form onSubmit={form.handleSubmit(handleSubmit)} className="w-full">
                         <div className="mb-3 grid grid-cols-1 items-start gap-x-6 gap-y-6 md:grid-cols-2 lg:justify-center">
                             <FormField
                                 control={form.control}
@@ -132,6 +132,7 @@ export default function StepOne({ formData, setStep, updateFormData }: StepOnePr
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('name')}</FormLabel>
+
                                         <Input
                                             type="string"
                                             {...field}
@@ -159,6 +160,7 @@ export default function StepOne({ formData, setStep, updateFormData }: StepOnePr
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('surname')}</FormLabel>
+
                                         <Input
                                             type="string"
                                             {...field}
