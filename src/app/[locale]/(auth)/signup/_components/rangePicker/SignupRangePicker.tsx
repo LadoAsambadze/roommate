@@ -88,7 +88,7 @@ export const SignupRangePicker = ({
                                         format(date.from, 'LLL dd, y')
                                     )
                                 ) : (
-                                    <span>{t('chooseDate')}</span>
+                                    <span className="text-placeholderColor">{t('chooseDate')}</span>
                                 )}
                             </div>
                         </Button>
