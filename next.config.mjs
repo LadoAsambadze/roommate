@@ -10,7 +10,7 @@ const nextConfig = {
     },
 
     images: {
-        domains: ['img.roommategeorgia.ge', ],
+        domains: ['img.roommategeorgia.ge', 'flagcdn.com'],
     },
 }
 

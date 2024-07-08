@@ -15,7 +15,7 @@ import {
 } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
@@ -68,13 +68,13 @@ export default function StepOne({ formData, setStep, updateFormData }: StepOnePr
         .map((country: CountryObject) => ({
             value: country.id,
             label: (
-                <div className="flex w-full items-center">
+                <div key={country.id} className="flex w-full items-center gap-1">
                     <Image
                         src={`https://flagcdn.com/${country.alpha2Code.toLowerCase()}.svg`}
                         width={22}
                         height={16}
                         alt={country?.translations?.[0]?.name || 'Country flag'}
-                        className="mr-2"
+                        className="h-auto w-auto"
                     />
                     <span></span>
                     {country?.translations?.[0]?.name}
