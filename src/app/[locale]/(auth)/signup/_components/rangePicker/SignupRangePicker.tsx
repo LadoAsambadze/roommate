@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
@@ -13,32 +12,36 @@ import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/compone
 import { ControllerRenderProps } from 'react-hook-form'
 import { useState } from 'react'
 
-interface Props extends React.HTMLAttributes<HTMLDivElement> {
+interface SignupRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
     field: ControllerRenderProps<
         {
-            [x: string]: any
+            [x: string]: string
         },
-        any
+        string
     >
     id?: string
     updateUseForm: (data: any) => Promise<void>
 }
 
-export const SignupRangePicker: React.FC<Props> = ({
+export const SignupRangePicker = ({
     className,
     updateUseForm,
     field,
     id,
-}: Props) => {
-    const [date, setDate] = useState<DateRange | undefined>({
-        from: field.value[0],
-        to: field.value[1],
-    })
+}: SignupRangePickerProps) => {
+    const initialDate =
+        Array.isArray(field.value) && field.value.length === 2
+            ? {
+                  from: new Date(field.value[0]),
+                  to: new Date(field.value[1]),
+              }
+            : undefined
+
+    const [date, setDate] = useState<DateRange | undefined>(initialDate)
     const { t } = useTranslation()
 
     const handleDateChange = (newDate: DateRange | undefined) => {
         setDate(newDate)
-
         if (newDate?.from && newDate?.to) {
             const formattedFrom = format(newDate.from, 'yyyy-MM-dd')
             const formattedTo = format(newDate.to, 'yyyy-MM-dd')
@@ -73,12 +76,12 @@ export const SignupRangePicker: React.FC<Props> = ({
                                 'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3 py-2 text-left font-normal hover:bg-white md:w-full'
                             )}
                         >
-                            <div className="p flex h-[48px] flex-row items-center justify-center text-sm">
+                            <div className="flex h-[48px] flex-row items-center justify-center text-sm">
                                 <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
                                 {date?.from ? (
                                     date.to ? (
                                         <>
-                                            {format(date.from, 'LLL dd, y')} -{' '}
+                                            {format(date.from, 'LLL dd, y')} -
                                             {format(date.to, 'LLL dd, y')}
                                         </>
                                     ) : (
@@ -118,7 +121,7 @@ export const SignupRangePicker: React.FC<Props> = ({
                             {date?.from ? (
                                 date.to ? (
                                     <>
-                                        {format(date.from, 'LLL dd, y')} -{' '}
+                                        {format(date.from, 'LLL dd, y')} -
                                         {format(date.to, 'LLL dd, y')}
                                     </>
                                 ) : (

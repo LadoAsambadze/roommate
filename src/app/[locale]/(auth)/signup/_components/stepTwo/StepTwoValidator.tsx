@@ -7,72 +7,72 @@ import { useTranslation } from 'react-i18next'
 import { QuestionObject } from '@/graphql/typesGraphql'
 
 type StepTwoValidatorProps = {
-    questions: QuestionObject[]
     formData: any
+    questions?: QuestionObject[] | null
 }
-
 export default function StepTwoValidator({ questions, formData }: StepTwoValidatorProps) {
     const { t } = useTranslation()
 
     const formSchema = z.object(
-        questions.reduce((acc: any, item: any) => {
-            if (item.uiFieldInfo) {
-                let fieldSchema
-                if (item.uiFieldInfo.input.variant === 'multiple') {
-                    fieldSchema = z
-                        .array(
-                            z.object({
-                                questionId: z.string().min(1, { message: t('filsRequire') }),
-                                value: z.string().min(1, { message: t('filsRequire') }),
-                                label: z.string().min(1, { message: t('filsRequire') }),
+        questions &&
+            questions.reduce((acc: any, item: any) => {
+                if (item.uiFieldInfo) {
+                    let fieldSchema
+                    if (item.uiFieldInfo.input.variant === 'multiple') {
+                        fieldSchema = z
+                            .array(
+                                z.object({
+                                    questionId: z.string().min(1, { message: t('filsRequire') }),
+                                    value: z.string().min(1, { message: t('filsRequire') }),
+                                    label: z.string().min(1, { message: t('filsRequire') }),
+                                })
+                            )
+                            .min(1, { message: t('filsRequire') })
+                    } else if (item.uiFieldInfo.input.variant === 'single') {
+                        fieldSchema = z
+                            .object({
+                                questionId: z
+                                    .string()
+                                    .min(1, { message: t('filsRequire') })
+                                    .optional(),
+                                value: z
+                                    .string()
+                                    .min(1, { message: t('filsRequire') })
+                                    .optional(),
+                                label: z
+                                    .string()
+                                    .min(1, { message: t('filsRequire') })
+                                    .optional(),
                             })
-                        )
-                        .min(1, { message: t('filsRequire') })
-                } else if (item.uiFieldInfo.input.variant === 'single') {
-                    fieldSchema = z
-                        .object({
-                            questionId: z
-                                .string()
-                                .min(1, { message: t('filsRequire') })
-                                .optional(),
-                            value: z
-                                .string()
-                                .min(1, { message: t('filsRequire') })
-                                .optional(),
-                            label: z
-                                .string()
-                                .min(1, { message: t('filsRequire') })
-                                .optional(),
-                        })
-                        .refine((obj) => Object.keys(obj).length >= 1, {
-                            message: t('filsRequire'),
-                        })
-                } else if (item.uiFieldInfo.input.variant === 'calendar') {
-                    fieldSchema = z.array(z.string()).min(1, { message: t('filsRequire') })
-                } else if (
-                    item.uiFieldInfo.input.type === 'text' ||
-                    item.uiFieldInfo.input.type === 'numeric' ||
-                    item.uiFieldInfo.input.type === 'textarea'
-                ) {
-                    if (item.uiFieldInfo.input.required === true) {
-                        fieldSchema = z.string().min(1, { message: t('filsRequire') })
+                            .refine((obj) => Object.keys(obj).length >= 1, {
+                                message: t('filsRequire'),
+                            })
+                    } else if (item.uiFieldInfo.input.variant === 'calendar') {
+                        fieldSchema = z.array(z.string()).min(1, { message: t('filsRequire') })
+                    } else if (
+                        item.uiFieldInfo.input.type === 'text' ||
+                        item.uiFieldInfo.input.type === 'numeric' ||
+                        item.uiFieldInfo.input.type === 'textarea'
+                    ) {
+                        if (item.uiFieldInfo.input.required === true) {
+                            fieldSchema = z.string().min(1, { message: t('filsRequire') })
+                        } else {
+                            fieldSchema = z.string().min(0)
+                        }
+                    }
+                    if (item.uiFieldInfo.input.required === false) {
+                        acc[item.id] = fieldSchema?.optional()
                     } else {
-                        fieldSchema = z.string().min(0)
+                        acc[item.id] = fieldSchema
                     }
                 }
-                if (item.uiFieldInfo.input.required === false) {
-                    acc[item.id] = fieldSchema?.optional()
-                } else {
-                    acc[item.id] = fieldSchema
-                }
-            }
 
-            return acc
-        }, {})
+                return acc
+            }, {})
     )
 
     const defaultValues = {
-        ...questions.reduce((acc: any, item: any) => {
+        ...questions?.reduce((acc: any, item: any) => {
             if (item.uiFieldInfo) {
                 if (formData.answeredQuestions && item.uiFieldInfo.input.variant === 'multiple') {
                     acc[item?.id] = formData.answeredQuestions[item.id] || null

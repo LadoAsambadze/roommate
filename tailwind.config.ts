@@ -36,6 +36,7 @@ const config = {
                 borderColor: 'hsl(var(--borderColor))',
                 placeholderColor: 'hsl(var(--placeholderColor))',
                 inputFocusColor: 'hsl(var(--inputFocusColor))',
+                signupHeaderGreen: 'rgba(25, 164, 99, 0.65)',
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',

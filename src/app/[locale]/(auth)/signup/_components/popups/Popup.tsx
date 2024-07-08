@@ -17,9 +17,9 @@ export function PopUp({ popupIsOpen, range, country }: PopupProps) {
 
     return (
         <Dialog open={popupIsOpen && country !== '145'}>
-            <DialogContent className="flex w-auto flex-col   overflow-hidden bg-white ">
+            <DialogContent className="flex w-auto flex-col overflow-hidden bg-white">
                 <Popup className="h-40 w-full rounded-sm object-fill" />
-                <div className="flex flex-col  gap-4 pb-2 text-center text-sm md:px-6 md:pb-4">
+                <div className="flex flex-col gap-4 pb-2 text-center text-sm md:px-6 md:pb-4">
                     <span>
                         {range < 135
                             ? t('135-1')

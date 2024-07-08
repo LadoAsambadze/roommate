@@ -47,7 +47,7 @@ export function SignupAlert({ alertIsOpen, alertType, setAlertIsOpen }: SignupPr
             <div onClick={handleClose}>
                 <AlertDialogContent onClick={handleClickOutside}>
                     <AlertDialogHeader>
-                        <AlertDialogTitle className="flex  justify-center text-7xl">
+                        <AlertDialogTitle className="flex justify-center text-7xl">
                             <Error />
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-center">
@@ -56,7 +56,7 @@ export function SignupAlert({ alertIsOpen, alertType, setAlertIsOpen }: SignupPr
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <Button
-                            className="w-auto text-xs  md:text-sm lg:text-sm "
+                            className="w-auto text-xs md:text-sm lg:text-sm "
                             onClick={handleClose}
                         >
                             {t('close')}

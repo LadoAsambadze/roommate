@@ -13,13 +13,8 @@ import StepOne from './stepOne/StepOne'
 import { signIn } from 'next-auth/react'
 import { SignupAlert } from './popups/SignupAlert'
 import { SignupMutation } from '@/graphql/mutation'
-import { QuestionObject } from '@/graphql/typesGraphql'
 
-type ClientWrapperProps = {
-    questions: QuestionObject[]
-}
-
-export default function ClientWrapper({ questions }: ClientWrapperProps) {
+export default function ClientWrapper() {
     const { t } = useTranslation()
     const [step, setStep] = useState(1)
     const [popupIsOpen, setPopupIsOpen] = useState(false)
@@ -29,8 +24,6 @@ export default function ClientWrapper({ questions }: ClientWrapperProps) {
         answeredQuestions: [],
     })
 
-    const secondStep = questions?.slice(0, 7)
-    const thirthStep = questions?.slice(8, 13)
     const [signUp] = useMutation(SignupMutation, {
         fetchPolicy: 'network-only',
     })
@@ -116,18 +109,18 @@ export default function ClientWrapper({ questions }: ClientWrapperProps) {
 
     return (
         <>
-            <main className="flex h-auto w-full flex-col items-center justify-center  px-6 md:px-[10%] md:pb-16  lg:px-[15%]  xl:px-[334px]">
+            <PopUp
+                popupIsOpen={popupIsOpen}
+                range={formData?.answeredQuestions && formData?.answeredQuestions[7]}
+                country={formData?.countryId}
+            />
+            <SignupAlert
+                alertIsOpen={alertIsOpen}
+                alertType={alertType}
+                setAlertIsOpen={setAlertIsOpen}
+            />
+            <main className="flex h-auto w-full flex-col items-center justify-center px-6 md:px-[10%] md:pb-16 lg:px-[15%] xl:px-[334px]">
                 <SignupHeader step={step} />
-                <PopUp
-                    popupIsOpen={popupIsOpen}
-                    range={formData?.answeredQuestions && formData?.answeredQuestions[7]}
-                    country={formData?.countryId}
-                />
-                <SignupAlert
-                    alertIsOpen={alertIsOpen}
-                    alertType={alertType}
-                    setAlertIsOpen={setAlertIsOpen}
-                />
 
                 <Card className="w-full">
                     <CardContent className="relative w-full bg-white px-6 pb-16 pt-8 sm:px-14">
@@ -142,7 +135,6 @@ export default function ClientWrapper({ questions }: ClientWrapperProps) {
                         {step === 2 && (
                             <StepTwo
                                 step={step}
-                                questions={secondStep}
                                 updateFormData={updateFormData}
                                 submit={submit}
                                 setStep={setStep}
@@ -153,7 +145,6 @@ export default function ClientWrapper({ questions }: ClientWrapperProps) {
                         {step === 3 && (
                             <StepTwo
                                 step={step}
-                                questions={thirthStep}
                                 updateFormData={updateFormData}
                                 submit={submit}
                                 setStep={setStep}

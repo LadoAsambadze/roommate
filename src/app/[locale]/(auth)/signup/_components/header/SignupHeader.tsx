@@ -9,7 +9,7 @@ export default function SignupHeader({ step }: SignupHeaderProps) {
     const { t } = useTranslation()
 
     return (
-        <div className="flex w-full flex-col bg-[##F2F5FF]   pb-4 pt-8 ">
+        <div className="flex w-full flex-col bg-[##F2F5FF] pb-4 pt-8">
             <div className="flex flex-row items-start justify-between ">
                 <div className="flex flex-col items-start">
                     <p className=" mb-8 text-base">{t('registerForm')}</p>

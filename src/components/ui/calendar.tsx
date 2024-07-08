@@ -17,8 +17,8 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
             showOutsideDays={showOutsideDays}
             className={cn(' p-3', className)}
             classNames={{
-                months: 'flex flex-col sm:flex-row space-y-2  sm:space-y-0  ',
-                dropdown_month: 'flex flex-row   justify-start items-start  mr-2',
+                months: 'flex flex-col sm:flex-row space-y-2 sm:space-y-0',
+                dropdown_month: 'flex flex-row justify-start items-start  mr-2',
                 month: 'space-y-2 ',
                 caption: 'flex justify-center flex-row pt-1 relative items-center justify-center',
                 caption_dropdowns: 'w-full flex flex-row justify-start items-center px-1 gap-2',
@@ -43,7 +43,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
                 ),
                 day_range_end: 'day-range-end',
                 day_selected:
-                    ' text-primary-foreground rounded-full bg-mainGreen  hover:bg-hoverGreen hover:text-primary-foreground focus:bg-mainGreen focus:text-primary-foreground',
+                    'text-primary-foreground rounded-full bg-mainGreen hover:bg-hoverGreen hover:text-primary-foreground focus:bg-mainGreen focus:text-primary-foreground',
                 day_today: ' text-accent-foreground',
                 day_outside:
                     'day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30',
