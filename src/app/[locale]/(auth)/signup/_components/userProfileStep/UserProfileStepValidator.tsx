@@ -7,7 +7,7 @@ import 'react-phone-number-input/style.css'
 import { isValidPhoneNumber } from 'react-phone-number-input'
 import { useTranslation } from 'react-i18next'
 
-export function StaticQuestionsValidator({ formData }: any) {
+export function UserProfileStepValidator({ formData }: any) {
     const { t } = useTranslation()
 
     const formSchema: z.ZodSchema<any> = z.object({

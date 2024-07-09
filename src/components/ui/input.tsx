@@ -36,7 +36,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         return (
             <div className="relative flex w-full items-center">
                 <input
-                    autoComplete="new-password"
+                    autoComplete="off"
                     type={type}
                     className={cn(
                         'flex h-[38px] w-full rounded-lg border border-[#828bab] bg-[#FFFFFF] px-3 py-2 text-sm placeholder:text-placeholderColor focus:outline-[#3dae8c] focus:ring-0',

@@ -10,7 +10,7 @@ type StepTwoValidatorProps = {
     formData: any
     questions?: QuestionObject[] | null
 }
-export default function DynamicQuestionsValidator({ questions, formData }: StepTwoValidatorProps) {
+export default function QuestionsStepValidator({ questions, formData }: StepTwoValidatorProps) {
     const { t } = useTranslation()
 
     const formSchema = z.object(

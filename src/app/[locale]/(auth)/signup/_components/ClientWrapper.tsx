@@ -6,30 +6,33 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/src/components/ui/card'
-import SignupHeader from './header/SignupHeader'
 import { CustomError } from '@/src/types/error/types'
-import StepTwo from './dynamicQuestionsStep/DynamicQuestionsStep'
-import StepOne from './staticQuestionsStep/StaticQuestionsStep'
 import { signIn } from 'next-auth/react'
 import { SignupAlert } from './popups/SignupAlert'
 import { SignupMutation } from '@/graphql/mutation'
-import Loading from '../../../loading'
+import SignupHeader from './header/SignupHeader'
+import QuestionsStep from './questionsStep/QuestionsStep'
+import UserProfileStep from './userProfileStep/UserProfileStep'
+import Loading from '../loading'
 
 export default function ClientWrapper() {
-    const { t } = useTranslation()
-    const [isClient, setIsClient] = useState(false)
     const [step, setStep] = useState(1)
     const [popupIsOpen, setPopupIsOpen] = useState(false)
     const [alertIsOpen, setAlertIsOpen] = useState(false)
     const [alertType, setAlertType] = useState('')
+    const [isClient, setIsClient] = useState(false)
     const [formData, setFormData] = useState<any>({
         answeredQuestions: [],
     })
 
+    const router = useRouter()
+
+    const { t } = useTranslation()
+
     const [signUp] = useMutation(SignupMutation, {
         fetchPolicy: 'network-only',
     })
-    const router = useRouter()
+
     const updateFormData = (newData: any) => {
         setFormData((prevData: any) => ({ ...prevData, ...newData }))
     }
@@ -132,7 +135,7 @@ export default function ClientWrapper() {
                     {isClient ? (
                         <CardContent className="relative w-full bg-white px-6 pb-16 pt-8 sm:px-14">
                             {step === 1 && (
-                                <StepOne
+                                <UserProfileStep
                                     setStep={setStep}
                                     formData={formData}
                                     updateFormData={updateFormData}
@@ -140,7 +143,7 @@ export default function ClientWrapper() {
                             )}
 
                             {step === 2 && (
-                                <StepTwo
+                                <QuestionsStep
                                     step={step}
                                     updateFormData={updateFormData}
                                     submit={submit}
@@ -150,7 +153,7 @@ export default function ClientWrapper() {
                                 />
                             )}
                             {step === 3 && (
-                                <StepTwo
+                                <QuestionsStep
                                     step={step}
                                     updateFormData={updateFormData}
                                     submit={submit}

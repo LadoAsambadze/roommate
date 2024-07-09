@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { useParams } from 'next/navigation'
-import { StaticQuestionsValidator } from './StaticQuestionsValidator'
+import { UserProfileStepValidator } from './UserProfileStepValidator'
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
@@ -15,13 +15,18 @@ import {
 } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
-import Image from 'next/legacy/image'
-import PhoneInput from '../../../../../../components/shared/phoneInput/PhoneInput'
 import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
 import { CountryObject, GenderObject, Language } from '@/graphql/typesGraphql'
 import { getCountriesQuery, getGendersQuery } from '@/graphql/query'
+import Image from 'next/legacy/image'
+import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import Select from '@/src/components/ui/select'
+
+
+
+
+
 import FileTypeInput from '@/src/components/shared/fileTypeInput/FileTypeInput'
 
 type StepOneProps = {
@@ -30,13 +35,17 @@ type StepOneProps = {
     updateFormData: (newData: any) => void
 }
 
-export default function StaticQuestionsStep({ formData, setStep, updateFormData }: StepOneProps) {
-    const { t } = useTranslation()
-    const params = useParams()
+export default function UserProfileStep({ formData, setStep, updateFormData }: StepOneProps) {
     const [getCodeButtonClicked, setGetCodeButtonClicked] = useState(false)
     const [phoneFormat, setPhoneFormat] = useState(false)
+
+    const params = useParams()
     const locale = params.locale as Language
-    const form = StaticQuestionsValidator({ formData })
+
+    const { t } = useTranslation()
+
+    const form = UserProfileStepValidator({ formData })
+
     const [smsCheck] = useMutation(CheckCodeMutation, {
         fetchPolicy: 'network-only',
     })

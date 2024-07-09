@@ -4,7 +4,7 @@ import { SignupRangePicker } from '../rangePicker/SignupRangePicker'
 import { useTranslation } from 'react-i18next'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
-import StepTwoValidator from './DynamicQuestionsValidator'
+import StepTwoValidator from './QuestionsStepValidator'
 import { ArrowLeft } from '@/src/components/svgs'
 import { Language, QuestionObject } from '@/graphql/typesGraphql'
 import { getQuestionsWithAnswersQuery } from '@/graphql/query'
@@ -21,7 +21,7 @@ type StepTwoProps = {
     submit: () => Promise<void>
 }
 
-export default function DynamicQuestionsStep({
+export default function QuestionsStep({
     step,
     next,
     formData,
