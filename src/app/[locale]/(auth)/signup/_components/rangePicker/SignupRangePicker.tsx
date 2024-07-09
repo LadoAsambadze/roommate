@@ -29,6 +29,8 @@ export const SignupRangePicker = ({
     field,
     id,
 }: SignupRangePickerProps) => {
+    const { t } = useTranslation()
+
     const initialDate =
         Array.isArray(field.value) && field.value.length === 2
             ? {
@@ -38,7 +40,6 @@ export const SignupRangePicker = ({
             : undefined
 
     const [date, setDate] = useState<DateRange | undefined>(initialDate)
-    const { t } = useTranslation()
 
     const handleDateChange = (newDate: DateRange | undefined) => {
         setDate(newDate)
