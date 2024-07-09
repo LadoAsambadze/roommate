@@ -59,6 +59,7 @@ export const getQuestionsWithAnswersQuery: TypedDocumentNode<
             position
             uiFieldInfo
             id
+            step
             translations {
                 id
                 lang

@@ -22,12 +22,7 @@ import { getCountriesQuery, getGendersQuery } from '@/graphql/query'
 import Image from 'next/legacy/image'
 import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import Select from '@/src/components/ui/select'
-
-
-
-
-
-import FileTypeInput from '@/src/components/shared/fileTypeInput/FileTypeInput'
+import ProfileImage from '../profileImage/ProfileImage'
 
 type StepOneProps = {
     formData: any
@@ -163,7 +158,6 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                     </FormItem>
                                 )}
                             />
-
                             <FormField
                                 control={form.control}
                                 name="lastname"
@@ -337,8 +331,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('profileImage')}</FormLabel>
-
-                                        <FileTypeInput />
+                                        <ProfileImage />
                                         {/*
                                         <Input
                                             type="file"

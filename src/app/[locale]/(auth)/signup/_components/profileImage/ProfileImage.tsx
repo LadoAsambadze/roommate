@@ -6,7 +6,7 @@ interface CustomFile extends File {
     preview: string
 }
 
-const FileTypeInput = () => {
+const ProfileImage = () => {
     const [files, setFiles] = useState<CustomFile[]>([])
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -64,4 +64,4 @@ const FileTypeInput = () => {
     )
 }
 
-export default FileTypeInput
+export default ProfileImage
