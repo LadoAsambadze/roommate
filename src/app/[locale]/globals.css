@@ -158,3 +158,11 @@ body {
         font-size: 14px !important;
     }
 }
+
+input::file-selector-button {
+    font-size: 14px;
+    color: hsl(227, 20%, 59%);
+    padding: 0px;
+    border: thin solid grey;
+    border-radius: 3px;
+}

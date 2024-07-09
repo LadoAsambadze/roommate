@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { useParams } from 'next/navigation'
-import { StepOneValidator } from './StepOneValidator'
+import { StaticQuestionsValidator } from './StaticQuestionsValidator'
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
@@ -22,6 +22,7 @@ import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
 import { CountryObject, GenderObject, Language } from '@/graphql/typesGraphql'
 import { getCountriesQuery, getGendersQuery } from '@/graphql/query'
 import Select from '@/src/components/ui/select'
+import FileTypeInput from '@/src/components/shared/fileTypeInput/FileTypeInput'
 
 type StepOneProps = {
     formData: any
@@ -29,13 +30,13 @@ type StepOneProps = {
     updateFormData: (newData: any) => void
 }
 
-export default function StepOne({ formData, setStep, updateFormData }: StepOneProps) {
+export default function StaticQuestionsStep({ formData, setStep, updateFormData }: StepOneProps) {
     const { t } = useTranslation()
     const params = useParams()
     const [getCodeButtonClicked, setGetCodeButtonClicked] = useState(false)
     const [phoneFormat, setPhoneFormat] = useState(false)
     const locale = params.locale as Language
-    const form = StepOneValidator({ formData })
+    const form = StaticQuestionsValidator({ formData })
     const [smsCheck] = useMutation(CheckCodeMutation, {
         fetchPolicy: 'network-only',
     })
@@ -314,6 +315,41 @@ export default function StepOne({ formData, setStep, updateFormData }: StepOnePr
                                                 form.trigger('confirmPassword')
                                             }}
                                         />
+
+                                        {field.value !== undefined && field.value !== '' && (
+                                            <FormMessage />
+                                        )}
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="profileImage"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('profileImage')}</FormLabel>
+
+                                        <FileTypeInput />
+                                        {/*
+                                        <Input
+                                            type="file"
+                                            title="Choose a video please"
+                                            placeholder="hey"
+                                            {...field}
+                                            value={field.value}
+                                            // hasError={
+                                            //     !!form.formState.errors.confirmPassword &&
+                                            //     form.formState.dirtyFields.confirmPassword
+                                            // }
+                                            // isSuccess={
+                                            //     !form.formState.errors.confirmPassword &&
+                                            //     form.formState.dirtyFields.confirmPassword
+                                            // }
+                                            onChange={(e) => {
+                                                field.onChange(e)
+                                                form.trigger('profileImage')
+                                            }}
+                                        /> */}
 
                                         {field.value !== undefined && field.value !== '' && (
                                             <FormMessage />

@@ -4,9 +4,9 @@ import { SignupRangePicker } from '../rangePicker/SignupRangePicker'
 import { useTranslation } from 'react-i18next'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
-import StepTwoValidator from './StepTwoValidator'
+import StepTwoValidator from './DynamicQuestionsValidator'
 import { ArrowLeft } from '@/src/components/svgs'
-import { Language } from '@/graphql/typesGraphql'
+import { Language, QuestionObject } from '@/graphql/typesGraphql'
 import { getQuestionsWithAnswersQuery } from '@/graphql/query'
 import { useParams } from 'next/navigation'
 import { useQuery } from '@apollo/client'
@@ -21,7 +21,7 @@ type StepTwoProps = {
     submit: () => Promise<void>
 }
 
-export default function StepTwo({
+export default function DynamicQuestionsStep({
     step,
     next,
     formData,
@@ -32,13 +32,21 @@ export default function StepTwo({
     const { t } = useTranslation()
     const params = useParams()
     const locale = params.locale as Language
-    const { data: questions } = useQuery(getQuestionsWithAnswersQuery, {
+    const { data: questionsData } = useQuery(getQuestionsWithAnswersQuery, {
         variables: {
             lang: locale,
         },
     })
 
-    const form = StepTwoValidator({ questions: questions?.getQuestionsWithAnswers, formData })
+    const questions = questionsData?.getQuestionsWithAnswers?.filter((item: QuestionObject) => {
+        if (step === 2) {
+            return item.position > 0
+        } else if (step === 3) {
+            return item.position < 1
+        }
+    })
+
+    const form = StepTwoValidator({ questions, formData })
 
     const updateUseForm = async (data: any) => {
         const { answeredQuestions } = formData
@@ -59,12 +67,12 @@ export default function StepTwo({
         <>
             <main className="flex flex-col  items-center p-2">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)}>
-                        {questions?.getQuestionsWithAnswers &&
-                            questions.getQuestionsWithAnswers.map((item) => {
+                    <form className="w-full" onSubmit={form.handleSubmit(handleSubmit)}>
+                        {questions &&
+                            questions.map((item) => {
                                 return (
                                     <>
-                                        <div className="mb-4 mt-4">
+                                        <div className="mb-4 mt-4 w-full">
                                             {item.uiFieldInfo.input.type === 'text' && (
                                                 <FormField
                                                     control={form.control}
