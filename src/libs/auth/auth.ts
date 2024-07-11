@@ -21,7 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
             async authorize(credentials) {
                 const { phone, password } = credentials
-                const response = await fetch('https://api.roommategeorgia.ge/auth/login', {
+                const response = await fetch(`${process.env.REST_API}/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

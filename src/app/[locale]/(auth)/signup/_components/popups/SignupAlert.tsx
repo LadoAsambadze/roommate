@@ -8,6 +8,7 @@ import {
     AlertDialogTitle,
 } from '@/src/components/ui/alert-dialog'
 import { Button } from '@/src/components/ui/button'
+import { FACEBOOK_URL } from '@/src/utils/constants'
 import Link from 'next/link'
 import { Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -66,11 +67,7 @@ export function SignupAlert({ alertIsOpen, alertType, setAlertIsOpen }: SignupPr
                                 className="w-auto text-xs md:text-sm lg:text-sm"
                                 onClick={handleClose}
                             >
-                                <Link
-                                    href="https://www.facebook.com/share/E3WJ5xzYtAQ4itRd/?mibextid=WC7FNe"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
+                                <Link href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer">
                                     {t('supportTeam')}
                                 </Link>
                             </Button>

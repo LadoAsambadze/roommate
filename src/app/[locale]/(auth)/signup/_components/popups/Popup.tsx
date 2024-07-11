@@ -2,6 +2,7 @@
 import { Popup } from '@/src/components/svgs'
 import { Button } from '@/src/components/ui/button'
 import { Dialog, DialogContent } from '@/src/components/ui/dialog'
+import { FACEBOOK_URL } from '@/src/utils/constants'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
@@ -59,11 +60,7 @@ export function PopUp({ popupIsOpen, range, country }: PopupProps) {
                         {range < 135 ? (
                             <>
                                 {t('135-5')} (You can also search them on our website or in our
-                                <a
-                                    href="https://www.facebook.com/RoommateGeorgia.ge"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
+                                <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer">
                                     Facebook group
                                 </a>
                                 .)
@@ -71,11 +68,7 @@ export function PopUp({ popupIsOpen, range, country }: PopupProps) {
                         ) : range >= 135 && range < 270 ? (
                             <>
                                 {t('270-5')} (You can also search them on our website or in our
-                                <a
-                                    href="https://www.facebook.com/RoommateGeorgia.ge"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
+                                <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer">
                                     Facebook group
                                 </a>
                                 .)

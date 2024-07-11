@@ -1,23 +1,21 @@
 import Link from 'next/link'
 import { FbIcon, InstagramIcon, LinkedinIcon, WhatsappIcon } from '@/src/components/svgs'
+import { FACEBOOK_URL, INSTAGRAM_URL, LINKEDIN_URL, WHATSAPP_URL } from '@/src/utils/constants'
 
 export const SocialIcons = () => {
     return (
         <>
             <div className="flex flex-row  gap-x-6">
-                <Link target="_blank" href="https://www.facebook.com/RoommateGeorgia.ge">
+                <Link target="_blank" href={FACEBOOK_URL}>
                     <FbIcon className="h-8 w-8 cursor-pointer" />
                 </Link>
-                <Link
-                    target="_blank"
-                    href="https://www.instagram.com/roommate.ge?igsh=NHRseWl5MHgyaW1o&utm_source=qr"
-                >
+                <Link target="_blank" href={INSTAGRAM_URL}>
                     <InstagramIcon className="h-8 w-8 cursor-pointer" />
                 </Link>
-                <Link target="_blank" href="https://wa.me/%2B995599976385">
+                <Link target="_blank" href={WHATSAPP_URL}>
                     <WhatsappIcon className="h-8 w-8 cursor-pointer" />
                 </Link>
-                <Link target="_blank" href="https://www.linkedin.com/company/roommate-georgia/">
+                <Link target="_blank" href={LINKEDIN_URL}>
                     <LinkedinIcon className="h-8 w-8 cursor-pointer" />
                 </Link>
             </div>

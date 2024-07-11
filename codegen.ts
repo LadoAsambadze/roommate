@@ -2,7 +2,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
     overwrite: true,
-    schema: ['https://test-api.roommategeorgia.ge/graphql', './*/.graphql'],
+    schema: [`${process.env.GRAPHQL_API}, './*/.graphql'`],
     generates: {
         'graphql/typesGraphql.ts': {
             plugins: ['typescript'],

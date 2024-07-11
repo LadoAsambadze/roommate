@@ -5,6 +5,12 @@ import { useTranslation } from 'react-i18next'
 import { SocialIcons } from '../shared/socialIcons/SocialIcons'
 import { useParams, usePathname } from 'next/navigation'
 import { EmailIcon, Logo, PhoneIcon } from '../svgs'
+import {
+    CONFIDENTIAL_EN_URL,
+    CONFIDENTIAL_KA_URL,
+    TERMS_EN_URL,
+    TERMS_KA_URL,
+} from '@/src/utils/constants'
 
 export default function Footer() {
     const { t } = useTranslation()
@@ -83,22 +89,14 @@ export default function Footer() {
                 <div className=" hidden flex-row gap-x-4 lg:flex">
                     <Link
                         target="_blank"
-                        href={
-                            params.locale === 'ka'
-                                ? 'https://roommategeorgia.ge/imgs/%E1%83%AC%E1%83%94%E1%83%A1%E1%83%94%E1%83%91%E1%83%98%20%E1%83%93%E1%83%90%20%E1%83%9E%E1%83%98%E1%83%A0%E1%83%9D%E1%83%91%E1%83%94%E1%83%91%E1%83%98%20&%20%E1%83%93%E1%83%90%E1%83%91%E1%83%A0%E1%83%A3%E1%83%9C%E1%83%94%E1%83%91%E1%83%98%E1%83%A1%20%E1%83%9E%E1%83%9D%E1%83%9A%E1%83%98%E1%83%A2%E1%83%98%E1%83%99%E1%83%90.pdf'
-                                : 'https://roommategeorgia.ge/en/Terms%20&%20Conditions%20&%20Payment%20&%20Refund%20Policy.pdf'
-                        }
+                        href={params.locale === 'ka' ? TERMS_KA_URL : TERMS_EN_URL}
                     >
                         <span className="pointer text-xs  hover:underline">{t('terms')}</span>
                     </Link>
                     <div className="h-3 w-[1px] bg-[#7D7D7D]"></div>
                     <Link
                         target="_blank"
-                        href={
-                            params.locale === 'ka'
-                                ? 'https://roommategeorgia.ge/imgs/%E1%83%9E%E1%83%94%E1%83%A0%E1%83%A1%E1%83%9D%E1%83%9C%E1%83%90%E1%83%9A%E1%83%A3%E1%83%A0%E1%83%98%20%E1%83%9B%E1%83%9D%E1%83%9C%E1%83%90%E1%83%AA%E1%83%94%E1%83%9B%E1%83%94%E1%83%91%E1%83%98%E1%83%A1%20%E1%83%93%E1%83%90%E1%83%AA%E1%83%95%E1%83%98%E1%83%A1%20%E1%83%9E%E1%83%9D%E1%83%9A%E1%83%98%E1%83%A2%E1%83%98%E1%83%99%E1%83%90.pdf'
-                                : 'https://roommategeorgia.ge/en/Personal%20Data%20Processing%20Policy%20(1).pdf'
-                        }
+                        href={params.locale === 'ka' ? CONFIDENTIAL_KA_URL : CONFIDENTIAL_EN_URL}
                     >
                         <span className="pointer text-xs  hover:underline">
                             {t('confidencial')}
