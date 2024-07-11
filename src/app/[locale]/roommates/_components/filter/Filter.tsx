@@ -148,7 +148,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                         <CloseCircle className="h-6 w-6" onClick={() => setIsOpen(!isOpen)} />
                     </div>
                 ) : null}
-                <div className=" hidden h-auto w-full flex-row items-center justify-end hover:underline  lg:flex">
+                <div className=" hidden h-auto w-full flex-row items-center justify-end hover:underline lg:flex">
                     <button onClick={filterClearHandler}>{t('clearFilters')}</button>
                 </div>
                 {data?.getQuestionsWithAnswers &&

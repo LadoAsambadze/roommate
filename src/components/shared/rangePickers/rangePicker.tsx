@@ -12,7 +12,7 @@ import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/compone
 import { ControllerRenderProps } from 'react-hook-form'
 import { useState } from 'react'
 
-interface SignupRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
+interface RangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
     field: ControllerRenderProps<
         {
             [x: string]: string
@@ -23,12 +23,7 @@ interface SignupRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
     updateUseForm: (data: any) => Promise<void>
 }
 
-export const SignupRangePicker = ({
-    className,
-    updateUseForm,
-    field,
-    id,
-}: SignupRangePickerProps) => {
+export const RangePicker = ({ className, updateUseForm, field, id }: RangePickerProps) => {
     const { t } = useTranslation()
 
     const initialDate =
