@@ -331,31 +331,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('profileImage')}</FormLabel>
-                                        <ProfileImage />
-                                        {/*
-                                        <Input
-                                            type="file"
-                                            title="Choose a video please"
-                                            placeholder="hey"
-                                            {...field}
-                                            value={field.value}
-                                            // hasError={
-                                            //     !!form.formState.errors.confirmPassword &&
-                                            //     form.formState.dirtyFields.confirmPassword
-                                            // }
-                                            // isSuccess={
-                                            //     !form.formState.errors.confirmPassword &&
-                                            //     form.formState.dirtyFields.confirmPassword
-                                            // }
-                                            onChange={(e) => {
-                                                field.onChange(e)
-                                                form.trigger('profileImage')
-                                            }}
-                                        /> */}
-
-                                        {field.value !== undefined && field.value !== '' && (
-                                            <FormMessage />
-                                        )}
+                                        <ProfileImage field={field} />
                                     </FormItem>
                                 )}
                             />

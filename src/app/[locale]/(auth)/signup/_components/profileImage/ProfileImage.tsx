@@ -1,4 +1,4 @@
-import Image from 'next/legacy/image'
+import { Delete, Upload } from '@/src/components/svgs'
 import React, { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 
@@ -6,17 +6,32 @@ interface CustomFile extends File {
     preview: string
 }
 
-const ProfileImage = () => {
-    const [files, setFiles] = useState<CustomFile[]>([])
+type ProfileImageProps = {
+    field: {
+        value: CustomFile[] | undefined
+        onChange: (files: CustomFile[]) => void
+    }
+}
+const ProfileImage = ({ field }: ProfileImageProps) => {
+    const [files, setFiles] = useState<CustomFile[]>(field.value ? field.value : [])
 
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        setFiles(
-            acceptedFiles.map((file) =>
+    const onDrop = useCallback(
+        (acceptedFiles: File[]) => {
+            const updatedFiles: CustomFile[] = acceptedFiles.map((file) =>
                 Object.assign(file, {
                     preview: URL.createObjectURL(file),
                 })
             )
-        )
+            setFiles(updatedFiles)
+            field.onChange(updatedFiles)
+        },
+        [field]
+    )
+
+    const deleteFile = useCallback((fileToDelete: CustomFile, event: React.MouseEvent) => {
+        event.preventDefault()
+        event.stopPropagation()
+        setFiles((prevFiles) => prevFiles.filter((file) => file !== fileToDelete))
     }, [])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -33,32 +48,43 @@ const ProfileImage = () => {
                 />
                 <p>
                     {isDragActive ? (
-                        <span className="flex h-[38px] w-full items-center rounded-lg border border-[#828bab] bg-[#FFFFFF] px-3 py-2 text-sm text-placeholderColor placeholder:text-placeholderColor focus:outline-[#3dae8c] focus:ring-0">
-                            <span className="flex cursor-pointer items-center justify-center border border-[#828bab] px-2 py-1 text-xs hover:bg-slate-100">
-                                ჩააგდეთ ფოტო აქ
-                            </span>
-                        </span>
+                        <div className="flex flex-row gap-3">
+                            <div className="flex h-[38px] w-full cursor-pointer flex-row items-center gap-3  rounded-lg  border border-[#828bab] bg-[#FFFFFF] px-3 py-2 text-sm text-placeholderColor ">
+                                <span className="text-center">Drop it here</span>
+                            </div>
+                        </div>
                     ) : (
-                        <span className="flex h-[38px] w-full items-center rounded-lg border border-[#828bab] bg-[#FFFFFF] px-3 py-2 text-sm text-placeholderColor placeholder:text-placeholderColor focus:outline-[#3dae8c] focus:ring-0">
-                            <span className="flex cursor-pointer items-center justify-center border border-[#828bab] px-2 py-1 text-xs hover:bg-slate-100">
-                                ატვირთე ფოტო
-                            </span>
-                        </span>
+                        <div className="flex flex-row gap-3">
+                            <div className="flex h-[38px] w-full cursor-pointer flex-row items-center gap-3  rounded-lg  border border-[#828bab] bg-[#FFFFFF] px-3 py-2 text-sm text-placeholderColor ">
+                                {files.length ? (
+                                    files.map((file) => (
+                                        <div
+                                            className="flex w-full flex-row justify-between gap-2"
+                                            key={file.name}
+                                        >
+                                            <p className="w-0 flex-1 truncate">{file.name}</p>
+                                            <Delete
+                                                className="h-5 w-auto cursor-pointer fill-placeholderColor hover:fill-[red]"
+                                                onClick={(
+                                                    event: React.MouseEvent<Element, MouseEvent>
+                                                ) => {
+                                                    field.onChange([]), deleteFile(file, event)
+                                                }}
+                                            />
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="flex flex-row items-center gap-2">
+                                        <Upload className="h-5 w-5" />
+                                        <span className="text-sm">
+                                            Upload or drag and drop file here
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     )}
                 </p>
-            </div>
-            <div className="mt-4">
-                {files.map((file) => (
-                    <div key={file.name} className="uploaded-file">
-                        <Image
-                            src={file.preview}
-                            alt={file.name}
-                            className="h-20 w-20 rounded object-cover"
-                            layout="fill"
-                        />
-                        <p className="mt-2 text-center text-xs">{file.name}</p>
-                    </div>
-                ))}
             </div>
         </div>
     )

@@ -27,6 +27,8 @@ export default function ClientWrapper() {
 
     const router = useRouter()
 
+    console.log('formdata:', formData.profileImage)
+
     const { t } = useTranslation()
 
     const [signUp] = useMutation(SignupMutation, {

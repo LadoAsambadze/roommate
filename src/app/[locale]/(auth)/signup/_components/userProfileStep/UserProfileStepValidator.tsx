@@ -23,8 +23,11 @@ export function UserProfileStepValidator({ formData }: any) {
             }),
         countryId: z
             .object({
-                value: z.union([z.string(), z.number()]).optional(),
-                label: z.string().optional(),
+                value: z
+                    .string()
+                    .min(1, { message: t('selectCountry') })
+                    .optional(),
+                label: z.any().optional(),
             })
             .refine((obj) => Object.keys(obj).length >= 1, {
                 message: t('selectCountry'),
@@ -50,6 +53,7 @@ export function UserProfileStepValidator({ formData }: any) {
             message: t('incorrectFormat'),
         }),
         email: z.string().email(t('emailError')).optional().or(z.literal('')),
+        profileImage: z.union([z.any(), z.undefined()]),
         password: z
             .string()
             .min(6, { message: t('minpass') })
@@ -74,6 +78,7 @@ export function UserProfileStepValidator({ formData }: any) {
             phone: formData.phone ? formData.phone : '',
             password: formData.password ? formData.password : '',
             confirmPassword: formData.confirmPassword ? formData.confirmPassword : '',
+            profileImage: formData.profileImage ? formData.profileImage : '',
             code: formData.code ? formData.code : '',
         },
     })
