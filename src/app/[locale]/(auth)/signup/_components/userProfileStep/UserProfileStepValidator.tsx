@@ -69,17 +69,17 @@ export function UserProfileStepValidator({ formData }: any) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            firstname: formData.firstname ? formData.firstname : '',
-            lastname: formData.lastname ? formData.lastname : '',
-            genderId: formData.genderId ? formData.genderId : '',
-            countryId: formData?.countryId ? formData.countryId : '',
-            birthDate: formData.birthDate ? formData.birthDate : '',
-            email: formData.email ? formData.email : '',
-            phone: formData.phone ? formData.phone : '',
-            password: formData.password ? formData.password : '',
-            confirmPassword: formData.confirmPassword ? formData.confirmPassword : '',
-            profileImage: formData.profileImage ? formData.profileImage : '',
-            code: formData.code ? formData.code : '',
+            firstname: formData.firstname ?? '',
+            lastname: formData.lastname ?? '',
+            genderId: formData.genderId ?? '',
+            countryId: formData?.countryId ?? '',
+            birthDate: formData.birthDate ?? '',
+            email: formData.email ?? '',
+            phone: formData.phone ?? '',
+            password: formData.password ?? '',
+            confirmPassword: formData.confirmPassword ?? '',
+            profileImage: formData.profileImage ?? '',
+            code: formData.code ?? '',
         },
     })
 
