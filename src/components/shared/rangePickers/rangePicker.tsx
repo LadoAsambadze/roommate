@@ -10,7 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/src/components/ui/pop
 import { useTranslation } from 'react-i18next'
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/components/ui/drawer'
 import { ControllerRenderProps } from 'react-hook-form'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface RangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
     field: ControllerRenderProps<
@@ -26,15 +26,7 @@ interface RangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
 export const RangePicker = ({ className, updateUseForm, field, id }: RangePickerProps) => {
     const { t } = useTranslation()
 
-    const initialDate =
-        Array.isArray(field.value) && field.value.length === 2
-            ? {
-                  from: new Date(field.value[0]),
-                  to: new Date(field.value[1]),
-              }
-            : undefined
-
-    const [date, setDate] = useState<DateRange | undefined>(initialDate)
+    const [date, setDate] = useState<DateRange>()
 
     const handleDateChange = (newDate: DateRange | undefined) => {
         setDate(newDate)
@@ -58,6 +50,18 @@ export const RangePicker = ({ className, updateUseForm, field, id }: RangePicker
             }
         }
     }
+
+    useEffect(() => {
+        const initialDate =
+            Array.isArray(field.value) && field.value.length === 2
+                ? {
+                      from: new Date(field.value[0]),
+                      to: new Date(field.value[1]),
+                  }
+                : undefined
+
+        setDate(initialDate)
+    }, [field])
 
     return (
         <>
