@@ -6,13 +6,13 @@ interface CustomFile extends File {
     preview: string
 }
 
-type ProfileImageProps = {
+type ImageUploaderProps = {
     field: {
         value: CustomFile[] | undefined
         onChange: (files: CustomFile[]) => void
     }
 }
-const ProfileImage = ({ field }: ProfileImageProps) => {
+const ImageUploader = ({ field }: ImageUploaderProps) => {
     const [files, setFiles] = useState<CustomFile[]>(field.value ? field.value : [])
 
     const onDrop = useCallback(
@@ -90,4 +90,4 @@ const ProfileImage = ({ field }: ProfileImageProps) => {
     )
 }
 
-export default ProfileImage
+export default ImageUploader
