@@ -3,20 +3,14 @@ import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import 'react-phone-number-input/style.css'
-import { useTranslation } from 'react-i18next'
 import { QuestionObject } from '@/graphql/typesGraphql'
 
 type StepTwoValidatorProps = {
     formData: any
     questions?: QuestionObject[] | null
-    step: number
 }
-export default function QuestionsStepValidator({
-    questions,
-    formData,
-    step,
-}: StepTwoValidatorProps) {
-    const { t } = useTranslation()
+
+export default function QuestionsStepValidator({ questions, formData }: StepTwoValidatorProps) {
     const optionSchema = z.object({
         questionId: z.string().min(1),
         value: z.string().min(1),
@@ -25,7 +19,7 @@ export default function QuestionsStepValidator({
 
     const formSchema = z.object(
         questions &&
-            questions.reduce((acc: any, item: any) => {
+            questions.reduce((acc: any, item) => {
                 if (item.uiFieldInfo) {
                     let fieldSchema
                     if (item.uiFieldInfo.input.variant === 'multiple') {
@@ -66,7 +60,7 @@ export default function QuestionsStepValidator({
     )
 
     const defaultValues = {
-        ...questions?.reduce((acc: any, item: any) => {
+        ...questions?.reduce((acc: any, item) => {
             if (item.uiFieldInfo) {
                 if (formData.answeredQuestions && item.uiFieldInfo.input.variant === 'multiple') {
                     acc[item?.id] = formData.answeredQuestions[item.id] || undefined

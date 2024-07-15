@@ -20,10 +20,10 @@ const authLink = new ApolloLink((operation, forward) => {
 })
 
 const httpLink = new HttpLink({
-    uri: 'https://test-api.roommategeorgia.ge/graphql',
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_API,
 })
 
-const restLink = new RestLink({ uri: 'https://api.roommategeorgia.ge/' })
+const restLink = new RestLink({ uri: process.env.NEXT_PUBLIC_REST_API })
 
 const links = ApolloLink.from([authLink, restLink, httpLink])
 
