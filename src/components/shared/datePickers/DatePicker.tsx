@@ -43,7 +43,7 @@ export function DatePicker({ field }: any) {
                     fromYear={1960}
                     toYear={2009}
                     mode="single"
-                    selected={field.value} // Dynamically pass the state
+                    selected={field.value} 
                     onSelect={(newDate: any) => {
                         const formattedDate = format(newDate, 'yyyy-MM-dd')
                         field.onChange(formattedDate.toString())

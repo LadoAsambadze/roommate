@@ -9,9 +9,19 @@ import { QuestionObject } from '@/graphql/typesGraphql'
 type StepTwoValidatorProps = {
     formData: any
     questions?: QuestionObject[] | null
+    step: number
 }
-export default function QuestionsStepValidator({ questions, formData }: StepTwoValidatorProps) {
+export default function QuestionsStepValidator({
+    questions,
+    formData,
+    step,
+}: StepTwoValidatorProps) {
     const { t } = useTranslation()
+    const optionSchema = z.object({
+        questionId: z.string().min(1),
+        value: z.string().min(1),
+        label: z.string().min(1),
+    })
 
     const formSchema = z.object(
         questions &&
@@ -19,54 +29,38 @@ export default function QuestionsStepValidator({ questions, formData }: StepTwoV
                 if (item.uiFieldInfo) {
                     let fieldSchema
                     if (item.uiFieldInfo.input.variant === 'multiple') {
-                        fieldSchema = z
-                            .array(
-                                z.object({
-                                    questionId: z.string().min(1, { message: t('filsRequire') }),
-                                    value: z.string().min(1, { message: t('filsRequire') }),
-                                    label: z.string().min(1, { message: t('filsRequire') }),
-                                })
-                            )
-                            .min(1, { message: t('filsRequire') })
+                        if (item.uiFieldInfo.input.required) {
+                            fieldSchema = z.array(optionSchema).min(1)
+                        } else {
+                            fieldSchema = z.array(optionSchema).optional()
+                        }
                     } else if (item.uiFieldInfo.input.variant === 'single') {
-                        fieldSchema = z
-                            .object({
-                                questionId: z
-                                    .string()
-                                    .min(1, { message: t('filsRequire') })
-                                    .optional(),
-                                value: z
-                                    .string()
-                                    .min(1, { message: t('filsRequire') })
-                                    .optional(),
-                                label: z
-                                    .string()
-                                    .min(1, { message: t('filsRequire') })
-                                    .optional(),
-                            })
-                            .refine((obj) => Object.keys(obj).length >= 1, {
-                                message: t('filsRequire'),
-                            })
+                        if (item.uiFieldInfo.input.required) {
+                            fieldSchema = optionSchema.refine((obj) => Object.keys(obj).length >= 1)
+                        } else {
+                            fieldSchema = optionSchema.optional()
+                        }
                     } else if (item.uiFieldInfo.input.variant === 'calendar') {
-                        fieldSchema = z.array(z.string()).min(1, { message: t('filsRequire') })
+                        if (item.uiFieldInfo.input.required) {
+                            fieldSchema = z.array(z.string()).min(1)
+                        } else {
+                            fieldSchema = z.array(z.string()).optional()
+                        }
                     } else if (
                         item.uiFieldInfo.input.type === 'text' ||
                         item.uiFieldInfo.input.type === 'numeric' ||
                         item.uiFieldInfo.input.type === 'textarea'
                     ) {
-                        if (item.uiFieldInfo.input.required === true) {
-                            fieldSchema = z.string().min(1, { message: t('filsRequire') })
+                        if (item.uiFieldInfo.input.required) {
+                            fieldSchema = z.string().min(1)
                         } else {
                             fieldSchema = z.string().min(0)
                         }
-
-                        if (item.uiFieldInfo.input.required === false) {
-                            acc[item.id] = fieldSchema?.optional()
-                        } else {
-                            acc[item.id] = fieldSchema
-                        }
                     }
+
+                    acc[item.id] = fieldSchema
                 }
+
                 return acc
             }, {})
     )
@@ -75,7 +69,7 @@ export default function QuestionsStepValidator({ questions, formData }: StepTwoV
         ...questions?.reduce((acc: any, item: any) => {
             if (item.uiFieldInfo) {
                 if (formData.answeredQuestions && item.uiFieldInfo.input.variant === 'multiple') {
-                    acc[item?.id] = formData.answeredQuestions[item.id] || null
+                    acc[item?.id] = formData.answeredQuestions[item.id] || undefined
                 } else if (
                     formData.answeredQuestions &&
                     item.uiFieldInfo.input.variant === 'single'

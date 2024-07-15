@@ -48,7 +48,7 @@ export default function QuestionsStep({
         }
     })
 
-    const form = StepTwoValidator({ questions, formData })
+    const form = StepTwoValidator({ questions, formData, step })
 
     const updateUseForm = async (data: any) => {
         const { answeredQuestions } = formData
