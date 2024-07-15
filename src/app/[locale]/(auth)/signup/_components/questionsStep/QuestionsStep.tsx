@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@/src/components/ui/button'
-import { RangePicker } from '../../../../../../components/shared/rangePickers/rangePicker'
+import { DateRangePicker } from '@/src/components/shared/datePickers/DateRangePicker'
 import { useTranslation } from 'react-i18next'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
@@ -255,7 +255,7 @@ export default function QuestionsStep({
                                                             {item.translations &&
                                                                 item.translations[0].title}
                                                         </FormLabel>
-                                                        <RangePicker
+                                                        <DateRangePicker
                                                             id={item.id}
                                                             updateUseForm={updateUseForm}
                                                             field={field}

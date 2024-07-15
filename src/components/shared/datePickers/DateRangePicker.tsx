@@ -23,7 +23,7 @@ interface RangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
     updateUseForm: (data: any) => Promise<void>
 }
 
-export const RangePicker = ({ className, updateUseForm, field, id }: RangePickerProps) => {
+export const DateRangePicker = ({ className, updateUseForm, field, id }: RangePickerProps) => {
     const { t } = useTranslation()
 
     const [date, setDate] = useState<DateRange>()

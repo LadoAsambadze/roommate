@@ -15,7 +15,7 @@ import {
 } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
-import { BirthDatePicker } from '@/src/components/shared/datePickers/BirthDatePicker'
+import { DatePicker } from '@/src/components/shared/datePickers/DatePicker'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
 import { CountryObject, GenderObject, Language } from '@/graphql/typesGraphql'
 import { getCountriesQuery, getGendersQuery } from '@/graphql/query'
@@ -230,7 +230,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('age')}</FormLabel>
-                                        <BirthDatePicker field={field} />
+                                        <DatePicker field={field} />
                                         {field.value !== undefined && field.value !== '' && (
                                             <FormMessage />
                                         )}

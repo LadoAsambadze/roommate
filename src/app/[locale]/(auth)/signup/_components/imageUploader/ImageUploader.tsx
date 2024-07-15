@@ -58,7 +58,7 @@ const ImageUploader = ({ field }: ImageUploaderProps) => {
                         </div>
                     ) : (
                         <div className="flex flex-row gap-3">
-                            <div className="flex h-[38px] w-full cursor-pointer flex-row items-center gap-3  rounded-lg  border border-[#828bab] bg-[#FFFFFF] px-3 py-2 text-sm text-placeholderColor ">
+                            <div className="flex h-[38px] w-full cursor-pointer flex-row items-center gap-3 rounded-lg border border-[#828bab] bg-[#FFFFFF] px-3 py-2 text-sm text-placeholderColor">
                                 {files.length ? (
                                     files.map((file) => (
                                         <div

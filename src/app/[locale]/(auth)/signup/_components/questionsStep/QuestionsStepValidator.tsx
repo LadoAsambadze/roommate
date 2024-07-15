@@ -59,11 +59,12 @@ export default function QuestionsStepValidator({ questions, formData }: StepTwoV
                         } else {
                             fieldSchema = z.string().min(0)
                         }
-                    }
-                    if (item.uiFieldInfo.input.required === false) {
-                        acc[item.id] = fieldSchema?.optional()
-                    } else {
-                        acc[item.id] = fieldSchema
+
+                        if (item.uiFieldInfo.input.required === false) {
+                            acc[item.id] = fieldSchema?.optional()
+                        } else {
+                            acc[item.id] = fieldSchema
+                        }
                     }
                 }
                 return acc

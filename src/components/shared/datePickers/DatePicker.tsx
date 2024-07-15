@@ -10,7 +10,7 @@ import { Button } from '../../ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover'
 import { useState } from 'react'
 
-export function BirthDatePicker({ field }: any) {
+export function DatePicker({ field }: any) {
     const [date, setDate] = useState<Date>(field.value)
     const { t } = useTranslation()
 
@@ -20,7 +20,7 @@ export function BirthDatePicker({ field }: any) {
                 <Button
                     variant={'outline'}
                     className={cn(
-                        'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3  py-2 text-left font-normal hover:bg-white  focus:outline-[#3dae8c] md:w-full',
+                        'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3 py-2 text-left font-normal hover:bg-white focus:outline-[#3dae8c] md:w-full',
                         !date && 'text-muted-foreground'
                     )}
                 >
@@ -43,13 +43,12 @@ export function BirthDatePicker({ field }: any) {
                     fromYear={1960}
                     toYear={2009}
                     mode="single"
-                    selected={date}
+                    selected={field.value} // Dynamically pass the state
                     onSelect={(newDate: any) => {
                         const formattedDate = format(newDate, 'yyyy-MM-dd')
                         field.onChange(formattedDate.toString())
                         setDate(newDate)
                     }}
-                    initialFocus
                 />
             </PopoverContent>
         </Popover>
