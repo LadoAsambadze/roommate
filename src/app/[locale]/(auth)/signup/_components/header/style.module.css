@@ -31,12 +31,12 @@
     border-bottom: 20px solid transparent;
 }
 
-.arrow-active {
+.arrowactive {
     background: #1ebe73;
     opacity: 1;
 }
 
-.arrow-active:before {
+.arrowactive:before {
     border-left: 20px solid #1ebe73;
 }
 
@@ -44,7 +44,7 @@
     border-left: 20px solid #1ebe73;
 }
 
-.arrow-active:after {
+.arrowactive:after {
     border-left: 20px solid white;
 }
 

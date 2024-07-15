@@ -66,7 +66,6 @@ export default function QuestionsStepValidator({ questions, formData }: StepTwoV
                         acc[item.id] = fieldSchema
                     }
                 }
-
                 return acc
             }, {})
     )
