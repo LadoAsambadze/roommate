@@ -2,7 +2,7 @@
 import { Popup } from '@/src/components/svgs'
 import { Button } from '@/src/components/ui/button'
 import { Dialog, DialogContent } from '@/src/components/ui/dialog'
-import { FACEBOOK_URL } from '@/src/utils/constants'
+import { FACEBOOK_URL } from '@/src/utils/constats/links'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
