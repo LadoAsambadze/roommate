@@ -81,7 +81,7 @@ const ImageUploader = ({ field }: ImageUploaderProps) => {
                                 ) : (
                                     <div className="flex flex-row items-center gap-2">
                                         <Upload className="h-5 w-5" />
-                                        <span className="text-sm">{t('uploadFile')}</span>
+                                        <span className=" text-xs lg:text-sm">{t('uploadFile')}</span>
                                     </div>
                                 )}
                             </div>

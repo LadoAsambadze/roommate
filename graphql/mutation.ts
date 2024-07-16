@@ -26,8 +26,19 @@ export const CheckCodeMutation: TypedDocumentNode<
 
 export const SignupMutation: TypedDocumentNode<{ signUp: Mutation['signUp'] }, MutationSignUpArgs> =
     gql`
-        mutation SignUp($userAndAnsweredQuestions: UserAndAnsweredQuestionsInput!) {
+        mutation signUp($userAndAnsweredQuestions: UserAndAnsweredQuestionsInput!) {
             signUp(userAndAnsweredQuestions: $userAndAnsweredQuestions) {
+                user {
+                    id
+                    firstname
+                    lastname
+                    email
+                    phone
+                    callingCode
+                    birthDate
+                    genderId
+                    countryId
+                }
                 accessToken
             }
         }

@@ -26,7 +26,15 @@ interface RangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
 export const DateRangePicker = ({ className, updateUseForm, field, id }: RangePickerProps) => {
     const { t } = useTranslation()
 
-    const [date, setDate] = useState<DateRange>()
+    const initialDate =
+        Array.isArray(field.value) && field.value.length === 2
+            ? {
+                  from: new Date(field.value[0]),
+                  to: new Date(field.value[1]),
+              }
+            : undefined
+
+    const [date, setDate] = useState<DateRange | undefined>(initialDate)
 
     const handleDateChange = (newDate: DateRange | undefined) => {
         setDate(newDate)
@@ -51,17 +59,17 @@ export const DateRangePicker = ({ className, updateUseForm, field, id }: RangePi
         }
     }
 
-    useEffect(() => {
-        const initialDate =
-            Array.isArray(field.value) && field.value.length === 2
-                ? {
-                      from: new Date(field.value[0]),
-                      to: new Date(field.value[1]),
-                  }
-                : undefined
+    // useEffect(() => {
+    //     const initialDate =
+    //         Array.isArray(field.value) && field.value.length === 2
+    //             ? {
+    //                   from: new Date(field.value[0]),
+    //                   to: new Date(field.value[1]),
+    //               }
+    //             : undefined
 
-        setDate(initialDate)
-    }, [field])
+    //     setDate(initialDate)
+    // }, [field])
 
     return (
         <>

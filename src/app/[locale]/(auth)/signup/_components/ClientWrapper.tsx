@@ -48,8 +48,16 @@ export default function ClientWrapper() {
         if (typeof modifiedFormData.genderId === 'object' && modifiedFormData.genderId !== null) {
             modifiedFormData.genderId = Number(modifiedFormData.genderId.value)
         }
-        if (!modifiedFormData?.email) {
-            delete modifiedFormData.email
+
+        if (
+            Array.isArray(modifiedFormData.profileImage) &&
+            modifiedFormData.profileImage[0] !== null
+        ) {
+            modifiedFormData.profileImage = modifiedFormData.profileImage[0].path
+        }
+
+        if (!modifiedFormData?.profileImage) {
+            delete modifiedFormData.profileImage
         }
         const answeredQuestions = []
         for (const key in modifiedFormData.answeredQuestions || {}) {
@@ -81,11 +89,13 @@ export default function ClientWrapper() {
         }
 
         modifiedFormData.answeredQuestions = answeredQuestions
+        console.log(modifiedFormData)
 
         try {
             const response = await signUp({
                 variables: { userAndAnsweredQuestions: modifiedFormData },
             })
+            console.log(response)
 
             if (response?.data && response?.data?.signUp.accessToken) {
                 signIn('signup', {
@@ -101,6 +111,7 @@ export default function ClientWrapper() {
                 }
             }
         } catch (error: unknown | CustomError) {
+            console.log(error)
             setAlertIsOpen(true)
             if ((error as CustomError)?.message === 'PHONE_EXISTS') {
                 setAlertType('PHONE_EXISTS')
