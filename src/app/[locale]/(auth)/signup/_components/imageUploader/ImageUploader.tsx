@@ -44,9 +44,9 @@ const ImageUploader = ({ field }: ImageUploaderProps) => {
 
     return (
         <div>
-            <div {...getRootProps()} className="dropzone">
+            <div {...getRootProps()} className="dropzone focus:outline-none">
                 <input
-                    className="flex h-[38px] w-full rounded-lg border border-[#828bab] bg-[#FFFFFF] px-3 py-2 text-sm placeholder:text-placeholderColor focus:outline-[#3dae8c] focus:ring-0"
+                    className="flex h-[38px] w-full rounded-lg border border-[#828bab] bg-[#FFFFFF] px-3 py-2 text-sm placeholder:text-placeholderColor focus:ring-0"
                     {...getInputProps()}
                 />
                 <p>
@@ -81,7 +81,9 @@ const ImageUploader = ({ field }: ImageUploaderProps) => {
                                 ) : (
                                     <div className="flex flex-row items-center gap-2">
                                         <Upload className="h-5 w-5" />
-                                        <span className=" text-xs lg:text-sm">{t('uploadFile')}</span>
+                                        <span className=" text-xs lg:text-sm">
+                                            {t('uploadFile')}
+                                        </span>
                                     </div>
                                 )}
                             </div>

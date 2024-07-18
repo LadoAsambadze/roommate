@@ -34,7 +34,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         const { t } = useTranslation()
 
         return (
-            <div className="relative flex w-full items-center z-10">
+            <div className="relative flex w-full items-center">
                 <input
                     autoComplete="off"
                     type={type}
