@@ -39,13 +39,11 @@ export function DatePicker({ field }: any) {
                         nav_button_previous: 'hidden',
                         nav_button_next: 'hidden',
                     }}
-                    captionLayout="dropdown-buttons"
-                    fromYear={1960}
-                    toYear={2009}
                     mode="single"
-                    selected={field.value} 
+                    selected={date}
                     onSelect={(newDate: any) => {
                         const formattedDate = format(newDate, 'yyyy-MM-dd')
+
                         field.onChange(formattedDate.toString())
                         setDate(newDate)
                     }}

@@ -23,6 +23,7 @@ import Image from 'next/legacy/image'
 import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import Select from '@/src/components/ui/select'
 import ImageUploader from '../imageUploader/ImageUploader'
+import { Test } from '@/src/components/shared/datePickers/datePicker/DatePicker'
 
 type StepOneProps = {
     formData: any
@@ -224,19 +225,21 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                     </FormItem>
                                 )}
                             />
+
                             <FormField
                                 control={form.control}
                                 name="birthDate"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('age')}</FormLabel>
-                                        <DatePicker field={field} />
+                                        <Test field={field} />
                                         {field.value !== undefined && field.value !== '' && (
                                             <FormMessage />
                                         )}
                                     </FormItem>
                                 )}
                             />
+
                             <FormField
                                 control={form.control}
                                 name="email"
