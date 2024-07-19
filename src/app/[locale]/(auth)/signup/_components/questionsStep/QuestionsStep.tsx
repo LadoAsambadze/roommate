@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@/src/components/ui/button'
-import { DateRangePicker } from '@/src/components/shared/datePickers/DateRangePicker'
 import { useTranslation } from 'react-i18next'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
@@ -11,6 +10,7 @@ import { useParams } from 'next/navigation'
 import { useQuery } from '@apollo/client'
 import Select from '@/src/components/ui/select'
 import StepTwoValidator from './QuestionsStepValidator'
+import { DatePicker } from '@/src/components/shared/datePicker/DatePicker'
 
 type StepTwoProps = {
     step: number
@@ -255,7 +255,8 @@ export default function QuestionsStep({
                                                             {item.translations &&
                                                                 item.translations[0].title}
                                                         </FormLabel>
-                                                        <DateRangePicker
+                                                        <DatePicker
+                                                            rangeType={true}
                                                             id={item.id}
                                                             updateUseForm={updateUseForm}
                                                             field={field}

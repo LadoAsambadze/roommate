@@ -15,7 +15,6 @@ import {
 } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
-import { DatePicker } from '@/src/components/shared/datePickers/DatePicker'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
 import { CountryObject, GenderObject, Language } from '@/graphql/typesGraphql'
 import { getCountriesQuery, getGendersQuery } from '@/graphql/query'
@@ -23,7 +22,7 @@ import Image from 'next/legacy/image'
 import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import Select from '@/src/components/ui/select'
 import ImageUploader from '../imageUploader/ImageUploader'
-import { Test } from '@/src/components/shared/datePickers/datePicker/DatePicker'
+import { DatePicker } from '@/src/components/shared/datePicker/DatePicker'
 
 type StepOneProps = {
     formData: any
@@ -232,7 +231,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('age')}</FormLabel>
-                                        <Test field={field} />
+                                        <DatePicker rangeType={false} field={field} />
                                         {field.value !== undefined && field.value !== '' && (
                                             <FormMessage />
                                         )}

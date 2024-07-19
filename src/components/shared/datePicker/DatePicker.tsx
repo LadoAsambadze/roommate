@@ -1,26 +1,59 @@
 import { useState, useEffect } from 'react'
 import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css'
 import { PopoverContent } from '@radix-ui/react-popover'
 import { format } from 'date-fns'
-import './styles.css'
 import { Popover, PopoverTrigger } from '@/src/components/ui/popover'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'next/navigation'
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/components/ui/drawer'
-import CalendarButton from './CalendarButton' // Adjust the import path as needed
+import CalendarButton from './CalendarButton'
 import { Button } from '@/src/components/ui/button'
+import 'react-calendar/dist/Calendar.css'
+import './styles.css'
 
 type ValuePiece = Date | null
-type Value = ValuePiece | [ValuePiece, ValuePiece]
+type DateValue = ValuePiece | [ValuePiece, ValuePiece]
 
-export function Test({ field }: any) {
+interface FieldProps {
+    value: DateValue
+    onChange: (value: string | [string, string]) => void
+}
+
+interface DatePickerProps {
+    field: FieldProps
+    rangeType: boolean
+    id: string
+    updateUseForm: (data: any) => Promise<void>
+}
+
+export function DatePicker({ field, rangeType, id, updateUseForm }: DatePickerProps) {
     const { t } = useTranslation()
-    const [value, onChange] = useState<Value>(new Date())
-    const [date, setDate] = useState<Date | null>(null)
+
+    const [date, setDate] = useState<DateValue>(field.value)
     const [locale, setLocale] = useState<any>(null)
+
     const params = useParams()
     const userLocale = params.locale
+
+    const dateSelectHandler = (newDate: DateValue) => {
+        if (newDate instanceof Date) {
+            const formattedDate = format(newDate, 'yyyy-MM-dd')
+            field.onChange(formattedDate)
+            setDate(newDate)
+        } else if (
+            Array.isArray(newDate) &&
+            newDate[0] instanceof Date &&
+            newDate[1] instanceof Date
+        ) {
+            const formattedDateFirst = format(newDate[0], 'yyyy-MM-dd')
+            const formattedDateSecond = format(newDate[1], 'yyyy-MM-dd')
+            field.onChange([formattedDateFirst, formattedDateSecond])
+            setDate(newDate)
+            updateUseForm({
+                [id]: [formattedDateFirst, formattedDateSecond],
+            })
+        }
+    }
 
     useEffect(() => {
         async function loadLocale() {
@@ -52,8 +85,9 @@ export function Test({ field }: any) {
                 </PopoverTrigger>
                 <PopoverContent className="z-50 w-auto p-0">
                     <Calendar
-                        onChange={onChange}
-                        value={value}
+                        selectRange={rangeType}
+                        onChange={dateSelectHandler}
+                        value={date}
                         formatYear={(_, date) => formatDate(date, 'LLLL yyyy')}
                         formatMonthYear={(_, date) => formatDate(date, 'LLLL yyyy')}
                         formatDay={(_, date) => formatDate(date, 'dd')}
@@ -72,8 +106,9 @@ export function Test({ field }: any) {
                 </DrawerTrigger>
                 <DrawerContent>
                     <Calendar
-                        onChange={onChange}
-                        value={value}
+                        onChange={dateSelectHandler}
+                        selectRange={rangeType}
+                        value={date}
                         formatYear={(_, date) => formatDate(date, 'LLLL yyyy')}
                         formatMonthYear={(_, date) => formatDate(date, 'LLLL yyyy')}
                         formatDay={(_, date) => formatDate(date, 'dd')}
@@ -83,7 +118,7 @@ export function Test({ field }: any) {
                         formatWeekday={(_, date) => formatDate(date, 'EEEE')}
                     />
                     <DrawerClose>
-                        <Button variant="default" type="button" className="w-4/5">
+                        <Button variant="default" type="button" className="mb-10 w-4/5">
                             {t('save')}
                         </Button>
                     </DrawerClose>
