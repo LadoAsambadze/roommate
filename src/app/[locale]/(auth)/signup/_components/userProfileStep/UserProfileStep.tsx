@@ -234,8 +234,8 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                         <DatePicker
                                             rangeType={false}
                                             field={field}
-                                            id="birthDate"
-                                            updateUseForm={() => onclick()}
+                                            id={null}
+                                            updateUseForm={async () => {}}
                                         />
                                         {field.value !== undefined && field.value !== '' && (
                                             <FormMessage />

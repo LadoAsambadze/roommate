@@ -22,7 +22,7 @@ interface FieldProps {
 interface DatePickerProps {
     field: FieldProps
     rangeType: boolean
-    id: string
+    id: string | null
     updateUseForm: (data: any) => Promise<void>
 }
 
@@ -43,7 +43,8 @@ export function DatePicker({ field, rangeType, id, updateUseForm }: DatePickerPr
         } else if (
             Array.isArray(newDate) &&
             newDate[0] instanceof Date &&
-            newDate[1] instanceof Date
+            newDate[1] instanceof Date &&
+            id === 'string'
         ) {
             const formattedDateFirst = format(newDate[0], 'yyyy-MM-dd')
             const formattedDateSecond = format(newDate[1], 'yyyy-MM-dd')
