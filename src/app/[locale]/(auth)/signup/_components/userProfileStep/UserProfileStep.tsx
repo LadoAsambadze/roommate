@@ -231,7 +231,12 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('age')}</FormLabel>
-                                        <DatePicker rangeType={false} field={field} />
+                                        <DatePicker
+                                            rangeType={false}
+                                            field={field}
+                                            id="birthDate"
+                                            updateUseForm={() => onclick()}
+                                        />
                                         {field.value !== undefined && field.value !== '' && (
                                             <FormMessage />
                                         )}
