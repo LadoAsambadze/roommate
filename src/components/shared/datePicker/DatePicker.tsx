@@ -44,7 +44,7 @@ export function DatePicker({ field, rangeType, id, updateUseForm }: DatePickerPr
             Array.isArray(newDate) &&
             newDate[0] instanceof Date &&
             newDate[1] instanceof Date &&
-            id === 'string'
+            typeof id === 'string'
         ) {
             const formattedDateFirst = format(newDate[0], 'yyyy-MM-dd')
             const formattedDateSecond = format(newDate[1], 'yyyy-MM-dd')
