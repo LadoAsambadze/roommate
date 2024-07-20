@@ -10,7 +10,7 @@ import { useParams } from 'next/navigation'
 import { useQuery } from '@apollo/client'
 import Select from '@/src/components/ui/select'
 import StepTwoValidator from './QuestionsStepValidator'
-import { DatePicker } from '@/src/components/shared/datePicker/DatePicker'
+import { RangePicker } from '@/src/components/shared/datePicker/DateRangePicker'
 
 type StepTwoProps = {
     step: number
@@ -255,8 +255,7 @@ export default function QuestionsStep({
                                                             {item.translations &&
                                                                 item.translations[0].title}
                                                         </FormLabel>
-                                                        <DatePicker
-                                                            rangeType={true}
+                                                        <RangePicker
                                                             id={item.id}
                                                             updateUseForm={updateUseForm}
                                                             field={field}

@@ -158,6 +158,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                     </FormItem>
                                 )}
                             />
+
                             <FormField
                                 control={form.control}
                                 name="lastname"
@@ -231,12 +232,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('age')}</FormLabel>
-                                        <DatePicker
-                                            rangeType={false}
-                                            field={field}
-                                            id={null}
-                                            updateUseForm={async () => {}}
-                                        />
+                                        <DatePicker field={field} />
                                         {field.value !== undefined && field.value !== '' && (
                                             <FormMessage />
                                         )}
