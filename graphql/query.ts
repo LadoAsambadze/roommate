@@ -105,3 +105,10 @@ export const getFilteredUsersQuery: TypedDocumentNode<
         }
     }
 `
+
+export const getUser = gql`
+    query exampleGetUser {
+        id
+        name
+    }
+`
