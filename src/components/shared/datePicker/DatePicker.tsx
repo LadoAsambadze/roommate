@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { format } from 'date-fns'
@@ -10,9 +9,27 @@ import { Button } from '../../ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover'
 import { useState } from 'react'
 
-export function DatePicker({ field }: any) {
-    const [date, setDate] = useState<Date>(field.value)
+interface Field {
+    value: Date | undefined
+    onChange: (date: string | null) => void
+}
+
+type DatePickerProps = {
+    field?: Field
+}
+
+export function DatePicker({ field }: DatePickerProps) {
+    const [date, setDate] = useState<Date | undefined>(field?.value)
+
     const { t } = useTranslation()
+
+    const handleDateChange = (newDate: Date | undefined) => {
+        setDate(newDate)
+        if (field) {
+            const formattedDate = newDate ? format(newDate, 'yyyy-MM-dd') : null
+            field.onChange(formattedDate)
+        }
+    }
 
     return (
         <Popover>
@@ -20,15 +37,15 @@ export function DatePicker({ field }: any) {
                 <Button
                     variant={'outline'}
                     className={cn(
-                        'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3  py-2 text-left font-normal hover:bg-white  focus:outline-[#3dae8c] md:w-full',
+                        'flex h-[38px] w-full justify-start rounded-lg border border-[#828bab] px-3 py-2 text-left font-normal hover:bg-white focus:outline-[#3dae8c] md:w-full',
                         !date && 'text-muted-foreground'
                     )}
                 >
-                    <CalendarIcon className="mb-[1px] mr-2 h-4 w-4 " />
+                    <CalendarIcon className="mb-[1px] mr-2 h-4 w-4" />
                     {date ? (
                         format(date, 'LLL dd, y')
                     ) : (
-                        <span className="text-muted-foreground ">{t('chooseDate')}</span>
+                        <span className="text-muted-foreground">{t('chooseDate')}</span>
                     )}
                 </Button>
             </PopoverTrigger>
@@ -44,11 +61,7 @@ export function DatePicker({ field }: any) {
                     toYear={2009}
                     mode="single"
                     selected={date}
-                    onSelect={(newDate: any) => {
-                        const formattedDate = format(newDate, 'yyyy-MM-dd')
-                        field.onChange(formattedDate.toString())
-                        setDate(newDate)
-                    }}
+                    onSelect={(newDate) => handleDateChange(newDate)}
                     initialFocus
                 />
             </PopoverContent>
