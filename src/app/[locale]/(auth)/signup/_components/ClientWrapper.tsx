@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
@@ -89,13 +88,11 @@ export default function ClientWrapper() {
         }
 
         modifiedFormData.answeredQuestions = answeredQuestions
-        console.log(modifiedFormData)
 
         try {
             const response = await signUp({
                 variables: { userAndAnsweredQuestions: modifiedFormData },
             })
-            console.log(response)
 
             if (response?.data && response?.data?.signUp.accessToken) {
                 signIn('signup', {
@@ -111,7 +108,6 @@ export default function ClientWrapper() {
                 }
             }
         } catch (error: unknown | CustomError) {
-            console.log(error)
             setAlertIsOpen(true)
             if ((error as CustomError)?.message === 'PHONE_EXISTS') {
                 setAlertType('PHONE_EXISTS')

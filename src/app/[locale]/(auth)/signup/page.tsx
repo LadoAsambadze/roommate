@@ -1,5 +1,3 @@
-'use client'
-
 import ClientWrapper from './_components/ClientWrapper'
 
 export default function Signup() {

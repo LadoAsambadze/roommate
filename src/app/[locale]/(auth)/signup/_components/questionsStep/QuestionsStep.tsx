@@ -259,7 +259,6 @@ export default function QuestionsStep({
                                                             id={item.id}
                                                             updateUseForm={updateUseForm}
                                                             field={field}
-                                                            onChange={}
                                                         />
                                                     </FormItem>
                                                 )}
