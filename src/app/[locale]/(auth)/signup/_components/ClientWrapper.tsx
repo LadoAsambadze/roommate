@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/src/components/ui/card'
 import { CustomError } from '@/src/types/error/types'
-import { signIn } from 'next-auth/react'
 import { SignupAlert } from './popups/SignupAlert'
 import { SignupMutation } from '@/graphql/mutation'
 import SignupHeader from './header/SignupHeader'
@@ -95,10 +94,7 @@ export default function ClientWrapper() {
             })
 
             if (response?.data && response?.data?.signUp.accessToken) {
-                signIn('signup', {
-                    accessToken: response?.data?.signUp.accessToken,
-                    redirect: false,
-                })
+
                 if (step === 3) {
                     setPopupIsOpen(true)
                 }
