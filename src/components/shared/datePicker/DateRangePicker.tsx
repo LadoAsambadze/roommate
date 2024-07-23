@@ -9,18 +9,18 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/src/components/ui/pop
 import { useTranslation } from 'react-i18next'
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/components/ui/drawer'
 import { ControllerRenderProps } from 'react-hook-form'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 interface RangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
-    field: ControllerRenderProps<Record<string, string>, string>
+    field?: ControllerRenderProps<Record<string, string>, string>
     id?: string
-    updateUseForm: (data: Record<string, string[] | undefined>) => Promise<void>
+    updateUseForm?: (data: Record<string, string[] | undefined>) => Promise<void>
 }
 
 export const RangePicker = ({ className, updateUseForm, field, id }: RangePickerProps) => {
     const { t } = useTranslation()
     const initialDate = useMemo(() => {
-        if (Array.isArray(field.value) && field.value.length === 2) {
+        if (field?.value && Array.isArray(field.value) && field.value.length === 2) {
             const from = new Date(field.value[0])
             const to = new Date(field.value[1])
             if (!isNaN(from.getTime()) && !isNaN(to.getTime())) {
@@ -28,7 +28,7 @@ export const RangePicker = ({ className, updateUseForm, field, id }: RangePicker
             }
         }
         return undefined
-    }, [field.value])
+    }, [field?.value])
 
     const [date, setDate] = useState<DateRange | undefined>(initialDate)
 
@@ -38,15 +38,24 @@ export const RangePicker = ({ className, updateUseForm, field, id }: RangePicker
         if (newDate?.from && newDate?.to) {
             const formattedFrom = format(newDate.from, 'yyyy-MM-dd')
             const formattedTo = format(newDate.to, 'yyyy-MM-dd')
-            field.onChange([formattedFrom, formattedTo])
-            if (id) {
+
+            if (field) {
+                field.onChange([formattedFrom, formattedTo])
+            }
+
+            if (updateUseForm && id) {
                 updateUseForm({
                     [id]: [formattedFrom, formattedTo],
                 })
             }
         } else {
-            field.onChange([])
-            updateUseForm(id ? { [id]: undefined } : {})
+            if (field) {
+                field.onChange([])
+            }
+
+            if (updateUseForm && id) {
+                updateUseForm({ [id]: undefined })
+            }
         }
     }
 
