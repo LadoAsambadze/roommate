@@ -7,7 +7,8 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'next/navigation'
 import { FilterInput } from '@/graphql/typesGraphql'
 import { useLockBodyScroll } from '@/src/components/hooks/useLockBodyScroll'
-import { withAuth } from '../../(auth)/withAuth'
+import { withAuth } from '@/src/libs/apollo/withAuth'
+
 
 function ClientWrapper() {
     const [isOpen, setIsOpen] = useState(false)

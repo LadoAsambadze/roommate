@@ -1,9 +1,8 @@
 // app/example/page.tsx
 'use client'
 
-import { gql } from '@apollo/client'
-import { useAuth } from '../(auth)/AuthContext'
-import { withAuth } from '../(auth)/withAuth'
+import { useAuth } from '../../../libs/apollo/AuthContext'
+import { withAuth } from '@/src/libs/apollo/withAuth'
 
 function ExamplePage() {
     const { logout } = useAuth()

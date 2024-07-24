@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { FilterRangePicker } from '@/src/app/[locale]/roommates/_components/filter/filterComponents/FilterRangePicker'
 import { Slider } from '@/src/components/ui/slider'
 import { FilterInput, Language, QuestionsWithAnswersFor } from '@/graphql/typesGraphql'
 import { getQuestionsWithAnswersQuery } from '@/graphql/query'
 import { useQuery } from '@apollo/client'
 import { Button } from '@/src/components/ui/button'
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation'
-import FilterSelectComponent from '@/src/app/[locale]/roommates/_components/filter/filterComponents/FilterSelectComponent'
 import FilterLoading from '../loaders/FilterLoading'
 import { CloseCircle } from '@/src/components/svgs'
+import FilterSelectComponent from './filterComponents/FilterSelectComponent'
+import { FilterRangePicker } from './filterComponents/FilterRangePicker'
 
 type RangeDataProps = {
     questionId: string

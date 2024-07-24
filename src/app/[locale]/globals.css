@@ -9,10 +9,11 @@
 }
 
 body {
-    width: 100%;
+    width: 100vw;
     min-height: 100vh;
     color: #484848;
     font-size: 14px;
+    overflow-x: hidden;
 }
 @layer base {
     :root {
@@ -166,4 +167,3 @@ input::file-selector-button {
     border: thin solid grey;
     border-radius: 3px;
 }
-

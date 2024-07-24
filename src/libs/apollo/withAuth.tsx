@@ -1,9 +1,10 @@
 // app/auth/withAuth.tsx
 'use client'
 
-import { useAuth } from './AuthContext'
+
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { useAuth } from './AuthContext'
 
 export function withAuth<P extends object>(WrappedComponent: React.ComponentType<P>) {
     return function WithAuth(props: P) {
@@ -12,7 +13,7 @@ export function withAuth<P extends object>(WrappedComponent: React.ComponentType
 
         useEffect(() => {
             if (!isAuthenticated) {
-                router.push('/signin')
+                router.push('/signup')
             }
         }, [isAuthenticated, router])
 
