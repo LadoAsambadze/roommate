@@ -1,34 +1,38 @@
-// interface Question {
-//     value?: string | number
-//     label?: string
-// }
+import { UserAnsweredQuestionObject } from '@/graphql/typesGraphql'
 
-// export type FormDataProps = {
-//     firstname?: string
-//     lastname?: string
-//     countryId?: Question | number | null | undefined
-//     genderId?: Question | number | null | undefined
-//     email?: string
-//     birthDate?: string
-//     phone?: string
-//     password?: string
-//     confirmPassword?: string
-//     code?: string
-//     answeredQuestions: []
-// }
+type CountryId = number | { value: number }
+type GenderId = number | { value: number }
+type ProfileImage = Array<{ path: string }> | string
 
+export type NewAnsweredQuestion = {
+    questionId: string
+    data?: string
+    answerIds?: any[]
+    dataRange?: any[]
+}
+export interface CustomError extends Error {
+    message: string
+}
+export type CombinedAnsweredQuestions = UserAnsweredQuestionObject & {
+    [key: string]: string | Array<any> | { questionId: string; value: string | number }
+}
+type UserAnsweredQuestionObjectStart = {
+    answeredQuestions: {
+        [key: string]: string | Array<any> | { questionId: string; value: string | number }
+    }
+}
 
-// interface AnsweredQuestion {
-//     [key: string | number]: string | object | Array<string | object> | number | Question | null
-// }
-
-// interface Question {
-//     value?: string | number
-//     label?: string
-
-// }
-
-// export type FormDataPropsTwo = {
-
-//     answeredQuestions?: AnsweredQuestion[]
-// }
+export type FormDataProps = {
+    answeredQuestions: CombinedAnsweredQuestions | UserAnsweredQuestionObjectStart
+    countryId?: CountryId
+    genderId?: GenderId
+    profileImage?: ProfileImage
+    code?: string
+    email?: string
+    phone?: string
+    birthDate: string
+    firstname?: string
+    lastname?: string
+    confirmPassword?: string
+    password?: string
+}

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { useParams } from 'next/navigation'
 import { UserProfileStepValidator } from './UserProfileStepValidator'
@@ -23,11 +22,12 @@ import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import Select from '@/src/components/ui/select'
 import ImageUploader from '../imageUploader/ImageUploader'
 import { DatePicker } from '@/src/components/shared/datePicker/DatePicker'
+import { FormDataProps } from '../../types'
 
 type StepOneProps = {
-    formData: any
+    formData?: FormDataProps
     setStep: Dispatch<SetStateAction<number>>
-    updateFormData: (newData: any) => void
+    updateFormData: (newData: Partial<FormDataProps>) => void
 }
 
 export default function UserProfileStep({ formData, setStep, updateFormData }: StepOneProps) {
@@ -87,7 +87,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
             ),
         }))
 
-    const handleSubmit = async (data: any) => {
+    const handleSubmit = async (data: { code: string }) => {
         updateFormData(data)
         const { data: responseData } = await smsCheck({
             variables: {

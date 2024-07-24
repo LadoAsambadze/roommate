@@ -14,15 +14,17 @@ type UserCardProps = {
     transformedParams: FilterInput[]
 }
 
-export default function UserCard({ transformedParams }: UserCardProps) {
+ export default function UserCard({ transformedParams }: UserCardProps) {
     const { t } = useTranslation()
     const params = useParams()
     const searchParams = useSearchParams()
+
     const page = searchParams.get('page') || '1'
     const locale = params.locale
     const currentPage = page ? parseInt(page, 10) : 1
     const limit = 10
     const offset = (currentPage - 1) * limit
+
     const { loading, error, data } = useQuery(getFilteredUsersQuery, {
         fetchPolicy: 'cache-and-network',
         variables: {

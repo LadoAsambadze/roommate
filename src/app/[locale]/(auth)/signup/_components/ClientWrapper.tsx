@@ -3,25 +3,27 @@ import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PopUp } from './popups/Popup'
 import { Card, CardContent } from '@/src/components/ui/card'
-import { CustomError } from '@/src/types/error/types'
 import { SignupAlert } from './popups/SignupAlert'
 import { SignupMutation } from '@/graphql/mutation'
 import SignupHeader from './header/SignupHeader'
 import QuestionsStep from './questionsStep/QuestionsStep'
 import UserProfileStep from './userProfileStep/UserProfileStep'
 import Loading from '../loading'
+import { UserAndAnsweredQuestionsInput } from '@/graphql/typesGraphql'
+import {
+    CombinedAnsweredQuestions,
+    CustomError,
+    FormDataProps,
+    NewAnsweredQuestion,
+} from '../types'
 
 export default function ClientWrapper() {
     const [step, setStep] = useState(1)
-    const [popupIsOpen, setPopupIsOpen] = useState(false)
     const [alertIsOpen, setAlertIsOpen] = useState(false)
     const [alertType, setAlertType] = useState('')
     const [isClient, setIsClient] = useState(false)
-    const [formData, setFormData] = useState<any>({
-        answeredQuestions: [],
-    })
+    const [formData, setFormData] = useState<FormDataProps>()
 
     const router = useRouter()
 
@@ -31,15 +33,19 @@ export default function ClientWrapper() {
         fetchPolicy: 'network-only',
     })
 
-    const updateFormData = (newData: any) => {
-        setFormData((prevData: any) => ({ ...prevData, ...newData }))
+    const updateFormData = (newData: Partial<FormDataProps>) => {
+        setFormData((prevData) =>
+            prevData ? { ...prevData, ...newData } : (newData as FormDataProps)
+        )
     }
 
     const submit = async () => {
-        const modifiedFormData = {
-            ...formData,
-        }
+        if (!formData) return
+
+        const modifiedFormData = { ...formData } as FormDataProps
+
         delete modifiedFormData.code
+
         if (typeof modifiedFormData.countryId === 'object' && modifiedFormData.countryId !== null) {
             modifiedFormData.countryId = Number(modifiedFormData.countryId?.value)
         }
@@ -57,60 +63,72 @@ export default function ClientWrapper() {
         if (!modifiedFormData?.profileImage) {
             delete modifiedFormData.profileImage
         }
-        const answeredQuestions = []
-        for (const key in modifiedFormData.answeredQuestions || {}) {
-            const value = modifiedFormData?.answeredQuestions[key]
-            if (typeof value === 'string') {
-                answeredQuestions.push({ questionId: key, data: value })
-            } else if (Array.isArray(value)) {
-                if (Array.isArray(value) && typeof value[0] === 'object') {
-                    const questionId = value[0]['questionId']
-                    const answerIds = (value as unknown as Array<object>).map((item) =>
-                        Object.values(item)
-                    )
-                    answeredQuestions.push({
-                        questionId,
-                        answerIds: answerIds.flat(),
-                    })
-                } else {
-                    answeredQuestions.push({
-                        questionId: key,
-                        dataRange: value,
+
+        if (modifiedFormData.answeredQuestions) {
+            const newAnsweredQuestions: NewAnsweredQuestion[] = []
+
+            for (const key in modifiedFormData.answeredQuestions as CombinedAnsweredQuestions) {
+                const value = (modifiedFormData.answeredQuestions as CombinedAnsweredQuestions)[key]
+                if (typeof value === 'string') {
+                    newAnsweredQuestions.push({ questionId: key, data: value })
+                } else if (Array.isArray(value)) {
+                    if (Array.isArray(value) && typeof value[0] === 'object') {
+                        const questionId = value[0]['questionId']
+                        const answerIds = (value as unknown as Array<object>).map((item) =>
+                            Object.values(item)
+                        )
+                        newAnsweredQuestions.push({
+                            questionId,
+                            answerIds: answerIds.flat(),
+                        })
+                    } else {
+                        newAnsweredQuestions.push({
+                            questionId: key,
+                            dataRange: value,
+                        })
+                    }
+                } else if (typeof value === 'object' && !Array.isArray(value)) {
+                    newAnsweredQuestions.push({
+                        questionId: value['questionId'],
+                        answerIds: [value['value']],
                     })
                 }
-            } else if (typeof value === 'object' && !Array.isArray(value)) {
-                answeredQuestions.push({
-                    questionId: value['questionId'],
-                    answerIds: [value['value']],
-                })
             }
-        }
 
-        modifiedFormData.answeredQuestions = answeredQuestions
-
-        try {
-            const response = await signUp({
-                variables: { userAndAnsweredQuestions: modifiedFormData },
-            })
-
-            if (response?.data && response?.data?.signUp.accessToken) {
-
-                if (step === 3) {
-                    setPopupIsOpen(true)
+            try {
+                const userAndAnsweredQuestions: UserAndAnsweredQuestionsInput = {
+                    answeredQuestions: newAnsweredQuestions,
+                    countryId: modifiedFormData.countryId as number,
+                    genderId: modifiedFormData.genderId as number,
+                    email: modifiedFormData.email!,
+                    phone: modifiedFormData.phone!,
+                    birthDate: modifiedFormData.birthDate,
+                    firstname: modifiedFormData.firstname!,
+                    lastname: modifiedFormData.lastname!,
+                    password: modifiedFormData.password!,
+                    confirmPassword: modifiedFormData.confirmPassword!,
                 }
 
-                if (typeof formData?.countryId === 'number' && formData.countryId === 145) {
+                if (modifiedFormData.profileImage) {
+                    userAndAnsweredQuestions.profileImage = modifiedFormData.profileImage as string
+                }
+
+                const response = await signUp({
+                    variables: { userAndAnsweredQuestions },
+                })
+
+                if (response?.data && response?.data?.signUp.accessToken) {
                     router.push('/roommates')
                 }
-            }
-        } catch (error: unknown | CustomError) {
-            setAlertIsOpen(true)
-            if ((error as CustomError)?.message === 'PHONE_EXISTS') {
-                setAlertType('PHONE_EXISTS')
-            } else if ((error as CustomError)?.message === 'EMAIL_EXISTS') {
-                setAlertType('EMAIL_EXISTS')
-            } else {
-                setAlertType('ERROR')
+            } catch (error: unknown | CustomError) {
+                setAlertIsOpen(true)
+                if ((error as CustomError)?.message === 'PHONE_EXISTS') {
+                    setAlertType('PHONE_EXISTS')
+                } else if ((error as CustomError)?.message === 'EMAIL_EXISTS') {
+                    setAlertType('EMAIL_EXISTS')
+                } else {
+                    setAlertType('ERROR')
+                }
             }
         }
     }
@@ -121,11 +139,6 @@ export default function ClientWrapper() {
 
     return (
         <>
-            <PopUp
-                popupIsOpen={popupIsOpen}
-                range={formData?.answeredQuestions && formData?.answeredQuestions[7]}
-                country={formData?.countryId}
-            />
             <SignupAlert
                 alertIsOpen={alertIsOpen}
                 alertType={alertType}
@@ -136,7 +149,7 @@ export default function ClientWrapper() {
 
                 <Card className="w-full">
                     {isClient ? (
-                        <CardContent className="relative w-full bg-white px-6 pb-16 pt-8 sm:px-14">
+                        <CardContent className="relative h-full w-full bg-white px-6 pb-16 pt-8 sm:px-14">
                             {step === 1 && (
                                 <UserProfileStep
                                     setStep={setStep}

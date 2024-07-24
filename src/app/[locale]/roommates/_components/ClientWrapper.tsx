@@ -7,13 +7,16 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'next/navigation'
 import { FilterInput } from '@/graphql/typesGraphql'
 import { useLockBodyScroll } from '@/src/components/hooks/useLockBodyScroll'
+import { withAuth } from '../../(auth)/withAuth'
 
-export default function ClientWrapper() {
-    const { t } = useTranslation()
+function ClientWrapper() {
     const [isOpen, setIsOpen] = useState(false)
-    const searchParams = useSearchParams()
     const [transformedParams, setTransformedParams] = useState<FilterInput[]>([])
+    const searchParams = useSearchParams()
+
+    const { t } = useTranslation()
     useLockBodyScroll(isOpen)
+
     useEffect(() => {
         const searchObject = Object.fromEntries(searchParams.entries())
         const transformedParams = Object.entries(searchObject)
@@ -68,3 +71,5 @@ export default function ClientWrapper() {
         </>
     )
 }
+
+export default withAuth(ClientWrapper)

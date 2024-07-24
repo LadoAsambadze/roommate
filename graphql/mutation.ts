@@ -39,7 +39,6 @@ export const SignupMutation: TypedDocumentNode<{ signUp: Mutation['signUp'] }, M
                     genderId
                     countryId
                 }
-                accessToken
             }
         }
     `
