@@ -5,18 +5,18 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Card, CardContent } from '@/src/components/ui/card'
 import { SignupAlert } from './popups/SignupAlert'
-import { SignupMutation } from '@/graphql/mutation'
 import SignupHeader from './header/SignupHeader'
 import QuestionsStep from './questionsStep/QuestionsStep'
 import UserProfileStep from './userProfileStep/UserProfileStep'
 import Loading from '../loading'
-import { UserAndAnsweredQuestionsInput } from '@/graphql/typesGraphql'
+
 import {
     CombinedAnsweredQuestions,
     CustomError,
     FormDataProps,
     NewAnsweredQuestion,
 } from '../types'
+import { RoommateSignUpMutation } from '@/graphql/mutation'
 
 export default function ClientWrapper() {
     const [step, setStep] = useState(1)
@@ -29,7 +29,7 @@ export default function ClientWrapper() {
 
     const { t } = useTranslation()
 
-    const [signUp] = useMutation(SignupMutation, {
+    const [signUp] = useMutation(RoommateSignUpMutation, {
         fetchPolicy: 'network-only',
     })
 
@@ -43,6 +43,7 @@ export default function ClientWrapper() {
         if (!formData) return
 
         const modifiedFormData = { ...formData } as FormDataProps
+        console.log('first')
 
         delete modifiedFormData.code
 
@@ -58,10 +59,12 @@ export default function ClientWrapper() {
             modifiedFormData.profileImage[0] !== null
         ) {
             modifiedFormData.profileImage = modifiedFormData.profileImage[0].path
+        } else {
+            delete modifiedFormData.profileImage
         }
 
-        if (!modifiedFormData?.profileImage) {
-            delete modifiedFormData.profileImage
+        if (modifiedFormData?.email === '' || !modifiedFormData.email) {
+            delete modifiedFormData.email
         }
 
         if (modifiedFormData.answeredQuestions) {
@@ -74,12 +77,11 @@ export default function ClientWrapper() {
                 } else if (Array.isArray(value)) {
                     if (Array.isArray(value) && typeof value[0] === 'object') {
                         const questionId = value[0]['questionId']
-                        const answerIds = (value as unknown as Array<object>).map((item) =>
-                            Object.values(item)
-                        )
+                        const answerIds = value.map((item) => item['value'])
+
                         newAnsweredQuestions.push({
                             questionId,
-                            answerIds: answerIds.flat(),
+                            answerIds,
                         })
                     } else {
                         newAnsweredQuestions.push({
@@ -96,13 +98,14 @@ export default function ClientWrapper() {
             }
 
             try {
-                const userAndAnsweredQuestions: UserAndAnsweredQuestionsInput = {
+                const input = {
                     answeredQuestions: newAnsweredQuestions,
                     countryId: modifiedFormData.countryId as number,
                     genderId: modifiedFormData.genderId as number,
                     email: modifiedFormData.email!,
                     phone: modifiedFormData.phone!,
                     birthDate: modifiedFormData.birthDate,
+                    profileImage: modifiedFormData.profileImage,
                     firstname: modifiedFormData.firstname!,
                     lastname: modifiedFormData.lastname!,
                     password: modifiedFormData.password!,
@@ -110,16 +113,20 @@ export default function ClientWrapper() {
                 }
 
                 if (modifiedFormData.profileImage) {
-                    userAndAnsweredQuestions.profileImage = modifiedFormData.profileImage as string
+                    input.profileImage = modifiedFormData.profileImage as string
                 }
 
                 const response = await signUp({
-                    variables: { userAndAnsweredQuestions },
+                    variables: {
+                        input,
+                    },
                 })
 
-                if (response?.data && response?.data?.signUp.accessToken) {
-                    router.push('/roommates')
-                }
+                // if (response?.data && response?.data?.roommateSignUp?.jwt?.accessToken) {
+                //     localStorage.setItem(response?.data?.roommateSignUp?.jwt?.accessToken, 'token')
+                //     router.push('/roommates')
+                // }
+                console.log(response)
             } catch (error: unknown | CustomError) {
                 setAlertIsOpen(true)
                 if ((error as CustomError)?.message === 'PHONE_EXISTS') {

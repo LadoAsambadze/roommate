@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import { AlertDialog, AlertDialogContent } from '@/src/components/ui/alert-dialog'
 import { useAuth } from '@/src/libs/apollo/AuthContext'
 
-
 type HeaderProps = {
     modalIsOpen: boolean
     setModalIsOpen: Dispatch<SetStateAction<boolean>>
@@ -42,7 +41,7 @@ export default function Signin({ setModalIsOpen, modalIsOpen }: HeaderProps) {
             <AlertDialog open={modalIsOpen}>
                 <div onClick={handleClose}>
                     <AlertDialogContent onClick={handleClickOutside}>
-                        <form onSubmit={handleLogin} className='flex flex-col gap-10'>
+                        <form onSubmit={handleLogin} className="flex flex-col gap-10">
                             <div>
                                 <label htmlFor="email">Email:</label>
                                 <input

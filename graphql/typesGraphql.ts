@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -22,6 +21,7 @@ export type Scalars = {
     EmailAddress: { input: any; output: any }
     JSON: { input: any; output: any }
     PhoneNumber: { input: any; output: any }
+    StringOrInt: { input: any; output: any }
     StringTuple: { input: any; output: any }
 }
 
@@ -54,15 +54,9 @@ export type AnsweredQuestionInput = {
     questionId: Scalars['String']['input']
 }
 
-export type CardInfoObject = {
-    __typename?: 'CardInfoObject'
-    bio: Scalars['String']['output']
-    budget: Scalars['Int']['output']
-    districtNames: Scalars['String']['output']
-}
-
-export type CheckSmsCodeInput = {
-    code: Scalars['Int']['input']
+export type CheckCodeInput = {
+    code: Scalars['StringOrInt']['input']
+    codePurpose?: InputMaybe<Scalars['String']['input']>
     phone: Scalars['String']['input']
 }
 
@@ -96,14 +90,13 @@ export type CountryObject = {
     __typename?: 'CountryObject'
     alpha2Code: Scalars['String']['output']
     id: Scalars['ID']['output']
-    position: Scalars['Int']['output']
-    translations?: Maybe<Array<CountryTranslatedObject>>
+    position: Scalars['Float']['output']
+    translations: Array<CountryTranslatedObject>
     visible: Scalars['Boolean']['output']
 }
 
 export type CountryTranslatedObject = {
     __typename?: 'CountryTranslatedObject'
-    countryId: Scalars['ID']['output']
     id: Scalars['ID']['output']
     lang: Language
     name: Scalars['String']['output']
@@ -112,7 +105,7 @@ export type CountryTranslatedObject = {
 export type DistrictObject = {
     __typename?: 'DistrictObject'
     id: Scalars['ID']['output']
-    translations?: Maybe<Array<DistrictTranslatedObject>>
+    translations: Array<DistrictTranslatedObject>
     visible: Scalars['Boolean']['output']
 }
 
@@ -129,12 +122,7 @@ export type FilterInput = {
     data?: InputMaybe<Scalars['String']['input']>
     dataRange?: InputMaybe<Scalars['StringTuple']['input']>
     questionId?: InputMaybe<Scalars['String']['input']>
-}
-
-export type FilterWithPaginationObject = {
-    __typename?: 'FilterWithPaginationObject'
-    list?: Maybe<Array<UserWithAdditionalInfoObject>>
-    pageInfo: PaginationInfoObject
+    questionName?: InputMaybe<Scalars['String']['input']>
 }
 
 export type GenderObject = {
@@ -151,26 +139,69 @@ export type GenderTranslatedObject = {
     sex: Scalars['String']['output']
 }
 
+export type JwtObject = {
+    __typename?: 'JwtObject'
+    accessToken: Scalars['String']['output']
+    refreshToken: Scalars['String']['output']
+    sessionId: Scalars['String']['output']
+}
+
 /** Language enumeration */
 export enum Language {
     En = 'en',
     Ka = 'ka',
 }
 
+export type MeObject = {
+    __typename?: 'MeObject'
+    birthDate?: Maybe<Scalars['Date']['output']>
+    countryId?: Maybe<Scalars['Float']['output']>
+    createdAt: Scalars['DateTime']['output']
+    email?: Maybe<Scalars['String']['output']>
+    firstname?: Maybe<Scalars['String']['output']>
+    genderId?: Maybe<Scalars['Float']['output']>
+    id: Scalars['ID']['output']
+    lastname?: Maybe<Scalars['String']['output']>
+    phone?: Maybe<Scalars['String']['output']>
+    profileImage?: Maybe<Scalars['String']['output']>
+    userType: Array<UserType>
+}
+
+export type MeWithJwtObject = {
+    __typename?: 'MeWithJwtObject'
+    birthDate?: Maybe<Scalars['Date']['output']>
+    countryId?: Maybe<Scalars['Float']['output']>
+    createdAt: Scalars['DateTime']['output']
+    email?: Maybe<Scalars['String']['output']>
+    firstname?: Maybe<Scalars['String']['output']>
+    genderId?: Maybe<Scalars['Float']['output']>
+    id: Scalars['ID']['output']
+    jwt: JwtObject
+    lastname?: Maybe<Scalars['String']['output']>
+    phone?: Maybe<Scalars['String']['output']>
+    profileImage?: Maybe<Scalars['String']['output']>
+    userType: Array<UserType>
+}
+
 export type Mutation = {
     __typename?: 'Mutation'
-    checkCode: VerificationCodeStatusCode
+    checkCode: SmsCodeValidityStatus
     generateTwilioAccessToken: Scalars['String']['output']
     logConnectionError: Scalars['Boolean']['output']
     lookupOrCreateTwilioUserResource: Scalars['Boolean']['output']
-    sendCode: SmsStatusCode
-    signUp: UserWithTokenObject
+    refreshToken: JwtObject
+    resetPassword: Scalars['Boolean']['output']
+    roommateSignUp: MeWithJwtObject
+    sendCode: SmsSendStatus
+    sendResetPasswordLink: SmsSendStatus
+    signIn: JwtObject
+    singOut: Scalars['Boolean']['output']
     updateConversationResourceState: ConversationResourceObject
     updateConversationStatus: ConversationStatus
 }
 
 export type MutationCheckCodeArgs = {
-    input: CheckSmsCodeInput
+    input: CheckCodeInput
 }
 
 export type MutationLogConnectionErrorArgs = {
@@ -181,12 +212,28 @@ export type MutationLookupOrCreateTwilioUserResourceArgs = {
     userId: Scalars['String']['input']
 }
 
-export type MutationSendCodeArgs = {
-    input: SendSmsCodeInput
+export type MutationRefreshTokenArgs = {
+    input: RefreshTokenInput
 }
 
-export type MutationSignUpArgs = {
-    userAndAnsweredQuestions: UserAndAnsweredQuestionsInput
+export type MutationResetPasswordArgs = {
+    input: ResetPasswordInput
+}
+
+export type MutationRoommateSignUpArgs = {
+    input: SignUpInput
+}
+
+export type MutationSendCodeArgs = {
+    input: SendCodeInput
+}
+
+export type MutationSendResetPasswordLinkArgs = {
+    input: SendResetPasswordLinkInput
+}
+
+export type MutationSignInArgs = {
+    input: SignInCredentialsInput
 }
 
 export type MutationUpdateConversationResourceStateArgs = {
@@ -199,9 +246,34 @@ export type MutationUpdateConversationStatusArgs = {
     status: ConversationStatus
 }
 
+export type OldUserObject = {
+    __typename?: 'OldUserObject'
+    answeredQuestions?: Maybe<Array<UserAnsweredQuestionObject>>
+    birthDate?: Maybe<Scalars['Date']['output']>
+    callingCode: Scalars['String']['output']
+    countryId?: Maybe<Scalars['ID']['output']>
+    createdAt: Scalars['DateTime']['output']
+    deletedAt: Scalars['DateTime']['output']
+    email?: Maybe<Scalars['String']['output']>
+    firstname: Scalars['String']['output']
+    genderId: Scalars['ID']['output']
+    id: Scalars['ID']['output']
+    lastname: Scalars['String']['output']
+    password: Scalars['String']['output']
+    phone: Scalars['String']['output']
+    profileImage?: Maybe<Scalars['String']['output']>
+    updatedAt: Scalars['DateTime']['output']
+}
+
 export type PaginatedConversationWithUserObject = {
     __typename?: 'PaginatedConversationWithUserObject'
     list?: Maybe<Array<ConversationWithUserObject>>
+    pageInfo: PaginationInfoObject
+}
+
+export type PaginatedFilteredRoommatesObject = {
+    __typename?: 'PaginatedFilteredRoommatesObject'
+    list?: Maybe<Array<RoommateWithAdditionalInfoObject>>
     pageInfo: PaginationInfoObject
 }
 
@@ -227,13 +299,14 @@ export type Query = {
     getCountry?: Maybe<CountryObject>
     getDistrict?: Maybe<DistrictObject>
     getDistricts?: Maybe<Array<DistrictObject>>
-    getFilteredUsers?: Maybe<FilterWithPaginationObject>
     getGender?: Maybe<GenderObject>
     getGenders?: Maybe<Array<GenderObject>>
+    getPaginatedFilteredRoommates?: Maybe<PaginatedFilteredRoommatesObject>
     getQuestionsWithAnswers?: Maybe<Array<QuestionObject>>
     getSharedConversation?: Maybe<ConversationWithUserObject>
     getUniversities?: Maybe<Array<UniversityObject>>
     getUniversity?: Maybe<UniversityObject>
+    me: MeObject
 }
 
 export type QueryGetConversationsForUserArgs = {
@@ -258,12 +331,6 @@ export type QueryGetDistrictsArgs = {
     locale?: InputMaybe<Language>
 }
 
-export type QueryGetFilteredUsersArgs = {
-    filters?: InputMaybe<Array<FilterInput>>
-    locale?: InputMaybe<Language>
-    pagination?: InputMaybe<PaginationInput>
-}
-
 export type QueryGetGenderArgs = {
     id: Scalars['Int']['input']
     locale?: InputMaybe<Language>
@@ -271,6 +338,12 @@ export type QueryGetGenderArgs = {
 
 export type QueryGetGendersArgs = {
     locale?: InputMaybe<Language>
+}
+
+export type QueryGetPaginatedFilteredRoommatesArgs = {
+    filters?: InputMaybe<Array<FilterInput>>
+    locale?: InputMaybe<Language>
+    pagination?: InputMaybe<PaginationInput>
 }
 
 export type QueryGetQuestionsWithAnswersArgs = {
@@ -324,47 +397,47 @@ export enum QuestionsWithAnswersFor {
     Signup = 'SIGNUP',
 }
 
+export type RefreshTokenInput = {
+    refreshToken?: InputMaybe<Scalars['String']['input']>
+    sessionId: Scalars['String']['input']
+}
 
+export type ResetPasswordInput = {
+    confirmPassword: Scalars['String']['input']
+    password: Scalars['String']['input']
+    token: Scalars['String']['input']
+}
 
-export type SendSmsCodeInput = {
+export type RoommateWithAdditionalInfoObject = {
+    __typename?: 'RoommateWithAdditionalInfoObject'
+    age: Scalars['Float']['output']
+    bio: Scalars['String']['output']
+    budget: Scalars['Float']['output']
+    createdAt: Scalars['DateTime']['output']
+    districtNames: Scalars['String']['output']
+    firstname: Scalars['String']['output']
+    id: Scalars['ID']['output']
+    isFavourite: Scalars['Boolean']['output']
+    lastname: Scalars['String']['output']
+    profileImage?: Maybe<Scalars['String']['output']>
+}
+
+export type SendCodeInput = {
+    codePurpose?: InputMaybe<Scalars['String']['input']>
     phone: Scalars['String']['input']
 }
 
-export type SignedUpUserObject = {
-    __typename?: 'SignedUpUserObject'
-    birthDate?: Maybe<Scalars['Date']['output']>
-    callingCode: Scalars['String']['output']
-    countryId?: Maybe<Scalars['ID']['output']>
-    email?: Maybe<Scalars['String']['output']>
-    firstname: Scalars['String']['output']
-    genderId: Scalars['ID']['output']
-    id: Scalars['ID']['output']
-    lastname: Scalars['String']['output']
-    phone: Scalars['String']['output']
+export type SendResetPasswordLinkInput = {
+    identifier: Scalars['String']['input']
+    resend?: InputMaybe<Scalars['Boolean']['input']>
 }
 
-/** sms sending status code enumeration */
-export enum SmsStatusCode {
-    AlreadySent = 'ALREADY_SENT',
-    Failed = 'FAILED',
-    Success = 'SUCCESS',
+export type SignInCredentialsInput = {
+    identifier: Scalars['String']['input']
+    password: Scalars['String']['input']
 }
 
-export type UniversityObject = {
-    __typename?: 'UniversityObject'
-    id: Scalars['ID']['output']
-    translations?: Maybe<Array<UniversityTranslatedObject>>
-    visible: Scalars['Boolean']['output']
-}
-
-export type UniversityTranslatedObject = {
-    __typename?: 'UniversityTranslatedObject'
-    id: Scalars['ID']['output']
-    lang: Language
-    name: Scalars['String']['output']
-}
-
-export type UserAndAnsweredQuestionsInput = {
+export type SignUpInput = {
     answeredQuestions: Array<AnsweredQuestionInput>
     birthDate: Scalars['Date']['input']
     confirmPassword: Scalars['String']['input']
@@ -376,6 +449,34 @@ export type UserAndAnsweredQuestionsInput = {
     password: Scalars['String']['input']
     phone: Scalars['PhoneNumber']['input']
     profileImage?: InputMaybe<Scalars['String']['input']>
+}
+
+/** sent verification code status code enumeration */
+export enum SmsCodeValidityStatus {
+    Invalid = 'INVALID',
+    NotFound = 'NOT_FOUND',
+    Valid = 'VALID',
+}
+
+/** sms sending status code enumeration */
+export enum SmsSendStatus {
+    AlreadySent = 'ALREADY_SENT',
+    Failed = 'FAILED',
+    Success = 'SUCCESS',
+}
+
+export type UniversityObject = {
+    __typename?: 'UniversityObject'
+    id: Scalars['ID']['output']
+    translations: Array<UniversityTranslatedObject>
+    visible: Scalars['Boolean']['output']
+}
+
+export type UniversityTranslatedObject = {
+    __typename?: 'UniversityTranslatedObject'
+    id: Scalars['ID']['output']
+    lang: Language
+    name: Scalars['String']['output']
 }
 
 export type UserAnsweredQuestionObject = {
@@ -391,35 +492,8 @@ export type UserAnsweredQuestionObject = {
     questionId: Scalars['ID']['output']
     textData?: Maybe<Scalars['String']['output']>
     updatedAt: Scalars['DateTime']['output']
-    user?: Maybe<UserObject>
+    user?: Maybe<OldUserObject>
     userId: Scalars['ID']['output']
-}
-
-export type UserObject = {
-    __typename?: 'UserObject'
-    age?: Maybe<Scalars['Int']['output']>
-    answeredQuestions?: Maybe<Array<UserAnsweredQuestionObject>>
-    available: Scalars['Boolean']['output']
-    birthDate?: Maybe<Scalars['Date']['output']>
-    callingCode: Scalars['String']['output']
-    country?: Maybe<CountryObject>
-    countryId?: Maybe<Scalars['ID']['output']>
-    createdAt: Scalars['DateTime']['output']
-    deletedAt: Scalars['DateTime']['output']
-    email?: Maybe<Scalars['String']['output']>
-    firstname: Scalars['String']['output']
-    gender: GenderObject
-    genderId: Scalars['ID']['output']
-    id: Scalars['ID']['output']
-    isLockedCommunication: Scalars['Boolean']['output']
-    lastname: Scalars['String']['output']
-    password: Scalars['String']['output']
-    payed: Scalars['Boolean']['output']
-    payedUntil?: Maybe<Scalars['DateTime']['output']>
-    phone: Scalars['String']['output']
-    profileImage?: Maybe<Scalars['String']['output']>
-    trial: Scalars['Boolean']['output']
-    updatedAt: Scalars['DateTime']['output']
 }
 
 export type UserPreviewObject = {
@@ -431,28 +505,9 @@ export type UserPreviewObject = {
     profileImage?: Maybe<Scalars['String']['output']>
 }
 
-export type UserWithAdditionalInfoObject = {
-    __typename?: 'UserWithAdditionalInfoObject'
-    age?: Maybe<Scalars['Int']['output']>
-    cardInfo: CardInfoObject
-    createdAt: Scalars['DateTime']['output']
-    firstname: Scalars['String']['output']
-    id: Scalars['ID']['output']
-    isFavourite: Scalars['Boolean']['output']
-    lastname: Scalars['String']['output']
-    profileImage?: Maybe<Scalars['String']['output']>
-    updatedAt: Scalars['DateTime']['output']
-}
-
-export type UserWithTokenObject = {
-    __typename?: 'UserWithTokenObject'
-    accessToken: Scalars['String']['output']
-    user: SignedUpUserObject
-}
-
-/** sent verification code status code enumeration */
-export enum VerificationCodeStatusCode {
-    Invalid = 'INVALID',
-    NotFound = 'NOT_FOUND',
-    Valid = 'VALID',
+/** User Type purpose enumeration */
+export enum UserType {
+    Admin = 'admin',
+    Landlord = 'landlord',
+    Roommate = 'roommate',
 }

@@ -22,8 +22,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
         // In a real app, you'd make an API call here
         // For this example, we'll use a mock login
         if (email === 'user@example.com' && password === 'password') {
-            const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjU1NzU2NTAzMSIsInN1YiI6MjcsImlhdCI6MTcxOTA4NDQ1MiwiZXhwIjoxNzIxNjc2NDUyfQ.QiIDyd1cK7Ry8a-iXwpNhine3YNj7XxgVnLCebTDYKk`
-            localStorage.setItem('token', token)
             setIsAuthenticated(true)
             return true
         }

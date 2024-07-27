@@ -73,4 +73,4 @@ function ClientWrapper() {
     )
 }
 
-export default withAuth(ClientWrapper)
+export default ClientWrapper

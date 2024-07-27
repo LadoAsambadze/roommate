@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
 import Pagination from '@/src/components/shared/pagination/Pagination'
 import { useQuery } from '@apollo/client'
-import { FilterInput, FilterWithPaginationObject, Language } from '@/graphql/typesGraphql'
-import { getFilteredUsersQuery } from '@/graphql/query'
+import { FilterInput, Language, PaginatedFilteredRoommatesObject } from '@/graphql/typesGraphql'
+import { GetPaginatedFilteredRoommatesQuery } from '@/graphql/query'
 import { useParams, useSearchParams } from 'next/navigation'
 import UserCardLoading from '../loaders/UserCardLoading'
 
@@ -14,7 +14,7 @@ type UserCardProps = {
     transformedParams: FilterInput[]
 }
 
- export default function UserCard({ transformedParams }: UserCardProps) {
+export default function UserCard({ transformedParams }: UserCardProps) {
     const { t } = useTranslation()
     const params = useParams()
     const searchParams = useSearchParams()
@@ -25,7 +25,7 @@ type UserCardProps = {
     const limit = 10
     const offset = (currentPage - 1) * limit
 
-    const { loading, error, data } = useQuery(getFilteredUsersQuery, {
+    const { loading, error, data } = useQuery(GetPaginatedFilteredRoommatesQuery, {
         fetchPolicy: 'cache-and-network',
         variables: {
             pagination: {
@@ -36,24 +36,28 @@ type UserCardProps = {
             filters: transformedParams,
         },
     })
-    const FilteredUsers = data?.getFilteredUsers as FilterWithPaginationObject
+    const FilteredUsers = data?.getPaginatedFilteredRoommates as PaginatedFilteredRoommatesObject
 
     if (loading) return <UserCardLoading />
     if (error) return <p>{error.message}</p>
+
+    console.log(data, 'this')
+    console.log('123')
 
     return (
         <>
             <section className="flex min-h-screen w-full flex-col items-center justify-between gap-10 px-6 py-6  sm:px-16  md:px-20 md:py-10 lg:px-0 lg:py-0 xl:w-auto">
                 <div className="flex w-full  flex-col items-center justify-center gap-6 xl:w-auto">
-                    {data?.getFilteredUsers?.list && data.getFilteredUsers.list.length ? (
-                        data.getFilteredUsers.list.map((item, index) => (
+                    {data?.getPaginatedFilteredRoommates?.list &&
+                    data.getPaginatedFilteredRoommates.list.length ? (
+                        data.getPaginatedFilteredRoommates.list.map((item, index) => (
                             <div
                                 key={index}
                                 className="flex h-auto w-full flex-col gap-6 overflow-hidden rounded-lg bg-[#FFFFFF] shadow-md sm:h-[232px] sm:w-full sm:flex-row sm:p-4 xl:w-[770px] "
                             >
                                 <Link href={`roommates/${item.id}`}>
                                     <Image
-                                        src={item?.profileImage ? item.profileImage : Avatar}
+                                        src={item?.profileImage ? `/${item.profileImage}` : Avatar}
                                         width={400}
                                         height={600}
                                         className="h-[200px] w-full rounded-lg object-cover sm:h-full  sm:w-[332px]"
@@ -83,7 +87,7 @@ type UserCardProps = {
                                     </div>
                                     <div className="hidden h-[1px] w-full bg-[#E3E3E3] sm:block"></div>
                                     <span className=" line-clamp-1 h-full overflow-clip text-ellipsis text-sm sm:line-clamp-2">
-                                        {item?.cardInfo?.bio}
+                                        {item?.bio}
                                     </span>
                                     <div className="flex h-auto w-full flex-row items-center justify-between">
                                         <div className="flex w-full flex-row gap-2 ">
@@ -91,7 +95,7 @@ type UserCardProps = {
                                                 {t('userBudget')}
                                             </span>
                                             <span className="text-sm">
-                                                {item?.cardInfo?.budget}$ / {t('perMonth')}
+                                                {item?.budget}$ / {t('perMonth')}
                                             </span>
                                         </div>
                                     </div>
@@ -102,7 +106,7 @@ type UserCardProps = {
 
                                             <div className="w-3/4">
                                                 <span className="line-clamp-1 w-full text-ellipsis text-sm">
-                                                    {item?.cardInfo?.districtNames}
+                                                    {item?.districtNames}
                                                 </span>
                                             </div>
                                         </div>
@@ -119,7 +123,9 @@ type UserCardProps = {
                     )}
                 </div>
 
-                {data?.getFilteredUsers?.list?.length ? <Pagination data={FilteredUsers} /> : null}
+                {data?.getPaginatedFilteredRoommates?.list?.length ? (
+                    <Pagination data={FilteredUsers} />
+                ) : null}
             </section>
         </>
     )

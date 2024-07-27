@@ -2,8 +2,8 @@ import { TypedDocumentNode, gql } from '@apollo/client'
 import {
     Query,
     QueryGetCountriesArgs,
-    QueryGetFilteredUsersArgs,
     QueryGetGendersArgs,
+    QueryGetPaginatedFilteredRoommatesArgs,
     QueryGetQuestionsWithAnswersArgs,
 } from './typesGraphql'
 
@@ -69,16 +69,16 @@ export const getQuestionsWithAnswersQuery: TypedDocumentNode<
     }
 `
 
-export const getFilteredUsersQuery: TypedDocumentNode<
-    { getFilteredUsers: Query['getFilteredUsers'] },
-    QueryGetFilteredUsersArgs
+export const GetPaginatedFilteredRoommatesQuery: TypedDocumentNode<
+    { getPaginatedFilteredRoommates: Query['getPaginatedFilteredRoommates'] },
+    QueryGetPaginatedFilteredRoommatesArgs
 > = gql`
-    query GetFilteredUsers(
+    query GetPaginatedFilteredRoommates(
         $pagination: PaginationInput
         $locale: Language
         $filters: [FilterInput!]
     ) {
-        getFilteredUsers(pagination: $pagination, locale: $locale, filters: $filters) {
+        getPaginatedFilteredRoommates(pagination: $pagination, locale: $locale, filters: $filters) {
             pageInfo {
                 hasNextPage
                 hasPrevious
@@ -91,16 +91,13 @@ export const getFilteredUsersQuery: TypedDocumentNode<
                 id
                 firstname
                 lastname
-                age
                 profileImage
                 createdAt
-                updatedAt
+                districtNames
+                budget
+                bio
+                age
                 isFavourite
-                cardInfo {
-                    districtNames
-                    budget
-                    bio
-                }
             }
         }
     }

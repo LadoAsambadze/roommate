@@ -1,4 +1,3 @@
-// app/example/page.tsx
 'use client'
 
 import { useAuth } from '../../../libs/apollo/AuthContext'

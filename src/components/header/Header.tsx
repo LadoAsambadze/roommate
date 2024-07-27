@@ -10,7 +10,7 @@ import { useState } from 'react'
 
 export default function Header() {
     const { t } = useTranslation()
-    const [modalIsOpen, setModalIsOpen] = useState(true)
+    const [modalIsOpen, setModalIsOpen] = useState(false)
 
     const signinHandler = () => {
         setModalIsOpen(!modalIsOpen)

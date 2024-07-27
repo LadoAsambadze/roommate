@@ -26,7 +26,7 @@ export type FormDataProps = {
     answeredQuestions: CombinedAnsweredQuestions | UserAnsweredQuestionObjectStart
     countryId?: CountryId
     genderId?: GenderId
-    profileImage?: ProfileImage
+    profileImage?: string
     code?: string
     email?: string
     phone?: string
