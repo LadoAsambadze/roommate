@@ -38,10 +38,12 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 
 export default async function RootLayout({
     children,
+    modal,
 
     params: { locale },
 }: {
     children: ReactNode
+    modal: ReactNode
 
     params: { locale: string }
 }) {
@@ -60,6 +62,7 @@ export default async function RootLayout({
                     <ApolloWrapper>
                         <Header />
                         {children}
+                        {modal}
                         <Footer />
                     </ApolloWrapper>
                 </TranslationsProvider>

@@ -12,6 +12,7 @@ import { client } from '@/src/libs/apollo/client'
 export const refreshTokens = async (): Promise<boolean> => {
     const refreshToken = getRefreshToken()
     const sessionId = getSessionId()
+    console.log('!23123123123')
 
     if (!refreshToken || !sessionId) {
         removeAllTokens()
@@ -28,14 +29,15 @@ export const refreshTokens = async (): Promise<boolean> => {
                 },
             },
         })
+
         setToken(data.signIn.accessToken)
         setRefreshToken(data.signIn.refreshToken)
         setSessionId(data.signIn.sessionId)
         return true
     } catch (error) {
         console.error('Token refresh error:', error)
+        removeAllTokens()
     }
 
-    removeAllTokens()
     return false
 }

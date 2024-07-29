@@ -5,20 +5,15 @@ import { Bell2, Logo, UserIcon2 } from '../svgs'
 import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
-import Signin from '../../app/[locale]/(auth)/_signinComponents/Signin'
 import { useState } from 'react'
+import Signin from '@/src/app/[locale]/(auth)/@modal/(.)signin/page'
 
 export default function Header() {
     const { t } = useTranslation()
-    const [modalIsOpen, setModalIsOpen] = useState(false)
-
-    const signinHandler = () => {
-        setModalIsOpen(!modalIsOpen)
-    }
 
     return (
         <>
-            <Signin modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} />
+            <Signin />
             <header className="flex  w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md   sm:px-16  md:px-20 md:py-3 xl:px-24 xl:py-6">
                 <Link href="/">
                     <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
@@ -35,10 +30,7 @@ export default function Header() {
                         </button>
                     </Link>
 
-                    <button
-                        onClick={signinHandler}
-                        className="mr-2  flex  flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2"
-                    >
+                    <button className="mr-2  flex  flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
                         <UserIcon2 className=" h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6 " />
 
                         <span className="ml-1 text-xs  text-[#838CAC] xl:text-base">

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { getToken } from './auth'
-import { refreshTokens } from '@/src/app/[locale]/(auth)/_signinComponents/RefreshToken'
+
 import { useRouter } from 'next/navigation'
 import Loading from '@/src/app/[locale]/loading'
+import { refreshTokens } from './refreshTokens'
 
 export const withAuth = (WrappedComponent: React.ComponentType) => {
     return (props: any) => {
