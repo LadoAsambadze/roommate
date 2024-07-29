@@ -9,7 +9,6 @@ import { FilterInput } from '@/graphql/typesGraphql'
 import { useLockBodyScroll } from '@/src/components/hooks/useLockBodyScroll'
 import { withAuth } from '@/src/libs/apollo/withAuth'
 
-
 function ClientWrapper() {
     const [isOpen, setIsOpen] = useState(false)
     const [transformedParams, setTransformedParams] = useState<FilterInput[]>([])
@@ -73,4 +72,4 @@ function ClientWrapper() {
     )
 }
 
-export default ClientWrapper
+export default withAuth(ClientWrapper)

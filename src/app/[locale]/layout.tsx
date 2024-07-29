@@ -7,7 +7,6 @@ import './globals.css'
 import Header from '@/src/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/src/components/footer/Footer'
-import { AuthProvider } from '../../libs/apollo/AuthContext'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 
@@ -58,13 +57,11 @@ export default async function RootLayout({
                     locale={locale}
                     resources={resources}
                 >
-                    <AuthProvider>
-                        <ApolloWrapper>
-                            <Header />
-                            {children}
-                            <Footer />
-                        </ApolloWrapper>
-                    </AuthProvider>
+                    <ApolloWrapper>
+                        <Header />
+                        {children}
+                        <Footer />
+                    </ApolloWrapper>
                 </TranslationsProvider>
             </body>
         </html>

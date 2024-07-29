@@ -11,7 +11,7 @@ export function client() {
 
     apolloClient = new ApolloClient({
         cache: new InMemoryCache(),
-        link: links,
+        link: links, // This is correct now
     })
 
     return apolloClient

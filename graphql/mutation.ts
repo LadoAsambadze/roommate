@@ -49,3 +49,23 @@ export const RoommateSignUpMutation: TypedDocumentNode<
         }
     }
 `
+
+export const SignInMutation = gql`
+    mutation SignIn($input: SignInCredentialsInput!) {
+        signIn(input: $input) {
+            accessToken
+            refreshToken
+            sessionId
+        }
+    }
+`
+
+export const ValidateTokenMutation = gql`
+    mutation SignIn($input: RefreshTokenInput!) {
+        refreshToken(input: $input) {
+            accessToken
+            refreshToken
+            sessionId
+        }
+    }
+`

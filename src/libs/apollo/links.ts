@@ -3,9 +3,7 @@ import { RestLink } from 'apollo-link-rest'
 
 const authLink = new ApolloLink((operation, forward) => {
     if (typeof window !== 'undefined') {
-        // const token = localStorage.getItem('token')
-        const token =
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExMTQsImlhdCI6MTcyMjA4NDQzMiwiZXhwIjoxNzIyMDkxNjMyfQ.u8l1XyXXpF8bl0Lg0gir6TOIwow04fNnvfMzxhB5Q2E'
+        const token = localStorage.getItem('token')
         if (token) {
             operation.setContext(({ headers }: DefaultContext) => ({
                 headers: {
