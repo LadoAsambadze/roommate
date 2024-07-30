@@ -43,7 +43,6 @@ export default function ClientWrapper() {
         if (!formData) return
 
         const modifiedFormData = { ...formData } as FormDataProps
-        console.log('first')
 
         delete modifiedFormData.code
 

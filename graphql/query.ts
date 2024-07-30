@@ -57,7 +57,23 @@ export const getQuestionsWithAnswersQuery: TypedDocumentNode<
                 }
             }
             position
-            uiFieldInfo
+            uiFieldInfo {
+                otherInput {
+                    type
+                    variant
+                    renderAs
+                }
+                input {
+                    type
+                    variant
+                    renderAs
+                }
+                filterInput {
+                    type
+                    variant
+                    renderAs
+                }
+            }
             id
             step
             translations {
@@ -100,12 +116,5 @@ export const GetPaginatedFilteredRoommatesQuery: TypedDocumentNode<
                 isFavourite
             }
         }
-    }
-`
-
-export const getUser = gql`
-    query exampleGetUser {
-        id
-        name
     }
 `

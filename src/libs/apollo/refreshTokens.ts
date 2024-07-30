@@ -1,4 +1,4 @@
-import { ValidateTokenMutation } from '@/graphql/mutation'
+import { RefreshTokenMutation } from '@/graphql/mutation'
 import {
     getRefreshToken,
     getSessionId,
@@ -21,7 +21,7 @@ export const refreshTokens = async (): Promise<boolean> => {
 
     try {
         const { data } = await client().mutate({
-            mutation: ValidateTokenMutation,
+            mutation: RefreshTokenMutation,
             variables: {
                 input: {
                     sessionId,
@@ -29,10 +29,11 @@ export const refreshTokens = async (): Promise<boolean> => {
                 },
             },
         })
-
-        setToken(data.signIn.accessToken)
-        setRefreshToken(data.signIn.refreshToken)
-        setSessionId(data.signIn.sessionId)
+        if (data) {
+            setToken(data.refreshToken.accessToken)
+            setRefreshToken(data.refreshToken.refreshToken)
+            setSessionId(data.refreshToken.sessionId)
+        }
         return true
     } catch (error) {
         console.error('Token refresh error:', error)

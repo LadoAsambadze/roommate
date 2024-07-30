@@ -41,8 +41,6 @@ export default function QuestionsStep({
         },
     })
 
-    console.log(questionsData)
-
     const questions = questionsData?.getQuestionsWithAnswers?.filter((item: QuestionObject) => {
         if (step === 2) {
             return item.step === 2

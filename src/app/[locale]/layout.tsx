@@ -62,9 +62,7 @@ export default async function RootLayout({
                 >
                     <ApolloWrapper>
                         <Header />
-                        <nav>
-                            <Link href="/signin">Open modal</Link>
-                        </nav>
+                      
                         <div>{modal}</div>
                         <div>{children}</div>
 

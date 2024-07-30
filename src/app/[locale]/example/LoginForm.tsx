@@ -19,10 +19,12 @@ const LoginForm = () => {
 
         try {
             const { data } = await login({ variables: { input: { identifier, password } } })
-            setToken(data.signIn.accessToken)
-            setRefreshToken(data.signIn.refreshToken)
-            setSessionId(data.signIn.sessionId)
-            router.push('/roommates')
+            if (data) {
+                setToken(data.signIn.accessToken)
+                setRefreshToken(data.signIn.refreshToken)
+                setSessionId(data.signIn.sessionId)
+                router.push('/roommates')
+            }
         } catch (err) {
             setError('Invalid email or password')
         }

@@ -6,14 +6,11 @@ import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
 
-
-
 export default function Header() {
     const { t } = useTranslation()
 
     return (
         <>
-
             <header className="flex  w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md   sm:px-16  md:px-20 md:py-3 xl:px-24 xl:py-6">
                 <Link href="/">
                     <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
@@ -30,13 +27,15 @@ export default function Header() {
                         </button>
                     </Link>
 
-                    <button className="mr-2  flex  flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
-                        <UserIcon2 className=" h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6 " />
+                    <Link href="/signin">
+                        <button className="mr-2  flex  flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
+                            <UserIcon2 className=" h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6 " />
 
-                        <span className="ml-1 text-xs  text-[#838CAC] xl:text-base">
-                            <span>auth</span>
-                        </span>
-                    </button>
+                            <span className="ml-1 text-xs  text-[#838CAC] xl:text-base">
+                                <span>{t('auth')}</span>
+                            </span>
+                        </button>
+                    </Link>
 
                     <LangChoose
                         className="cursor-pointer rounded-lg bg-[#f2f5ff] p-2 text-xs   md:mr-2 lg:mr-4 lg:p-2 xl:text-base"
