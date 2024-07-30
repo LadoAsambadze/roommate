@@ -5,15 +5,15 @@ import { Bell2, Logo, UserIcon2 } from '../svgs'
 import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
-import { useState } from 'react'
-import Signin from '@/src/app/[locale]/(auth)/@modal/(.)signin/page'
+
+
 
 export default function Header() {
     const { t } = useTranslation()
 
     return (
         <>
-            <Signin />
+
             <header className="flex  w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md   sm:px-16  md:px-20 md:py-3 xl:px-24 xl:py-6">
                 <Link href="/">
                     <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />

@@ -19,7 +19,6 @@ export type Scalars = {
     Date: { input: any; output: any }
     DateTime: { input: any; output: any }
     EmailAddress: { input: any; output: any }
-    JSON: { input: any; output: any }
     PhoneNumber: { input: any; output: any }
     StringOrInt: { input: any; output: any }
     StringTuple: { input: any; output: any }
@@ -31,7 +30,6 @@ export type AnswerObject = {
     deletedAt?: Maybe<Scalars['DateTime']['output']>
     id: Scalars['ID']['output']
     position: Scalars['Int']['output']
-    question: QuestionObject
     questionId: Scalars['ID']['output']
     translations: Array<AnswerTranslatedObject>
     updatedAt: Scalars['DateTime']['output']
@@ -137,6 +135,29 @@ export type GenderTranslatedObject = {
     id: Scalars['ID']['output']
     lang: Language
     sex: Scalars['String']['output']
+}
+
+export type GenericInputObject = {
+    __typename?: 'GenericInputObject'
+    renderAs?: Maybe<RenderAs>
+    type: InputType
+    variant?: Maybe<Variant>
+}
+
+export type InputObject = {
+    __typename?: 'InputObject'
+    renderAs?: Maybe<RenderAs>
+    type: InputType
+    variant?: Maybe<Variant>
+}
+
+/** UI Field Info input type */
+export enum InputType {
+    Button = 'button',
+    Numeric = 'numeric',
+    Select = 'select',
+    Text = 'text',
+    Textarea = 'textarea',
 }
 
 export type JwtObject = {
@@ -371,12 +392,11 @@ export type QuestionObject = {
     deletedAt?: Maybe<Scalars['DateTime']['output']>
     id: Scalars['ID']['output']
     name: Scalars['String']['output']
-    position: Scalars['Int']['output']
-    step: Scalars['Int']['output']
-    translations?: Maybe<Array<QuestionTranslatedObject>>
-    uiFieldInfo: Scalars['JSON']['output']
+    position: Scalars['Float']['output']
+    step: Scalars['Float']['output']
+    translations: Array<QuestionTranslatedObject>
+    uiFieldInfo: UiFieldInfoObject
     updatedAt: Scalars['DateTime']['output']
-    userAnsweredQuestions?: Maybe<Array<UserAnsweredQuestionObject>>
 }
 
 export type QuestionTranslatedObject = {
@@ -400,6 +420,11 @@ export enum QuestionsWithAnswersFor {
 export type RefreshTokenInput = {
     refreshToken?: InputMaybe<Scalars['String']['input']>
     sessionId: Scalars['String']['input']
+}
+
+/** UI Field Info input render ui type */
+export enum RenderAs {
+    Range = 'range',
 }
 
 export type ResetPasswordInput = {
@@ -465,6 +490,13 @@ export enum SmsSendStatus {
     Success = 'SUCCESS',
 }
 
+export type UiFieldInfoObject = {
+    __typename?: 'UIFieldInfoObject'
+    filterInput?: Maybe<GenericInputObject>
+    input: InputObject
+    otherInput?: Maybe<GenericInputObject>
+}
+
 export type UniversityObject = {
     __typename?: 'UniversityObject'
     id: Scalars['ID']['output']
@@ -510,4 +542,11 @@ export enum UserType {
     Admin = 'admin',
     Landlord = 'landlord',
     Roommate = 'roommate',
+}
+
+/** UI Field Info input type variant */
+export enum Variant {
+    Calendar = 'calendar',
+    Multiple = 'multiple',
+    Single = 'single',
 }

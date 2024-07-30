@@ -7,6 +7,7 @@ import './globals.css'
 import Header from '@/src/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/src/components/footer/Footer'
+import Link from 'next/link'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 
@@ -61,8 +62,12 @@ export default async function RootLayout({
                 >
                     <ApolloWrapper>
                         <Header />
-                        {children}
-                        {modal}
+                        <nav>
+                            <Link href="/signin">Open modal</Link>
+                        </nav>
+                        <div>{modal}</div>
+                        <div>{children}</div>
+
                         <Footer />
                     </ApolloWrapper>
                 </TranslationsProvider>
