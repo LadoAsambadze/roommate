@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { FilterWithPaginationObject } from '@/graphql/typesGraphql'
+import { PaginatedFilteredRoommatesObject } from '@/graphql/typesGraphql'
 import { ArrowRight } from '@/src/components/svgs'
 
 type DataProps = {
-    data: FilterWithPaginationObject
+    data: PaginatedFilteredRoommatesObject
 }
 
 export default function Pagination({ data }: DataProps) {

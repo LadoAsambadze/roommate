@@ -62,7 +62,7 @@ export default async function RootLayout({
                 >
                     <ApolloWrapper>
                         <Header />
-                      
+
                         <div>{modal}</div>
                         <div>{children}</div>
 

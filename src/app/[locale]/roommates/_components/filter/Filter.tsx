@@ -154,13 +154,13 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                 {data?.getQuestionsWithAnswers &&
                     [...data.getQuestionsWithAnswers]
                         .sort((a, b) => {
-                            if (a.uiFieldInfo.filterInput.type === 'numeric') return 1
-                            if (b.uiFieldInfo.filterInput.type === 'numeric') return -1
+                            if (a.uiFieldInfo?.filterInput?.type === 'numeric') return 1
+                            if (b.uiFieldInfo?.filterInput?.type === 'numeric') return -1
                             return 0
                         })
                         .map((item) => (
                             <div key={item.id}>
-                                {item.uiFieldInfo.filterInput.type === 'select' && (
+                                {item.uiFieldInfo.filterInput?.type === 'select' && (
                                     <>
                                         <label className="w-full text-sm">
                                             {item.translations && item?.translations[0].title}
@@ -178,8 +178,8 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                                         />
                                     </>
                                 )}
-                                {item.uiFieldInfo.filterInput.type === 'button' &&
-                                    item.uiFieldInfo.filterInput.renderAs === 'range' && (
+                                {item.uiFieldInfo?.filterInput?.type === 'button' &&
+                                    item.uiFieldInfo?.filterInput?.renderAs === 'range' && (
                                         <>
                                             <label className="w-full text-sm">
                                                 {item.translations && item.translations[0]?.title}
@@ -194,8 +194,8 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                                             />
                                         </>
                                     )}
-                                {item.uiFieldInfo.filterInput.type === 'numeric' &&
-                                    item.uiFieldInfo.filterInput.renderAs === 'range' && (
+                                {item.uiFieldInfo?.filterInput?.type === 'numeric' &&
+                                    item.uiFieldInfo?.filterInput?.renderAs === 'range' && (
                                         <>
                                             <label className=" w-full text-sm">
                                                 {item.translations && item.translations[0]?.title}

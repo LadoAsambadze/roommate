@@ -33,8 +33,8 @@ export const refreshTokens = async (): Promise<boolean> => {
             setToken(data.refreshToken.accessToken)
             setRefreshToken(data.refreshToken.refreshToken)
             setSessionId(data.refreshToken.sessionId)
+            return true
         }
-        return true
     } catch (error) {
         console.error('Token refresh error:', error)
         removeAllTokens()

@@ -6,6 +6,7 @@ import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
 
+
 export default function Header() {
     const { t } = useTranslation()
 
@@ -26,7 +27,6 @@ export default function Header() {
                             {t('rentApartment')}
                         </button>
                     </Link>
-
                     <Link href="/signin">
                         <button className="mr-2  flex  flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
                             <UserIcon2 className=" h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6 " />

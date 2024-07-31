@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function page() {
-    return <div>123</div>
+    return <div>original login</div>
 }

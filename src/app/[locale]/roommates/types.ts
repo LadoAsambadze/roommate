@@ -1,5 +1,5 @@
-import { FilterWithPaginationObject } from '@/graphql/typesGraphql'
+import { PaginatedFilteredRoommatesObject } from '@/graphql/typesGraphql'
 
 export type DataProps = {
-    filteredUsers: FilterWithPaginationObject
+    filteredUsers: PaginatedFilteredRoommatesObject
 }

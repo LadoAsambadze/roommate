@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+'use client'
+
+import { useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
 import { useRouter } from 'next/navigation'
 import { SignInMutation } from '@/graphql/mutation'
-import { removeAllTokens, setRefreshToken, setSessionId, setToken } from '@/src/libs/apollo/auth'
+import { setRefreshToken, setSessionId, setToken } from '@/src/libs/apollo/auth'
 import { signOutHandler } from '@/src/libs/apollo/signOut'
 
 const LoginForm = () => {
@@ -19,7 +21,7 @@ const LoginForm = () => {
 
         try {
             const { data } = await login({ variables: { input: { identifier, password } } })
-            if (data) {
+            if (data?.signIn) {
                 setToken(data.signIn.accessToken)
                 setRefreshToken(data.signIn.refreshToken)
                 setSessionId(data.signIn.sessionId)
@@ -36,7 +38,7 @@ const LoginForm = () => {
                 <h2>Login</h2>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <div>
-                    <label htmlFor="email">Email:</label>
+                    <label htmlFor="email">Identifier:</label>
                     <input
                         id="email"
                         value={identifier}

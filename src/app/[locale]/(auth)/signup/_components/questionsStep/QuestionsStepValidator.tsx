@@ -23,19 +23,22 @@ export default function QuestionsStepValidator({ questions, formData }: StepTwoV
                 if (item.uiFieldInfo) {
                     let fieldSchema
                     if (item.uiFieldInfo.input.variant === 'multiple') {
-                        if (item.uiFieldInfo.input.required) {
+                        if (item.uiFieldInfo.input) {
+                            //Must set required type
                             fieldSchema = z.array(optionSchema).min(1)
                         } else {
                             fieldSchema = z.array(optionSchema).optional()
                         }
                     } else if (item.uiFieldInfo.input.variant === 'single') {
-                        if (item.uiFieldInfo.input.required) {
+                        if (item.uiFieldInfo.input) {
+                            //Must set required type
                             fieldSchema = optionSchema.refine((obj) => Object.keys(obj).length >= 1)
                         } else {
                             fieldSchema = optionSchema.optional()
                         }
                     } else if (item.uiFieldInfo.input.variant === 'calendar') {
-                        if (item.uiFieldInfo.input.required) {
+                        if (item.uiFieldInfo.input) {
+                            //Must set required type
                             fieldSchema = z.array(z.string()).min(1)
                         } else {
                             fieldSchema = z.array(z.string()).optional()
@@ -45,7 +48,8 @@ export default function QuestionsStepValidator({ questions, formData }: StepTwoV
                         item.uiFieldInfo.input.type === 'numeric' ||
                         item.uiFieldInfo.input.type === 'textarea'
                     ) {
-                        if (item.uiFieldInfo.input.required) {
+                        if (item.uiFieldInfo.input) {
+                            //Must set required type
                             fieldSchema = z.string().min(1)
                         } else {
                             fieldSchema = z.string().min(0)
