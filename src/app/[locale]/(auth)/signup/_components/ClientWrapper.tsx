@@ -17,6 +17,7 @@ import {
     NewAnsweredQuestion,
 } from '../types'
 import { RoommateSignUpMutation } from '@/graphql/mutation'
+import { setRefreshToken, setSessionId, setToken } from '@/src/libs/apollo/auth'
 
 export default function ClientWrapper() {
     const [step, setStep] = useState(1)
@@ -43,7 +44,7 @@ export default function ClientWrapper() {
         if (!formData) return
 
         const modifiedFormData = { ...formData } as FormDataProps
-
+        console.log(modifiedFormData)
         delete modifiedFormData.code
 
         if (typeof modifiedFormData.countryId === 'object' && modifiedFormData.countryId !== null) {
@@ -55,14 +56,14 @@ export default function ClientWrapper() {
 
         if (
             Array.isArray(modifiedFormData.profileImage) &&
-            modifiedFormData.profileImage[0] !== null
+            modifiedFormData.profileImage[0] !== undefined
         ) {
-            modifiedFormData.profileImage = modifiedFormData.profileImage[0].path
+            modifiedFormData.profileImage = modifiedFormData.profileImage[0].base64
         } else {
             delete modifiedFormData.profileImage
         }
 
-        if (modifiedFormData?.email === '' || !modifiedFormData.email) {
+        if (modifiedFormData?.email === '' || modifiedFormData.email === undefined) {
             delete modifiedFormData.email
         }
 
@@ -115,17 +116,19 @@ export default function ClientWrapper() {
                     input.profileImage = modifiedFormData.profileImage as string
                 }
 
-                const response = await signUp({
+                const { data } = await signUp({
                     variables: {
                         input,
                     },
                 })
 
-                // if (response?.data && response?.data?.roommateSignUp?.jwt?.accessToken) {
-                //     localStorage.setItem(response?.data?.roommateSignUp?.jwt?.accessToken, 'token')
-                //     router.push('/roommates')
-                // }
-                console.log(response)
+                if (data?.roommateSignUp.jwt) {
+                    setToken(data.roommateSignUp.jwt.accessToken)
+                    setRefreshToken(data.roommateSignUp.jwt.refreshToken)
+                    setSessionId(data.roommateSignUp.jwt.sessionId)
+                    router.push('/roommates')
+                }
+                console.log(data)
             } catch (error: unknown | CustomError) {
                 setAlertIsOpen(true)
                 if ((error as CustomError)?.message === 'PHONE_EXISTS') {

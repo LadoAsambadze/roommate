@@ -12,7 +12,7 @@ import { client } from '@/src/libs/apollo/client'
 export const refreshTokens = async (): Promise<boolean> => {
     const refreshToken = getRefreshToken()
     const sessionId = getSessionId()
-    console.log('!23123123123')
+ 
 
     if (!refreshToken || !sessionId) {
         removeAllTokens()

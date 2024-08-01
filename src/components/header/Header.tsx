@@ -5,10 +5,14 @@ import { Bell2, Logo, UserIcon2 } from '../svgs'
 import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
-
+import { getRefreshToken, getSessionId } from '@/src/libs/apollo/auth'
+import { Button } from '../ui/button'
+import { signOutHandler } from '@/src/libs/apollo/signOut'
 
 export default function Header() {
     const { t } = useTranslation()
+    const sessionId = getSessionId()
+    const refreshToken = getRefreshToken()
 
     return (
         <>
@@ -27,15 +31,20 @@ export default function Header() {
                             {t('rentApartment')}
                         </button>
                     </Link>
-                    <Link href="/signin">
-                        <button className="mr-2  flex  flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
-                            <UserIcon2 className=" h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6 " />
 
-                            <span className="ml-1 text-xs  text-[#838CAC] xl:text-base">
-                                <span>{t('auth')}</span>
-                            </span>
-                        </button>
-                    </Link>
+                    {sessionId && refreshToken ? (
+                        <Button onClick={signOutHandler}>Log out</Button>
+                    ) : (
+                        <Link href="/signin">
+                            <button className="mr-2  flex  flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
+                                <UserIcon2 className=" h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6 " />
+
+                                <span className="ml-1 text-xs  text-[#838CAC] xl:text-base">
+                                    <span>{t('auth')}</span>
+                                </span>
+                            </button>
+                        </Link>
+                    )}
 
                     <LangChoose
                         className="cursor-pointer rounded-lg bg-[#f2f5ff] p-2 text-xs   md:mr-2 lg:mr-4 lg:p-2 xl:text-base"

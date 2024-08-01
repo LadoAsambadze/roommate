@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import { useMutation, gql } from '@apollo/client'
-import { useRouter } from 'next/navigation'
 import { SignInMutation } from '@/graphql/mutation'
 import { setRefreshToken, setSessionId, setToken } from '@/src/libs/apollo/auth'
 import { signOutHandler } from '@/src/libs/apollo/signOut'
+import { useMutation } from '@apollo/client'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
-const LoginForm = () => {
+const SigninModal = () => {
     const [identifier, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -34,12 +34,15 @@ const LoginForm = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <h2>Login</h2>
+            <form
+                className="flex h-full w-full flex-col items-center py-20  justify-center gap-10"
+                onSubmit={handleSubmit}
+            >
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <div>
                     <label htmlFor="email">Identifier:</label>
                     <input
+                        className="border border-black"
                         id="email"
                         value={identifier}
                         onChange={(e) => setEmail(e.target.value)}
@@ -49,6 +52,7 @@ const LoginForm = () => {
                 <div>
                     <label htmlFor="password">Password:</label>
                     <input
+                        className="border border-black"
                         type="password"
                         id="password"
                         value={password}
@@ -58,9 +62,8 @@ const LoginForm = () => {
                 </div>
                 <button type="submit">Login</button>
             </form>
-            <button onClick={signOutHandler}>log out</button>
         </>
     )
 }
 
-export default LoginForm
+export default SigninModal

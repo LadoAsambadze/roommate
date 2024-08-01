@@ -1,10 +1,12 @@
 import { Delete, Upload } from '@/src/components/svgs'
+import { fileToBase64 } from '@/src/utils/fileToBase64'
 import React, { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 
 interface CustomFile extends File {
     preview: string
+    base64: string
 }
 
 type ImageUploaderProps = {
@@ -13,29 +15,40 @@ type ImageUploaderProps = {
         onChange: (files: CustomFile[]) => void
     }
 }
+
 const ImageUploader = ({ field }: ImageUploaderProps) => {
     const [files, setFiles] = useState<CustomFile[]>(field.value ? field.value : [])
 
     const { t } = useTranslation()
 
+
     const onDrop = useCallback(
-        (acceptedFiles: File[]) => {
-            const updatedFiles: CustomFile[] = acceptedFiles.map((file) =>
-                Object.assign(file, {
-                    preview: URL.createObjectURL(file),
+        async (acceptedFiles: File[]) => {
+            const updatedFiles: CustomFile[] = await Promise.all(
+                acceptedFiles.map(async (file) => {
+                    const base64 = await fileToBase64(file)
+                    return Object.assign(file, {
+                        preview: URL.createObjectURL(file),
+                        base64,
+                    })
                 })
             )
             setFiles(updatedFiles)
             field.onChange(updatedFiles)
+            console.log(updatedFiles)
         },
         [field]
     )
 
-    const deleteFile = useCallback((fileToDelete: CustomFile, event: React.MouseEvent) => {
-        event.preventDefault()
-        event.stopPropagation()
-        setFiles((prevFiles) => prevFiles.filter((file) => file !== fileToDelete))
-    }, [])
+    const deleteFile = useCallback(
+        (fileToDelete: CustomFile, event: React.MouseEvent) => {
+            event.preventDefault()
+            event.stopPropagation()
+            setFiles((prevFiles) => prevFiles.filter((file) => file !== fileToDelete))
+            field.onChange(files.filter((file) => file !== fileToDelete))
+        },
+        [files, field]
+    )
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -73,7 +86,7 @@ const ImageUploader = ({ field }: ImageUploaderProps) => {
                                                 onClick={(
                                                     event: React.MouseEvent<Element, MouseEvent>
                                                 ) => {
-                                                    field.onChange([]), deleteFile(file, event)
+                                                    deleteFile(file, event)
                                                 }}
                                             />
                                         </div>
