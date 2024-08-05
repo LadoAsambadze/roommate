@@ -1,7 +1,7 @@
 import { Delete, Upload } from '@/src/components/svgs'
 import { fileToBase64 } from '@/src/utils/fileToBase64'
 import React, { useState, useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
+import { FileRejection, useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 
 interface CustomFile extends File {
@@ -18,11 +18,16 @@ type ImageUploaderProps = {
 
 const ImageUploader = ({ field }: ImageUploaderProps) => {
     const [files, setFiles] = useState<CustomFile[]>(field.value ? field.value : [])
-
     const { t } = useTranslation()
 
     const onDrop = useCallback(
-        async (acceptedFiles: File[]) => {
+        async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+            if (rejectedFiles.length > 0) {
+
+                alert(t('fileTooLarge'))
+                return
+            }
+
             const updatedFiles: CustomFile[] = await Promise.all(
                 acceptedFiles.map(async (file) => {
                     const base64 = await fileToBase64(file)
@@ -51,6 +56,7 @@ const ImageUploader = ({ field }: ImageUploaderProps) => {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         multiple: false,
+        maxSize: 5 * 1024 * 1024,
     })
 
     return (

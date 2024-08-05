@@ -7,5 +7,6 @@
     "faq": "F.A.Q",
     "howItWorks": "How it works",
     "notifications": "notifications",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "fileTooLarge": "Maximum file size is 5 MB"
 }
