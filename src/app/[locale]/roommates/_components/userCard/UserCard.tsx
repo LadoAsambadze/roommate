@@ -1,4 +1,4 @@
-import Avatar from '@images/MaleAvatar.jpg'
+import Avatar from '@images/UniversalAvatar.webp'
 import { Heart, Location, Sms } from '@/src/components/svgs'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
@@ -18,7 +18,6 @@ export default function UserCard({ transformedParams }: UserCardProps) {
     const { t } = useTranslation()
     const params = useParams()
     const searchParams = useSearchParams()
-
     const page = searchParams.get('page') || '1'
     const locale = params.locale
     const currentPage = page ? parseInt(page, 10) : 1
@@ -37,7 +36,6 @@ export default function UserCard({ transformedParams }: UserCardProps) {
         },
     })
     const FilteredUsers = data?.getPaginatedFilteredRoommates as PaginatedFilteredRoommatesObject
-    console.log(data)
 
     if (loading) return <UserCardLoading />
     if (error) return <p>{error.message}</p>
@@ -54,8 +52,8 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                                 className="flex h-auto w-full flex-col gap-6 overflow-hidden rounded-lg bg-[#FFFFFF] shadow-md sm:h-[232px] sm:w-full sm:flex-row sm:p-4 xl:w-[770px] "
                             >
                                 <Link href={`roommates/${item.id}`}>
-                                    <img
-                                        src={item?.profileImage}
+                                    <Image
+                                        src={item?.profileImage ? item?.profileImage : Avatar}
                                         width={400}
                                         height={600}
                                         className="h-[200px] w-full rounded-lg object-cover sm:h-full  sm:w-[332px]"
