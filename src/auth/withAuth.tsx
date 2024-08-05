@@ -1,9 +1,19 @@
 import { useEffect, useState } from 'react'
 import { getToken, removeAllTokens } from './auth'
-
 import { useRouter } from 'next/navigation'
 import Loading from '@/src/app/[locale]/loading'
 import { refreshTokens } from './refreshTokens'
+import { jwtDecode } from 'jwt-decode'
+
+const isTokenExpired = (token: string): boolean => {
+    try {
+        const decodedToken: any = jwtDecode(token)
+        if (!decodedToken.exp) return true
+        return decodedToken.exp * 1000 < Date.now()
+    } catch (error) {
+        return true
+    }
+}
 
 export const withAuth = (WrappedComponent: React.ComponentType) => {
     return (props: any) => {
@@ -12,14 +22,15 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
 
         useEffect(() => {
             async function checkAuth() {
-                // if(check jwt accestoken validity){
-                // refreshTokens()
-                // }
-                const refreshed = await refreshTokens()
-                if (!refreshed) {
-                    router.replace('/signup')
-                    removeAllTokens()
-                    return
+                const accessToken = getToken()
+
+                if (!accessToken || isTokenExpired(accessToken)) {
+                    const refreshed = await refreshTokens()
+                    if (!refreshed) {
+                        router.replace('/signup')
+                        removeAllTokens()
+                        return
+                    }
                 }
 
                 setIsValidating(false)
