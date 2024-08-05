@@ -5,15 +5,24 @@ import { Bell2, Logo, UserIcon2 } from '../svgs'
 import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
-import { getRefreshToken, getSessionId } from '@/src/libs/apollo/auth'
 import { Button } from '../ui/button'
 import { signOutHandler } from '@/src/libs/apollo/signOut'
+import { getToken } from '@/src/libs/apollo/auth'
+import { useEffect, useState } from 'react'
+import { refreshTokens } from '@/src/libs/apollo/refreshTokens'
 
 export default function Header() {
     const { t } = useTranslation()
-    const sessionId = getSessionId()
-    const refreshToken = getRefreshToken()
+    const [refreshStatus, setRefreshStatus] = useState<boolean | null>(null)
 
+    useEffect(() => {
+        const refresh = async () => {
+            const status = await refreshTokens()
+            setRefreshStatus(status)
+        }
+
+        refresh()
+    }, [])
     return (
         <>
             <header className="flex  w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md   sm:px-16  md:px-20 md:py-3 xl:px-24 xl:py-6">
@@ -32,15 +41,14 @@ export default function Header() {
                         </button>
                     </Link>
 
-                    {sessionId && refreshToken ? (
+                    {refreshStatus ? (
                         <Button onClick={signOutHandler}>Log out</Button>
                     ) : (
                         <Link href="/signin">
-                            <button className="mr-2  flex  flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
-                                <UserIcon2 className=" h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6 " />
-
-                                <span className="ml-1 text-xs  text-[#838CAC] xl:text-base">
-                                    <span>{t('auth')}</span>
+                            <button className="mr-2 flex flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
+                                <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                                <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
+                                    {t('auth')}
                                 </span>
                             </button>
                         </Link>

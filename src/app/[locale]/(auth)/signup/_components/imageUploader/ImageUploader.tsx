@@ -21,7 +21,6 @@ const ImageUploader = ({ field }: ImageUploaderProps) => {
 
     const { t } = useTranslation()
 
-
     const onDrop = useCallback(
         async (acceptedFiles: File[]) => {
             const updatedFiles: CustomFile[] = await Promise.all(
@@ -35,7 +34,6 @@ const ImageUploader = ({ field }: ImageUploaderProps) => {
             )
             setFiles(updatedFiles)
             field.onChange(updatedFiles)
-            console.log(updatedFiles)
         },
         [field]
     )

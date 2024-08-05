@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getToken } from './auth'
+import { getToken, removeAllTokens } from './auth'
 
 import { useRouter } from 'next/navigation'
 import Loading from '@/src/app/[locale]/loading'
@@ -12,14 +12,13 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
 
         useEffect(() => {
             async function checkAuth() {
-                const token = getToken()
-                if (!token) {
-                    const refreshed = await refreshTokens()
-                    if (!refreshed) {
-                        router.replace('/signup')
-                        return
-                    }
+                const refreshed = await refreshTokens()
+                if (!refreshed) {
+                    router.replace('/signup')
+                    removeAllTokens()
+                    return
                 }
+
                 setIsValidating(false)
             }
 

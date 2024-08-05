@@ -9,6 +9,7 @@ import { FilterInput, Language, PaginatedFilteredRoommatesObject } from '@/graph
 import { GetPaginatedFilteredRoommatesQuery } from '@/graphql/query'
 import { useParams, useSearchParams } from 'next/navigation'
 import UserCardLoading from '../loaders/UserCardLoading'
+import Filter from '../filter/Filter'
 
 type UserCardProps = {
     transformedParams: FilterInput[]
@@ -37,12 +38,9 @@ export default function UserCard({ transformedParams }: UserCardProps) {
         },
     })
     const FilteredUsers = data?.getPaginatedFilteredRoommates as PaginatedFilteredRoommatesObject
-
+    console.log(FilteredUsers)
     if (loading) return <UserCardLoading />
     if (error) return <p>{error.message}</p>
-
-    console.log(data, 'this')
-    console.log('123')
 
     return (
         <>
@@ -56,8 +54,8 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                                 className="flex h-auto w-full flex-col gap-6 overflow-hidden rounded-lg bg-[#FFFFFF] shadow-md sm:h-[232px] sm:w-full sm:flex-row sm:p-4 xl:w-[770px] "
                             >
                                 <Link href={`roommates/${item.id}`}>
-                                    <Image
-                                        src={item?.profileImage ? `/${item.profileImage}` : Avatar}
+                                    <img
+                                        src={item?.profileImage ? `${item.profileImage}` : Avatar}
                                         width={400}
                                         height={600}
                                         className="h-[200px] w-full rounded-lg object-cover sm:h-full  sm:w-[332px]"

@@ -44,7 +44,7 @@ export default function ClientWrapper() {
         if (!formData) return
 
         const modifiedFormData = { ...formData } as FormDataProps
-        console.log(modifiedFormData)
+
         delete modifiedFormData.code
 
         if (typeof modifiedFormData.countryId === 'object' && modifiedFormData.countryId !== null) {
@@ -128,7 +128,6 @@ export default function ClientWrapper() {
                     setSessionId(data.roommateSignUp.jwt.sessionId)
                     router.push('/roommates')
                 }
-                console.log(data)
             } catch (error: unknown | CustomError) {
                 setAlertIsOpen(true)
                 if ((error as CustomError)?.message === 'PHONE_EXISTS') {

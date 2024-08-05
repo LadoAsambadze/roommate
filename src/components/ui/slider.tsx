@@ -9,6 +9,7 @@ type RangeDataProps = {
 
 type SliderProps = {
     questionId: string
+    questionName: string
     rangeChangeHandler: (questionId: string, values: string[]) => void
     ranges: RangeDataProps[]
     className?: string
@@ -16,11 +17,14 @@ type SliderProps = {
 }
 
 const Slider = forwardRef<ElementRef<typeof Root>, SliderProps>(
-    ({ className, questionId, ranges, isOpen, rangeChangeHandler, ...props }, ref) => {
+    (
+        { className, questionId, ranges, isOpen, questionName, rangeChangeHandler, ...props },
+        ref
+    ) => {
         const [sliderValues, setSliderValues] = useState([0, 1000])
         const updateRangeHandler = () => {
             const sliderValuesAsString = sliderValues.map(String)
-            rangeChangeHandler(questionId, sliderValuesAsString as string[])
+            rangeChangeHandler(questionId, questionName, sliderValuesAsString as string[])
         }
 
         useEffect(() => {
