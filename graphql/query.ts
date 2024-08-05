@@ -47,16 +47,21 @@ export const getQuestionsWithAnswersQuery: TypedDocumentNode<
 > = gql`
     query GetQuestionsWithAnswers($lang: Language, $getFor: QuestionsWithAnswersFor) {
         getQuestionsWithAnswers(lang: $lang, getFor: $getFor) {
+            id
+            step
+            name
+            position
             answers {
                 id
                 questionId
+
                 translations {
                     id
                     lang
                     title
                 }
             }
-            position
+
             uiFieldInfo {
                 otherInput {
                     type
@@ -74,8 +79,7 @@ export const getQuestionsWithAnswersQuery: TypedDocumentNode<
                     renderAs
                 }
             }
-            id
-            step
+
             translations {
                 id
                 lang

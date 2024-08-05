@@ -13,10 +13,12 @@ import { FilterRangePicker } from './filterComponents/FilterRangePicker'
 
 type RangeDataProps = {
     questionId: string
+    questionName: string
     dataRange: string[] | string
 }
 type AnswerIdProps = {
     questionId: string
+    questionName: string
     answerIds: string[] | string
 }
 
@@ -36,6 +38,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
     const [key, setKey] = useState(0)
     const [ranges, setRanges] = useState<RangeDataProps[]>([])
     const [answers, setAnswers] = useState<AnswerIdProps[]>([])
+
     const { loading, error, data } = useQuery(getQuestionsWithAnswersQuery, {
         fetchPolicy: 'cache-and-network',
         variables: {
@@ -44,7 +47,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
         },
     })
 
-    const rangeChangeHandler = (questionId: string, dataRange: string[]) => {
+    const rangeChangeHandler = (questionId: string, questionName: string, dataRange: string[]) => {
         const existingIndex = ranges.findIndex((query) => query.questionId === questionId)
         if (existingIndex !== -1) {
             setRanges((prevQueries) => {
@@ -60,7 +63,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
         } else {
             setRanges((prevQueries) => [
                 ...prevQueries,
-                { questionId: questionId, dataRange: dataRange },
+                { questionId: questionId, questionName: questionName, dataRange: dataRange },
             ])
         }
     }
@@ -68,33 +71,41 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
     const filterUpdateHandler = () => {
         setIsOpen(false)
         const params = new URLSearchParams()
-        ranges.forEach((query) => {
+
+        ranges.forEach((query, index) => {
             if (query.dataRange && query.dataRange.length > 0 && Array.isArray(query.dataRange)) {
-                params.set(`range_${query.questionId}`, query.dataRange.join(','))
-            } else {
-                params.delete(`range_${query.questionId}`)
+                params.set(`range[${index}][questionId]`, query.questionId)
+                params.set(`range[${index}][questionName]`, query.questionName)
+                params.set(`range[${index}][dataRange]`, query.dataRange.join(','))
             }
         })
 
-        answers.forEach((query) => {
+        answers.forEach((query, index) => {
             if (query.answerIds && query.answerIds.length > 0) {
+                params.set(`answer[${index}][questionId]`, query.questionId)
+                params.set(`answer[${index}][questionName]`, query.questionName)
                 if (Array.isArray(query.answerIds)) {
-                    params.set(`answer_${query.questionId}`, query.answerIds.join(','))
+                    params.set(`answer[${index}][answerIds]`, query.answerIds.join(','))
                 } else {
-                    params.set(`answer_${query.questionId}`, query.answerIds)
+                    params.set(`answer[${index}][answerIds]`, query.answerIds)
                 }
             }
         })
+
         router.push(pathname + '?' + params.toString())
     }
-
     const filterClearHandler = () => {
         setKey((prevKey) => prevKey + 1)
         setRanges([])
         setAnswers([])
         const page = searchParams.get('page')
-        const newPathname = `${pathname}?page=${page}`
-        router.push(newPathname)
+        if (page) {
+            const newPathname = `${pathname}?page=${page}`
+            router.push(newPathname)
+        } else {
+            const newPathname = `${pathname}?page=1`
+            router.push(newPathname)
+        }
     }
 
     useEffect(() => {
@@ -135,7 +146,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
     return (
         <>
             <section
-                className={`${isOpen ? 'fixed h-screen w-full overflow-auto  border-t-2 px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'relative p-0'} flex h-full  w-full  flex-col gap-4 bg-white p-0  md:gap-6 `}
+                className={`${isOpen ? 'fixed h-screen w-full overflow-auto border-t-2 px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'relative p-0'} flex h-full  w-full  flex-col gap-4 bg-white p-0  md:gap-6 `}
             >
                 {isOpen ? (
                     <div className="flex h-auto w-full flex-row items-center justify-end gap-3">
@@ -170,6 +181,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                                             key={key}
                                             answers={answers}
                                             questionId={item.id}
+                                            questionName={item.name}
                                             answersId={item.answers}
                                             setAnswers={setAnswers}
                                             isMulti={
@@ -189,6 +201,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                                                 key={key}
                                                 className="mt-2 w-full"
                                                 rangeChangeHandler={rangeChangeHandler}
+                                                questionName={item.name}
                                                 questionId={item.id}
                                                 ranges={ranges}
                                             />
@@ -204,6 +217,7 @@ export default function Filter({ transformedParams, isOpen, setIsOpen }: FilterC
                                                 isOpen={isOpen}
                                                 key={key}
                                                 questionId={item.id}
+                                                questionName={item.name}
                                                 ranges={ranges}
                                                 rangeChangeHandler={rangeChangeHandler}
                                             />

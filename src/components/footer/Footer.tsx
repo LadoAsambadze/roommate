@@ -10,7 +10,7 @@ import {
     CONFIDENTIAL_KA_URL,
     TERMS_EN_URL,
     TERMS_KA_URL,
-} from '@/src/utils/constats/links'
+} from '@/src/constants/links'
 
 export default function Footer() {
     const { t } = useTranslation()

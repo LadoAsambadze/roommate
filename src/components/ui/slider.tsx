@@ -10,7 +10,7 @@ type RangeDataProps = {
 type SliderProps = {
     questionId: string
     questionName: string
-    rangeChangeHandler: (questionId: string, values: string[]) => void
+    rangeChangeHandler: (questionId: string, questionName: string, values: string[]) => void
     ranges: RangeDataProps[]
     className?: string
     isOpen: boolean

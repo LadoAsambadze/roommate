@@ -13,14 +13,14 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
     const lang = params.locale === 'en' ? undefined : ka
     return (
         <DayPicker
-            defaultMonth={new Date(2024, 0)}
+        
             fromYear={2024}
-            toYear={2026}
+            toYear={2030}
             locale={lang}
             showOutsideDays={showOutsideDays}
             className={cn(' p-3', className)}
             classNames={{
-                months: 'flex flex-col sm:flex-row space-y-2 gap-5 items-center justify-center sm:space-y-0',
+                months: 'flex flex-col sm:flex-row space-y-2 gap-8 items-center md:items-start justify-center sm:space-y-0',
                 dropdown_month: 'flex flex-row justify-start items-start  mr-2',
                 month: 'space-y-2 bg-white',
                 caption: 'flex justify-center flex-row pt-1 relative items-center justify-center',
@@ -52,7 +52,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
                 day_outside:
                     'day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30',
                 day_disabled: 'text-muted-foreground opacity-50',
-                day_range_middle: 'aria-selected:bg-accent aria-selected:text-accent-foreground',
+                day_range_middle: 'aria-selected:bg-slate-300 aria-selected:text-accent-foreground',
                 day_hidden: 'invisible',
                 ...classNames,
             }}

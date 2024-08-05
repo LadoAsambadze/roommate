@@ -13,14 +13,16 @@ import { useEffect, useState } from 'react'
 type RangeDataProps = {
     questionId: string
     dataRange: string[] | string
+    questionName: string
 }
 
 type FilterRangePickerProps = {
     className: string
     questionId: string
     ranges: RangeDataProps[]
-    rangeChangeHandler: (questionId: string, dataRange: string[]) => void
+    rangeChangeHandler: (questionId: string, questionName: string, dataRange: string[]) => void
     isOpen: boolean
+    questionName: string
 }
 
 export const FilterRangePicker = ({
@@ -28,6 +30,7 @@ export const FilterRangePicker = ({
     questionId,
     ranges,
     isOpen,
+    questionName,
     rangeChangeHandler,
 }: FilterRangePickerProps) => {
     const { t } = useTranslation()
@@ -38,8 +41,12 @@ export const FilterRangePicker = ({
     const formatDate = (date: Date | undefined): string | undefined => {
         return date ? format(date, 'yyyy-MM-dd') : undefined
     }
+    const defaultMonth = date?.from ? new Date(date.from) : new Date()
     const updateRangeHandler = () => {
-        rangeChangeHandler(questionId, formattedDateArray || [])
+        rangeChangeHandler(questionId, questionName, formattedDateArray || [])
+    }
+    const handleDateChange = (newDate: DateRange | undefined) => {
+        setDate(newDate)
     }
 
     useEffect(() => {
@@ -84,44 +91,47 @@ export const FilterRangePicker = ({
         )
     }
 
-    const CalendarComponent = () => {
-        return (
-            <Calendar
-                initialFocus
-                numberOfMonths={2}
-                mode="range"
-                pagedNavigation
-                defaultMonth={new Date()}
-                selected={date}
-                onSelect={(newDate) => {
-                    setDate(newDate)
-                }}
-            />
-        )
-    }
     return (
         <>
             <div className={cn('hidden gap-2 md:grid', className)}>
                 <Popover>
                     <PopoverTrigger asChild>
-                        <TriggerComponent />
+                        <div>
+                            <TriggerComponent />
+                        </div>
                     </PopoverTrigger>
                     <PopoverContent
                         className="w-auto p-0"
                         align="start"
                         onBlur={updateRangeHandler}
                     >
-                        <CalendarComponent />
+                        <Calendar
+                            defaultMonth={defaultMonth}
+                            initialFocus
+                            numberOfMonths={2}
+                            mode="range"
+                            pagedNavigation
+                            selected={date}
+                            onSelect={handleDateChange}
+                        />
                     </PopoverContent>
                 </Popover>
             </div>
 
             <Drawer>
-                <DrawerTrigger className="mt-2 w-full  md:hidden">
+                <DrawerTrigger className="mt-2 w-full md:hidden">
                     <TriggerComponent />
                 </DrawerTrigger>
                 <DrawerContent>
-                    <CalendarComponent />
+                    <Calendar
+                        defaultMonth={defaultMonth}
+                        initialFocus
+                        numberOfMonths={2}
+                        mode="range"
+                        pagedNavigation
+                        selected={date}
+                        onSelect={handleDateChange}
+                    />
                     <DrawerClose className="flex w-full justify-center">
                         <div
                             className="h-auto w-3/4 items-center justify-center rounded-md bg-mainGreen px-10 py-2 text-sm text-white focus:bg-pressedGreen"

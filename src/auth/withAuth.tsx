@@ -12,6 +12,9 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
 
         useEffect(() => {
             async function checkAuth() {
+                // if(check jwt accestoken validity){
+                // refreshTokens()
+                // }
                 const refreshed = await refreshTokens()
                 if (!refreshed) {
                     router.replace('/signup')

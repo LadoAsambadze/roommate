@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { FbIcon, InstagramIcon, LinkedinIcon, WhatsappIcon } from '@/src/components/svgs'
-import { FACEBOOK_URL, INSTAGRAM_URL, LINKEDIN_URL, WHATSAPP_URL } from '@/src/utils/constats/links'
+import { FACEBOOK_URL, INSTAGRAM_URL, LINKEDIN_URL, WHATSAPP_URL } from '@/src/constants/links'
 
 export const SocialIcons = () => {
     return (

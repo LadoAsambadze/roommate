@@ -6,10 +6,9 @@ import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
 import { Button } from '../ui/button'
-import { signOutHandler } from '@/src/libs/apollo/signOut'
-import { getToken } from '@/src/libs/apollo/auth'
 import { useEffect, useState } from 'react'
-import { refreshTokens } from '@/src/libs/apollo/refreshTokens'
+import { refreshTokens } from '@/src/auth/refreshTokens'
+import { signOutHandler } from '@/src/auth/signOut'
 
 export default function Header() {
     const { t } = useTranslation()

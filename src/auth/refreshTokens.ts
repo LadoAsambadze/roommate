@@ -6,7 +6,7 @@ import {
     setRefreshToken,
     setSessionId,
     setToken,
-} from '@/src/libs/apollo/auth'
+} from '@/src/auth/auth'
 import { client } from '@/src/libs/apollo/client'
 
 export const refreshTokens = async (): Promise<boolean> => {
@@ -15,7 +15,6 @@ export const refreshTokens = async (): Promise<boolean> => {
 
     if (!refreshToken || !sessionId) {
         removeAllTokens()
-
         return false
     }
 

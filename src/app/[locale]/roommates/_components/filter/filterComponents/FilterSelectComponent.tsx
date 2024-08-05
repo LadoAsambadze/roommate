@@ -1,13 +1,12 @@
-
-
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { AnswerObject } from '@/graphql/typesGraphql'
-import Select from '@/src/components/ui/select';
+import Select from '@/src/components/ui/select'
 
 type Option = { value: string; label: string }
 type AnswerIdProps = {
     questionId: string
+    questionName: string
     answerIds: string[] | string
 }
 type FilterSelectComponentProps = {
@@ -15,6 +14,7 @@ type FilterSelectComponentProps = {
     answersId?: AnswerObject[] | null
     answers: AnswerIdProps[]
     isMulti?: boolean
+    questionName: string
     setAnswers: Dispatch<SetStateAction<AnswerIdProps[]>>
 }
 
@@ -22,6 +22,7 @@ export default function FilterSelectComponent({
     questionId,
     answersId,
     answers,
+    questionName,
     setAnswers,
     isMulti = false,
 }: FilterSelectComponentProps) {
@@ -65,7 +66,8 @@ export default function FilterSelectComponent({
         } else {
             setSelectedValue(null)
         }
-    }, [questionId, answers, answersId, isMulti])
+    }, [questionId, questionName, answers, answersId, isMulti])
+    console.log(questionName)
 
     const selectedOptionsHandler = (
         questionId: string,
@@ -103,7 +105,7 @@ export default function FilterSelectComponent({
                 return updatedQueries
             })
         } else {
-            setAnswers((prevQueries) => [...prevQueries, { questionId, answerIds }])
+            setAnswers((prevQueries) => [...prevQueries, { questionId, questionName, answerIds }])
         }
     }
 

@@ -52,7 +52,7 @@ export function DatePicker({ field }: DatePickerProps) {
                             )}
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
+                    <PopoverContent className="hidden w-auto p-0 md:flex">
                         <Calendar
                             classNames={{
                                 caption_label: 'hidden',

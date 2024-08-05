@@ -8,7 +8,7 @@ import {
     AlertDialogTitle,
 } from '@/src/components/ui/alert-dialog'
 import { Button } from '@/src/components/ui/button'
-import { FACEBOOK_URL } from '@/src/utils/constats/links'
+import { FACEBOOK_URL } from '@/src/constants/links'
 import Link from 'next/link'
 import { Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'

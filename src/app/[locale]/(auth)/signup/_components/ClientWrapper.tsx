@@ -17,7 +17,7 @@ import {
     NewAnsweredQuestion,
 } from '../types'
 import { RoommateSignUpMutation } from '@/graphql/mutation'
-import { setRefreshToken, setSessionId, setToken } from '@/src/libs/apollo/auth'
+import { setRefreshToken, setSessionId, setToken } from '@/src/auth/auth'
 
 export default function ClientWrapper() {
     const [step, setStep] = useState(1)

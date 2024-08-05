@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'next/navigation'
 import { FilterInput } from '@/graphql/typesGraphql'
 import { useLockBodyScroll } from '@/src/components/hooks/useLockBodyScroll'
-import { withAuth } from '@/src/libs/apollo/withAuth'
+import { withAuth } from '@/src/auth/withAuth'
 
 function ClientWrapper() {
     const [isOpen, setIsOpen] = useState(false)
@@ -16,25 +16,36 @@ function ClientWrapper() {
 
     const { t } = useTranslation()
     useLockBodyScroll(isOpen)
-
     useEffect(() => {
-        const searchObject = Object.fromEntries(searchParams.entries())
-        const transformedParams = Object.entries(searchObject)
-            .map(([key, value]) => {
-                if (key.startsWith('range_')) {
-                    return {
-                        questionId: key.replace('range_', ''),
-                        dataRange: value.split(','),
-                    }
-                } else if (key.startsWith('answer_')) {
-                    return {
-                        questionId: key.replace('answer_', ''),
-                        answerIds: value.split(','),
-                    }
-                }
-                return null
+        const transformedParams: FilterInput[] = []
+        for (let i = 0; ; i++) {
+            const questionId = searchParams.get(`range[${i}][questionId]`)
+            const questionName = searchParams.get(`range[${i}][questionName]`)
+            const dataRange = searchParams.get(`range[${i}][dataRange]`)?.split(',')
+
+            if (!questionId || !questionName || !dataRange) break
+
+            transformedParams.push({
+                questionId,
+                questionName,
+                dataRange,
             })
-            .filter((item) => item !== null) as FilterInput[]
+        }
+
+        for (let i = 0; ; i++) {
+            const questionId = searchParams.get(`answer[${i}][questionId]`)
+            const questionName = searchParams.get(`answer[${i}][questionName]`)
+            const answerIds = searchParams.get(`answer[${i}][answerIds]`)?.split(',')
+
+            if (!questionId || !questionName || !answerIds) break
+
+            transformedParams.push({
+                questionId,
+                questionName,
+                answerIds,
+            })
+        }
+
         setTransformedParams(transformedParams)
     }, [searchParams, isOpen])
 

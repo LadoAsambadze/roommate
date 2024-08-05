@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/src/components/ui/pop
 import { useTranslation } from 'react-i18next'
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/src/components/ui/drawer'
 import { ControllerRenderProps } from 'react-hook-form'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 interface RangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
     field?: ControllerRenderProps<Record<string, string>, string>
@@ -19,7 +19,7 @@ interface RangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const RangePicker = ({ className, updateUseForm, field, id }: RangePickerProps) => {
     const { t } = useTranslation()
-    const initialDate = useMemo(() => {
+    const initialDate = () => {
         if (field?.value && Array.isArray(field.value) && field.value.length === 2) {
             const from = new Date(field.value[0])
             const to = new Date(field.value[1])
@@ -28,10 +28,10 @@ export const RangePicker = ({ className, updateUseForm, field, id }: RangePicker
             }
         }
         return undefined
-    }, [field?.value])
+    }
 
     const [date, setDate] = useState<DateRange | undefined>(initialDate)
-
+    const defaultMonth = date?.from ? new Date(date.from) : new Date()
     const handleDateChange = (newDate: DateRange | undefined) => {
         setDate(newDate)
 
@@ -94,11 +94,11 @@ export const RangePicker = ({ className, updateUseForm, field, id }: RangePicker
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
+                            defaultMonth={defaultMonth}
                             initialFocus
                             numberOfMonths={2}
                             mode="range"
                             pagedNavigation
-                            defaultMonth={new Date()}
                             selected={date}
                             onSelect={handleDateChange}
                         />
@@ -120,12 +120,12 @@ export const RangePicker = ({ className, updateUseForm, field, id }: RangePicker
                 </DrawerTrigger>
                 <DrawerContent>
                     <Calendar
+                        defaultMonth={defaultMonth}
                         className="flex flex-row justify-center"
                         initialFocus
                         numberOfMonths={2}
                         mode="range"
                         pagedNavigation
-                        defaultMonth={new Date()}
                         selected={date}
                         onSelect={handleDateChange}
                     />

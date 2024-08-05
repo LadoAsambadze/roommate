@@ -1,7 +1,7 @@
 'use client'
 
 import { SignInMutation } from '@/graphql/mutation'
-import { setRefreshToken, setSessionId, setToken } from '@/src/libs/apollo/auth'
+import { setRefreshToken, setSessionId, setToken } from '@/src/auth/auth'
 import { signOutHandler } from '@/src/libs/apollo/signOut'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
@@ -35,7 +35,7 @@ const SigninModal = () => {
     return (
         <>
             <form
-                className="flex h-full w-full flex-col items-center py-20  justify-center gap-10"
+                className="flex h-full w-full flex-col items-center justify-center  gap-10 py-20"
                 onSubmit={handleSubmit}
             >
                 {error && <p style={{ color: 'red' }}>{error}</p>}
