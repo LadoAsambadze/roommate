@@ -2,7 +2,6 @@
 
 import { SignInMutation } from '@/graphql/mutation'
 import { setRefreshToken, setSessionId, setToken } from '@/src/auth/auth'
-import { signOutHandler } from '@/src/libs/apollo/signOut'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'

@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Avatar from '@images/MaleAvatar.jpg'
 import { Heart, Location, Sms } from '@/src/components/svgs'
 import Link from 'next/link'
@@ -9,7 +8,7 @@ import { FilterInput, Language, PaginatedFilteredRoommatesObject } from '@/graph
 import { GetPaginatedFilteredRoommatesQuery } from '@/graphql/query'
 import { useParams, useSearchParams } from 'next/navigation'
 import UserCardLoading from '../loaders/UserCardLoading'
-import Filter from '../filter/Filter'
+import Image from 'next/image'
 
 type UserCardProps = {
     transformedParams: FilterInput[]
@@ -38,6 +37,7 @@ export default function UserCard({ transformedParams }: UserCardProps) {
         },
     })
     const FilteredUsers = data?.getPaginatedFilteredRoommates as PaginatedFilteredRoommatesObject
+    console.log(data)
 
     if (loading) return <UserCardLoading />
     if (error) return <p>{error.message}</p>
@@ -55,7 +55,7 @@ export default function UserCard({ transformedParams }: UserCardProps) {
                             >
                                 <Link href={`roommates/${item.id}`}>
                                     <img
-                                        src={item?.profileImage ? `${item.profileImage}` : Avatar}
+                                        src={item?.profileImage}
                                         width={400}
                                         height={600}
                                         className="h-[200px] w-full rounded-lg object-cover sm:h-full  sm:w-[332px]"
