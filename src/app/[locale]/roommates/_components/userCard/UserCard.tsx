@@ -38,7 +38,7 @@ export default function UserCard({ transformedParams }: UserCardProps) {
         },
     })
     const FilteredUsers = data?.getPaginatedFilteredRoommates as PaginatedFilteredRoommatesObject
-    console.log(FilteredUsers)
+
     if (loading) return <UserCardLoading />
     if (error) return <p>{error.message}</p>
 

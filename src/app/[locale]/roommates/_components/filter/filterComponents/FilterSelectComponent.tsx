@@ -67,7 +67,6 @@ export default function FilterSelectComponent({
             setSelectedValue(null)
         }
     }, [questionId, questionName, answers, answersId, isMulti])
-    console.log(questionName)
 
     const selectedOptionsHandler = (
         questionId: string,
