@@ -3,17 +3,7 @@ import { getToken, removeAllTokens } from './auth'
 import { useRouter } from 'next/navigation'
 import Loading from '@/src/app/[locale]/loading'
 import { refreshTokens } from './refreshTokens'
-import { jwtDecode } from 'jwt-decode'
-
-const isTokenExpired = (token: string): boolean => {
-    try {
-        const decodedToken: any = jwtDecode(token)
-        if (!decodedToken.exp) return true
-        return decodedToken.exp * 1000 < Date.now()
-    } catch (error) {
-        return true
-    }
-}
+import { isTokenExpired } from '../utils/iseTokenExpired'
 
 export const withAuth = (WrappedComponent: React.ComponentType) => {
     return (props: any) => {
