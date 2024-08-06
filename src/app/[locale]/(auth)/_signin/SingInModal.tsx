@@ -3,7 +3,7 @@
 import { SignInMutation } from '@/graphql/mutation'
 import { setRefreshToken, setSessionId, setToken } from '@/src/auth/auth'
 import { Button } from '@/src/components/ui/button'
-import { Dialog, DialogContent, DialogOverlay, DialogTrigger } from '@/src/components/ui/dialog'
+import { Dialog, DialogContent } from '@/src/components/ui/dialog'
 import { Input } from '@/src/components/ui/input'
 import { Label } from '@/src/components/ui/label'
 import { useMutation } from '@apollo/client'
@@ -48,6 +48,7 @@ const SigninModal = () => {
                 setToken(data.signIn.accessToken)
                 setRefreshToken(data.signIn.refreshToken)
                 setSessionId(data.signIn.sessionId)
+                setModalStatus(false)
                 router.push('/roommates')
             }
         } catch (err) {
