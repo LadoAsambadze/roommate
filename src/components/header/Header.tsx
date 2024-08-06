@@ -6,13 +6,27 @@ import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
 import { Button } from '../ui/button'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { refreshTokens } from '@/src/auth/refreshTokens'
 import { signOutHandler } from '@/src/auth/signOut'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 export default function Header() {
     const { t } = useTranslation()
     const [refreshStatus, setRefreshStatus] = useState<boolean | null>(null)
+
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+
+    const signinModalHandler = useCallback(() => {
+        const current = new URLSearchParams(Array.from(searchParams.entries()))
+        current.set('signInModal', 'open')
+        const search = current.toString()
+        const query = search ? `?${search}` : ''
+        router.push(`${pathname}${query}`)
+    }, [searchParams, router, pathname])
 
     useEffect(() => {
         const refresh = async () => {
@@ -43,14 +57,15 @@ export default function Header() {
                     {refreshStatus ? (
                         <Button onClick={signOutHandler}>Log out</Button>
                     ) : (
-                        <Link href="/signin">
-                            <button className="mr-2 flex flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2">
-                                <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
-                                <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
-                                    {t('auth')}
-                                </span>
-                            </button>
-                        </Link>
+                        <button
+                            onClick={signinModalHandler}
+                            className="mr-2 flex flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2"
+                        >
+                            <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                            <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
+                                {t('auth')}
+                            </span>
+                        </button>
                     )}
 
                     <LangChoose

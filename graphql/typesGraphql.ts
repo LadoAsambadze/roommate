@@ -18,8 +18,6 @@ export type Scalars = {
     Float: { input: number; output: number }
     Date: { input: any; output: any }
     DateTime: { input: any; output: any }
-    EmailAddress: { input: any; output: any }
-    PhoneNumber: { input: any; output: any }
     StringOrInt: { input: any; output: any }
     StringTuple: { input: any; output: any }
 }
@@ -147,6 +145,7 @@ export type GenericInputObject = {
 export type InputObject = {
     __typename?: 'InputObject'
     renderAs?: Maybe<RenderAs>
+    required: Scalars['Boolean']['output']
     type: InputType
     variant?: Maybe<Variant>
 }
@@ -185,7 +184,7 @@ export type MeObject = {
     lastname?: Maybe<Scalars['String']['output']>
     phone?: Maybe<Scalars['String']['output']>
     profileImage?: Maybe<Scalars['String']['output']>
-    userType: Array<UserType>
+    userTypes: Array<UserType>
 }
 
 export type MeWithJwtObject = {
@@ -201,7 +200,7 @@ export type MeWithJwtObject = {
     lastname?: Maybe<Scalars['String']['output']>
     phone?: Maybe<Scalars['String']['output']>
     profileImage?: Maybe<Scalars['String']['output']>
-    userType: Array<UserType>
+    userTypes: Array<UserType>
 }
 
 export type Mutation = {
@@ -464,15 +463,15 @@ export type SignInCredentialsInput = {
 
 export type SignUpInput = {
     answeredQuestions: Array<AnsweredQuestionInput>
-    birthDate: Scalars['Date']['input']
+    birthDate: Scalars['DateTime']['input']
     confirmPassword: Scalars['String']['input']
-    countryId: Scalars['Int']['input']
-    email?: InputMaybe<Scalars['EmailAddress']['input']>
+    countryId: Scalars['Float']['input']
+    email?: InputMaybe<Scalars['String']['input']>
     firstname: Scalars['String']['input']
-    genderId: Scalars['Int']['input']
+    genderId: Scalars['Float']['input']
     lastname: Scalars['String']['input']
     password: Scalars['String']['input']
-    phone: Scalars['PhoneNumber']['input']
+    phone: Scalars['String']['input']
     profileImage?: InputMaybe<Scalars['String']['input']>
 }
 

@@ -41,7 +41,7 @@ export const RoommateSignUpMutation: TypedDocumentNode<
             genderId
             countryId
             profileImage
-
+            userTypes
             createdAt
             jwt {
                 accessToken

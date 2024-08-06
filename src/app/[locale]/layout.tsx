@@ -7,6 +7,7 @@ import './globals.css'
 import Header from '@/src/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/src/components/footer/Footer'
+import SigninModal from './(auth)/_signin/SingInModal'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 
@@ -47,7 +48,16 @@ export default async function RootLayout({
 
     params: { locale: string }
 }) {
-    const i18nNamespaces = ['home', 'shared', 'signup', 'profile', 'roommates', 'ui', 'calendar']
+    const i18nNamespaces = [
+        'home',
+        'shared',
+        'signup',
+        'profile',
+        'roommates',
+        'ui',
+        'calendar',
+        'signin',
+    ]
 
     const { resources } = await initTranslations(locale, i18nNamespaces)
 
@@ -61,10 +71,8 @@ export default async function RootLayout({
                 >
                     <ApolloWrapper>
                         <Header />
-
-                        {modal}
+                        <SigninModal />
                         {children}
-
                         <Footer />
                     </ApolloWrapper>
                 </TranslationsProvider>

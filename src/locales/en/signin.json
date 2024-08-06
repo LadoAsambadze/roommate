@@ -1,0 +1,8 @@
+{
+    "auth": "Authorization",
+    "phoneNum": "Phone number",
+    "password": "Password",
+    "signIn": "Sign In",
+    "forgotPass": "Forgot password?",
+    "signInError": "Invalid phone or password"
+}

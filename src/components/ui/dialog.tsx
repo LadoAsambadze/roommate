@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { cn } from '@/src/utils/cn'
+import { useSearchParams } from 'next/navigation'
 
 const Dialog = DialogPrimitive.Root
 
@@ -39,7 +40,6 @@ const DialogContent = React.forwardRef<
             )}
             {...props}
         >
-            <DialogTitle>123123</DialogTitle>
             {children}
         </DialogPrimitive.Content>
     </DialogPortal>
