@@ -1,7 +1,6 @@
 'use client'
 
 import i18nConfig from '@/src/libs/i18n/i18nConfig'
-
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 
@@ -19,20 +18,29 @@ const LangChoose = ({ className, spanClassname }: LangChooseProps) => {
 
     const handleLangSwitch = () => {
         const newLocale = currentLocale === 'ka' ? 'en' : 'ka'
+        let newPath: string
+
         if (currentLocale === i18nConfig.defaultLocale && !i18nConfig.prefixDefault) {
-            router.push('/' + newLocale + currentPathname)
+            newPath = '/' + newLocale + currentPathname
         } else {
-            router.push(currentPathname.replace(`/${currentLocale}`, `/${newLocale}`))
+            newPath = currentPathname.replace(`/${currentLocale}`, `/${newLocale}`)
         }
 
+        // Save the query parameters
+        const queryParams = new URLSearchParams(window.location.search)
+        if (queryParams.toString()) {
+            newPath += '?' + queryParams.toString()
+        }
+
+        router.push(newPath)
         router.refresh()
     }
 
     return (
         <>
-            <div className={`${className}`} onClick={handleLangSwitch}>
-                <span className={`${spanClassname}`}>{newLocale === 'ka' ? 'GEO' : 'ENG'}</span>
-            </div>
+            <span className={spanClassname} onClick={handleLangSwitch}>
+                {newLocale === 'ka' ? 'GEO' : 'ENG'}
+            </span>
         </>
     )
 }
