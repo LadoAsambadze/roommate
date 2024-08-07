@@ -15,8 +15,9 @@ import Img from '@images/Img.jpg'
 import Image from 'next/image'
 import { AlertDialogHeader } from '@/src/components/ui/alert-dialog'
 import { ArrowLeft } from '@/src/components/svgs'
+import Link from 'next/link'
 
-const SigninModal = () => {
+export const SignInRoommates = () => {
     const { t } = useTranslation()
 
     const [identifier, setEmail] = useState('')
@@ -60,7 +61,7 @@ const SigninModal = () => {
 
     useEffect(() => {
         const modal = searchParams.get('signInModal')
-        if (modal === 'open') {
+        if (modal === 'Roommates') {
             setModalStatus(true)
         } else {
             setModalStatus(false)
@@ -106,13 +107,23 @@ const SigninModal = () => {
                                     </div>
 
                                     {error && <p className="text-sm text-[red]">{error}</p>}
-                                    <button
-                                        onClick={() => setResetPassword(true)}
-                                        className="text-right text-xs text-[#838CAC]"
-                                        type="button"
-                                    >
-                                        {t('forgotPass')}
-                                    </button>
+                                    <div className="flex w-full flex-row items-center justify-between">
+                                        <button
+                                            onClick={() => {
+                                                router.push('/signup')
+                                            }}
+                                            className="w-auto text-xs text-[#838CAC]"
+                                        >
+                                            {t('signup')}
+                                        </button>
+
+                                        <button
+                                            onClick={() => setResetPassword(true)}
+                                            className="w-auto text-xs text-[#838CAC]"
+                                        >
+                                            {t('forgotPass')}
+                                        </button>
+                                    </div>
                                     <Button type="submit" className="w-full">
                                         {t('signIn')}
                                     </Button>
@@ -239,5 +250,3 @@ const SigninModal = () => {
         </>
     )
 }
-
-export default SigninModal

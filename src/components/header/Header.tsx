@@ -22,7 +22,7 @@ export default function Header() {
 
     const signinModalHandler = useCallback(() => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
-        current.set('signInModal', 'open')
+        current.set('signInModal', 'Roommates')
         const search = current.toString()
         const query = search ? `?${search}` : ''
         router.push(`${pathname}${query}`)
@@ -43,6 +43,11 @@ export default function Header() {
                     <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
                 </Link>
                 <div className="flex flex-row items-center">
+                    <Link href="/landlors">
+                        <button className="mr-4 hidden rounded-lg md:block md:text-xs  xl:text-base">
+                            landlors
+                        </button>
+                    </Link>
                     <Link href="/roommates">
                         <button className="mr-4 hidden rounded-lg md:block md:text-xs  xl:text-base">
                             {t('findRoommate')}

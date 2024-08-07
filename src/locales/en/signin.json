@@ -11,5 +11,6 @@
     "fillField": "Please fill field with pin",
     "notGetCode": "Did not get code?",
     "resendCode": "Resend code",
-    "verify": "Verification"
+    "verify": "Verification",
+    "signup": "Sign up"
 }
