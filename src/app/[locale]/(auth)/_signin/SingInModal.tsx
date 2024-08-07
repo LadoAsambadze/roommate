@@ -3,7 +3,7 @@
 import { SignInMutation } from '@/graphql/mutation'
 import { setRefreshToken, setSessionId, setToken } from '@/src/auth/auth'
 import { Button } from '@/src/components/ui/button'
-import { Dialog, DialogContent, DialogHeader } from '@/src/components/ui/dialog'
+import { Dialog, DialogContent } from '@/src/components/ui/dialog'
 import { Input } from '@/src/components/ui/input'
 import { Label } from '@/src/components/ui/label'
 import { useMutation } from '@apollo/client'
@@ -15,7 +15,6 @@ import Img from '@images/Img.jpg'
 import Image from 'next/image'
 import { AlertDialogHeader } from '@/src/components/ui/alert-dialog'
 import { ArrowLeft } from '@/src/components/svgs'
-import LangChoose from '@/src/components/header/components/LangChoose'
 
 const SigninModal = () => {
     const { t } = useTranslation()
@@ -125,7 +124,7 @@ const SigninModal = () => {
                                     className="grid w-full grid-cols-1 gap-y-6"
                                     onSubmit={handleSubmit}
                                 >
-                                    <h1 className="text-center text-base"> პაროლის აღდგენა</h1>
+                                    <h1 className="text-center text-base">{t('resetPassword')}</h1>
 
                                     <div className="flex flex-col items-start gap-2">
                                         <Label htmlFor="identifier" className="text-sm">
@@ -138,7 +137,7 @@ const SigninModal = () => {
                                             placeholder={t('phoneNum')}
                                         />
                                     </div>
-                                    {error && <p className="text-sm text-[red]">{error}</p>}
+                                    {/* {error && <p className="text-sm text-[red]">{error}</p>} */}
 
                                     <Button
                                         type="submit"
@@ -155,15 +154,15 @@ const SigninModal = () => {
                                     onClick={() => setResetPassword(false)}
                                 >
                                     <ArrowLeft className="h-5 w-5" />
-                                    <span className="mb-1 text-xs text-[#838CAC]">უკან</span>
+                                    <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
                                 </button>
                             </>
                         ) : verifyCode ? (
                             <div className="flex flex-col gap-4">
                                 <div className="flex flex-col gap-1 text-center text-sm">
-                                    <span>პინ კოდი გამოგზავნილია ნომერზე</span>
+                                    <span>{t('codeSentOn')}</span>
                                     <span>555135856</span>
-                                    <span>გთხოვთ ჩაწეროთ ციფრები მოცემულ ველში</span>
+                                    <span>{t('fillField')}</span>
                                 </div>
                                 <div className="flex w-full  items-center justify-between gap-2">
                                     {Array.from({ length: 6 }).map((_, index) => (
@@ -212,11 +211,11 @@ const SigninModal = () => {
                                     }}
                                     className="w-full"
                                 >
-                                    ვერიფიკაცია
+                                    {t('verify')}
                                 </Button>
                                 <div className="flex w-full flex-row items-center justify-center gap-2 text-center text-xs">
-                                    <span className="text-[#838CAC]">არ მიგიღიათ კოდი?</span>
-                                    <button className="text-[#19A463]">ხელახლა გაგზავნა</button>
+                                    <span className="text-[#838CAC]">{t('notGetCode')}</span>
+                                    <button className="text-[#19A463]">{t('resendCode')}</button>
                                 </div>
                                 <button
                                     className="flex cursor-pointer flex-row items-center gap-1"
@@ -226,7 +225,7 @@ const SigninModal = () => {
                                     }}
                                 >
                                     <ArrowLeft className="h-5 w-5" />
-                                    <span className="mb-1 text-xs text-[#838CAC]">უკან</span>
+                                    <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
                                 </button>
                             </div>
                         ) : null}
