@@ -22,7 +22,11 @@ export default function Header() {
 
     const signinModalHandler = useCallback(() => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
-        current.set('signInModal', 'Roommates')
+        if (pathname.includes('/landlords')) {
+            current.set('signInModal', 'Landlords')
+        } else {
+            current.set('signInModal', 'Roommates')
+        }
         const search = current.toString()
         const query = search ? `?${search}` : ''
         router.push(`${pathname}${query}`)
@@ -43,9 +47,9 @@ export default function Header() {
                     <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
                 </Link>
                 <div className="flex flex-row items-center">
-                    <Link href="/landlors">
+                    <Link href="/landlords">
                         <button className="mr-4 hidden rounded-lg md:block md:text-xs  xl:text-base">
-                            landlors
+                            landlords
                         </button>
                     </Link>
                     <Link href="/roommates">

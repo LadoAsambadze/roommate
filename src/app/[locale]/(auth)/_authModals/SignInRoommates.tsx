@@ -105,19 +105,19 @@ export const SignInRoommates = () => {
                                             placeholder={t('password')}
                                         />
                                     </div>
-
                                     {error && <p className="text-sm text-[red]">{error}</p>}
                                     <div className="flex w-full flex-row items-center justify-between">
                                         <button
+                                            type="button"
                                             onClick={() => {
                                                 router.push('/signup')
                                             }}
                                             className="w-auto text-xs text-[#838CAC]"
                                         >
-                                            {t('signup')}
+                                            {t('signupModal')}
                                         </button>
-
                                         <button
+                                            type="button"
                                             onClick={() => setResetPassword(true)}
                                             className="w-auto text-xs text-[#838CAC]"
                                         >
