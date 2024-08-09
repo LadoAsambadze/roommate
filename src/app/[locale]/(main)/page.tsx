@@ -5,10 +5,11 @@ import FeatureSection from './_components/FeatureSection'
 import QuestionSection from './_components/QuestionSection'
 import ReviewSection from './_components/ReviewSection'
 import SuggestSection from './_components/SuggestSection'
-import ApartmentSection from '@/src/app/[locale]/_components/ApartmentSection'
+
 import { getClient } from '@/src/libs/apollo/rscClient'
 import { query } from '@/graphql/restLinkQuery'
 import CoverSection from './_components/CoverSection'
+import ApartmentSection from './_components/ApartmentSection'
 
 async function Home() {
     const response = await getClient().query({ query, fetchPolicy: 'cache-first' })

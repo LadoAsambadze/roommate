@@ -25,14 +25,13 @@ export async function generateMetadata({ params: { locale } }: { params: { local
             default: t('title'),
             template: '%s | roommate website ',
         },
-
         description: t('description'),
         openGraph: {
             title: t('title'),
             description: t('description'),
             type: 'website',
             locale: locale,
-            url: 'rommate.ge',
+            url: 'roommate.ge',
             siteName: 'roommate',
         },
     }
@@ -40,13 +39,10 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 
 export default async function RootLayout({
     children,
-    modal,
-
     params: { locale },
 }: {
     children: ReactNode
     modal: ReactNode
-
     params: { locale: string }
 }) {
     const i18nNamespaces = ['home', 'shared', 'signup', 'profile', 'roommates', 'signin']

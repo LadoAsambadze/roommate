@@ -10,7 +10,7 @@ export const setSessionId = (sessionId: string) => {
     localStorage.setItem('sessionId', sessionId)
 }
 
-export const getToken = () => {
+export const getAccessToken = () => {
     if (typeof window !== 'undefined') {
         return localStorage.getItem('token')
     }

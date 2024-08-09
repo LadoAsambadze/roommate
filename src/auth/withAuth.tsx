@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { getToken, removeAllTokens } from './auth'
+import { getAccessToken, removeAllTokens } from './auth'
 import { useRouter } from 'next/navigation'
 import Loading from '@/src/app/[locale]/loading'
 import { refreshTokens } from './refreshTokens'
-import { isTokenExpired } from '../utils/iseTokenExpired'
+import { isTokenExpired } from '../utils/isTokenExpired'
 
 export const withAuth = (WrappedComponent: React.ComponentType) => {
     return (props: any) => {
@@ -12,7 +12,7 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
 
         useEffect(() => {
             async function checkAuth() {
-                const accessToken = getToken()
+                const accessToken = getAccessToken()
 
                 if (!accessToken || isTokenExpired(accessToken)) {
                     const refreshed = await refreshTokens()

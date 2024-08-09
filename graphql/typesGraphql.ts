@@ -18,7 +18,6 @@ export type Scalars = {
     Float: { input: number; output: number }
     Date: { input: any; output: any }
     DateTime: { input: any; output: any }
-    StringOrInt: { input: any; output: any }
     StringTuple: { input: any; output: any }
 }
 
@@ -50,10 +49,10 @@ export type AnsweredQuestionInput = {
     questionId: Scalars['String']['input']
 }
 
-export type CheckCodeInput = {
-    code: Scalars['StringOrInt']['input']
-    codePurpose?: InputMaybe<Scalars['String']['input']>
-    phone: Scalars['String']['input']
+/** Code purpose enumeration */
+export enum CodePurpose {
+    LandlordSignUp = 'landlord_sign_up',
+    RoommateSignUp = 'roommate_sign_up',
 }
 
 export type ConversationResourceObject = {
@@ -166,10 +165,26 @@ export type JwtObject = {
     sessionId: Scalars['String']['output']
 }
 
+export type LandlordSignUpInput = {
+    confirmPassword: Scalars['String']['input']
+    email?: InputMaybe<Scalars['String']['input']>
+    firstname: Scalars['String']['input']
+    lastname: Scalars['String']['input']
+    password: Scalars['String']['input']
+    phone?: InputMaybe<Scalars['String']['input']>
+}
+
 /** Language enumeration */
 export enum Language {
     En = 'en',
     Ka = 'ka',
+}
+
+/** Email sending status code enumeration */
+export enum MailSendStatus {
+    AlreadySent = 'ALREADY_SENT',
+    Failure = 'FAILURE',
+    Success = 'SUCCESS',
 }
 
 export type MeObject = {
@@ -205,23 +220,28 @@ export type MeWithJwtObject = {
 
 export type Mutation = {
     __typename?: 'Mutation'
-    checkCode: SmsCodeValidityStatus
     generateTwilioAccessToken: Scalars['String']['output']
+    landlordSignUp: MeWithJwtObject
     logConnectionError: Scalars['Boolean']['output']
     lookupOrCreateTwilioUserResource: Scalars['Boolean']['output']
     refreshToken: JwtObject
     resetPassword: Scalars['Boolean']['output']
+    roommateSendResetPasswordLink: SendResetPasswordLinkObject
+    roommateSignIn: JwtObject
     roommateSignUp: MeWithJwtObject
-    sendCode: SmsSendStatus
-    sendResetPasswordLink: SmsSendStatus
+    sendCodeByEmail: SendCodeByEmailObject
+    sendCodeBySms: SendCodeBySmsObject
+    sendResetPasswordLink: SendResetPasswordLinkObject
     signIn: JwtObject
     singOut: Scalars['Boolean']['output']
     updateConversationResourceState: ConversationResourceObject
     updateConversationStatus: ConversationStatus
+    verifyCodeBySms: VerifyCodeBySmsObject
+    verifyCodeSentByEmail: VerifyCodeByEmailObject
 }
 
-export type MutationCheckCodeArgs = {
-    input: CheckCodeInput
+export type MutationLandlordSignUpArgs = {
+    input: LandlordSignUpInput
 }
 
 export type MutationLogConnectionErrorArgs = {
@@ -240,11 +260,23 @@ export type MutationResetPasswordArgs = {
     input: ResetPasswordInput
 }
 
-export type MutationRoommateSignUpArgs = {
-    input: SignUpInput
+export type MutationRoommateSendResetPasswordLinkArgs = {
+    input: SendResetPasswordLinkInput
 }
 
-export type MutationSendCodeArgs = {
+export type MutationRoommateSignInArgs = {
+    input: SignInCredentialsInput
+}
+
+export type MutationRoommateSignUpArgs = {
+    input: RoommateSignUpInput
+}
+
+export type MutationSendCodeByEmailArgs = {
+    input: SendCodeByEmailInput
+}
+
+export type MutationSendCodeBySmsArgs = {
     input: SendCodeInput
 }
 
@@ -264,6 +296,14 @@ export type MutationUpdateConversationResourceStateArgs = {
 export type MutationUpdateConversationStatusArgs = {
     conversationId: Scalars['String']['input']
     status: ConversationStatus
+}
+
+export type MutationVerifyCodeBySmsArgs = {
+    input: VerifyCodeInput
+}
+
+export type MutationVerifyCodeSentByEmailArgs = {
+    input: VerifyCodeByEmailInput
 }
 
 export type OldUserObject = {
@@ -432,6 +472,27 @@ export type ResetPasswordInput = {
     token: Scalars['String']['input']
 }
 
+/** Reset password sending status code enumeration */
+export enum ResetPasswordResponse {
+    AlreadySent = 'ALREADY_SENT',
+    SendFailed = 'SEND_FAILED',
+    SuccessfullySend = 'SUCCESSFULLY_SEND',
+}
+
+export type RoommateSignUpInput = {
+    answeredQuestions: Array<AnsweredQuestionInput>
+    birthDate: Scalars['DateTime']['input']
+    confirmPassword: Scalars['String']['input']
+    countryId: Scalars['Float']['input']
+    email?: InputMaybe<Scalars['String']['input']>
+    firstname: Scalars['String']['input']
+    genderId: Scalars['Float']['input']
+    lastname: Scalars['String']['input']
+    password: Scalars['String']['input']
+    phone: Scalars['String']['input']
+    profileImage?: InputMaybe<Scalars['String']['input']>
+}
+
 export type RoommateWithAdditionalInfoObject = {
     __typename?: 'RoommateWithAdditionalInfoObject'
     age: Scalars['Float']['output']
@@ -446,8 +507,23 @@ export type RoommateWithAdditionalInfoObject = {
     profileImage?: Maybe<Scalars['String']['output']>
 }
 
+export type SendCodeByEmailInput = {
+    codePurpose?: InputMaybe<CodePurpose>
+    email: Scalars['String']['input']
+}
+
+export type SendCodeByEmailObject = {
+    __typename?: 'SendCodeByEmailObject'
+    status: MailSendStatus
+}
+
+export type SendCodeBySmsObject = {
+    __typename?: 'SendCodeBySmsObject'
+    status: SmsSendStatus
+}
+
 export type SendCodeInput = {
-    codePurpose?: InputMaybe<Scalars['String']['input']>
+    codePurpose?: InputMaybe<CodePurpose>
     phone: Scalars['String']['input']
 }
 
@@ -456,36 +532,20 @@ export type SendResetPasswordLinkInput = {
     resend?: InputMaybe<Scalars['Boolean']['input']>
 }
 
+export type SendResetPasswordLinkObject = {
+    __typename?: 'SendResetPasswordLinkObject'
+    status: ResetPasswordResponse
+}
+
 export type SignInCredentialsInput = {
     identifier: Scalars['String']['input']
     password: Scalars['String']['input']
 }
 
-export type SignUpInput = {
-    answeredQuestions: Array<AnsweredQuestionInput>
-    birthDate: Scalars['DateTime']['input']
-    confirmPassword: Scalars['String']['input']
-    countryId: Scalars['Float']['input']
-    email?: InputMaybe<Scalars['String']['input']>
-    firstname: Scalars['String']['input']
-    genderId: Scalars['Float']['input']
-    lastname: Scalars['String']['input']
-    password: Scalars['String']['input']
-    phone: Scalars['String']['input']
-    profileImage?: InputMaybe<Scalars['String']['input']>
-}
-
-/** sent verification code status code enumeration */
-export enum SmsCodeValidityStatus {
-    Invalid = 'INVALID',
-    NotFound = 'NOT_FOUND',
-    Valid = 'VALID',
-}
-
 /** sms sending status code enumeration */
 export enum SmsSendStatus {
     AlreadySent = 'ALREADY_SENT',
-    Failed = 'FAILED',
+    Failure = 'FAILURE',
     Success = 'SUCCESS',
 }
 
@@ -548,4 +608,33 @@ export enum Variant {
     Calendar = 'calendar',
     Multiple = 'multiple',
     Single = 'single',
+}
+
+/** sent verification code status code enumeration */
+export enum VerificationCodeValidityStatus {
+    Invalid = 'INVALID',
+    NotFound = 'NOT_FOUND',
+    Valid = 'VALID',
+}
+
+export type VerifyCodeByEmailInput = {
+    code: Scalars['String']['input']
+    codePurpose?: InputMaybe<CodePurpose>
+    email: Scalars['String']['input']
+}
+
+export type VerifyCodeByEmailObject = {
+    __typename?: 'VerifyCodeByEmailObject'
+    status: VerificationCodeValidityStatus
+}
+
+export type VerifyCodeBySmsObject = {
+    __typename?: 'VerifyCodeBySmsObject'
+    status: VerificationCodeValidityStatus
+}
+
+export type VerifyCodeInput = {
+    code: Scalars['String']['input']
+    codePurpose?: InputMaybe<CodePurpose>
+    phone: Scalars['String']['input']
 }
