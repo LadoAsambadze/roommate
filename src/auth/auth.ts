@@ -28,7 +28,7 @@ export const getSessionId = () => {
     if (typeof window !== 'undefined') {
         return localStorage.getItem('sessionId')
     }
-    return null // or handle accordingly if localStorage is not available
+    return null
 }
 
 export const removeAllTokens = () => {
@@ -37,5 +37,5 @@ export const removeAllTokens = () => {
         localStorage.removeItem('refreshToken')
         localStorage.removeItem('sessionId')
     }
-    return null // or handle accordingly if localStorage is not available
+    return null
 }
