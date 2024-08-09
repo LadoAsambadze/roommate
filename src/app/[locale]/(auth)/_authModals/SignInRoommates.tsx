@@ -180,7 +180,7 @@ export const SignInRoommates = () => {
                                     <div className="flex w-full flex-row items-center justify-between">
                                         <button
                                             type="button"
-                                            onClick={signupRoommatesHandler}
+                                            onClick={signupChoosTypeHandler}
                                             className="w-auto text-xs text-[#838CAC]"
                                         >
                                             {t('signupModal')}
