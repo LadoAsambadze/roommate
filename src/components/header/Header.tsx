@@ -20,13 +20,9 @@ export default function Header() {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    const signinModalHandler = useCallback(() => {
+    const authModalHandler = useCallback(() => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
-        if (pathname.includes('/landlords')) {
-            current.set('signInModal', 'Landlords')
-        } else {
-            current.set('signInModal', 'Roommates')
-        }
+        current.set('modal', 'signinChooseType')
         const search = current.toString()
         const query = search ? `?${search}` : ''
         router.push(`${pathname}${query}`)
@@ -37,7 +33,6 @@ export default function Header() {
             const status = await refreshTokens()
             setRefreshStatus(status)
         }
-
         refresh()
     }, [])
     return (
@@ -67,7 +62,7 @@ export default function Header() {
                         <Button onClick={signOutHandler}>Log out</Button>
                     ) : (
                         <button
-                            onClick={signinModalHandler}
+                            onClick={authModalHandler}
                             className="mr-2 flex flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2"
                         >
                             <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
