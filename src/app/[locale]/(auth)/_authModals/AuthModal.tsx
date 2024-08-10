@@ -8,16 +8,16 @@ import { Input } from '@/src/components/ui/input'
 import { Label } from '@/src/components/ui/label'
 import { useMutation } from '@apollo/client'
 import { DialogTitle } from '@radix-ui/react-dialog'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { AlertDialogHeader } from '@/src/components/ui/alert-dialog'
+import { AuthSmsIcon, Call, GoogleIcon } from '@/src/components/svgs'
+import { useModalHandlers } from './ModalHandlers'
 import Img from '@images/Img.jpg'
 import Image from 'next/image'
-import { AlertDialogHeader } from '@/src/components/ui/alert-dialog'
-import { ArrowLeft } from '@/src/components/svgs'
-import Link from 'next/link'
 
-export const SignInRoommates = () => {
+export const AuthModal = () => {
     const { t } = useTranslation()
 
     const [identifier, setEmail] = useState('')
@@ -29,54 +29,9 @@ export const SignInRoommates = () => {
     const [modalStatus, setModalStatus] = useState(false)
 
     const router = useRouter()
-    const pathname = usePathname()
     const searchParams = useSearchParams()
 
     const [login] = useMutation(SignInMutation)
-
-    const modalCloseHandler = useCallback(() => {
-        const current = new URLSearchParams(Array.from(searchParams.entries()))
-        current.delete('modal')
-        const search = current.toString()
-        const query = search ? `?${search}` : ''
-        router.push(`${pathname}${query}`)
-    }, [searchParams, router, pathname])
-
-    const signinRoommatesHandler = useCallback(() => {
-        const current = new URLSearchParams(Array.from(searchParams.entries()))
-        current.set('modal', 'signinRoommates')
-        const search = current.toString()
-        const query = search ? `?${search}` : ''
-        router.push(`${pathname}${query}`)
-    }, [searchParams, router, pathname])
-
-    const signinLandlordsHandler = useCallback(() => {
-        const current = new URLSearchParams(Array.from(searchParams.entries()))
-        current.set('modal', 'signinLandlords')
-        const search = current.toString()
-        const query = search ? `?${search}` : ''
-        router.push(`${pathname}${query}`)
-    }, [searchParams, router, pathname])
-
-    const signupLandlordsHandler = useCallback(() => {
-        const current = new URLSearchParams(Array.from(searchParams.entries()))
-        current.set('modal', 'signupLandlords')
-        const search = current.toString()
-        const query = search ? `?${search}` : ''
-        router.push(`${pathname}${query}`)
-    }, [searchParams, router, pathname])
-
-    const signupRoommatesHandler = () => {
-        router.push('/signup')
-    }
-
-    const signupChoosTypeHandler = useCallback(() => {
-        const current = new URLSearchParams(Array.from(searchParams.entries()))
-        current.set('modal', 'signupChooseType')
-        const search = current.toString()
-        const query = search ? `?${search}` : ''
-        router.push(`${pathname}${query}`)
-    }, [searchParams, router, pathname])
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
@@ -115,6 +70,16 @@ export const SignInRoommates = () => {
         }
     }, [searchParams])
 
+    const {
+        modalCloseHandler,
+        signinRoommatesHandler,
+        signinLandlordsHandler,
+        signupRoommatesHandler,
+        signupLandlordsHandler,
+        signupChoosTypeHandler,
+        signinChoosTypeHandler,
+    } = useModalHandlers()
+
     return (
         <>
             <Dialog open={modalStatus} onOpenChange={modalCloseHandler}>
@@ -122,33 +87,77 @@ export const SignInRoommates = () => {
                     <div className="flex w-full  flex-col gap-4 gap-y-4 p-12 md:w-[460px]">
                         {modalType === 'signinChooseType' ? (
                             <>
-                                <div className="flex h-full flex-col items-center gap-5">
-                                    <button onClick={signinRoommatesHandler}>
+                                <div className="flex h-full flex-col items-center justify-center gap-5">
+                                    <Button
+                                        variant="modalButton"
+                                        className="h-10 w-full"
+                                        onClick={signinRoommatesHandler}
+                                    >
                                         ავტორიზაცია როგორც რუმმეითი
-                                    </button>
-                                    <button onClick={signinLandlordsHandler}>
+                                    </Button>
+                                    <Button
+                                        variant="modalButton"
+                                        className="h-10 w-full"
+                                        onClick={signinLandlordsHandler}
+                                    >
                                         ავტორიზაცია როგორც ლენდლორდი
-                                    </button>
+                                    </Button>
                                 </div>
                             </>
                         ) : modalType === 'signupChooseType' ? (
                             <>
-                                <div onClick={signupLandlordsHandler}>
-                                    რეგისტრაცია ფორმა ლენდლორდებისთვის
-                                </div>
-                                <div onClick={signupRoommatesHandler}>
-                                    რეგისტრაცია ფორმა რუმმეითებისთვის
+                                <div className="flex h-full flex-col items-center justify-center gap-5">
+                                    <Button
+                                        variant="modalButton"
+                                        className="h-10 w-full"
+                                        onClick={signupRoommatesHandler}
+                                    >
+                                        რეგისტრაცია ფორმა რუმმეითებისთვის
+                                    </Button>
+                                    <Button
+                                        variant="modalButton"
+                                        className="h-10 w-full"
+                                        onClick={signupLandlordsHandler}
+                                    >
+                                        რეგისტრაცია ფორმა ლენდლორდებისთვის
+                                    </Button>
                                 </div>
                             </>
                         ) : modalType === 'signupLandlords' ? (
-                            <div className="flex h-full flex-col items-center gap-5">
-                                რეგისტრაციის ფორმა იქნება ლენდლორდებისთვის
+                            <div className="flex flex-col gap-5">
+                                <h1 className="text-center text-xl  text-textColor">რეგისტრაცია</h1>
+                                <button className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
+                                    <GoogleIcon className="h-6 w-6" />
+                                    <span>Continue with Google</span>
+                                </button>
+                                <button className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
+                                    <AuthSmsIcon className="h-6 w-6" />
+                                    <span>Continue with Email</span>
+                                </button>
+                                <button className=" flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
+                                    <Call className="h-6 w-6" />
+                                    <span>Continue with Google</span>
+                                </button>
+                                <Button
+                                    onClick={signupChoosTypeHandler}
+                                    className="h-10 w-full text-sm"
+                                >
+                                    რეგისტრაცია
+                                </Button>
+                                <div className="flex justify-start text-mainGreen">
+                                    <button
+                                        onClick={signinChoosTypeHandler}
+                                        className=" align-left text-xs"
+                                    >
+                                        ავტორიზაცია
+                                    </button>
+                                </div>
                             </div>
                         ) : modalType === 'signinRoommates' ? (
                             <>
                                 <AlertDialogHeader>
                                     <DialogTitle className="pb-4 text-center text-xl">
-                                        {/* {t('auth')} */} ავტორიზაცია რუმმეითებისთვის
+                                        {/* {t('auth')} */} რეგისტრაცია რუმმეითებისთვის
                                     </DialogTitle>
                                     <div className="h-[1px] w-full bg-slate-200"></div>
                                 </AlertDialogHeader>
@@ -236,13 +245,33 @@ export const SignInRoommates = () => {
                             </>
                         ) : modalType === 'signinLandlords' ? (
                             <div className="flex flex-col gap-5">
-                                <h1 className="text-xl">ავტორიზაცია ლენდლორდებისთვის</h1>
-                                <div>google</div>
-                                <div>email</div>
-                                <div>phone</div>
-                                <button onClick={signupChoosTypeHandler}>
-                                    რეგისტრაციაზე გადასვლა
+                                <h1 className="text-center text-xl  text-textColor">ავტორიზაცია</h1>
+                                <button className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
+                                    <GoogleIcon className="h-6 w-6" />
+                                    <span>Continue with Google</span>
                                 </button>
+                                <button className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
+                                    <AuthSmsIcon className="h-6 w-6" />
+                                    <span>Continue with Email</span>
+                                </button>
+                                <button className=" flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
+                                    <Call className="h-6 w-6" />
+                                    <span>Continue with Google</span>
+                                </button>
+                                <Button
+                                    onClick={signupChoosTypeHandler}
+                                    className="h-10 w-full text-sm"
+                                >
+                                    რეგისტრაცია
+                                </Button>
+                                <div className="flex justify-start text-mainGreen">
+                                    <button
+                                        onClick={signinChoosTypeHandler}
+                                        className=" align-left text-xs"
+                                    >
+                                        ავტორიზაცია
+                                    </button>
+                                </div>
                             </div>
                         ) : // <div className="flex flex-col gap-4">
                         //     <div className="flex flex-col gap-1 text-center text-sm">
