@@ -12,7 +12,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AlertDialogHeader } from '@/src/components/ui/alert-dialog'
-import { AuthSmsIcon, Call, GoogleIcon } from '@/src/components/svgs'
+import { ArrowLeft, AuthSmsIcon, Call, GoogleIcon } from '@/src/components/svgs'
 import { useModalHandlers } from './ModalHandlers'
 import Img from '@images/Img.jpg'
 import Image from 'next/image'
@@ -125,7 +125,16 @@ export const AuthModal = () => {
                             </>
                         ) : modalType === 'signupLandlords' ? (
                             <div className="flex flex-col gap-5">
-                                <h1 className="text-center text-xl  text-textColor">რეგისტრაცია</h1>
+                                <button
+                                    className="flex cursor-pointer flex-row items-center gap-1 outline-none"
+                                    onClick={signupChoosTypeHandler}
+                                >
+                                    <ArrowLeft className="h-5 w-5" />
+                                    <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
+                                </button>
+                                <h1 className="text-center text-xl  text-textColor">
+                                    რეგისტრაცია ლენდლორდებისთვის
+                                </h1>
                                 <button className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
                                     <GoogleIcon className="h-6 w-6" />
                                     <span>Continue with Google</span>
@@ -138,20 +147,6 @@ export const AuthModal = () => {
                                     <Call className="h-6 w-6" />
                                     <span>Continue with Google</span>
                                 </button>
-                                <Button
-                                    onClick={signupChoosTypeHandler}
-                                    className="h-10 w-full text-sm"
-                                >
-                                    რეგისტრაცია
-                                </Button>
-                                <div className="flex justify-start text-mainGreen">
-                                    <button
-                                        onClick={signinChoosTypeHandler}
-                                        className=" align-left text-xs"
-                                    >
-                                        ავტორიზაცია
-                                    </button>
-                                </div>
                             </div>
                         ) : modalType === 'signinRoommates' ? (
                             <>

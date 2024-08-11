@@ -8,5 +8,7 @@
     "howItWorks": "How it works",
     "notifications": "notifications",
     "logOut": "Log out",
-    "fileTooLarge": "Maximum file size is 5 MB"
+    "fileTooLarge": "Maximum file size is 5 MB",
+    "signUp": "Sign up",
+    "landlords": "Landlords"
 }
