@@ -1,7 +1,7 @@
 'use client'
 
 import { SignInMutation } from '@/graphql/mutation'
-import { setRefreshToken, setSessionId, setToken } from '@/src/auth/auth'
+import { setRefreshToken, setSessionId, setAccessToken } from '@/src/auth/authHelpers'
 import { Button } from '@/src/components/ui/button'
 import { Dialog, DialogContent } from '@/src/components/ui/dialog'
 import { Input } from '@/src/components/ui/input'
@@ -85,7 +85,7 @@ export const SignInRoommates = () => {
         try {
             const { data } = await login({ variables: { input: { identifier, password } } })
             if (data?.signIn) {
-                setToken(data.signIn.accessToken)
+                setAccessToken(data.signIn.accessToken)
                 setRefreshToken(data.signIn.refreshToken)
                 setSessionId(data.signIn.sessionId)
                 router.push('/roommates')

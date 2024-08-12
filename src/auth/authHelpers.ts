@@ -1,4 +1,4 @@
-export const setToken = (token: string) => {
+export const setAccessToken = (token: string) => {
     localStorage.setItem('token', token)
 }
 
@@ -37,5 +37,4 @@ export const removeAllTokens = () => {
         localStorage.removeItem('refreshToken')
         localStorage.removeItem('sessionId')
     }
-    return null
 }

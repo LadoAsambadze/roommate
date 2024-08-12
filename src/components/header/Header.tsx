@@ -6,15 +6,17 @@ import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
 import { Button } from '../ui/button'
-import { useCallback, useEffect, useState } from 'react'
-import { refreshTokens } from '@/src/auth/refreshTokens'
+import { useCallback } from 'react'
 import { signOutHandler } from '@/src/auth/signOut'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { usePathname } from 'next/navigation'
+import { useReactiveVar } from '@apollo/client'
+import { isAuthenticatedVar } from '@/src/auth/isAuthenticatedVar'
 
 export default function Header() {
     const { t } = useTranslation()
-    const [refreshStatus, setRefreshStatus] = useState<boolean | null>(null)
+
+    const isAuthenticated = useReactiveVar(isAuthenticatedVar)
 
     const router = useRouter()
     const pathname = usePathname()
@@ -28,13 +30,7 @@ export default function Header() {
         router.push(`${pathname}${query}`)
     }, [searchParams, router, pathname])
 
-    useEffect(() => {
-        const refresh = async () => {
-            const status = await refreshTokens()
-            setRefreshStatus(status)
-        }
-        refresh()
-    }, [])
+    console.log({ isAuthenticated })
 
     return (
         <>
@@ -59,19 +55,23 @@ export default function Header() {
                         </button>
                     </Link>
 
-                    {refreshStatus ? (
-                        <Button onClick={signOutHandler}>Log out</Button>
-                    ) : (
-                        <button
-                            onClick={authModalHandler}
-                            className="mr-2 flex flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2"
-                        >
-                            <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
-                            <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
-                                {t('auth')}
-                            </span>
-                        </button>
-                    )}
+                    <div>
+                        {isAuthenticated.checking ? (
+                            <span>...</span>
+                        ) : isAuthenticated.valid ? (
+                            <Button onClick={signOutHandler}>Log out</Button>
+                        ) : (
+                            <button
+                                onClick={authModalHandler}
+                                className="mr-2 flex flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2"
+                            >
+                                <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                                <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
+                                    {t('auth')}
+                                </span>
+                            </button>
+                        )}
+                    </div>
 
                     <LangChoose
                         className="cursor-pointer rounded-lg bg-[#f2f5ff] p-2 text-xs   md:mr-2 lg:mr-4 lg:p-2 xl:text-base"

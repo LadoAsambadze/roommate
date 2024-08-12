@@ -1,4 +1,4 @@
-import { ApolloLink, DefaultContext, HttpLink, Observable } from '@apollo/client'
+import { ApolloLink, DefaultContext, HttpLink } from '@apollo/client'
 import { RestLink } from 'apollo-link-rest'
 import { errorLink } from './errorLink'
 
@@ -23,6 +23,6 @@ const httpLink = new HttpLink({
 
 const restLink = new RestLink({ uri: process.env.NEXT_PUBLIC_REST_API })
 
-const links = ApolloLink.from([authLink, errorLink, restLink, httpLink])
+const links = ApolloLink.from([errorLink, authLink, restLink, httpLink])
 
 export { authLink, httpLink, restLink, links }

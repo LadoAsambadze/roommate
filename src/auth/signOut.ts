@@ -1,6 +1,8 @@
-import { removeAllTokens } from './auth'
+import { removeAllTokens } from './authHelpers'
+import { isAuthenticatedVar } from './isAuthenticatedVar'
 
 export const signOutHandler = () => {
     removeAllTokens()
-    window.location.href = '/'
+
+    isAuthenticatedVar({ checking: false, valid: false })
 }

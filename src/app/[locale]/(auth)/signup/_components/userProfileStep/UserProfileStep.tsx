@@ -15,7 +15,12 @@ import {
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
 import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
-import { CountryObject, GenderObject, Language } from '@/graphql/typesGraphql'
+import {
+    CountryObject,
+    GenderObject,
+    Language,
+    VerificationCodeValidityStatus,
+} from '@/graphql/typesGraphql'
 import { getCountriesQuery, getGendersQuery } from '@/graphql/query'
 import Image from 'next/legacy/image'
 import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
@@ -93,15 +98,15 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
             variables: {
                 input: {
                     phone: form.watch('phone') ?? '',
-                    code: Number(data.code),
+                    code: data.code,
                 },
             },
         })
-        if (responseData?.checkCode === 'VALID') {
+        if (responseData?.checkCode.status === VerificationCodeValidityStatus.Valid) {
             setStep(2)
-        } else if (responseData?.checkCode === 'INVALID') {
+        } else if (responseData?.checkCode.status === VerificationCodeValidityStatus.Invalid) {
             form.setError('code', { message: t('codeExpired') })
-        } else if (responseData?.checkCode === 'NOT_FOUND') {
+        } else if (responseData?.checkCode.status === VerificationCodeValidityStatus.NotFound) {
             form.setError('code', { message: t('incorrectCode') })
         } else {
             form.setError('code', { message: t('fillCode') })
@@ -119,7 +124,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                     },
                 },
             })
-            if (data?.sendCode === 'ALREADY_SENT') {
+            if (data?.sendCode.status === 'ALREADY_SENT') {
                 form.setError('code', { message: t('codeAlreadySent') })
             }
         })()
