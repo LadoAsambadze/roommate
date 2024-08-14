@@ -39,12 +39,12 @@ export default function Header() {
                     <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
                 </Link>
                 <div className="flex flex-row items-center">
-                    <Link href="/landlords">
+                    {/* <Link href="/landlords">
                         <button className="mr-4 hidden rounded-lg md:block md:text-xs  xl:text-base">
                             {t('landlords')}
                         </button>
-                    </Link>
-                    <button
+                    </Link> */}
+                    {/* <button
                         onClick={signinModalHandler}
                         className="mr-2 flex flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2"
                     >
@@ -52,9 +52,9 @@ export default function Header() {
                         <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
                             ატვირთე ბინა
                         </span>
-                    </button>
+                    </button> */}
 
-                    <button
+                    {/* <button
                         onClick={signupModalHandler}
                         className="mr-2 flex flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2"
                     >
@@ -62,7 +62,7 @@ export default function Header() {
                         <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
                             {t('signUp')}
                         </span>
-                    </button>
+                    </button> */}
 
                     <button
                         onClick={signinModalHandler}

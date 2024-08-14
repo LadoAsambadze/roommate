@@ -58,6 +58,22 @@ export const useModalHandlers = () => {
         router.push(`${pathname}${query}`)
     }, [searchParams, router, pathname])
 
+    const landlordsResetPasswordHandler = useCallback(() => {
+        const current = new URLSearchParams(Array.from(searchParams.entries()))
+        current.set('modal', 'resetPasswordLandlords')
+        const search = current.toString()
+        const query = search ? `?${search}` : ''
+        router.push(`${pathname}${query}`)
+    }, [searchParams, router, pathname])
+
+    const roommatesResetPasswordHandler = useCallback(() => {
+        const current = new URLSearchParams(Array.from(searchParams.entries()))
+        current.set('modal', 'resetPasswordRoommates')
+        const search = current.toString()
+        const query = search ? `?${search}` : ''
+        router.push(`${pathname}${query}`)
+    }, [searchParams, router, pathname])
+
     return {
         modalCloseHandler,
         signinRoommatesHandler,
@@ -66,5 +82,7 @@ export const useModalHandlers = () => {
         signupRoommatesHandler,
         signupChoosTypeHandler,
         signinChoosTypeHandler,
+        landlordsResetPasswordHandler,
+        roommatesResetPasswordHandler,
     }
 }
