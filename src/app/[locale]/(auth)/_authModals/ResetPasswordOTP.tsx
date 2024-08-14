@@ -1,6 +1,6 @@
 'use client'
 
-import { useToast } from '@/components/ui/use-toast'
+import { useToast } from '@/src/components/ui/use-toast'
 import { Button } from '@/src/components/ui/button'
 import {
     Form,
