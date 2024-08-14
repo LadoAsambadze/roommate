@@ -54,7 +54,7 @@ export default function Header() {
                         </span>
                     </button> */}
 
-                    {/* <button
+                    <button
                         onClick={signupModalHandler}
                         className="mr-2 flex flex-row items-center rounded-lg bg-[#F2F5FF] p-2 xl:mr-4 xl:px-3 xl:py-2"
                     >
@@ -62,7 +62,7 @@ export default function Header() {
                         <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
                             {t('signUp')}
                         </span>
-                    </button> */}
+                    </button>
 
                     <button
                         onClick={signinModalHandler}
