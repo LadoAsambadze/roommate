@@ -16,6 +16,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
+import { Dispatch, SetStateAction } from 'react'
+
+type otpType = {
+    setNewPassword: Dispatch<SetStateAction<boolean>>
+}
 
 const FormSchema = z.object({
     pin: z.string().min(6, {
@@ -23,7 +28,7 @@ const FormSchema = z.object({
     }),
 })
 
-export function InputOTPForm({ setNewPassword }: any) {
+export function InputOTPForm({ setNewPassword }: otpType) {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {

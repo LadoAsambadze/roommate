@@ -37,7 +37,7 @@ export const AuthModal = () => {
                 </Drawer>
             ) : (
                 <Dialog open={modalStatus} onOpenChange={modalCloseHandler}>
-                    <DialogContent className="flex h-[450px] w-full max-w-full flex-col gap-0 overflow-hidden bg-[#FFFFFF] p-0 md:w-auto md:max-w-full md:flex-row">
+                    <DialogContent className="flex h-[550px] w-full max-w-full flex-col gap-0 overflow-hidden bg-[#FFFFFF] p-0 md:w-auto md:max-w-full md:flex-row">
                         <AuthModalContent />
                     </DialogContent>
                 </Dialog>

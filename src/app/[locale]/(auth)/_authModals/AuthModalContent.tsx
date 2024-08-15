@@ -15,16 +15,18 @@ import Img from '@images/Img.jpg'
 import Image from 'next/image'
 import { useMediaQuery } from 'react-responsive'
 import { InputOTPForm } from './ResetPasswordOTP'
+import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 
 export const AuthModalContent = () => {
     const { t } = useTranslation()
 
-    const [identifier, setEmail] = useState('')
+    const [identifier, setIdentifier] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [resetPassword, setResetPassword] = useState(false)
     const [newPassword, setNewPassword] = useState(false)
     const [modalType, setModalType] = useState('')
+    const [signupMethod, setSignupMethod] = useState<string | null>(null)
 
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -120,30 +122,78 @@ export const AuthModalContent = () => {
                         </Button>
                     </div>
                 ) : modalType === 'signupLandlords' ? (
-                    <div className="flex flex-col gap-4">
-                        <button
-                            className="flex cursor-pointer flex-row items-center gap-1 outline-none"
-                            onClick={signupChoosTypeHandler}
-                        >
-                            <ArrowLeft className="h-5 w-5" />
-                            <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
-                        </button>
-                        <h1 className="text-center text-xl  text-textColor">
-                            რეგისტრაცია ლენდლორდებისთვის
-                        </h1>
-                        <button className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
-                            <GoogleIcon className="h-6 w-6" />
-                            <span>Continue with Google</span>
-                        </button>
-                        <button className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
-                            <AuthSmsIcon className="h-6 w-6" />
-                            <span>Continue with Email</span>
-                        </button>
-                        <button className=" flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
-                            <Call className="h-6 w-6" />
-                            <span>Continue with Google</span>
-                        </button>
-                    </div>
+                    <>
+                        {!signupMethod ? (
+                            <div className="flex flex-col gap-4">
+                                <button
+                                    className="flex cursor-pointer flex-row items-center gap-1 outline-none"
+                                    onClick={signupChoosTypeHandler}
+                                >
+                                    <ArrowLeft className="h-5 w-5" />
+                                    <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
+                                </button>
+                                <h1 className="text-center text-xl  text-textColor">
+                                    რეგისტრაცია ლენდლორდებისთვის
+                                </h1>
+                                <button
+                                    onClick={() => setSignupMethod('google')}
+                                    className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen"
+                                >
+                                    <GoogleIcon className="h-6 w-6" />
+                                    <span>Continue with Google</span>
+                                </button>
+                                <button className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
+                                    <AuthSmsIcon className="h-6 w-6" />
+                                    <span>Continue with Email</span>
+                                </button>
+                                <button className=" flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
+                                    <Call className="h-6 w-6" />
+                                    <span>Continue with Google</span>
+                                </button>
+                            </div>
+                        ) : signupMethod === 'google' || 'email' || 'password' ? (
+                            <form
+                                className="grid w-full grid-cols-1 gap-y-4"
+                                onSubmit={handleSubmit}
+                            >
+                                <h1 className="text-center text-base">რეგისტრაცია</h1>
+                                <div className="flex flex-col items-start gap-2">
+                                    <Label className="text-sm">სახელი</Label>
+                                    <Input placeholder={'სახელი'} />
+                                </div>
+                                <div className="flex flex-col items-start gap-2">
+                                    <Label className="text-sm">გვარი</Label>
+                                    <Input placeholder={'გვარი'} />
+                                </div>
+                                <div className="flex flex-col items-start gap-2">
+                                    <Label className="text-sm">ელ ფოსტან</Label>
+                                    <Input placeholder={'ელ ფოსტა'} />
+                                </div>
+                                <div className="flex flex-col items-start gap-2">
+                                    <Label className="text-sm">სახელი</Label>
+                                    <PhoneInput
+                                        type="number"
+                                        defaultCountry="GE"
+                                        international
+                                        value={undefined}
+                                        field={undefined}
+                                        labels={undefined}
+                                        form={undefined}
+                                    />
+                                </div>
+                                <Button type="submit" className="mt-3 w-full">
+                                    რეგისტრაცია
+                                </Button>
+                                <button
+                                    className="flex cursor-pointer flex-row items-center gap-1 outline-none"
+                                    onClick={() => setSignupMethod(null)}
+                                >
+                                    <ArrowLeft className="h-5 w-5" />
+                                    <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
+                                </button>
+                            </form>
+                        ) : null}
+                    </>
                 ) : modalType === 'signinRoommates' ? (
                     <div className="flex h-full w-full flex-col gap-4">
                         <button
@@ -158,26 +208,18 @@ export const AuthModalContent = () => {
                         <div className="h-[1px] w-full bg-slate-200"></div>
                         <form className="grid w-full grid-cols-1 gap-y-4" onSubmit={handleSubmit}>
                             <div className="flex flex-col items-start gap-2">
-                                <Label htmlFor="identifier" className="text-sm">
-                                    {t('phoneNum')}
-                                </Label>
+                                <Label className="text-sm">ტელეფონი</Label>
                                 <Input
-                                    value={identifier}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    id="identifier"
-                                    placeholder={t('phoneNum')}
+                                    placeholder={'ტელეფონი'}
+                                    onChange={(e) => setIdentifier(e.target.value)}
                                 />
                             </div>
                             <div className="flex flex-col items-start gap-2">
-                                <Label htmlFor="password" className="text-sm">
-                                    {t('password')}
-                                </Label>
+                                <Label className="text-sm">პაროლი</Label>
                                 <Input
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    id="password"
                                     type="password"
-                                    placeholder={t('password')}
+                                    placeholder={'პაროლი'}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
                             {error && <p className="text-sm text-[red]">{error}</p>}
@@ -202,37 +244,21 @@ export const AuthModalContent = () => {
                             onClick={signinChoosTypeHandler}
                         >
                             <ArrowLeft className="h-5 w-5" />
-                            <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
+                            <span className="mb-1 text-xs text-[#838CAC]">უკან</span>
                         </button>
                         <h1 className="text-center text-xl  text-textColor">ავტორიზაცია</h1>
                         <button className="flex h-10 flex-row items-center justify-center gap-4 rounded-lg border border-[#838CAC] outline-none hover:border-hoverGreen">
                             <GoogleIcon className="h-6 w-6" />
-                            <span>Continue with Google</span>
+                            <span>გუგლით ავტორიზაცია</span>
                         </button>
-
                         <form className="grid w-full grid-cols-1 gap-y-4" onSubmit={handleSubmit}>
                             <div className="flex flex-col items-start gap-2">
-                                <Label htmlFor="identifier" className="text-sm">
-                                    {t('phoneNum')} / {t('email')}
-                                </Label>
-                                <Input
-                                    value={identifier}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    id="identifier"
-                                    placeholder={`${t('phoneNum')} / ${t('email')}`}
-                                />
+                                <Label className="text-sm">ტელეფონი / მეილი</Label>
+                                <Input placeholder={`ტელეფონი / მეილი`} />
                             </div>
                             <div className="flex flex-col items-start gap-2">
-                                <Label htmlFor="password" className="text-sm">
-                                    {t('password')}
-                                </Label>
-                                <Input
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    id="password"
-                                    type="password"
-                                    placeholder={t('password')}
-                                />
+                                <Label className="text-sm">პაროლი</Label>
+                                <Input placeholder={'პაროლი'} />
                             </div>
                             {error && <p className="text-sm text-[red]">{error}</p>}
                             <div className="flex w-full flex-row items-center justify-end">
@@ -241,11 +267,11 @@ export const AuthModalContent = () => {
                                     onClick={landlordsResetPasswordHandler}
                                     className="w-auto text-xs text-[#838CAC]"
                                 >
-                                    {t('forgotPass')}
+                                    დაგავიწყდა პაროლი ?
                                 </button>
                             </div>
                             <Button type="submit" className="w-full">
-                                {t('signIn')}
+                                შესვლა
                             </Button>
                         </form>
                     </div>
@@ -264,29 +290,23 @@ export const AuthModalContent = () => {
                                         }
                                     >
                                         <ArrowLeft className="h-5 w-5" />
-                                        <span className="mb-1 text-xs text-[#838CAC]">
-                                            {t('back')}
-                                        </span>
+                                        <span className="mb-1 text-xs text-[#838CAC]">უკან</span>
                                     </button>
                                 </div>
                                 <form className="grid w-full grid-cols-1 gap-y-6">
-                                    <h1 className="text-center text-base">{t('resetPassword')}</h1>
+                                    <h1 className="text-center text-base">პაროლის აღდგენა</h1>
 
                                     <div className="flex flex-col items-start gap-2">
                                         <Label htmlFor="identifier" className="text-sm">
                                             {modalType === 'resetPasswordRoommates'
-                                                ? t('phoneNum')
-                                                : `${t('phoneNum')} / ${t('email')}`}
+                                                ? 'ტელეფონი'
+                                                : `ტელეფონი / მეილი`}
                                         </Label>
-
                                         <Input
-                                            value={identifier}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            id="identifier"
                                             placeholder={
                                                 modalType === 'resetPasswordRoommates'
-                                                    ? t('phoneNum')
-                                                    : `${t('phoneNum')} / ${t('email')}`
+                                                    ? 'ტელეფონი'
+                                                    : `ტელეფონი / მეილი`
                                             }
                                         />
                                     </div>
@@ -297,7 +317,7 @@ export const AuthModalContent = () => {
                                         }}
                                         className="w-full"
                                     >
-                                        {t('getCode')}
+                                        კოდის გაგზავნა
                                     </Button>
                                 </form>
                             </>
@@ -309,15 +329,13 @@ export const AuthModalContent = () => {
                                         onClick={() => setResetPassword(false)}
                                     >
                                         <ArrowLeft className="h-5 w-5" />
-                                        <span className="mb-1 text-xs text-[#838CAC]">
-                                            {t('back')}
-                                        </span>
+                                        <span className="mb-1 text-xs text-[#838CAC]">უკან</span>
                                     </button>
                                 </div>
                                 <InputOTPForm setNewPassword={setNewPassword} />
                             </div>
                         ) : newPassword ? (
-                            <div className="flex w-full  flex-col items-start gap-6">
+                            <div className="flex w-full flex-col items-start gap-6">
                                 <div className="flex w-full justify-start">
                                     <button
                                         className="flex cursor-pointer flex-row  items-center gap-1 outline-none"
@@ -327,9 +345,7 @@ export const AuthModalContent = () => {
                                         }}
                                     >
                                         <ArrowLeft className="h-5 w-5" />
-                                        <span className="mb-1 text-xs text-[#838CAC]">
-                                            {t('back')}
-                                        </span>
+                                        <span className="mb-1 text-xs text-[#838CAC]">უკან</span>
                                     </button>
                                 </div>
                                 <div className="flex w-full justify-center">
@@ -337,23 +353,13 @@ export const AuthModalContent = () => {
                                 </div>
                                 <form className="flex w-full flex-col items-start gap-4">
                                     <Label htmlFor="newpassword" className="text-sm">
-                                        New password
+                                        ახალი პაროლი
                                     </Label>
-                                    <Input
-                                        value={identifier}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        id="newPassword"
-                                        placeholder={t('newPass')}
-                                    />
+                                    <Input placeholder={'ახალი პაროლი'} />
                                     <Label htmlFor="newpassword" className="text-sm">
-                                        Confirm Password
+                                        დაადასტურე პაროლი
                                     </Label>
-                                    <Input
-                                        value={identifier}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        id="ConfirmPassword"
-                                        placeholder={t('ConfirmPassword')}
-                                    />
+                                    <Input placeholder={' დაადასტურე პაროლი'} />
                                     <Button type="submit" className="w-full">
                                         შენახვა
                                     </Button>
