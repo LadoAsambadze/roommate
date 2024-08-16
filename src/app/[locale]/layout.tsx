@@ -7,7 +7,7 @@ import './globals.css'
 import Header from '@/src/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/src/components/footer/Footer'
-import { SignInRoommates } from './(auth)/_authModals/SignInRoommates'
+import { AuthModal } from './(auth)/_authModals/AuthModal'
 import { AuthWrapper } from '@/src/auth/authWrapper'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
@@ -60,7 +60,7 @@ export default async function RootLayout({
                     <ApolloWrapper>
                         <AuthWrapper>
                             <Header />
-                            <SignInRoommates />
+                            <AuthModal />
 
                             {children}
                             <Footer />
