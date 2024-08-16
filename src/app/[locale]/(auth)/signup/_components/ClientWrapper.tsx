@@ -17,7 +17,7 @@ import {
     NewAnsweredQuestion,
 } from '../types'
 import { RoommateSignUpMutation } from '@/graphql/mutation'
-import { setRefreshToken, setSessionId, setToken } from '@/src/auth/auth'
+import { setRefreshToken, setSessionId, setAccessToken } from '@/src/auth/authHelpers'
 
 export default function ClientWrapper() {
     const [step, setStep] = useState(1)
@@ -123,7 +123,7 @@ export default function ClientWrapper() {
                 })
 
                 if (data?.roommateSignUp.jwt) {
-                    setToken(data.roommateSignUp.jwt.accessToken)
+                    setAccessToken(data.roommateSignUp.jwt.accessToken)
                     setRefreshToken(data.roommateSignUp.jwt.refreshToken)
                     setSessionId(data.roommateSignUp.jwt.sessionId)
                     router.push('/roommates')

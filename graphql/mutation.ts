@@ -1,16 +1,16 @@
 import { TypedDocumentNode, gql } from '@apollo/client'
 import {
     Mutation,
-    MutationCheckCodeArgs,
+    MutationSendCodeBySmsArgs,
     MutationRefreshTokenArgs,
     MutationRoommateSignUpArgs,
-    MutationSendCodeArgs,
+    MutationVerifyCodeBySmsArgs,
     MutationSignInArgs,
 } from './typesGraphql'
 
 export const SendCodeMutation: TypedDocumentNode<
-    { sendCode: Mutation['sendCode'] },
-    MutationSendCodeArgs
+    { sendCode: Mutation['sendCodeBySms'] },
+    MutationSendCodeBySmsArgs
 > = gql`
     mutation SendCode($input: SendCodeInput!) {
         sendCode(input: $input)
@@ -18,8 +18,8 @@ export const SendCodeMutation: TypedDocumentNode<
 `
 
 export const CheckCodeMutation: TypedDocumentNode<
-    { checkCode: Mutation['checkCode'] },
-    MutationCheckCodeArgs
+    { checkCode: Mutation['verifyCodeBySms'] },
+    MutationVerifyCodeBySmsArgs
 > = gql`
     mutation CheckCode($input: CheckCodeInput!) {
         checkCode(input: $input)
@@ -67,7 +67,7 @@ export const RefreshTokenMutation: TypedDocumentNode<
     { refreshToken: Mutation['refreshToken'] },
     MutationRefreshTokenArgs
 > = gql`
-    mutation SignIn($input: RefreshTokenInput!) {
+    mutation RefreshToken($input: RefreshTokenInput!) {
         refreshToken(input: $input) {
             accessToken
             refreshToken

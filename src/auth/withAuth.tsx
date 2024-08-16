@@ -1,33 +1,37 @@
 import { useEffect, useState } from 'react'
-import { getToken, removeAllTokens } from './auth'
-import { useRouter } from 'next/navigation'
+import { useReactiveVar } from '@apollo/client'
+import { getAccessToken } from './authHelpers'
 import Loading from '@/src/app/[locale]/loading'
 import { refreshTokens } from './refreshTokens'
-import { isTokenExpired } from '../utils/iseTokenExpired'
+import { isTokenExpired } from '../utils/isTokenExpired'
+import { useRouter } from 'next/navigation'
+import { isAuthenticatedVar } from './isAuthenticatedVar'
 
 export const withAuth = (WrappedComponent: React.ComponentType) => {
     return (props: any) => {
         const router = useRouter()
         const [isValidating, setIsValidating] = useState(true)
+        const isAuthenticated = useReactiveVar(isAuthenticatedVar)
 
         useEffect(() => {
             async function checkAuth() {
-                const accessToken = getToken()
+                const accessToken = getAccessToken()
 
                 if (!accessToken || isTokenExpired(accessToken)) {
-                    const refreshed = await refreshTokens()
-                    if (!refreshed) {
-                        router.replace('/signup')
-                        removeAllTokens()
-                        return
-                    }
+                    await refreshTokens()
                 }
 
-                setIsValidating(false)
+                setTimeout(() => setIsValidating(false), 100)
             }
 
             checkAuth()
-        }, [router])
+        }, [])
+
+        useEffect(() => {
+            if (!isAuthenticated.valid) {
+                router.replace('/?modal=signinChooseType')
+            }
+        }, [isAuthenticated.valid])
 
         if (isValidating) {
             return <Loading />

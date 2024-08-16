@@ -1,13 +1,14 @@
 import TranslationsProvider from '@/src/libs/i18n/TranslationsProvider'
 import { ApolloWrapper } from '@/src/libs/apollo/wrapper'
 import initTranslations from '@/src/libs/i18n/i18n'
-import { ReactNode, Suspense } from 'react'
+import { ReactNode } from 'react'
 import { dir } from 'i18next'
 import './globals.css'
 import Header from '@/src/components/header/Header'
 import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/src/components/footer/Footer'
-import { AuthModal } from './(auth)/_authModals/AuthModal'
+import { SignInRoommates } from './(auth)/_authModals/SignInRoommates'
+import { AuthWrapper } from '@/src/auth/authWrapper'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 
@@ -24,14 +25,13 @@ export async function generateMetadata({ params: { locale } }: { params: { local
             default: t('title'),
             template: '%s | roommate website ',
         },
-
         description: t('description'),
         openGraph: {
             title: t('title'),
             description: t('description'),
             type: 'website',
             locale: locale,
-            url: 'rommate.ge',
+            url: 'roommate.ge',
             siteName: 'roommate',
         },
     }
@@ -39,13 +39,10 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 
 export default async function RootLayout({
     children,
-    modal,
-
     params: { locale },
 }: {
     children: ReactNode
     modal: ReactNode
-
     params: { locale: string }
 }) {
     const i18nNamespaces = ['home', 'shared', 'signup', 'profile', 'roommates', 'signin']
@@ -61,12 +58,13 @@ export default async function RootLayout({
                     resources={resources}
                 >
                     <ApolloWrapper>
-                        <Suspense fallback={<div>Loading...</div>}>
+                        <AuthWrapper>
                             <Header />
-                            <AuthModal />
-                        </Suspense>
-                        {children}
-                        <Footer />
+                            <SignInRoommates />
+
+                            {children}
+                            <Footer />
+                        </AuthWrapper>
                     </ApolloWrapper>
                 </TranslationsProvider>
             </body>

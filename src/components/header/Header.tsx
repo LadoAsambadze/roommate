@@ -1,16 +1,20 @@
 'use client'
 
 import { useTranslation } from 'react-i18next'
-import { Bell2, Logo, Upload, UserIcon2 } from '../svgs'
+import { Bell2, Logo, UserIcon2 } from '../svgs'
 import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
 import { useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { usePathname } from 'next/navigation'
+import { useReactiveVar } from '@apollo/client'
+import { isAuthenticatedVar } from '@/src/auth/isAuthenticatedVar'
 
 export default function Header() {
     const { t } = useTranslation()
+
+    const isAuthenticated = useReactiveVar(isAuthenticatedVar)
 
     const router = useRouter()
     const pathname = usePathname()
@@ -24,6 +28,7 @@ export default function Header() {
         router.push(`${pathname}${query}`)
     }, [searchParams, router, pathname])
 
+    console.log({ isAuthenticated })
     const signupModalHandler = useCallback(() => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
         current.set('modal', 'signupChooseType')

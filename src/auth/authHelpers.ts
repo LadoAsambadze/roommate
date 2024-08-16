@@ -1,4 +1,4 @@
-export const setToken = (token: string) => {
+export const setAccessToken = (token: string) => {
     localStorage.setItem('token', token)
 }
 
@@ -10,7 +10,7 @@ export const setSessionId = (sessionId: string) => {
     localStorage.setItem('sessionId', sessionId)
 }
 
-export const getToken = () => {
+export const getAccessToken = () => {
     if (typeof window !== 'undefined') {
         return localStorage.getItem('token')
     }
@@ -28,7 +28,7 @@ export const getSessionId = () => {
     if (typeof window !== 'undefined') {
         return localStorage.getItem('sessionId')
     }
-    return null // or handle accordingly if localStorage is not available
+    return null
 }
 
 export const removeAllTokens = () => {
@@ -37,5 +37,4 @@ export const removeAllTokens = () => {
         localStorage.removeItem('refreshToken')
         localStorage.removeItem('sessionId')
     }
-    return null // or handle accordingly if localStorage is not available
 }
