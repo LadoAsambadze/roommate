@@ -3,12 +3,12 @@
 import { Dialog, DialogContent } from '@/src/components/ui/dialog'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useModalHandlers } from './ModalHandlers'
+import { useModalHandlers } from './modalHandlers/ModalHandlers'
 import { Drawer, DrawerContent } from '@/src/components/ui/drawer'
 import { useMediaQuery } from 'react-responsive'
-import { AuthModalContent } from './AuthModalContent'
+import { ContentWrapper } from './modalContent/ContentWrapper'
 
-export const AuthModal = () => {
+export const ModalWrapper = () => {
     const [modalStatus, setModalStatus] = useState(false)
     const searchParams = useSearchParams()
 
@@ -32,13 +32,13 @@ export const AuthModal = () => {
             {isMobile ? (
                 <Drawer open={modalStatus} onClose={modalCloseHandler}>
                     <DrawerContent className="flex h-[80%] items-center justify-center">
-                        <AuthModalContent />
+                        <ContentWrapper />
                     </DrawerContent>
                 </Drawer>
             ) : (
                 <Dialog open={modalStatus} onOpenChange={modalCloseHandler}>
                     <DialogContent className="flex h-[550px] w-full max-w-full flex-col gap-0 overflow-hidden bg-[#FFFFFF] p-0 md:w-auto md:max-w-full md:flex-row">
-                        <AuthModalContent />
+                        <ContentWrapper />
                     </DialogContent>
                 </Dialog>
             )}
