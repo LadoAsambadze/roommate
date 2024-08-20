@@ -10,5 +10,10 @@
     "logOut": "გასვლა",
     "fileTooLarge": "ფაილის ფაქსიმალური ზომა არის 5 მბ",
     "signUp": "რეგისტრაცია",
-    "landlords": "ბინის მეპატრონნებისთვის"
+    "landlords": "ბინის მეპატრონნებისთვის",
+    "userNotFound": "მომხარებელი არ მოიძებნა",
+    "incorrectPassword": "არასწორი პაროლი",
+    "enterPhone": "ჩაწერე მობილური ნომერი",
+    "enterPhoneOrEmail": "ჩაწერე მობილური ან იმეილი",
+    "phoneNumOrEmail": "მობილური / იმეილი"
 }

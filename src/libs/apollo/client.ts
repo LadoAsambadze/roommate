@@ -12,6 +12,17 @@ export function client() {
     apolloClient = new ApolloClient({
         cache: new InMemoryCache(),
         link: links,
+        defaultOptions: {
+            watchQuery: {
+                errorPolicy: 'all',
+            },
+            query: {
+                errorPolicy: 'all',
+            },
+            mutate: {
+                errorPolicy: 'all',
+            },
+        },
     })
 
     return apolloClient

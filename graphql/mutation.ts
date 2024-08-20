@@ -5,7 +5,7 @@ import {
     MutationRefreshTokenArgs,
     MutationRoommateSignUpArgs,
     MutationVerifyCodeBySmsArgs,
-    MutationSignInArgs,
+    MutationRoommateSignInArgs,
 } from './typesGraphql'
 
 export const SendCodeMutation: TypedDocumentNode<
@@ -52,16 +52,31 @@ export const RoommateSignUpMutation: TypedDocumentNode<
     }
 `
 
-export const SignInMutation: TypedDocumentNode<{ signIn: Mutation['signIn'] }, MutationSignInArgs> =
-    gql`
-        mutation SignIn($input: SignInCredentialsInput!) {
-            signIn(input: $input) {
-                accessToken
-                refreshToken
-                sessionId
-            }
+export const RoommateSignIn: TypedDocumentNode<
+    { roommateSignIn: Mutation['roommateSignIn'] },
+    MutationRoommateSignInArgs
+> = gql`
+    mutation RoommateSignIn($input: SignInCredentialsInput!) {
+        roommateSignIn(input: $input) {
+            accessToken
+            refreshToken
+            sessionId
         }
-    `
+    }
+`
+
+export const LandlordSignIn: TypedDocumentNode<
+    { roommateSignIn: Mutation['roommateSignIn'] },
+    MutationRoommateSignInArgs
+> = gql`
+    mutation RoommateSignIn($input: SignInCredentialsInput!) {
+        landlordSignIn(input: $input) {
+            accessToken
+            refreshToken
+            sessionId
+        }
+    }
+`
 
 export const RefreshTokenMutation: TypedDocumentNode<
     { refreshToken: Mutation['refreshToken'] },

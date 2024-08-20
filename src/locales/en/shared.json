@@ -10,5 +10,11 @@
     "logOut": "Log out",
     "fileTooLarge": "Maximum file size is 5 MB",
     "signUp": "Sign up",
-    "landlords": "Landlords"
+    "landlords": "Landlords",
+    "requiredField": "Field is required",
+    "userNotFound": "User not found",
+    "incorrectPassword": "Incorrect password",
+    "enterPhone": "Enter phone number",
+    "enterPhoneOrEmail": "Enter phone or email",
+    "phoneNumOrEmail": "Phone / Email"
 }

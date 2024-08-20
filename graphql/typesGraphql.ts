@@ -52,6 +52,7 @@ export type AnsweredQuestionInput = {
 /** Code purpose enumeration */
 export enum CodePurpose {
     LandlordSignUp = 'landlord_sign_up',
+    ResetPassword = 'reset_password',
     RoommateSignUp = 'roommate_sign_up',
 }
 
@@ -221,23 +222,32 @@ export type MeWithJwtObject = {
 export type Mutation = {
     __typename?: 'Mutation'
     generateTwilioAccessToken: Scalars['String']['output']
+    landlordSendResetPasswordVerificationCode: SendResetPasswordVerificationCodeObject
+    landlordSignIn: JwtObject
     landlordSignUp: MeWithJwtObject
     logConnectionError: Scalars['Boolean']['output']
     lookupOrCreateTwilioUserResource: Scalars['Boolean']['output']
     refreshToken: JwtObject
     resetPassword: Scalars['Boolean']['output']
-    roommateSendResetPasswordLink: SendResetPasswordLinkObject
+    roommateSendResetPasswordVerificationCode: SendResetPasswordVerificationCodeObject
     roommateSignIn: JwtObject
     roommateSignUp: MeWithJwtObject
     sendCodeByEmail: SendCodeByEmailObject
     sendCodeBySms: SendCodeBySmsObject
-    sendResetPasswordLink: SendResetPasswordLinkObject
-    signIn: JwtObject
     singOut: Scalars['Boolean']['output']
     updateConversationResourceState: ConversationResourceObject
     updateConversationStatus: ConversationStatus
+    verifyCodeByEmail: VerifyCodeByEmailObject
     verifyCodeBySms: VerifyCodeBySmsObject
-    verifyCodeSentByEmail: VerifyCodeByEmailObject
+    verifyResetPasswordVerificationCode: VerifyResetPasswordVerificationCodeObject
+}
+
+export type MutationLandlordSendResetPasswordVerificationCodeArgs = {
+    input: SendResetPasswordVerificationCodeInput
+}
+
+export type MutationLandlordSignInArgs = {
+    input: SignInCredentialsInput
 }
 
 export type MutationLandlordSignUpArgs = {
@@ -260,8 +270,8 @@ export type MutationResetPasswordArgs = {
     input: ResetPasswordInput
 }
 
-export type MutationRoommateSendResetPasswordLinkArgs = {
-    input: SendResetPasswordLinkInput
+export type MutationRoommateSendResetPasswordVerificationCodeArgs = {
+    input: SendResetPasswordVerificationCodeInput
 }
 
 export type MutationRoommateSignInArgs = {
@@ -280,14 +290,6 @@ export type MutationSendCodeBySmsArgs = {
     input: SendCodeInput
 }
 
-export type MutationSendResetPasswordLinkArgs = {
-    input: SendResetPasswordLinkInput
-}
-
-export type MutationSignInArgs = {
-    input: SignInCredentialsInput
-}
-
 export type MutationUpdateConversationResourceStateArgs = {
     sid: Scalars['String']['input']
     state: Scalars['String']['input']
@@ -298,12 +300,16 @@ export type MutationUpdateConversationStatusArgs = {
     status: ConversationStatus
 }
 
+export type MutationVerifyCodeByEmailArgs = {
+    input: VerifyCodeByEmailInput
+}
+
 export type MutationVerifyCodeBySmsArgs = {
     input: VerifyCodeInput
 }
 
-export type MutationVerifyCodeSentByEmailArgs = {
-    input: VerifyCodeByEmailInput
+export type MutationVerifyResetPasswordVerificationCodeArgs = {
+    input: VerifyResetPasswordVerificationCodeInput
 }
 
 export type OldUserObject = {
@@ -467,9 +473,10 @@ export enum RenderAs {
 }
 
 export type ResetPasswordInput = {
+    code: Scalars['String']['input']
     confirmPassword: Scalars['String']['input']
+    identifier: Scalars['String']['input']
     password: Scalars['String']['input']
-    token: Scalars['String']['input']
 }
 
 /** Reset password sending status code enumeration */
@@ -527,13 +534,12 @@ export type SendCodeInput = {
     phone: Scalars['String']['input']
 }
 
-export type SendResetPasswordLinkInput = {
+export type SendResetPasswordVerificationCodeInput = {
     identifier: Scalars['String']['input']
-    resend?: InputMaybe<Scalars['Boolean']['input']>
 }
 
-export type SendResetPasswordLinkObject = {
-    __typename?: 'SendResetPasswordLinkObject'
+export type SendResetPasswordVerificationCodeObject = {
+    __typename?: 'SendResetPasswordVerificationCodeObject'
     status: ResetPasswordResponse
 }
 
@@ -637,4 +643,14 @@ export type VerifyCodeInput = {
     code: Scalars['String']['input']
     codePurpose?: InputMaybe<CodePurpose>
     phone: Scalars['String']['input']
+}
+
+export type VerifyResetPasswordVerificationCodeInput = {
+    code: Scalars['String']['input']
+    identifier: Scalars['String']['input']
+}
+
+export type VerifyResetPasswordVerificationCodeObject = {
+    __typename?: 'VerifyResetPasswordVerificationCodeObject'
+    status: VerificationCodeValidityStatus
 }
