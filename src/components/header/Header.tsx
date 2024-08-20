@@ -28,7 +28,7 @@ export default function Header() {
         router.push(`${pathname}${query}`)
     }, [searchParams, router, pathname])
 
-    console.log('aq', { isAuthenticated })
+ 
     const signupModalHandler = useCallback(() => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
         current.set('modal', 'signupChooseType')
