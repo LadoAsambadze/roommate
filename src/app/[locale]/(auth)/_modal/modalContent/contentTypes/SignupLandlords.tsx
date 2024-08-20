@@ -35,7 +35,6 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
         },
     })
 
-
     const [sendCode] = useMutation(SendCodeByEmail)
 
     const onSendCode: SubmitHandler<SignupLandlordsFormValues> = async () => {
@@ -43,25 +42,12 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
         const { data, errors } = await sendCode({
             variables: { input: { email } },
         })
+        console.log(errors, 'errors')
+        console.log(data, 'data')
 
         if (data) {
             setSignupMethod(data.sendCodeByEmail.status)
         }
-
-        // if (data?.roommateSignIn) {
-        //     signIn(data.roommateSignIn)
-        //     router.push('/roommates')
-        // } else if (errors) {
-        //     if (errors[0]?.extensions?.code === 'BAD_REQUEST') {
-        //         if (errors[0].extensions?.errorCode === 'USER__NOT_FOUND') {
-        //             form.setError('identifier', { message: t('userNotFound') })
-        //         } else if (errors[0].extensions?.errorCode === 'PASSWORD__INCORRECT') {
-        //             form.setError('password', { message: t('incorrectPassword') })
-        //         } else if (errors[0]?.extensions?.errorCode === 'IDENTIFIER__INVALID:PHONE') {
-        //             form.setError('identifier', { message: t('enterPhone') })
-        //         }
-        //     }
-        // }
     }
 
     return (
@@ -206,7 +192,7 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                     </form>
                 </Form>
             ) : signupMethod === 'SUCCESS' || signupMethod === 'ALREADY_SENT' ? (
-                <LandlordsSignupOTP form={form} />
+                <LandlordsSignupOTP formData={form} />
             ) : null}
         </>
     )

@@ -22,12 +22,12 @@ import { useRouter } from 'next/navigation'
 
 const FormSchema = z.object({
     code: z.string().min(6, {
-        message: '',
+        message: 'Code must be 6 characters long',
     }),
 })
 
-export function LandlordsSignupOTP({ form }: any) {
-    const codeForm = useForm<z.infer<typeof FormSchema>>({
+export function LandlordsSignupOTP({ formData }: any) {
+    const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             code: '',
@@ -35,39 +35,56 @@ export function LandlordsSignupOTP({ form }: any) {
     })
     const router = useRouter()
     const { t } = useTranslation()
+    const { toast } = useToast()
 
+    console.log(form.getValues().code)
     const [verifyCode] = useMutation(VerifyCodeByEmail)
     const [signupLandlords] = useMutation(LandlordSignUp)
 
     const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async () => {
-        const { code } = codeForm.getValues()
-        const { email, password, confirmPassword, firstname, lastname } = form.getValues()
-        const { data, errors } = await verifyCode({
-            variables: {
-                input: {
-                    code,
-                    email,
-                },
-            },
-        })
-
-        if (data?.verifyCodeByEmail.status === 'VALID') {
-            const { data, errors } = await signupLandlords({
+        try {
+            const { code } = form.getValues()
+            const { email, password, confirmPassword, firstname, lastname } = formData.getValues()
+            const { data, errors } = await verifyCode({
                 variables: {
                     input: {
-                        firstname,
-                        lastname,
+                        code,
                         email,
-                        password,
-
-                        confirmPassword,
                     },
                 },
             })
-            if (data?.landlordSignUp) {
-                signIn(data.landlordSignUp.jwt)
-                router.push('/roommates')
+            console.log(code)
+            if (data?.verifyCodeByEmail.status === 'VALID') {
+                const { data, errors } = await signupLandlords({
+                    variables: {
+                        input: {
+                            firstname,
+                            lastname,
+                            email,
+                            password,
+                            confirmPassword,
+                        },
+                    },
+                })
+                if (data) {
+                    signIn(data?.landlordSignUp?.jwt)
+                    router.push('/roommates')
+                } else if (errors) {
+                    if (errors[0]?.message === 'USER__EXISTS_WITH_EMAIL') {
+                        form.setError('code', { message: 'USER__EXISTS_WITH_EMAIL' })
+                    }
+                }
+            } else if (data?.verifyCodeByEmail.status === 'INVALID') {
+                form.setError('code', { message: t('expired') })
+            } else if (data?.verifyCodeByEmail.status === 'NOT_FOUND') {
+                form.setError('code', { message: t('incorrect code') })
             }
+        } catch (error) {
+            console.error('Error submitting form:', error)
+            toast({
+                title: 'An error occurred',
+                description: 'Please try again later.',
+            })
         }
     }
 
