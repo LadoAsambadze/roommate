@@ -15,5 +15,6 @@
     "incorrectPassword": "არასწორი პაროლი",
     "enterPhone": "ჩაწერე მობილური ნომერი",
     "enterPhoneOrEmail": "ჩაწერე მობილური ან იმეილი",
-    "phoneNumOrEmail": "მობილური / იმეილი"
+    "phoneNumOrEmail": "მობილური / იმეილი",
+    "confirmPassword": "გაიმეორე პაროლი"
 }

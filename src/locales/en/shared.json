@@ -16,5 +16,6 @@
     "incorrectPassword": "Incorrect password",
     "enterPhone": "Enter phone number",
     "enterPhoneOrEmail": "Enter phone or email",
-    "phoneNumOrEmail": "Phone / Email"
+    "phoneNumOrEmail": "Phone / Email",
+    "confirmPassword": "Confirm password"
 }

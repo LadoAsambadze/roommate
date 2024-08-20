@@ -6,6 +6,10 @@ import {
     MutationRoommateSignUpArgs,
     MutationVerifyCodeBySmsArgs,
     MutationRoommateSignInArgs,
+    MutationLandlordSignUpArgs,
+    SendCodeByEmailInput,
+    MutationSendCodeByEmailArgs,
+    MutationVerifyCodeByEmailArgs,
 } from './typesGraphql'
 
 export const SendCodeMutation: TypedDocumentNode<
@@ -74,6 +78,53 @@ export const LandlordSignIn: TypedDocumentNode<
             accessToken
             refreshToken
             sessionId
+        }
+    }
+`
+
+export const LandlordSignUp: TypedDocumentNode<
+    { landlordSignUp: Mutation['landlordSignUp'] },
+    MutationLandlordSignUpArgs
+> = gql`
+    mutation LandlordSignUp($input: LandlordSignUpInput!) {
+        landlordSignUp(input: $input) {
+            id
+            email
+            phone
+            firstname
+            lastname
+            birthDate
+            genderId
+            countryId
+            profileImage
+            userTypes
+            createdAt
+            jwt {
+                accessToken
+                refreshToken
+                sessionId
+            }
+        }
+    }
+`
+
+export const SendCodeByEmail: TypedDocumentNode<
+    { sendCodeByEmail: Mutation['sendCodeByEmail'] },
+    MutationSendCodeByEmailArgs
+> = gql`
+    mutation LandlordSignUp($input: SendCodeByEmailInput!) {
+        sendCodeByEmail(input: $input) {
+            status
+        }
+    }
+`
+export const VerifyCodeByEmail: TypedDocumentNode<
+    { verifyCodeByEmail: Mutation['verifyCodeByEmail'] },
+    MutationVerifyCodeByEmailArgs
+> = gql`
+    mutation LandlordSignUp($input: VerifyCodeByEmailInput!) {
+        verifyCodeByEmail(input: $input) {
+            status
         }
     }
 `
