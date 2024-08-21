@@ -112,7 +112,7 @@ export const SendCodeByEmail: TypedDocumentNode<
     { sendCodeByEmail: Mutation['sendCodeByEmail'] },
     MutationSendCodeByEmailArgs
 > = gql`
-    mutation LandlordSignUp($input: SendCodeByEmailInput!) {
+    mutation SendCodeByEmail($input: SendCodeByEmailInput!) {
         sendCodeByEmail(input: $input) {
             status
         }
@@ -120,20 +120,21 @@ export const SendCodeByEmail: TypedDocumentNode<
 `
 
 export const SendCodeBySms: TypedDocumentNode<
-    { sendCodeByPhone: Mutation['sendCodeBySms'] },
+    { sendCodeBySms: Mutation['sendCodeBySms'] },
     MutationSendCodeBySmsArgs
 > = gql`
-    mutation LandlordSignUp($input: sendCodeBySms!) {
+    mutation SendCodeBySms($input: SendCodeInput!) {
         sendCodeBySms(input: $input) {
             status
         }
     }
 `
+
 export const VerifyCodeByEmail: TypedDocumentNode<
     { verifyCodeByEmail: Mutation['verifyCodeByEmail'] },
     MutationVerifyCodeByEmailArgs
 > = gql`
-    mutation LandlordSignUp($input: VerifyCodeByEmailInput!) {
+    mutation VerifyCodeByEmail($input: VerifyCodeByEmailInput!) {
         verifyCodeByEmail(input: $input) {
             status
         }
@@ -144,7 +145,7 @@ export const VerifyCodeBySms: TypedDocumentNode<
     { verifyCodeBySms: Mutation['verifyCodeBySms'] },
     MutationVerifyCodeBySmsArgs
 > = gql`
-    mutation LandlordSignUp($input: VerifyCodeBySmsInput!) {
+    mutation VerifyCodeBySms($input: VerifyCodeInput!) {
         verifyCodeBySms(input: $input) {
             status
         }

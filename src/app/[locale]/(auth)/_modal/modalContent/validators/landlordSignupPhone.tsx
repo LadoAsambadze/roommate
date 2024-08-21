@@ -4,12 +4,12 @@ import { isValidPhoneNumber } from 'react-phone-number-input'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 
-export function landlordsSignupValidator() {
+export function LandlordSignUpPhoneValidator() {
     const { t } = useTranslation()
     const landlordsSignupSchema: z.ZodSchema = z.object({
         firstname: z.string().min(2, { message: '' }),
         lastname: z.string().min(2, { message: '' }),
-        email: z.string().optional(),
+
         password: z
             .string()
             .min(6, { message: t('minpass') })
@@ -19,7 +19,9 @@ export function landlordsSignupValidator() {
         confirmPassword: z.string().refine((value) => value === form.getValues().password, {
             message: t('passwordMatchError'),
         }),
-        phone: z.string().optional(),
+        phone: z.string().refine((value) => isValidPhoneNumber(value), {
+            message: t('incorrectFormat'),
+        }),
     })
 
     const form = useForm<z.infer<typeof landlordsSignupSchema>>({
@@ -27,7 +29,7 @@ export function landlordsSignupValidator() {
         defaultValues: {
             firstname: '',
             lastname: '',
-            email: '',
+
             password: '',
             confirmPassword: '',
             phone: '',

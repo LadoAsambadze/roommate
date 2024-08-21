@@ -2,27 +2,31 @@ import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import { ArrowLeft, AuthSmsIcon, Call } from '@/src/components/svgs'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form'
 import { SendCodeByEmail, SendCodeBySms } from '@/graphql/mutation'
 import { useMutation } from '@apollo/client'
 import { LandlordsSignupOTP } from '../verifyCode/LandlordsSignupOTP'
-import { landlordsSignupValidator } from '../validators/landlordsSignupValidator'
+import { LandlordSignUpPhoneValidator } from '../validators/landlordSignupPhone'
+import { LandlordSignupEmailValidator } from '../validators/landlordSignupEmail'
+
 type SignupLandlordsProps = {
     signupChoosTypeHandler: () => void
 }
 
 export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlordsProps) {
     const [signupMethod, setSignupMethod] = useState<string | null>(null)
+
     const { t } = useTranslation()
-    const form = landlordsSignupValidator()
+
+    const form =
+        signupMethod === 'email' ? LandlordSignupEmailValidator() : LandlordSignUpPhoneValidator()
 
     const [sendCodeEmail] = useMutation(SendCodeByEmail)
     const [sendCodeSms] = useMutation(SendCodeBySms)
 
     const handleSubmit = async () => {
-        console.log('check')
         if (signupMethod === 'email') {
             const { email } = form.getValues()
             const { data, errors } = await sendCodeEmail({
@@ -38,20 +42,18 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                 }
             }
         } else if (signupMethod === 'phone') {
-            console.log('1231231')
             const { phone } = form.getValues()
             const { data, errors } = await sendCodeSms({
                 variables: { input: { phone } },
             })
 
-            console.log(phone)
-
             if (data) {
+              
                 if (
-                    data.sendCodeByPhone.status === 'SUCCESS' ||
-                    data.sendCodeByPhone?.status === 'ALREADY_SENT'
+                    data?.sendCodeBySms?.status === 'SUCCESS' ||
+                    data?.sendCodeBySms?.status === 'ALREADY_SENT'
                 ) {
-                    setSignupMethod('veryifyCodeBySms')
+                    setSignupMethod('verifyCodeBySms')
                 }
             }
         }

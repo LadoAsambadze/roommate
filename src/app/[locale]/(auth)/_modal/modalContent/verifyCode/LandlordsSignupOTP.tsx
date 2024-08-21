@@ -19,7 +19,7 @@ import { useMutation } from '@apollo/client'
 import { LandlordSignUp, VerifyCodeByEmail, VerifyCodeBySms } from '@/graphql/mutation'
 import { signIn } from '@/src/auth/signIn'
 import { useRouter } from 'next/navigation'
-import { landlordsSignupValidator } from '../validators/landlordsSignupValidator'
+
 
 const FormSchema = z.object({
     code: z.string().min(6, {
