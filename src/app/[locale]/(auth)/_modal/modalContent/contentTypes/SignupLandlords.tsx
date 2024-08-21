@@ -1,21 +1,14 @@
 import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
-import { ArrowLeft, AuthSmsIcon, Call, GoogleIcon } from '@/src/components/svgs'
+import { ArrowLeft, AuthSmsIcon, Call } from '@/src/components/svgs'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
-import { Label } from '@/src/components/ui/label'
 import { useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import {
-    landlordsSignupSchema,
-    SignupLandlordsFormValues,
-} from '../validators/landlordsSignupValidator'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { SigninFormValues } from '../validators/roommatesSigninValidator'
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form'
-import { LandlordSignUp, SendCodeByEmail } from '@/graphql/mutation'
+import { SendCodeByEmail, SendCodeBySms } from '@/graphql/mutation'
 import { useMutation } from '@apollo/client'
 import { LandlordsSignupOTP } from '../verifyCode/LandlordsSignupOTP'
+import { landlordsSignupValidator } from '../validators/landlordsSignupValidator'
 type SignupLandlordsProps = {
     signupChoosTypeHandler: () => void
 }
@@ -23,30 +16,44 @@ type SignupLandlordsProps = {
 export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlordsProps) {
     const [signupMethod, setSignupMethod] = useState<string | null>(null)
     const { t } = useTranslation()
+    const form = landlordsSignupValidator()
 
-    const form = useForm<SignupLandlordsFormValues>({
-        resolver: zodResolver(landlordsSignupSchema),
-        defaultValues: {
-            firstname: '',
-            lastname: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-        },
-    })
+    const [sendCodeEmail] = useMutation(SendCodeByEmail)
+    const [sendCodeSms] = useMutation(SendCodeBySms)
 
-    const [sendCode] = useMutation(SendCodeByEmail)
+    const handleSubmit = async () => {
+        console.log('check')
+        if (signupMethod === 'email') {
+            const { email } = form.getValues()
+            const { data, errors } = await sendCodeEmail({
+                variables: { input: { email } },
+            })
 
-    const onSendCode: SubmitHandler<SignupLandlordsFormValues> = async () => {
-        const { email } = form.getValues()
-        const { data, errors } = await sendCode({
-            variables: { input: { email } },
-        })
-        console.log(errors, 'errors')
-        console.log(data, 'data')
+            if (data) {
+                if (
+                    data.sendCodeByEmail?.status === 'SUCCESS' ||
+                    data.sendCodeByEmail?.status === 'ALREADY_SENT'
+                ) {
+                    setSignupMethod('verifyCodeByEmail')
+                }
+            }
+        } else if (signupMethod === 'phone') {
+            console.log('1231231')
+            const { phone } = form.getValues()
+            const { data, errors } = await sendCodeSms({
+                variables: { input: { phone } },
+            })
 
-        if (data) {
-            setSignupMethod(data.sendCodeByEmail.status)
+            console.log(phone)
+
+            if (data) {
+                if (
+                    data.sendCodeByPhone.status === 'SUCCESS' ||
+                    data.sendCodeByPhone?.status === 'ALREADY_SENT'
+                ) {
+                    setSignupMethod('veryifyCodeBySms')
+                }
+            }
         }
     }
 
@@ -82,7 +89,7 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
             ) : signupMethod === 'email' || signupMethod === 'phone' ? (
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(onSendCode)}
+                        onSubmit={form.handleSubmit(handleSubmit)}
                         className="grid w-full grid-cols-1 gap-y-4"
                     >
                         <FormField
@@ -92,6 +99,14 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                                 <FormItem>
                                     <FormLabel>{t('name')}</FormLabel>
                                     <Input
+                                        hasError={
+                                            !!form.formState.errors.firstname &&
+                                            form.formState.dirtyFields.firstname
+                                        }
+                                        isSuccess={
+                                            !form.formState.errors.firstname &&
+                                            form.formState.dirtyFields.firstname
+                                        }
                                         value={field.value}
                                         onChange={(e) => field.onChange(e)}
                                     />
@@ -106,6 +121,14 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                                 <FormItem>
                                     <FormLabel>{t('surname')}</FormLabel>
                                     <Input
+                                        hasError={
+                                            !!form.formState.errors.lastname &&
+                                            form.formState.dirtyFields.lastname
+                                        }
+                                        isSuccess={
+                                            !form.formState.errors.lastname &&
+                                            form.formState.dirtyFields.lastname
+                                        }
                                         value={field.value}
                                         onChange={(e) => field.onChange(e)}
                                     />
@@ -120,6 +143,15 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                                 <FormItem>
                                     <FormLabel>{t('password')}</FormLabel>
                                     <Input
+                                        type="password"
+                                        hasError={
+                                            !!form.formState.errors.password &&
+                                            form.formState.dirtyFields.password
+                                        }
+                                        isSuccess={
+                                            !form.formState.errors.password &&
+                                            form.formState.dirtyFields.password
+                                        }
                                         value={field.value}
                                         onChange={(e) => field.onChange(e)}
                                     />
@@ -134,6 +166,15 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                                 <FormItem>
                                     <FormLabel>{t('confirmPassword')}</FormLabel>
                                     <Input
+                                        type="password"
+                                        hasError={
+                                            !!form.formState.errors.confirmPassword &&
+                                            form.formState.dirtyFields.confirmPassword
+                                        }
+                                        isSuccess={
+                                            !form.formState.errors.confirmPassword &&
+                                            form.formState.dirtyFields.confirmPassword
+                                        }
                                         value={field.value}
                                         onChange={(e) => field.onChange(e)}
                                     />
@@ -150,6 +191,14 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                                     <FormItem>
                                         <FormLabel>{t('mail')}</FormLabel>
                                         <Input
+                                            hasError={
+                                                !!form.formState.errors.email &&
+                                                form.formState.dirtyFields.email
+                                            }
+                                            isSuccess={
+                                                !form.formState.errors.email &&
+                                                form.formState.dirtyFields.email
+                                            }
                                             value={field.value}
                                             onChange={(e) => field.onChange(e)}
                                         />
@@ -158,25 +207,27 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                                 )}
                             />
                         ) : signupMethod === 'phone' ? (
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>{t('phoneNumber')}</FormLabel>
-                                        <PhoneInput
-                                            type="number"
-                                            defaultCountry="GE"
-                                            international
-                                            value={undefined}
-                                            field={undefined}
-                                            labels={undefined}
-                                            form={undefined}
-                                        />
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            <div className="relative">
+                                <FormField
+                                    control={form.control}
+                                    name="phone"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>{t('phoneNumber')}</FormLabel>
+                                            <PhoneInput
+                                                type="number"
+                                                defaultCountry="GE"
+                                                international
+                                                field={field}
+                                                labels={undefined}
+                                                form={form}
+                                                value={field.value}
+                                            />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
                         ) : null}
 
                         <Button type="submit" className="mt-3 w-full">
@@ -191,8 +242,8 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                         </button>
                     </form>
                 </Form>
-            ) : signupMethod === 'SUCCESS' || signupMethod === 'ALREADY_SENT' ? (
-                <LandlordsSignupOTP formData={form} />
+            ) : signupMethod === 'verifyCodeByEmail' || signupMethod === 'verifyCodeBySms' ? (
+                <LandlordsSignupOTP signupMethod={signupMethod} formData={form} />
             ) : null}
         </>
     )

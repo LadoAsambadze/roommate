@@ -118,12 +118,34 @@ export const SendCodeByEmail: TypedDocumentNode<
         }
     }
 `
+
+export const SendCodeBySms: TypedDocumentNode<
+    { sendCodeByPhone: Mutation['sendCodeBySms'] },
+    MutationSendCodeBySmsArgs
+> = gql`
+    mutation LandlordSignUp($input: sendCodeBySms!) {
+        sendCodeBySms(input: $input) {
+            status
+        }
+    }
+`
 export const VerifyCodeByEmail: TypedDocumentNode<
     { verifyCodeByEmail: Mutation['verifyCodeByEmail'] },
     MutationVerifyCodeByEmailArgs
 > = gql`
     mutation LandlordSignUp($input: VerifyCodeByEmailInput!) {
         verifyCodeByEmail(input: $input) {
+            status
+        }
+    }
+`
+
+export const VerifyCodeBySms: TypedDocumentNode<
+    { verifyCodeBySms: Mutation['verifyCodeBySms'] },
+    MutationVerifyCodeBySmsArgs
+> = gql`
+    mutation LandlordSignUp($input: VerifyCodeBySmsInput!) {
+        verifyCodeBySms(input: $input) {
             status
         }
     }
