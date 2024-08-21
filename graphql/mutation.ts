@@ -70,7 +70,7 @@ export const RoommateSignIn: TypedDocumentNode<
 `
 
 export const LandlordSignIn: TypedDocumentNode<
-    { roommateSignIn: Mutation['roommateSignIn'] },
+    { landlordSignIn: Mutation['landlordSignIn'] },
     MutationRoommateSignInArgs
 > = gql`
     mutation RoommateSignIn($input: SignInCredentialsInput!) {

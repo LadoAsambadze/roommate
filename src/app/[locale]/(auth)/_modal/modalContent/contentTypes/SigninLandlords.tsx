@@ -38,8 +38,8 @@ export default function SigninLandlords({
         const { identifier, password } = form.getValues()
         const { data, errors } = await login({ variables: { input: { identifier, password } } })
 
-        if (data?.roommateSignIn) {
-            signIn(data.roommateSignIn)
+        if (data?.landlordSignIn) {
+            signIn(data.landlordSignIn)
             router.push('/roommates')
         } else if (errors) {
             if (errors[0]?.extensions?.code === 'BAD_REQUEST') {
