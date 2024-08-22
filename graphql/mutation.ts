@@ -10,25 +10,10 @@ import {
     SendCodeByEmailInput,
     MutationSendCodeByEmailArgs,
     MutationVerifyCodeByEmailArgs,
+    MutationRoommateSendResetPasswordVerificationCodeArgs,
 } from './typesGraphql'
 
-export const SendCodeMutation: TypedDocumentNode<
-    { sendCode: Mutation['sendCodeBySms'] },
-    MutationSendCodeBySmsArgs
-> = gql`
-    mutation SendCode($input: SendCodeInput!) {
-        sendCode(input: $input)
-    }
-`
-
-export const CheckCodeMutation: TypedDocumentNode<
-    { checkCode: Mutation['verifyCodeBySms'] },
-    MutationVerifyCodeBySmsArgs
-> = gql`
-    mutation CheckCode($input: CheckCodeInput!) {
-        checkCode(input: $input)
-    }
-`
+ 
 
 export const RoommateSignUpMutation: TypedDocumentNode<
     { roommateSignUp: Mutation['roommateSignUp'] },
@@ -161,6 +146,21 @@ export const RefreshTokenMutation: TypedDocumentNode<
             accessToken
             refreshToken
             sessionId
+        }
+    }
+`
+
+export const RoommateResetPassword: TypedDocumentNode<
+    {
+        roommateSendResetPasswordVerificationCode: Mutation['roommateSendResetPasswordVerificationCode']
+    },
+    MutationRoommateSendResetPasswordVerificationCodeArgs
+> = gql`
+    mutation RoommateSendResetPasswordVerificationCode(
+        $input: SendResetPasswordVerificationCodeInput!
+    ) {
+        roommateSendResetPasswordVerificationCode(input: $input) {
+            status
         }
     }
 `

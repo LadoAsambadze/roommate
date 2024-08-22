@@ -1,7 +1,6 @@
-import { ArrowLeft, GoogleIcon } from '@/src/components/svgs'
+import { ArrowLeft } from '@/src/components/svgs'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
-import { Label } from '@/src/components/ui/label'
 import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -38,10 +37,7 @@ export default function SigninLandlords({
         const { identifier, password } = form.getValues()
         const { data, errors } = await login({ variables: { input: { identifier, password } } })
 
-        if (data?.landlordSignIn) {
-            signIn(data.landlordSignIn)
-            router.push('/roommates')
-        } else if (errors) {
+        if (errors) {
             if (errors[0]?.extensions?.code === 'BAD_REQUEST') {
                 if (errors[0].extensions?.errorCode === 'USER__NOT_FOUND') {
                     form.setError('identifier', { message: t('userNotFound') })
@@ -53,15 +49,18 @@ export default function SigninLandlords({
                     form.setError('identifier', { message: t('enterPhoneOrEmail') })
                 }
             }
+        } else if (data?.landlordSignIn) {
+            signIn(data.landlordSignIn)
+            router.push('/roommates')
         }
     }
     return (
         <div className="flex w-full flex-col gap-4">
             <button className="flex flex-row items-center gap-1" onClick={signinChoosTypeHandler}>
                 <ArrowLeft className="h-5 w-5" />
-                <span className="mb-1 text-xs text-[#838CAC]">უკან</span>
+                <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
             </button>
-            <h1 className="text-center text-xl  text-textColor">ავტორიზაცია ლენდლორდებისთვის</h1>
+            <h1 className="text-center text-xl  text-textColor">{t('signinAsLandlord')}</h1>
             <Form {...form}>
                 <form
                     className="grid w-full grid-cols-1 gap-y-4"
@@ -93,7 +92,6 @@ export default function SigninLandlords({
                             </FormItem>
                         )}
                     />
-
                     <div className="flex w-full flex-row items-center justify-end">
                         <button
                             type="button"

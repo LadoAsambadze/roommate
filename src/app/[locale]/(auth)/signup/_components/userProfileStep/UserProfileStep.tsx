@@ -14,7 +14,7 @@ import {
 } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
-import { CheckCodeMutation, SendCodeMutation } from '@/graphql/mutation'
+
 import {
     CountryObject,
     GenderObject,
@@ -28,6 +28,7 @@ import Select from '@/src/components/ui/select'
 import ImageUploader from '../imageUploader/ImageUploader'
 import { DatePicker } from '@/src/components/shared/datePicker/DatePicker'
 import { FormDataProps } from '../../types'
+import { SendCodeBySms, VerifyCodeBySms } from '@/graphql/mutation'
 
 type StepOneProps = {
     formData?: FormDataProps
@@ -46,10 +47,10 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
 
     const form = UserProfileStepValidator({ formData })
 
-    const [smsCheck] = useMutation(CheckCodeMutation, {
+    const [smsCheck] = useMutation(VerifyCodeBySms, {
         fetchPolicy: 'network-only',
     })
-    const [smsSend] = useMutation(SendCodeMutation, {
+    const [smsSend] = useMutation(SendCodeBySms, {
         fetchPolicy: 'network-only',
     })
     const { data: countries } = useQuery(getCountriesQuery, {
@@ -102,11 +103,15 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                 },
             },
         })
-        if (responseData?.checkCode.status === VerificationCodeValidityStatus.Valid) {
+        if (responseData?.verifyCodeBySms?.status === VerificationCodeValidityStatus.Valid) {
             setStep(2)
-        } else if (responseData?.checkCode.status === VerificationCodeValidityStatus.Invalid) {
+        } else if (
+            responseData?.verifyCodeBySms?.status === VerificationCodeValidityStatus.Invalid
+        ) {
             form.setError('code', { message: t('codeExpired') })
-        } else if (responseData?.checkCode.status === VerificationCodeValidityStatus.NotFound) {
+        } else if (
+            responseData?.verifyCodeBySms?.status === VerificationCodeValidityStatus.NotFound
+        ) {
             form.setError('code', { message: t('incorrectCode') })
         } else {
             form.setError('code', { message: t('fillCode') })
@@ -124,7 +129,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                     },
                 },
             })
-            if (data?.sendCode.status === 'ALREADY_SENT') {
+            if (data?.sendCodeBySms?.status === 'ALREADY_SENT') {
                 form.setError('code', { message: t('codeAlreadySent') })
             }
         })()

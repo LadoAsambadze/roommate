@@ -20,6 +20,7 @@ import { signIn } from '@/src/auth/signIn'
 import { useRouter } from 'next/navigation'
 import { GraphQLFormattedError } from 'graphql'
 import { ArrowLeft } from '@/src/components/svgs'
+import { VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
 
 const FormSchema = z.object({
     code: z.string().min(6, {
@@ -112,7 +113,9 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
                         signIn(signupDataEmail?.landlordSignUp?.jwt)
                         router.push('/landlords')
                     }
-                } else if (verifyEmail?.verifyCodeByEmail.status === 'INVALID') {
+                } else if (
+                    verifyEmail?.verifyCodeByEmail.status === VerificationCodeValidityStatus.Invalid
+                ) {
                     form.setError('code', { message: t('expired') })
                 } else if (verifyEmail?.verifyCodeByEmail.status === 'NOT_FOUND') {
                     form.setError('code', { message: t('incorrect code') })
