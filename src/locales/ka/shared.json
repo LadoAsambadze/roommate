@@ -16,5 +16,11 @@
     "enterPhone": "ჩაწერე მობილური ნომერი",
     "enterPhoneOrEmail": "ჩაწერე მობილური ან იმეილი",
     "phoneNumOrEmail": "მობილური / იმეილი",
-    "confirmPassword": "გაიმეორე პაროლი"
+    "confirmPassword": "გაიმეორე პაროლი",
+    "asRoommate": "ვეძებ ოთახის მეზობელს",
+    "asLandlord": "ვარ ბინის მეპატრონე",
+    "signupChoose": "აირჩიე რეგისტრაციის მეთოდი",
+    "signupForLandlord": "რეგისტრაცია ბინის მეპატრონეებისთვის",
+    "whithEmail": "რეგისტრაცია მეილით",
+    "withPhone": "რეგისტრაცია მობილური ნომრით"
 }

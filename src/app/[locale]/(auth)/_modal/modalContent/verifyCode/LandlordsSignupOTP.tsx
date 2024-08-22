@@ -20,7 +20,6 @@ import { LandlordSignUp, VerifyCodeByEmail, VerifyCodeBySms } from '@/graphql/mu
 import { signIn } from '@/src/auth/signIn'
 import { useRouter } from 'next/navigation'
 
-
 const FormSchema = z.object({
     code: z.string().min(6, {
         message: 'Code must be 6 characters long',
@@ -99,7 +98,7 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
                 })
 
                 if (data?.verifyCodeBySms?.status === 'VALID') {
-                    const { data: signupData, errors: signupErrors } = await signupLandlords({
+                    const { data, errors } = await signupLandlords({
                         variables: {
                             input: {
                                 firstname,
@@ -110,12 +109,13 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
                             },
                         },
                     })
-
-                    if (signupData) {
-                        signIn(signupData?.landlordSignUp?.jwt)
+                    console.log(data)
+                    if (data) {
+                        signIn(data?.landlordSignUp?.jwt)
+                        console.log('!23')
                         router.push('/roommates')
-                    } else if (signupErrors) {
-                        if (signupErrors[0]?.message === 'USER__EXISTS_WITH_EMAIL') {
+                    } else if (errors) {
+                        if (errors[0]?.message === 'USER__EXISTS_WITH_EMAIL') {
                             form.setError('code', { message: 'USER__EXISTS_WITH_EMAIL' })
                         }
                     }
@@ -143,7 +143,11 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
                         <FormItem>
                             <FormLabel className="flex w-full justify-center py-6">
                                 <span className="text-center leading-6">
-                                    {t('codeSentOn')} <br /> 555 135856 <br />
+                                    {t('codeSentOn')} <br />{' '}
+                                    {signupMethod === 'email'
+                                        ? formData.getValues().email
+                                        : formData.getValues().phone}
+                                    <br />
                                     {t('fillField')}
                                 </span>
                             </FormLabel>

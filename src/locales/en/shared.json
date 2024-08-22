@@ -17,5 +17,11 @@
     "enterPhone": "Enter phone number",
     "enterPhoneOrEmail": "Enter phone or email",
     "phoneNumOrEmail": "Phone / Email",
-    "confirmPassword": "Confirm password"
+    "confirmPassword": "Confirm password",
+    "asRoommate": "Lookig for roommate",
+    "asLandlord": "I'm a landlord",
+    "signupChoose": "Choose sign up method",
+    "signupForLandlord": "Sign up for landlords",
+    "whithEmail": "Sign up with email",
+    "withPhone": "Sign up with mobile number"
 }

@@ -7,7 +7,7 @@
     "signInError": "Invalid phone or password",
     "resetPassword": "Reset password",
     "back": "Back",
-    "codeSentOn": "Code sent on number",
+    "codeSentOn": "Code sent on",
     "fillField": "Please fill field with pin",
     "notGetCode": "Did not get code?",
     "resendCode": "Resend code",
