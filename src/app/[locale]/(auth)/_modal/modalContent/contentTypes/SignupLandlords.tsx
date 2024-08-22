@@ -72,13 +72,6 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
         <>
             {!signupMethod ? (
                 <div className="flex w-full flex-col gap-4">
-                    <button
-                        className="flex cursor-pointer flex-row items-center gap-1 outline-none"
-                        onClick={signupChoosTypeHandler}
-                    >
-                        <ArrowLeft className="h-5 w-5" />
-                        <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
-                    </button>
                     <h1 className="text-center text-xl  text-textColor">
                         {t('signupForLandlord')}
                     </h1>
@@ -95,6 +88,13 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                     >
                         <Call className="h-6 w-6" />
                         <span>{t('withPhone')}</span>
+                    </button>
+                    <button
+                        className="flex cursor-pointer flex-row items-center gap-1 mt-2 outline-none"
+                        onClick={signupChoosTypeHandler}
+                    >
+                        <ArrowLeft className="h-5 w-5" />
+                        <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
                     </button>
                 </div>
             ) : signupMethod === 'email' || signupMethod === 'phone' ? (
@@ -258,7 +258,11 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                     </form>
                 </Form>
             ) : signupMethod === 'verifyCodeByEmail' || signupMethod === 'verifyCodeBySms' ? (
-                <LandlordsSignupOTP signupMethod={signupMethod} formData={form} />
+                <LandlordsSignupOTP
+                    signupMethod={signupMethod}
+                    formData={form}
+                    setSignupMethod={setSignupMethod}
+                />
             ) : null}
         </>
     )

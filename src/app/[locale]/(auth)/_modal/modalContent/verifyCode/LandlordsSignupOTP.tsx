@@ -1,6 +1,5 @@
 'use client'
 
-import { useToast } from '@/src/components/ui/use-toast'
 import { Button } from '@/src/components/ui/button'
 import {
     Form,
@@ -19,6 +18,8 @@ import { useMutation } from '@apollo/client'
 import { LandlordSignUp, VerifyCodeByEmail, VerifyCodeBySms } from '@/graphql/mutation'
 import { signIn } from '@/src/auth/signIn'
 import { useRouter } from 'next/navigation'
+import { GraphQLFormattedError } from 'graphql'
+import { ArrowLeft } from '@/src/components/svgs'
 
 const FormSchema = z.object({
     code: z.string().min(6, {
@@ -26,20 +27,52 @@ const FormSchema = z.object({
     }),
 })
 
-export function LandlordsSignupOTP({ signupMethod, formData }: any) {
+export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: any) {
+    const { t } = useTranslation()
+    const router = useRouter()
+
+    const [verifyCodeEmail] = useMutation(VerifyCodeByEmail)
+    const [verifyCodeSms] = useMutation(VerifyCodeBySms)
+    const [signupLandlords] = useMutation(LandlordSignUp)
+
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             code: '',
         },
     })
-    const router = useRouter()
-    const { t } = useTranslation()
-    const { toast } = useToast()
 
-    const [verifyCodeEmail] = useMutation(VerifyCodeByEmail)
-    const [verifyCodeSms] = useMutation(VerifyCodeBySms)
-    const [signupLandlords] = useMutation(LandlordSignUp)
+    console.log(formData.getValues().email, signupMethod)
+
+    const handleCommonErrors = (errors: readonly GraphQLFormattedError[], form: any) => {
+        const firstError = errors[0]
+        if (firstError?.extensions?.code === 'BAD_REQUEST') {
+            const errorCode = firstError.extensions?.errorCode
+
+            if (typeof errorCode === 'string') {
+                const errorMessages: { [key: string]: string } = {
+                    USER__EXISTS_WITH_EMAIL: 'USER__EXISTS_WITH_EMAIL',
+                    EMAIL__INVALID: 'EMAIL__INVALID',
+                    'FIRSTNAME__MAX:30': 'FIRSTNAME__MAX:30',
+                    'LASTNAME__MAX:100': 'LASTNAME__MAX:100',
+                    PASSWORD__INCORRECT_PATTERN: 'PASSWORD__INCORRECT_PATTERN',
+                    'PASSWORD__MIN:6': 'PASSWORD__MIN:6',
+                    'PASSWORD__MAX:30': 'PASSWORD__MAX:30',
+                    CONFIRM_PASSWORD__NOT_EQUAL: 'CONFIRM_PASSWORD__NOT_EQUAL',
+                    USER__EXISTS_WITH_PHONE: 'USER__EXISTS_WITH_PHONE',
+                    PHONE_OR_EMAIL__REQUIRED: 'PHONE_OR_EMAIL__REQUIRED',
+                    'USER__EXISTS_WITH_PHONE:roommate':
+                        'ამ ნომრით უკვე ხარ რუმმეითზე დარეგისტრირებული',
+                }
+
+                if (errorCode in errorMessages) {
+                    form.setError('code', {
+                        message: errorMessages[errorCode as keyof typeof errorMessages],
+                    })
+                }
+            }
+        }
+    }
 
     const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async () => {
         try {
@@ -48,7 +81,7 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
                 const { email, password, confirmPassword, firstname, lastname } =
                     formData.getValues()
 
-                const { data, errors } = await verifyCodeEmail({
+                const { data: verifyEmail, errors: verifyEmailErrors } = await verifyCodeEmail({
                     variables: {
                         input: {
                             code,
@@ -57,30 +90,31 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
                     },
                 })
 
-                if (data?.verifyCodeByEmail.status === 'VALID') {
-                    const { data: signupData, errors: signupErrors } = await signupLandlords({
-                        variables: {
-                            input: {
-                                firstname,
-                                lastname,
-                                email,
-                                password,
-                                confirmPassword,
+                if (verifyEmailErrors) {
+                    throw new Error('Failed verify code')
+                } else if (verifyEmail?.verifyCodeByEmail.status === 'VALID') {
+                    const { data: signupDataEmail, errors: signupEmailErrors } =
+                        await signupLandlords({
+                            variables: {
+                                input: {
+                                    firstname,
+                                    lastname,
+                                    email,
+                                    password,
+                                    confirmPassword,
+                                },
                             },
-                        },
-                    })
+                        })
 
-                    if (signupData) {
-                        signIn(signupData?.landlordSignUp?.jwt)
+                    if (signupEmailErrors) {
+                        handleCommonErrors(signupEmailErrors, form)
+                    } else if (signupDataEmail) {
+                        signIn(signupDataEmail?.landlordSignUp?.jwt)
                         router.push('/landlords')
-                    } else if (signupErrors) {
-                        if (signupErrors[0]?.message === 'USER__EXISTS_WITH_EMAIL') {
-                            form.setError('code', { message: 'USER__EXISTS_WITH_EMAIL' })
-                        }
                     }
-                } else if (data?.verifyCodeByEmail.status === 'INVALID') {
+                } else if (verifyEmail?.verifyCodeByEmail.status === 'INVALID') {
                     form.setError('code', { message: t('expired') })
-                } else if (data?.verifyCodeByEmail.status === 'NOT_FOUND') {
+                } else if (verifyEmail?.verifyCodeByEmail.status === 'NOT_FOUND') {
                     form.setError('code', { message: t('incorrect code') })
                 }
             } else if (signupMethod === 'verifyCodeBySms') {
@@ -88,7 +122,7 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
                 const { phone, password, confirmPassword, firstname, lastname } =
                     formData.getValues()
 
-                const { data, errors } = await verifyCodeSms({
+                const { data: verifySms, errors: verifySmsErrors } = await verifyCodeSms({
                     variables: {
                         input: {
                             code,
@@ -96,32 +130,33 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
                         },
                     },
                 })
-
-                if (data?.verifyCodeBySms?.status === 'VALID') {
-                    const { data, errors } = await signupLandlords({
-                        variables: {
-                            input: {
-                                firstname,
-                                lastname,
-                                phone,
-                                password,
-                                confirmPassword,
+                if (verifySmsErrors) {
+                    throw new Error('Failed verify code')
+                } else if (verifySms?.verifyCodeBySms?.status === 'VALID') {
+                    const { data: signupDataSms, errors: signupDataSmsErrors } =
+                        await signupLandlords({
+                            variables: {
+                                input: {
+                                    firstname,
+                                    lastname,
+                                    phone,
+                                    password,
+                                    confirmPassword,
+                                },
                             },
-                        },
-                    })
-                    console.log(data)
-                    if (data) {
-                        signIn(data?.landlordSignUp?.jwt)
-                        console.log('!23')
-                        router.push('/roommates')
-                    } else if (errors) {
-                        if (errors[0]?.message === 'USER__EXISTS_WITH_EMAIL') {
-                            form.setError('code', { message: 'USER__EXISTS_WITH_EMAIL' })
-                        }
+                        })
+
+                    if (signupDataSmsErrors) {
+                        handleCommonErrors(signupDataSmsErrors, form)
+                        console.log(signupDataSmsErrors)
+                    } else if (signupDataSms) {
+                        signIn(signupDataSms?.landlordSignUp?.jwt)
+                        router.push('/landlords')
+                        console.log('2')
                     }
-                } else if (data?.verifyCodeBySms.status === 'INVALID') {
+                } else if (verifySms?.verifyCodeBySms?.status === 'INVALID') {
                     form.setError('code', { message: t('expired') })
-                } else if (data?.verifyCodeBySms.status === 'NOT_FOUND') {
+                } else if (verifySms?.verifyCodeBySms.status === 'NOT_FOUND') {
                     form.setError('code', { message: t('incorrect code') })
                 }
             }
@@ -130,6 +165,11 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
         }
     }
 
+    const backButtonHandler = () => {
+        if (signupMethod === 'verifyCodeByEmail') {
+            setSignupMethod('email')
+        } else if (signupMethod === 'verifyCodeBySms') setSignupMethod('phone')
+    }
     return (
         <Form {...form}>
             <form
@@ -143,8 +183,8 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
                         <FormItem>
                             <FormLabel className="flex w-full justify-center py-6">
                                 <span className="text-center leading-6">
-                                    {t('codeSentOn')} <br />{' '}
-                                    {signupMethod === 'email'
+                                    {t('codeSentOn')} <br />
+                                    {signupMethod === 'verifyCodeByEmail'
                                         ? formData.getValues().email
                                         : formData.getValues().phone}
                                     <br />
@@ -170,6 +210,16 @@ export function LandlordsSignupOTP({ signupMethod, formData }: any) {
                 <Button className="w-full" type="submit">
                     {t('verify')}
                 </Button>
+                <div className="w-full">
+                    <button
+                        type="button"
+                        className="flex cursor-pointer flex-row items-center justify-start gap-1 outline-none"
+                        onClick={backButtonHandler}
+                    >
+                        <ArrowLeft className="h-5 w-5" />
+                        <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
+                    </button>
+                </div>
             </form>
         </Form>
     )
