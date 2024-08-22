@@ -37,10 +37,7 @@ export default function SigninRoommates({
         const { identifier, password } = form.getValues()
         const { data, errors } = await login({ variables: { input: { identifier, password } } })
 
-        if (data?.roommateSignIn) {
-            signIn(data.roommateSignIn)
-            router.push('/roommates')
-        } else if (errors) {
+        if (errors) {
             if (errors[0]?.extensions?.code === 'BAD_REQUEST') {
                 if (errors[0].extensions?.errorCode === 'USER__NOT_FOUND') {
                     form.setError('identifier', { message: t('userNotFound') })
@@ -50,6 +47,9 @@ export default function SigninRoommates({
                     form.setError('identifier', { message: t('enterPhone') })
                 }
             }
+        } else if (data?.roommateSignIn) {
+            signIn(data.roommateSignIn)
+            router.push('/roommates')
         }
     }
     return (
@@ -62,7 +62,7 @@ export default function SigninRoommates({
                 <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
             </button>
 
-            <div className=" text-center text-xl">ავტორიზაცია რუმმეითებისთვის</div>
+            <div className=" text-center text-xl">{t('signinAsRoommates')}</div>
             <div className="h-[1px] w-full bg-slate-200"></div>
             <Form {...form}>
                 <form
@@ -95,7 +95,6 @@ export default function SigninRoommates({
                             </FormItem>
                         )}
                     />
-
                     <div className="flex w-full flex-row items-center justify-end">
                         <button
                             type="button"

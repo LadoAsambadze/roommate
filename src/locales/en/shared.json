@@ -23,5 +23,8 @@
     "signupChoose": "Choose sign up method",
     "signupForLandlord": "Sign up for landlords",
     "whithEmail": "Sign up with email",
-    "withPhone": "Sign up with mobile number"
+    "withPhone": "Sign up with mobile number",
+    "signinChoose": "Choose sign in method",
+    "signinAsRoommates": "Sign in for roommates",
+    "signinAsLandlords": "Sign in for landlords"
 }
