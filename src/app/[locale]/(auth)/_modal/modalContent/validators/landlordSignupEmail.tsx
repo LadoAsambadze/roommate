@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { isValidPhoneNumber } from 'react-phone-number-input'
+
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 
@@ -9,7 +9,7 @@ export function LandlordSignupEmailValidator() {
     const landlordsSignupSchema: z.ZodSchema = z.object({
         firstname: z.string().min(2, { message: '' }),
         lastname: z.string().min(2, { message: '' }),
-        email: z.string().email({ message: '' }),
+        email: z.string().email().min(2, { message: '' }),
         password: z
             .string()
             .min(6, { message: t('minpass') })

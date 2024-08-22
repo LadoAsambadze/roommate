@@ -9,7 +9,6 @@ export function LandlordSignUpPhoneValidator() {
     const landlordsSignupSchema: z.ZodSchema = z.object({
         firstname: z.string().min(2, { message: '' }),
         lastname: z.string().min(2, { message: '' }),
-
         password: z
             .string()
             .min(6, { message: t('minpass') })
@@ -29,7 +28,6 @@ export function LandlordSignUpPhoneValidator() {
         defaultValues: {
             firstname: '',
             lastname: '',
-
             password: '',
             confirmPassword: '',
             phone: '',

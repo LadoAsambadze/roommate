@@ -66,6 +66,8 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
         }
     }
 
+    console.log(form && form.getValues().email)
+
     return (
         <>
             {!signupMethod ? (
@@ -211,7 +213,9 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                                             value={field.value}
                                             onChange={(e) => field.onChange(e)}
                                         />
-                                        <FormMessage />
+                                        {form.getValues().email !== undefined ? (
+                                            <FormMessage />
+                                        ) : null}
                                     </FormItem>
                                 )}
                             />
