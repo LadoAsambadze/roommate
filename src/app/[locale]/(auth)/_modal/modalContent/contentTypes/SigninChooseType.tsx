@@ -12,7 +12,7 @@ export default function SigninChooseType({
 }: SigninChooseTypeProps) {
     const { t } = useTranslation()
     return (
-        <div className="flex h-full flex-col items-center justify-center gap-6">
+        <div className="flex h-full  w-full flex-col items-center justify-center gap-6">
             <h1 className="text-center text-lg">{t('signinChoose')}</h1>
             <Button variant="modalButton" className="h-10 w-full" onClick={signinRoommatesHandler}>
                 {t('signinAsRoommates')}

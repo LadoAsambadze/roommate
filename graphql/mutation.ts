@@ -203,5 +203,9 @@ export const ResetPasswordVerifyCode: TypedDocumentNode<
         verifyResetPasswordVerificationCode(input: $input) {
             status
         }
+
     }
 `
+
+
+

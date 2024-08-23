@@ -41,6 +41,24 @@ export const getCountriesQuery: TypedDocumentNode<
     }
 `
 
+export const getUserQuery: TypedDocumentNode<{ me: Query['me'] }> = gql`
+    query Me {
+        me {
+            id
+            email
+            phone
+            firstname
+            lastname
+            birthDate
+            genderId
+            countryId
+            profileImage
+            userTypes
+            createdAt
+        }
+    }
+`
+
 export const getQuestionsWithAnswersQuery: TypedDocumentNode<
     { getQuestionsWithAnswers: Query['getQuestionsWithAnswers'] },
     QueryGetQuestionsWithAnswersArgs

@@ -16,35 +16,59 @@ export default function MobileNavBar() {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <>
-                    <BurgerIcon />
-                </>
+                <div className="h-4 w-4">
+                    <BurgerIcon className="h-full w-full" />
+                </div>
             </SheetTrigger>
             <SheetContent className="flex max-h-screen w-72 flex-col items-start overflow-y-auto bg-[#F2F5FF] px-6 pb-14 pt-3">
-                <div className="mt-20 flex flex-col gap-y-6 text-[14px]">
-                    <span
-                        className="text-xs"
-                        style={{ fontWeight: pathnameWithoutLocale === '/' ? 'bold' : '' }}
-                    >
-                        {t('main')}
-                    </span>
-                    <span
-                        className="text-xs"
-                        style={{ fontWeight: pathnameWithoutLocale === '/login' ? 'bold' : '' }}
-                    >
-                        {t('findRoommate')}
-                    </span>
-                    <span
-                        className="text-xs"
-                        style={{
-                            fontWeight: pathnameWithoutLocale === '/#' ? 'bold' : '',
-                        }}
-                    >
-                        {t('rentApartment')}
-                    </span>
-                    <span className="text-xs">{t('becomePartner')}</span>
-                    <span className="text-xs">{t('faq')}</span>
-                    <span className="text-xs">{t('howItWorks')}</span>
+                <div className="mt-10 flex flex-col gap-y-6 text-[14px]">
+                    <SheetTrigger asChild>
+                        <Link href="/">
+                            <span
+                                className="text-xs"
+                                style={{ fontWeight: pathnameWithoutLocale === '/' ? 'bold' : '' }}
+                            >
+                                {t('main')}
+                            </span>
+                        </Link>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                        <Link href="?modal=signinChooseType">
+                            <span className="text-xs">{t('signIn')}</span>
+                        </Link>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                        <Link href="?modal=signupChooseType">
+                            <span className="text-xs">{t('signUp')}</span>
+                        </Link>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                        <span
+                            className="text-xs"
+                            style={{ fontWeight: pathnameWithoutLocale === '/login' ? 'bold' : '' }}
+                        >
+                            {t('findRoommate')}
+                        </span>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                        <span
+                            className="text-xs"
+                            style={{
+                                fontWeight: pathnameWithoutLocale === '/#' ? 'bold' : '',
+                            }}
+                        >
+                            {t('rentApartment')}
+                        </span>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                        <span className="text-xs">{t('becomePartner')}</span>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                        <span className="text-xs">{t('faq')}</span>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                        <span className="text-xs">{t('howItWorks')}</span>
+                    </SheetTrigger>
                 </div>
                 <Link href="tel:+995599976385">
                     <div className="mt-[150px] flex flex-row">
