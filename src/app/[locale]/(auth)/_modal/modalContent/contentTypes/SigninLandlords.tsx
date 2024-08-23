@@ -51,7 +51,7 @@ export default function SigninLandlords({
             }
         } else if (data?.landlordSignIn) {
             signIn(data.landlordSignIn)
-            router.push('/roommates')
+            router.push('/landlords')
         }
     }
     return (
@@ -60,7 +60,7 @@ export default function SigninLandlords({
                 <ArrowLeft className="h-5 w-5" />
                 <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
             </button>
-            <h1 className="text-center text-xl  text-textColor">{t('signinAsLandlord')}</h1>
+            <h1 className="text-center text-xl  text-textColor">{t('signinAsLandlords')}</h1>
             <Form {...form}>
                 <form
                     className="grid w-full grid-cols-1 gap-y-4"

@@ -16,101 +16,169 @@ import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { VerifyCodeByEmail, VerifyCodeBySms } from '@/graphql/mutation'
+import {
+    ResetPassword,
+    ResetPasswordVerifyCode,
+    VerifyCodeByEmail,
+    VerifyCodeBySms,
+} from '@/graphql/mutation'
 import { ArrowLeft } from '@/src/components/svgs'
-import { Label } from '@/src/components/ui/label'
 import { Input } from '@/src/components/ui/input'
+import { VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
+import { Router } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 type otpType = {
-    setNewPassword: Dispatch<SetStateAction<boolean>>
+    setVerifyCode: Dispatch<SetStateAction<boolean>>
     modalType: string
     identifier: string
 }
 
-const FormSchema = z.object({
+const codeFormSchema = z.object({
     code: z.string().min(6, {
         message: 'Your one-time password must be 6 characters.',
     }),
 })
+const resetPasswordFormSchema = z.object({
+    password: z.string().min(6, {
+        message: 'Your one-time password must be 6 characters.',
+    }),
+    confirmPassword: z.string().min(6, {
+        message: 'Your one-time password must be 6 characters.',
+    }),
+})
 
-export function InputOTPForm({ setNewPassword, identifier, modalType }: otpType) {
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
+export function InputOTPForm({ setVerifyCode, identifier, modalType }: otpType) {
+    const codeForm = useForm<z.infer<typeof codeFormSchema>>({
+        resolver: zodResolver(codeFormSchema),
         defaultValues: {
             code: '',
         },
     })
 
-    const { t } = useTranslation()
-    const [otpType, setOtpType] = useState(false)
-    const [verifyCodeSms] = useMutation(VerifyCodeBySms)
-    const [verifyCodeEmail] = useMutation(VerifyCodeByEmail)
+    const resetPasswordForm = useForm<z.infer<typeof resetPasswordFormSchema>>({
+        resolver: zodResolver(resetPasswordFormSchema),
+        defaultValues: {
+            password: '',
+            confirmPassword: '',
+        },
+    })
 
-    const onSubmit = async () => {
-        if (modalType === 'resetPasswordRoommates') {
-            const { data, errors } = await verifyCodeSms({
-                variables: { input: { code: form.getValues().code, phone: identifier } },
-            })
-            if (data) {
-                setOtpType(true)
-            }
-        } else if (modalType === 'resetPasswordLandlords') {
-            const { data, errors } = await verifyCodeEmail({
-                variables: { input: { code: form.getValues().code, email: identifier } },
-            })
-            if (data) {
-                setOtpType(true)
+    const { t } = useTranslation()
+    const [newPassword, setNewPassword] = useState(false)
+
+    const [verifyCode] = useMutation(ResetPasswordVerifyCode)
+    const [resetPasswordSubmit] = useMutation(ResetPassword)
+    const router = useRouter()
+
+    const verifyCodeHandler = async () => {
+        const code = codeForm.getValues().code
+        const { data, errors } = await verifyCode({
+            variables: { input: { code: code, identifier: identifier } },
+        })
+        console.log(data)
+        console.log(errors)
+
+        if (errors) {
+            console.error(errors)
+        } else if (
+            data?.verifyResetPasswordVerificationCode?.status ===
+            VerificationCodeValidityStatus.Valid
+        ) {
+            setNewPassword(true)
+        } else if (
+            data?.verifyResetPasswordVerificationCode?.status ===
+            VerificationCodeValidityStatus.Invalid
+        ) {
+            codeForm.setError('code', { message: 'code expired' })
+        } else if (
+            data?.verifyResetPasswordVerificationCode?.status ===
+            VerificationCodeValidityStatus.NotFound
+        ) {
+            codeForm.setError('code', { message: 'incorrect code' })
+        }
+    }
+
+    const resetPasswordSubmitHandler = async () => {
+        const code = codeForm.getValues().code
+        const { data, errors } = await resetPasswordSubmit({
+            variables: {
+                input: {
+                    code: code,
+                    identifier: identifier,
+                    password: resetPasswordForm.getValues().password,
+                    confirmPassword: resetPasswordForm.getValues().confirmPassword,
+                },
+            },
+        })
+
+        if (errors) {
+            console.log(errors)
+        } else if (data) {
+            if (data?.resetPassword === true) {
+                router.push('/?modal=signinChooseType')
             }
         }
     }
 
     return (
         <>
-            {!otpType ? (
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className=" flex w-full flex-col items-center space-y-6 "
-                    >
-                        <FormField
-                            control={form.control}
-                            name="code"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="flex w-full justify-center py-6">
-                                        <span className="text-center leading-6">
-                                            {t('codeSentOn')} <br /> 555 135856 <br />
-                                            {t('fillField')}
-                                        </span>
-                                    </FormLabel>
-                                    <FormControl>
-                                        <InputOTP maxLength={6} {...field}>
-                                            <InputOTPGroup className="flex w-full justify-center gap-4">
-                                                <InputOTPSlot index={0} />
-                                                <InputOTPSlot index={1} />
-                                                <InputOTPSlot index={2} />
-                                                <InputOTPSlot index={3} />
-                                                <InputOTPSlot index={4} />
-                                                <InputOTPSlot index={5} />
-                                            </InputOTPGroup>
-                                        </InputOTP>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button className="w-full" type="submit">
-                            {t('verify')}
-                        </Button>
-                    </form>
-                </Form>
-            ) : otpType ? (
+            {!newPassword ? (
+                <div className="w-full">
+                    <div className="flex w-full justify-start">
+                        <button
+                            onClick={() => setVerifyCode(false)}
+                            className="flex cursor-pointer flex-row items-center gap-1 outline-none"
+                        >
+                            <ArrowLeft className="h-5 w-5" />
+                            <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
+                        </button>
+                    </div>
+                    <Form {...codeForm}>
+                        <form
+                            onSubmit={codeForm.handleSubmit(verifyCodeHandler)}
+                            className="flex w-full flex-col items-center space-y-6"
+                        >
+                            <FormField
+                                control={codeForm.control}
+                                name="code"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="flex w-full justify-center py-6">
+                                            <span className="text-center leading-6">
+                                                {t('codeSentOn')} <br /> 555 135856 <br />
+                                                {t('fillField')}
+                                            </span>
+                                        </FormLabel>
+                                        <FormControl>
+                                            <InputOTP maxLength={6} {...field}>
+                                                <InputOTPGroup className="flex w-full justify-center gap-4">
+                                                    <InputOTPSlot index={0} />
+                                                    <InputOTPSlot index={1} />
+                                                    <InputOTPSlot index={2} />
+                                                    <InputOTPSlot index={3} />
+                                                    <InputOTPSlot index={4} />
+                                                    <InputOTPSlot index={5} />
+                                                </InputOTPGroup>
+                                            </InputOTP>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button className="w-full" type="submit">
+                                {t('verify')}
+                            </Button>
+                        </form>
+                    </Form>
+                </div>
+            ) : newPassword ? (
                 <div className="flex w-full flex-col items-start gap-6">
                     <div className="flex w-full justify-start">
                         <button
                             className="flex cursor-pointer flex-row  items-center gap-1 outline-none"
                             onClick={() => {
-                                setOtpType(false)
+                                setNewPassword(false)
                             }}
                         >
                             <ArrowLeft className="h-5 w-5" />
@@ -118,21 +186,47 @@ export function InputOTPForm({ setNewPassword, identifier, modalType }: otpType)
                         </button>
                     </div>
                     <div className="flex w-full justify-center">
-                        <h1>პაროლის აღდგენა</h1>
+                        <h1>{t('resetPassword')}</h1>
                     </div>
-                    <form className="flex w-full flex-col items-start gap-4">
-                        <Label htmlFor="newpassword" className="text-sm">
-                            ახალი პაროლი
-                        </Label>
-                        <Input placeholder={'ახალი პაროლი'} />
-                        <Label htmlFor="newpassword" className="text-sm">
-                            დაადასტურე პაროლი
-                        </Label>
-                        <Input placeholder={' დაადასტურე პაროლი'} />
-                        <Button type="submit" className="w-full">
-                            შენახვა
-                        </Button>
-                    </form>
+                    <Form {...resetPasswordForm}>
+                        <form
+                            className="flex w-full flex-col gap-2"
+                            onSubmit={resetPasswordForm.handleSubmit(resetPasswordSubmitHandler)}
+                        >
+                            <FormField
+                                control={resetPasswordForm.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('password')}</FormLabel>
+                                        <Input
+                                            value={field.value}
+                                            onChange={(e) => field.onChange(e)}
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={resetPasswordForm.control}
+                                name="confirmPassword"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('confirmPassword')}</FormLabel>
+                                        <Input
+                                            value={field.value}
+                                            onChange={(e) => field.onChange(e)}
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" className="mt-3 w-full">
+                                {t('submit')}
+                            </Button>
+                        </form>
+                    </Form>
                 </div>
             ) : null}
         </>

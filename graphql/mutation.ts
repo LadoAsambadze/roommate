@@ -7,13 +7,13 @@ import {
     MutationVerifyCodeBySmsArgs,
     MutationRoommateSignInArgs,
     MutationLandlordSignUpArgs,
-    SendCodeByEmailInput,
     MutationSendCodeByEmailArgs,
     MutationVerifyCodeByEmailArgs,
     MutationRoommateSendResetPasswordVerificationCodeArgs,
+    MutationLandlordSendResetPasswordVerificationCodeArgs,
+    MutationResetPasswordArgs,
+    MutationVerifyResetPasswordVerificationCodeArgs,
 } from './typesGraphql'
-
- 
 
 export const RoommateSignUpMutation: TypedDocumentNode<
     { roommateSignUp: Mutation['roommateSignUp'] },
@@ -150,7 +150,7 @@ export const RefreshTokenMutation: TypedDocumentNode<
     }
 `
 
-export const RoommateResetPassword: TypedDocumentNode<
+export const RoommateResetPasswordCode: TypedDocumentNode<
     {
         roommateSendResetPasswordVerificationCode: Mutation['roommateSendResetPasswordVerificationCode']
     },
@@ -160,6 +160,47 @@ export const RoommateResetPassword: TypedDocumentNode<
         $input: SendResetPasswordVerificationCodeInput!
     ) {
         roommateSendResetPasswordVerificationCode(input: $input) {
+            status
+        }
+    }
+`
+
+export const LandlordResetPasswordCode: TypedDocumentNode<
+    {
+        landlordSendResetPasswordVerificationCode: Mutation['landlordSendResetPasswordVerificationCode']
+    },
+    MutationLandlordSendResetPasswordVerificationCodeArgs
+> = gql`
+    mutation LandlordSendResetPasswordVerificationCode(
+        $input: SendResetPasswordVerificationCodeInput!
+    ) {
+        landlordSendResetPasswordVerificationCode(input: $input) {
+            status
+        }
+    }
+`
+
+export const ResetPassword: TypedDocumentNode<
+    {
+        resetPassword: Mutation['resetPassword']
+    },
+    MutationResetPasswordArgs
+> = gql`
+    mutation ResetPassword($input: ResetPasswordInput!) {
+        resetPassword(input: $input)
+    }
+`
+
+export const ResetPasswordVerifyCode: TypedDocumentNode<
+    {
+        verifyResetPasswordVerificationCode: Mutation['verifyResetPasswordVerificationCode']
+    },
+    MutationVerifyResetPasswordVerificationCodeArgs
+> = gql`
+    mutation VerifyResetPasswordVerificationCode(
+        $input: VerifyResetPasswordVerificationCodeInput!
+    ) {
+        verifyResetPasswordVerificationCode(input: $input) {
             status
         }
     }
