@@ -43,7 +43,7 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
         },
     })
 
-    console.log(formData.getValues().email, signupMethod)
+
 
     const handleCommonErrors = (errors: readonly GraphQLFormattedError[], form: any) => {
         const firstError = errors[0]
@@ -151,11 +151,11 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
 
                     if (signupDataSmsErrors) {
                         handleCommonErrors(signupDataSmsErrors, form)
-                        console.log(signupDataSmsErrors)
+
                     } else if (signupDataSms) {
                         signIn(signupDataSms?.landlordSignUp?.jwt)
                         router.push('/landlords')
-                        console.log('2')
+
                     }
                 } else if (verifySms?.verifyCodeBySms?.status === 'INVALID') {
                     form.setError('code', { message: t('expired') })

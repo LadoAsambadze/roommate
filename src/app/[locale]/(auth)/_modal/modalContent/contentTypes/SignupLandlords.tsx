@@ -66,7 +66,7 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
         }
     }
 
-    console.log(form && form.getValues().email)
+
 
     return (
         <>

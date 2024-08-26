@@ -16,16 +16,10 @@ import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useMutation } from '@apollo/client'
-import {
-    ResetPassword,
-    ResetPasswordVerifyCode,
-    VerifyCodeByEmail,
-    VerifyCodeBySms,
-} from '@/graphql/mutation'
+import { ResetPassword, ResetPasswordVerifyCode } from '@/graphql/mutation'
 import { ArrowLeft } from '@/src/components/svgs'
 import { Input } from '@/src/components/ui/input'
 import { VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
-import { Router } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 type otpType = {
@@ -76,8 +70,6 @@ export function InputOTPForm({ setVerifyCode, identifier, modalType }: otpType) 
         const { data, errors } = await verifyCode({
             variables: { input: { code: code, identifier: identifier } },
         })
-        console.log(data)
-        console.log(errors)
 
         if (errors) {
             console.error(errors)

@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { usePathname } from 'next/navigation'
-import { useQuery, useReactiveVar } from '@apollo/client'
+import { useApolloClient, useQuery, useReactiveVar } from '@apollo/client'
 import { isAuthenticatedVar } from '@/src/auth/isAuthenticatedVar'
 import { getUserQuery } from '@/graphql/query'
 import { signOutHandler } from '@/src/auth/signOut'
@@ -17,16 +17,23 @@ export default function Header() {
     const { t } = useTranslation()
 
     const [isClient, setIsClient] = useState(false)
+    const [isLoadingUser, setIsLoadingUser] = useState(true) // New state to track user data loading
     const authStatus = useReactiveVar(isAuthenticatedVar)
 
     const router = useRouter()
     const pathname = usePathname()
     const searchParams = useSearchParams()
-    const { data: user } = useQuery(getUserQuery)
+    const { data: user, loading: userLoading } = useQuery(getUserQuery, {
+        skip: !authStatus.valid,
+    })
 
     useEffect(() => {
         setIsClient(true)
     }, [])
+
+    useEffect(() => {
+        setIsLoadingUser(false)
+    }, [userLoading])
 
     const signinModalHandler = useCallback(() => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
@@ -45,13 +52,14 @@ export default function Header() {
     }, [searchParams, router, pathname])
 
     const renderAuthSection = () => {
-        if (!isClient) {
-            return <div>Loading...</div> // Return null on the server side
+        if (!isClient || isLoadingUser) {
+            return <div>Loading...</div>
         }
 
         if (authStatus.checking) {
             return <div>Loading...</div>
         }
+
         if (authStatus.valid && user) {
             return (
                 <>
@@ -72,6 +80,7 @@ export default function Header() {
                 </>
             )
         }
+
         if (!authStatus.valid) {
             return (
                 <>
