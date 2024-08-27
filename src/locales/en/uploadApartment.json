@@ -3,5 +3,15 @@
     "rentDate": "From what date do you want to rent the apartment?",
     "year": "Year",
     "month": "Month",
-    "day": "Day"
+    "day": "Day",
+    "oneMonth": "1 month",
+    "sixMonth": "1 month",
+    "twelweMonth": "12 month",
+    "selectPeriod": "Select month",
+    "minRentMonth": "Minimum rent period",
+    "apartmentRooms": "How many rooms have apartment?",
+    "inApartment": "In apartment",
+    "inBedroom": "In bedroom",
+    "bathroomsAmount": "Bathrooms amount",
+    "availability": "Availability"
 }

@@ -3,5 +3,15 @@
     "rentDate": "რა თარიღიდან გსურს ბინის გაქირავება",
     "year": "წელი",
     "month": "თვე",
-    "day": "რიცხვი"
+    "day": "რიცხვი",
+    "oneMonth": "1 თვე",
+    "sixMonth": "6 თვე",
+    "twelweMonth": "12 თვე",
+    "selectPeriod": "აირჩიე თვე",
+    "minRentMonth": "მინიმალური გაქირავების პერიოდი",
+    "apartmentRooms": "სულ რამდენ ოთახიანია სახლი?",
+    "inApartment": "სახლში",
+    "inBedroom": "საძინებელში",
+    "bathroomsAmount": "სველი წერტილების რაოდენობა",
+    "availability": "ხელმისაწვდომობა"
 }

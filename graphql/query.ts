@@ -140,3 +140,28 @@ export const GetPaginatedFilteredRoommatesQuery: TypedDocumentNode<
         }
     }
 `
+
+export type GetPropertiesDataProps = {
+    getPropertyAmenities: Query['getPropertyAmenities']
+    getPropertyTypes: Query['getPropertyTypes']
+}
+export const GetPropertiesData: TypedDocumentNode<GetPropertiesDataProps> = gql`
+    query GetProperties($locale: Language) {
+        getPropertyAmenities(locale: $locale) {
+            id
+            translations {
+                id
+                name
+                lang
+            }
+        }
+        getPropertyTypes(locale: $locale) {
+            id
+            translations {
+                id
+                name
+                lang
+            }
+        }
+    }
+`

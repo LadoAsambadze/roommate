@@ -1,22 +1,29 @@
 'use client'
 
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/src/components/ui/form'
-import { ToggleGroup, ToggleGroupItem } from '@/src/components/ui/toggle-group'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
 import UploadValidator from './validator/UploadValidator'
-import DatePicker from './DatePicker'
+import RentDatePicker from './formFieldItems/RentDatePicker'
 import { useTranslation } from 'react-i18next'
+import { useQuery } from '@apollo/client'
+import { GetPropertiesData } from '@/graphql/query'
+import { useParams } from 'next/navigation'
+import PropertyType from './formFieldItems/PropertyType'
+import MinRentMonths from './formFieldItems/MinRentMonths'
+import ApartmentRooms from './formFieldItems/ApartmentRooms'
+import BathroomsInBedroom from './formFieldItems/BathroomsInBedroom'
+import BathroomsInProperty from './formFieldItems/BathroomsInProperty'
 
 export default function ClientWrapper() {
-    const form = UploadValidator()
+    const params = useParams()
+    const locale = params.locale
     const { t } = useTranslation()
 
+    const { data } = useQuery(GetPropertiesData, {
+        variables: { locale: locale },
+    })
+
+    const form = UploadValidator({ data })
+    console.log(form.getValues())
     const onSubmit = () => {
         console.log('done')
         console.log(form.getValues())
@@ -27,56 +34,106 @@ export default function ClientWrapper() {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="flex h-full w-full flex-col gap-5 border-slate-900 p-6 md:w-2/3 md:border md:px-10 md:py-10"
+                    className="flex h-full w-full flex-col gap-6 border-slate-900 p-6 md:w-2/3 md:border md:px-10 md:py-10"
                 >
                     <FormField
                         control={form.control}
                         name="apartmentType"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="flex w-full justify-start pb-2">
+                                <FormLabel className="flex w-full justify-start text-base">
                                     {t('apartmentType')}
                                 </FormLabel>
+                                <PropertyType
+                                    field={field}
+                                    propertyTypes={data?.getPropertyTypes}
+                                />
+                            </FormItem>
+                        )}
+                    />
+                    <div className="flex flex-col gap-4">
+                        <FormLabel className="flex w-full justify-start text-base">
+                            {t('availability')}
+                        </FormLabel>
+                        <FormField
+                            control={form.control}
+                            name="date"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="flex w-full justify-start text-sm">
+                                        {t('rentDate')}
+                                    </FormLabel>
+                                    <FormControl>
+                                        <RentDatePicker field={field} />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <FormField
+                        control={form.control}
+                        name="minRentMonth"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex w-full justify-start text-sm">
+                                    {t('minRentMonth')}
+                                </FormLabel>
                                 <FormControl>
-                                    <ToggleGroup
-                                        className="justify-start"
-                                        type="single"
-                                        value={field.value}
-                                        onValueChange={(value) => {
-                                            if (value) field.onChange(value)
-                                        }}
-                                    >
-                                        <ToggleGroupItem value="ბინა">ბინა</ToggleGroupItem>
-                                        <ToggleGroupItem value="კერძო სახლი">
-                                            კერძო სახლი
-                                        </ToggleGroupItem>
-                                        <ToggleGroupItem value="ოთახი">ოთახი</ToggleGroupItem>
-                                        <ToggleGroupItem value="სტუდენტური სასტუმრო">
-                                            სტუდენტური სასტუმრო
-                                        </ToggleGroupItem>
-                                    </ToggleGroup>
+                                    <MinRentMonths field={field} />
                                 </FormControl>
-                                <FormMessage />
                             </FormItem>
                         )}
                     />
                     <FormField
                         control={form.control}
-                        name="date"
+                        name="apartmentRooms"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="flex w-full justify-start pb-2">
-                                    {t('rentDate')}
+                                <FormLabel className="flex w-full justify-start text-base">
+                                    {t('apartmentRooms')}
                                 </FormLabel>
-                                <FormControl>
-                                    <DatePicker field={field} />
-                                </FormControl>
-                                <FormMessage />
+                                <ApartmentRooms field={field} />
                             </FormItem>
                         )}
                     />
+                    <div className="flex flex-col gap-4">
+                        <FormLabel className="flex w-full justify-start text-base">
+                            {t('bathroomsAmount')}
+                        </FormLabel>
+                        <div className="flex flex-row gap-40">
+                            <FormField
+                                control={form.control}
+                                name="bathroomsInProperty"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="flex w-full justify-start  text-sm">
+                                            {t('inApartment')}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <BathroomsInBedroom field={field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="bathroomsInBedroom"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="flex w-full justify-start  text-sm">
+                                            {t('inBedroom')}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <BathroomsInProperty field={field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </div>
 
-                    <button type="submit">1123123123</button>
+                    <button type="submit">ატვირთვა</button>
                 </form>
             </Form>
             <div className="flex flex-col"></div>

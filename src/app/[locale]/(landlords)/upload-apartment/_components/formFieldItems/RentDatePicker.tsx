@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 import { getDaysInMonth } from 'date-fns'
-
 import {
     Select,
     SelectContent,
@@ -11,6 +10,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/src/components/ui/shadcnSelect'
+import { ControllerRenderProps } from 'react-hook-form'
 
 const georgianMonths = [
     'იანვარი',
@@ -42,7 +42,11 @@ const englishMonths = [
     'December',
 ]
 
-function DatePicker({ field }: any) {
+interface RentDatePickerProps {
+    field: ControllerRenderProps<any, 'date'> // Update based on actual field type
+}
+
+function RentDatePicker({ field }: RentDatePickerProps) {
     const { t } = useTranslation()
     const [date, setDate] = useState(field.value || '')
     const params = useParams()
@@ -77,7 +81,6 @@ function DatePicker({ field }: any) {
     const handleYearChange = (value: string) => {
         setSelectedYear(value)
         setSelectedDay('')
-
         field.onChange('')
     }
 
@@ -97,7 +100,7 @@ function DatePicker({ field }: any) {
     return (
         <div className="flex flex-row gap-2">
             <Select value={selectedYear} onValueChange={handleYearChange}>
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-[100px]">
                     <SelectValue placeholder={t('year')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -112,7 +115,7 @@ function DatePicker({ field }: any) {
             </Select>
 
             <Select value={selectedMonth} onValueChange={handleMonthChange}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-[160px]">
                     <SelectValue placeholder={t('month')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -127,7 +130,7 @@ function DatePicker({ field }: any) {
             </Select>
 
             <Select value={selectedDay} onValueChange={handleDayChange}>
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-[100px]">
                     <SelectValue placeholder={t('day')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -144,4 +147,4 @@ function DatePicker({ field }: any) {
     )
 }
 
-export default DatePicker
+export default RentDatePicker
