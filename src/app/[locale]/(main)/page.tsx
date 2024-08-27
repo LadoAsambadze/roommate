@@ -12,7 +12,7 @@ import CoverSection from './_components/CoverSection'
 import ApartmentSection from './_components/ApartmentSection'
 
 async function Home() {
-    const response = await getClient().query({ query, fetchPolicy: 'cache-first' })
+    // const response = await getClient().query({ query, fetchPolicy: 'cache-first' })
 
     return (
         <main className="h-full w-full">
