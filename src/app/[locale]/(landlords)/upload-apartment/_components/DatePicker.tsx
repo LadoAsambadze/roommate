@@ -1,5 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { useDateSelect } from 'react-ymd-date-select'
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { useTranslation } from 'react-i18next'
+import { getDaysInMonth } from 'date-fns'
+
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/src/components/ui/shadcnSelect'
 
 const georgianMonths = [
     'იანვარი',
@@ -16,42 +27,119 @@ const georgianMonths = [
     'დეკემბერი',
 ]
 
+const englishMonths = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+]
+
 function DatePicker({ field }: any) {
-    const dateSelect = useDateSelect()
+    const { t } = useTranslation()
+    const [date, setDate] = useState(field.value || '')
+    const params = useParams()
+    const locale = params.locale
+
+    const [selectedYear, setSelectedYear] = useState('')
+    const [selectedMonth, setSelectedMonth] = useState('')
+    const [selectedDay, setSelectedDay] = useState('')
+    const [daysInMonth, setDaysInMonth] = useState(31)
 
     useEffect(() => {
-        const formattedDate = `${dateSelect.yearValue}-${String(dateSelect.monthValue).padStart(2, '0')}-${String(dateSelect.dayValue).padStart(2, '0')}`
-        field.onChange(formattedDate)
-    }, [dateSelect, field])
+        if (field.value !== date) {
+            setDate(field.value || '')
+        }
+    }, [field.value])
+
+    useEffect(() => {
+        if (selectedYear && selectedMonth) {
+            const monthIndex = parseInt(selectedMonth, 10) - 1
+            setDaysInMonth(getDaysInMonth(new Date(parseInt(selectedYear), monthIndex)))
+        }
+    }, [selectedYear, selectedMonth])
+
+    useEffect(() => {
+        if (selectedYear && selectedMonth && selectedDay) {
+            const newDate = `${selectedYear}-${selectedMonth.padStart(2, '0')}-${selectedDay.padStart(2, '0')}`
+            setDate(newDate)
+            field.onChange(newDate)
+        }
+    }, [selectedYear, selectedMonth, selectedDay])
+
+    const handleYearChange = (value: string) => {
+        setSelectedYear(value)
+        setSelectedDay('')
+
+        field.onChange('')
+    }
+
+    const handleMonthChange = (value: string) => {
+        setSelectedMonth(value)
+        setSelectedDay('')
+        field.onChange('')
+    }
+
+    const handleDayChange = (value: string) => {
+        setSelectedDay(value)
+    }
+
+    const currentYear = new Date().getFullYear()
+    const yearRange = Array.from({ length: 100 }, (_, i) => currentYear - i)
 
     return (
-        <div>
-            <select value={dateSelect.yearValue} onChange={dateSelect.onYearChange}>
-                <option value="">{`წელი`}</option>
-                {dateSelect.yearOptions.map((yearOption) => (
-                    <option key={yearOption.value} value={yearOption.value}>
-                        {yearOption.value}
-                    </option>
-                ))}
-            </select>
+        <div className="flex flex-row gap-2">
+            <Select value={selectedYear} onValueChange={handleYearChange}>
+                <SelectTrigger className="w-[120px]">
+                    <SelectValue placeholder={t('year')} />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        {yearRange.map((year) => (
+                            <SelectItem key={year} value={year.toString()}>
+                                {year}
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
 
-            <select value={dateSelect.monthValue} onChange={dateSelect.onMonthChange}>
-                <option value="">{`თვე`}</option>
-                {dateSelect.monthOptions.map((monthOption, index) => (
-                    <option key={monthOption.value} value={monthOption.value}>
-                        {georgianMonths[index]}
-                    </option>
-                ))}
-            </select>
+            <Select value={selectedMonth} onValueChange={handleMonthChange}>
+                <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder={t('month')} />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        {(locale === 'ka' ? georgianMonths : englishMonths).map((month, index) => (
+                            <SelectItem key={index + 1} value={(index + 1).toString()}>
+                                {month}
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
 
-            <select value={dateSelect.dayValue} onChange={dateSelect.onDayChange}>
-                <option value="">{`რიცხვი`}</option>
-                {dateSelect.dayOptions.map((dayOption) => (
-                    <option key={dayOption.value} value={dayOption.value}>
-                        {dayOption.label}
-                    </option>
-                ))}
-            </select>
+            <Select value={selectedDay} onValueChange={handleDayChange}>
+                <SelectTrigger className="w-[120px]">
+                    <SelectValue placeholder={t('day')} />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((day) => (
+                            <SelectItem key={day} value={day.toString()}>
+                                {day}
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
         </div>
     )
 }

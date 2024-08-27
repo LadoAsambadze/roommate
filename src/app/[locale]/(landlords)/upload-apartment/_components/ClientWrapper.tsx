@@ -11,22 +11,23 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/src/components/ui/toggle-group'
 import UploadValidator from './validator/UploadValidator'
 import DatePicker from './DatePicker'
+import { useTranslation } from 'react-i18next'
 
 export default function ClientWrapper() {
     const form = UploadValidator()
-
-    console.log(form.getValues())
+    const { t } = useTranslation()
 
     const onSubmit = () => {
         console.log('done')
+        console.log(form.getValues())
     }
-    console.log(form.getValues().apartmentType)
+
     return (
         <main className="flex min-h-screen w-full items-start justify-center">
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="h-full w-full border-slate-900 p-6 md:w-2/3 md:border md:px-10 md:py-10"
+                    className="flex h-full w-full flex-col gap-5 border-slate-900 p-6 md:w-2/3 md:border md:px-10 md:py-10"
                 >
                     <FormField
                         control={form.control}
@@ -34,7 +35,7 @@ export default function ClientWrapper() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel className="flex w-full justify-start pb-2">
-                                    უძრავი ქონების ტიპი
+                                    {t('apartmentType')}
                                 </FormLabel>
                                 <FormControl>
                                     <ToggleGroup
@@ -65,7 +66,7 @@ export default function ClientWrapper() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel className="flex w-full justify-start pb-2">
-                                    Choose Date
+                                    {t('rentDate')}
                                 </FormLabel>
                                 <FormControl>
                                     <DatePicker field={field} />

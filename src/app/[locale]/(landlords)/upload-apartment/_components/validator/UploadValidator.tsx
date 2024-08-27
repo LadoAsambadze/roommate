@@ -15,14 +15,8 @@ export default function UploadValidator() {
                 message: 'გთხოვთ აირჩიოთ უძრავი ქონების ტიპი',
             }),
 
-        date: z
-            .string()
-            .min(1, 'Date is required') // Use min(1) instead of nonempty
-            .regex(dateRegex, 'Invalid date format (expected YYYY-MM-DD)'),
-        // Add other fields here
+        date: z.string().min(1, '').regex(dateRegex),
     })
-
-
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),

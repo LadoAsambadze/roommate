@@ -45,7 +45,15 @@ export default async function RootLayout({
     modal: ReactNode
     params: { locale: string }
 }) {
-    const i18nNamespaces = ['home', 'shared', 'signup', 'profile', 'roommates', 'signin']
+    const i18nNamespaces = [
+        'home',
+        'shared',
+        'signup',
+        'profile',
+        'roommates',
+        'signin',
+        'uploadApartment',
+    ]
 
     const { resources } = await initTranslations(locale, i18nNamespaces)
 
