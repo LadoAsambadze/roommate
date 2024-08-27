@@ -1,15 +1,15 @@
-import BlogSection from './_components/BlogSection'
-import ConnectSection from './_components/ConnectSection'
-import ContactSection from './_components/ContactSection'
-import FeatureSection from './_components/FeatureSection'
-import QuestionSection from './_components/QuestionSection'
-import ReviewSection from './_components/ReviewSection'
-import SuggestSection from './_components/SuggestSection'
+import BlogSection from './(main)/_components/BlogSection'
+import ConnectSection from './(main)/_components/ConnectSection'
+import ContactSection from './(main)/_components/ContactSection'
+import FeatureSection from './(main)/_components/FeatureSection'
+import QuestionSection from './(main)/_components/QuestionSection'
+import ReviewSection from './(main)/_components/ReviewSection'
+import SuggestSection from './(main)/_components/SuggestSection'
 
 import { getClient } from '@/src/libs/apollo/rscClient'
 import { query } from '@/graphql/restLinkQuery'
-import CoverSection from './_components/CoverSection'
-import ApartmentSection from './_components/ApartmentSection'
+import CoverSection from './(main)/_components/CoverSection'
+import ApartmentSection from './(main)/_components/ApartmentSection'
 
 async function Home() {
     const response = await getClient().query({ query, fetchPolicy: 'cache-first' })
