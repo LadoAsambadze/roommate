@@ -144,6 +144,8 @@ export const GetPaginatedFilteredRoommatesQuery: TypedDocumentNode<
 export type GetPropertiesDataProps = {
     getPropertyAmenities: Query['getPropertyAmenities']
     getPropertyTypes: Query['getPropertyTypes']
+    getHousingStatuses: Query['getHousingStatuses']
+    getHousingConditions: Query['getHousingConditions']
 }
 export const GetPropertiesData: TypedDocumentNode<GetPropertiesDataProps> = gql`
     query GetProperties($locale: Language) {
@@ -156,6 +158,22 @@ export const GetPropertiesData: TypedDocumentNode<GetPropertiesDataProps> = gql`
             }
         }
         getPropertyTypes(locale: $locale) {
+            id
+            translations {
+                id
+                name
+                lang
+            }
+        }
+        getHousingStatuses(locale: $locale) {
+            id
+            translations {
+                id
+                name
+                lang
+            }
+        }
+        getHousingConditions(locale: $locale) {
             id
             translations {
                 id

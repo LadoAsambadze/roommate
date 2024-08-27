@@ -2,16 +2,18 @@
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
 import UploadValidator from './validator/UploadValidator'
-import RentDatePicker from './formFieldItems/RentDatePicker'
+import StaticRentDatePicker from './formFieldItems/StaticRentDatePicker'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@apollo/client'
 import { GetPropertiesData } from '@/graphql/query'
 import { useParams } from 'next/navigation'
-import PropertyType from './formFieldItems/PropertyType'
-import MinRentMonths from './formFieldItems/MinRentMonths'
-import ApartmentRooms from './formFieldItems/ApartmentRooms'
-import BathroomsInBedroom from './formFieldItems/BathroomsInBedroom'
-import BathroomsInProperty from './formFieldItems/BathroomsInProperty'
+import FullDynamicToggle from './formFieldItems/FullDynamicToggle'
+import StaticRentMonthSelect from './formFieldItems/StaticRentMonthSelect'
+import StaticNumericToggle from './formFieldItems/StaticNumericToggle'
+import StaticSelectNumeric from './formFieldItems/StaticSelectNumeric'
+import FullDynamicSelect from './formFieldItems/FullDynamicSelect'
+import { Input } from '@/src/components/ui/input'
+import { Checkbox } from '@/src/components/ui/checkbox'
 
 export default function ClientWrapper() {
     const params = useParams()
@@ -44,10 +46,7 @@ export default function ClientWrapper() {
                                 <FormLabel className="flex w-full justify-start text-base">
                                     {t('apartmentType')}
                                 </FormLabel>
-                                <PropertyType
-                                    field={field}
-                                    propertyTypes={data?.getPropertyTypes}
-                                />
+                                <FullDynamicToggle field={field} data={data?.getPropertyTypes} />
                             </FormItem>
                         )}
                     />
@@ -64,7 +63,7 @@ export default function ClientWrapper() {
                                         {t('rentDate')}
                                     </FormLabel>
                                     <FormControl>
-                                        <RentDatePicker field={field} />
+                                        <StaticRentDatePicker field={field} />
                                     </FormControl>
                                 </FormItem>
                             )}
@@ -80,7 +79,7 @@ export default function ClientWrapper() {
                                     {t('minRentMonth')}
                                 </FormLabel>
                                 <FormControl>
-                                    <MinRentMonths field={field} />
+                                    <StaticRentMonthSelect field={field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -93,7 +92,7 @@ export default function ClientWrapper() {
                                 <FormLabel className="flex w-full justify-start text-base">
                                     {t('apartmentRooms')}
                                 </FormLabel>
-                                <ApartmentRooms field={field} />
+                                <StaticNumericToggle field={field} />
                             </FormItem>
                         )}
                     />
@@ -101,7 +100,7 @@ export default function ClientWrapper() {
                         <FormLabel className="flex w-full justify-start text-base">
                             {t('bathroomsAmount')}
                         </FormLabel>
-                        <div className="flex flex-row gap-40">
+                        <div className="flex flex-row gap-20">
                             <FormField
                                 control={form.control}
                                 name="bathroomsInProperty"
@@ -111,7 +110,7 @@ export default function ClientWrapper() {
                                             {t('inApartment')}
                                         </FormLabel>
                                         <FormControl>
-                                            <BathroomsInBedroom field={field} />
+                                            <StaticSelectNumeric field={field} />
                                         </FormControl>
                                     </FormItem>
                                 )}
@@ -125,13 +124,136 @@ export default function ClientWrapper() {
                                             {t('inBedroom')}
                                         </FormLabel>
                                         <FormControl>
-                                            <BathroomsInProperty field={field} />
+                                            <StaticSelectNumeric field={field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="flex flex-row gap-20">
+                            <FormField
+                                control={form.control}
+                                name="floorAmount"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="flex w-full justify-start  text-sm">
+                                            {t('floorAmount')}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <StaticSelectNumeric field={field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="flatFloor"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="flex w-full justify-start  text-sm">
+                                            {t('flatFloor')}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <StaticSelectNumeric field={field} />
                                         </FormControl>
                                     </FormItem>
                                 )}
                             />
                         </div>
                     </div>
+                    <div className="flex flex-row gap-20">
+                        <FormField
+                            control={form.control}
+                            name="status"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="flex w-full justify-start  text-sm">
+                                        {t('status')}
+                                    </FormLabel>
+                                    <FormControl>
+                                        <FullDynamicSelect
+                                            field={field}
+                                            data={data?.getHousingStatuses}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="condition"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="flex w-full justify-start  text-sm">
+                                        {t('condition')}
+                                    </FormLabel>
+                                    <FormControl>
+                                        <FullDynamicSelect
+                                            field={field}
+                                            data={data?.getHousingConditions}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <FormField
+                        control={form.control}
+                        name="address"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex w-full justify-start  text-sm">
+                                    {t('address')}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        className="h-10"
+                                        onChange={(value) => field.onChange(value)}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="cadastralCode"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex w-full justify-start text-sm">
+                                    {t('cadastralCode')}
+                                </FormLabel>
+                                <span className=" text-xs text-[#838CAC]">
+                                    საკადასტრო კოდის ჩაწერით გაიზრდება სანდოობა, უძრავი ქონების
+                                    საკადასტო შეგიძლიათ ნახოთ ვებგვერდზე
+                                </span>
+                                <FormControl>
+                                    <Input
+                                        className="h-10"
+                                        onChange={(value) => field.onChange(value)}
+                                    />
+                                </FormControl>
+                                <FormField
+                                    control={form.control}
+                                    name="showCadastral"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <div className="flex items-center space-x-2">
+                                                    <Checkbox id="terms" />
+                                                    <label
+                                                        htmlFor="terms"
+                                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                    >
+                                                        Accept terms and conditions
+                                                    </label>
+                                                </div>
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            </FormItem>
+                        )}
+                    />
 
                     <button type="submit">ატვირთვა</button>
                 </form>

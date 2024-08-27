@@ -8,7 +8,7 @@ import {
 } from '@/src/components/ui/shadcnSelect'
 import { useTranslation } from 'react-i18next'
 
-export default function MinRentMonths({ field }: any) {
+export default function StaticRentMonthSelect({ field }: any) {
     const { t } = useTranslation()
 
     const handleSelectChange = (value: string) => {

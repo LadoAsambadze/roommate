@@ -1,6 +1,12 @@
+import { PropertyTypeObject } from '@/graphql/typesGraphql'
 import { ToggleGroup, ToggleGroupItem } from '@/src/components/ui/toggle-group'
 
-export default function ApartmentRooms({ field }: any) {
+interface PropertyTypeProps {
+    field: any
+    data?: PropertyTypeObject[] | null
+}
+
+export default function FullDynamicToggle({ field, data }: PropertyTypeProps) {
     return (
         <ToggleGroup
             className="justify-start"
@@ -12,9 +18,9 @@ export default function ApartmentRooms({ field }: any) {
                 }
             }}
         >
-            {Array.from({ length: 10 }, (_, index) => (
-                <ToggleGroupItem key={index + 1} value={(index + 1).toString()}>
-                    {index + 1}
+            {data?.map((item, index) => (
+                <ToggleGroupItem key={index} value={item.id}>
+                    {item.translations[0]?.name}
                 </ToggleGroupItem>
             ))}
         </ToggleGroup>

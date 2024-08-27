@@ -10,7 +10,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/src/components/ui/shadcnSelect'
-import { ControllerRenderProps } from 'react-hook-form'
 
 const georgianMonths = [
     'იანვარი',
@@ -43,10 +42,10 @@ const englishMonths = [
 ]
 
 interface RentDatePickerProps {
-    field: ControllerRenderProps<any, 'date'> // Update based on actual field type
+    field: any
 }
 
-function RentDatePicker({ field }: RentDatePickerProps) {
+function StaticRentDatePicker({ field }: RentDatePickerProps) {
     const { t } = useTranslation()
     const [date, setDate] = useState(field.value || '')
     const params = useParams()
@@ -147,4 +146,4 @@ function RentDatePicker({ field }: RentDatePickerProps) {
     )
 }
 
-export default RentDatePicker
+export default StaticRentDatePicker

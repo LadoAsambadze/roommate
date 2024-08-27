@@ -1,17 +1,23 @@
 {
     "apartmentType": "Apartment type",
-    "rentDate": "From what date do you want to rent the apartment?",
+    "rentDate": "From what date do you want to rent the apartment",
     "year": "Year",
     "month": "Month",
     "day": "Day",
     "oneMonth": "1 month",
-    "sixMonth": "1 month",
+    "sixMonth": "6 month",
     "twelweMonth": "12 month",
     "selectPeriod": "Select month",
     "minRentMonth": "Minimum rent period",
-    "apartmentRooms": "How many rooms have apartment?",
+    "apartmentRooms": "How many rooms have apartment",
     "inApartment": "In apartment",
     "inBedroom": "In bedroom",
     "bathroomsAmount": "Bathrooms amount",
-    "availability": "Availability"
+    "availability": "Availability",
+    "floorAmount": "Number of floors",
+    "flatFloor": "On which floor is the apartment",
+    "status": "Status",
+    "condition": "Condition",
+    "address": "Address",
+    "cadastralCode": "Cadastral code"
 }

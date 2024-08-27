@@ -1,3 +1,4 @@
+import { HousingConditionObject, HousingStatusObject } from '@/graphql/typesGraphql'
 import {
     Select,
     SelectContent,
@@ -8,7 +9,12 @@ import {
 } from '@/src/components/ui/shadcnSelect'
 import { useTranslation } from 'react-i18next'
 
-export default function BathroomsInBedroom({ field }: any) {
+type ApartmentStatusProps = {
+    field: any
+    data?: HousingStatusObject[] | null | HousingConditionObject[]
+}
+
+export default function FullDynamicSelect({ field, data }: ApartmentStatusProps) {
     const { t } = useTranslation()
 
     const handleSelectChange = (value: string) => {
@@ -16,13 +22,15 @@ export default function BathroomsInBedroom({ field }: any) {
     }
     return (
         <Select onValueChange={handleSelectChange} defaultValue={field.value}>
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger className="w-[250px]">
                 <SelectValue placeholder="-" />
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
-                    {Array.from({ length: 10 }, (_, index) => (
-                        <SelectItem value={index.toString()}>{index}</SelectItem>
+                    {data?.map((item, index) => (
+                        <SelectItem key={index} value={item.id}>
+                            {item.translations[0].name}
+                        </SelectItem>
                     ))}
                 </SelectGroup>
             </SelectContent>

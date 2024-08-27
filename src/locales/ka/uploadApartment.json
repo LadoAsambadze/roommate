@@ -9,9 +9,15 @@
     "twelweMonth": "12 თვე",
     "selectPeriod": "აირჩიე თვე",
     "minRentMonth": "მინიმალური გაქირავების პერიოდი",
-    "apartmentRooms": "სულ რამდენ ოთახიანია სახლი?",
+    "apartmentRooms": "სულ რამდენ ოთახიანია სახლი",
     "inApartment": "სახლში",
     "inBedroom": "საძინებელში",
     "bathroomsAmount": "სველი წერტილების რაოდენობა",
-    "availability": "ხელმისაწვდომობა"
+    "availability": "ხელმისაწვდომობა",
+    "floorAmount": "სართულები",
+    "flatFloor": "რომელ სართულზეა ბინა",
+    "status": "სტატუსი",
+    "condition": "მდგომარეობა",
+    "address": "მისამართი",
+    "cadastralCode": "საკადასტრო კოდი"
 }

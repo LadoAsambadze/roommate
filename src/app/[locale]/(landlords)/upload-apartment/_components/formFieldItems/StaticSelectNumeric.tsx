@@ -8,11 +8,12 @@ import {
 } from '@/src/components/ui/shadcnSelect'
 import { useTranslation } from 'react-i18next'
 
-export default function BathroomsInProperty({ field }: any) {
+export default function StaticSelectNumeric({ field }: any) {
     const { t } = useTranslation()
 
     const handleSelectChange = (value: string) => {
         field.onChange(value)
+        console.log(value)
     }
     return (
         <Select onValueChange={handleSelectChange} defaultValue={field.value}>
