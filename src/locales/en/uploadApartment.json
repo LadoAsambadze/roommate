@@ -19,5 +19,8 @@
     "status": "Status",
     "condition": "Condition",
     "address": "Address",
-    "cadastralCode": "Cadastral code"
+    "cadastralCode": "Cadastral code",
+    "hideCadastralCode": "Hide cadastral code",
+    "propertyAmenities": "Specify what is in the apartment",
+    "propertyHeating": "What type of heating do you have?"
 }

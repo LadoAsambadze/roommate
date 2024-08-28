@@ -14,6 +14,7 @@ import StaticSelectNumeric from './formFieldItems/StaticSelectNumeric'
 import FullDynamicSelect from './formFieldItems/FullDynamicSelect'
 import { Input } from '@/src/components/ui/input'
 import { Checkbox } from '@/src/components/ui/checkbox'
+import FullDynamicCheckbox from './formFieldItems/FullDynamicCheckbox'
 
 export default function ClientWrapper() {
     const params = useParams()
@@ -25,7 +26,7 @@ export default function ClientWrapper() {
     })
 
     const form = UploadValidator({ data })
-    console.log(form.getValues())
+
     const onSubmit = () => {
         console.log('done')
         console.log(form.getValues())
@@ -222,7 +223,7 @@ export default function ClientWrapper() {
                                 <FormLabel className="flex w-full justify-start text-sm">
                                     {t('cadastralCode')}
                                 </FormLabel>
-                                <span className=" text-xs text-[#838CAC]">
+                                <span className="text-xs text-[#838CAC]">
                                     საკადასტრო კოდის ჩაწერით გაიზრდება სანდოობა, უძრავი ქონების
                                     საკადასტო შეგიძლიათ ნახოთ ვებგვერდზე
                                 </span>
@@ -239,18 +240,54 @@ export default function ClientWrapper() {
                                         <FormItem>
                                             <FormControl>
                                                 <div className="flex items-center space-x-2">
-                                                    <Checkbox id="terms" />
-                                                    <label
-                                                        htmlFor="terms"
-                                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                    >
-                                                        Accept terms and conditions
+                                                    <Checkbox
+                                                        field={field}
+                                                        onCheckedChange={(checked) =>
+                                                            field.onChange(checked)
+                                                        }
+                                                    />
+                                                    <label className=" text-xs font-medium leading-none text-[#838CAC] peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                                        {t('hideCadastralCode')}
                                                     </label>
                                                 </div>
                                             </FormControl>
                                         </FormItem>
                                     )}
                                 />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="propertyAmenities"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex w-full justify-start text-sm">
+                                    {t('propertyAmenities')}
+                                </FormLabel>
+                                <FormControl>
+                                    <FullDynamicCheckbox
+                                        field={field}
+                                        data={data?.getPropertyAmenities}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="propertyHeating"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex w-full justify-start text-sm">
+                                    {t('propertyHeating')}
+                                </FormLabel>
+                                <FormControl>
+                                    <FullDynamicCheckbox
+                                        field={field}
+                                        data={data?.getHousingHeatingTypes}
+                                    />
+                                </FormControl>
                             </FormItem>
                         )}
                     />

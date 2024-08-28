@@ -19,5 +19,8 @@
     "status": "სტატუსი",
     "condition": "მდგომარეობა",
     "address": "მისამართი",
-    "cadastralCode": "საკადასტრო კოდი"
+    "cadastralCode": "საკადასტრო კოდი",
+    "hideCadastralCode": "დამალე საკადასტრო კოდი",
+    "propertyAmenities": "მიუთითე რა არის ბინაში",
+    "propertyHeating": "როგორი ტიპის გათბობა გაქვთ"
 }
