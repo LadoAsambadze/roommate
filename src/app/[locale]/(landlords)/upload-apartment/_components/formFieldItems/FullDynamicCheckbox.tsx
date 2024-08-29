@@ -1,9 +1,13 @@
-import { HousingHeatingTypeObject, PropertyAmenityObject } from '@/graphql/typesGraphql'
+import {
+    HousingHeatingTypeObject,
+    HousingLivingSafetyObject,
+    PropertyAmenityObject,
+} from '@/graphql/typesGraphql'
 import { Checkbox } from '@/src/components/ui/checkbox'
 import { Label } from '@/src/components/ui/label'
 
 type FullDynamicCheckboxProps = {
-    data?: PropertyAmenityObject[] | null | HousingHeatingTypeObject[]
+    data?: PropertyAmenityObject[] | HousingHeatingTypeObject[] | HousingLivingSafetyObject[] | null
     field: any
 }
 

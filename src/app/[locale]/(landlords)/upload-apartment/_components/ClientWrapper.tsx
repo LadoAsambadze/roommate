@@ -15,6 +15,8 @@ import FullDynamicSelect from './formFieldItems/FullDynamicSelect'
 import { Input } from '@/src/components/ui/input'
 import { Checkbox } from '@/src/components/ui/checkbox'
 import FullDynamicCheckbox from './formFieldItems/FullDynamicCheckbox'
+import StaticPetStatusRadio from './formFieldItems/StaticPetStatusRadio'
+import StaticPartyStatusRadio from './formFieldItems/StaticPartyStatusRadio'
 
 export default function ClientWrapper() {
     const params = useParams()
@@ -287,6 +289,70 @@ export default function ClientWrapper() {
                                         field={field}
                                         data={data?.getHousingHeatingTypes}
                                     />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="propertySafety"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex w-full justify-start text-sm">
+                                    {t('propertySafety')}
+                                </FormLabel>
+                                <FormControl>
+                                    <FullDynamicCheckbox
+                                        field={field}
+                                        data={data?.getHousingLivingSafeties}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="maxPersonLiving"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex w-full justify-start  text-sm">
+                                    {t('maxPersonLiving')}
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="number"
+                                        onWheel={(event) => event.currentTarget.blur()}
+                                        className="h-10 w-28"
+                                        onChange={(value) => field.onChange(value)}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="petStatus"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex w-full justify-start text-sm">
+                                    {t('petStatus')}
+                                </FormLabel>
+                                <FormControl>
+                                    <StaticPetStatusRadio field={field} />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="partyStatus"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="flex w-full justify-start text-sm">
+                                    {t('partyStatus')}
+                                </FormLabel>
+                                <FormControl>
+                                    <StaticPartyStatusRadio field={field} />
                                 </FormControl>
                             </FormItem>
                         )}

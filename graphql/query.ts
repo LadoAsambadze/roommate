@@ -147,6 +147,7 @@ export type GetPropertiesDataProps = {
     getHousingStatuses: Query['getHousingStatuses']
     getHousingConditions: Query['getHousingConditions']
     getHousingHeatingTypes: Query['getHousingHeatingTypes']
+    getHousingLivingSafeties: Query['getHousingLivingSafeties']
 }
 export const GetPropertiesData: TypedDocumentNode<GetPropertiesDataProps> = gql`
     query GetProperties($locale: Language) {
@@ -183,6 +184,14 @@ export const GetPropertiesData: TypedDocumentNode<GetPropertiesDataProps> = gql`
             }
         }
         getHousingHeatingTypes(locale: $locale) {
+            id
+            translations {
+                id
+                name
+                lang
+            }
+        }
+        getHousingLivingSafeties(locale: $locale) {
             id
             translations {
                 id

@@ -22,5 +22,11 @@
     "cadastralCode": "Cadastral code",
     "hideCadastralCode": "Hide cadastral code",
     "propertyAmenities": "Specify what is in the apartment",
-    "propertyHeating": "What type of heating do you have?"
+    "propertyHeating": "What type of heating do you have?",
+    "propertySafety": "A safe environment to live in",
+    "maxPersonLiving": "How many people can live",
+    "petStatus": "Does the resident have the right to have an animal in the apartment?",
+    "yes": "Yes",
+    "no": "No",
+    "partyStatus": "Does the resident have the right to organize a party in the apartment?"
 }

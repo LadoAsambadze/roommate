@@ -30,6 +30,8 @@ const config = {
             colors: {
                 mainGreen: 'hsl(var(--mainGreen))',
                 hoverGreen: 'hsl(var(--hoverGreen))',
+                mainGreen400: 'hsl(var(--mainGreen-400))',
+
                 pressedGreen: 'hsl(var(--pressedGreen))',
                 headerBg: 'hsl(var(--headerBg))',
                 textColor: 'hsl(var(--textColor))',
