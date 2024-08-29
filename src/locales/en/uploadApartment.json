@@ -34,5 +34,8 @@
     "sqm": "Area in square meters",
     "price": "Price",
     "contactInfo": "Contact information",
-    "name": "Name"
+    "name": "Name",
+    "geoEng": "Georgian / English",
+    "description": "Description",
+    "dragDropOrClick": "Upload or drag and drop file here"
 }

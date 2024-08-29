@@ -29,14 +29,16 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
         propertyHeating: z.array(z.enum(propertyHeatingValues as [string, ...string[]])).min(1),
         propertySafety: z.array(z.enum(propertySafetyValues as [string, ...string[]])).min(1),
         maxPersonLiving: z.string().min(1),
-        petStatus: z.boolean().optional(),
-        partyStatus: z.boolean().optional(),
+        petStatus: z.boolean(),
+        partyStatus: z.boolean(),
         depositStatus: z.boolean().optional(),
         depositAmount: z.string().min(1),
         price: z.string().min(1),
         sqm: z.string().min(1),
         name: z.string().min(1),
         phone: z.string().refine((value) => isValidPhoneNumber(value)),
+        description: z.string().min(1),
+        images: z.union([z.any(), z.undefined()]),
     })
 
     type FormSchemaType = z.infer<typeof FormSchema>
@@ -69,6 +71,8 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
             sqm: undefined,
             name: undefined,
             phone: undefined,
+            description: undefined,
+            images: [],
         },
     })
 

@@ -7,7 +7,7 @@ export default function StaticPartyStatusRadio({ field }: any) {
     const { t } = useTranslation()
     return (
         <RadioGroup
-            value={field.value ? 'true' : 'false'}
+            value={field.value ? field.value : undefined}
             onValueChange={(value) => field.onChange(value === 'true')}
         >
             <div className="flex items-center space-x-4">

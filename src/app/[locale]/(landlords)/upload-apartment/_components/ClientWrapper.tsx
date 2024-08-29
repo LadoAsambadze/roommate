@@ -19,8 +19,11 @@ import StaticPetStatusRadio from './formFieldItems/StaticPetStatusRadio'
 import StaticPartyStatusRadio from './formFieldItems/StaticPartyStatusRadio'
 import FullDynamicSelectDeposit from './formFieldItems/FullyDynamicSelectDeposit'
 import StaticDepositRadio from './formFieldItems/StaticDepositRadio'
-import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
+
 import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
+import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
+import MultiImageUploader from './formFieldItems/MultiImageUploader'
 
 export default function ClientWrapper() {
     const params = useParams()
@@ -44,7 +47,7 @@ export default function ClientWrapper() {
 
     return (
         <>
-            <main className="flex min-h-screen w-full items-start justify-center">
+            <main className="flex  w-full items-start justify-center">
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
@@ -455,19 +458,19 @@ export default function ClientWrapper() {
                             <FormLabel className="flex w-full justify-start text-base">
                                 {t('contactInfo')}
                             </FormLabel>
-                            <div className="flex w-full flex-row gap-20">
+                            <div className=" relative flex w-full flex-row gap-20">
                                 <FormField
                                     control={form.control}
                                     name="name"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="h-10 w-64">
                                             <FormLabel className="flex w-full justify-start  text-sm">
                                                 {t('name')}
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
+                                                    className="h-full w-full"
                                                     min="0"
-                                                    className="h-10"
                                                     onChange={(value) => field.onChange(value)}
                                                 />
                                             </FormControl>
@@ -479,23 +482,22 @@ export default function ClientWrapper() {
                                     control={form.control}
                                     name="phone"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="w-72">
                                             <FormLabel className="flex w-full justify-start  text-sm">
                                                 {t('phone')}
                                             </FormLabel>
                                             <FormControl>
                                                 <PhoneInput
+                                                    className="h-full w-full"
                                                     type="number"
                                                     defaultCountry="GE"
                                                     international
                                                     field={field}
                                                     labels={undefined}
                                                     form={form}
-                                                    value={field.value}
                                                     onChange={(phone: string) => {
                                                         form.setValue('phone', phone)
                                                     }}
-                                                    className="w-full"
                                                 />
                                             </FormControl>
                                         </FormItem>
@@ -503,6 +505,41 @@ export default function ClientWrapper() {
                                 />
                             </div>
                         </div>
+                        <div className="flex flex-col gap-4">
+                            <FormLabel className="flex w-full justify-start text-base">
+                                {t('description')}
+                            </FormLabel>
+                            <FormField
+                                control={form.control}
+                                name="description"
+                                render={({ field }) => (
+                                    <FormItem className="w-full">
+                                        <FormLabel className="flex w-full justify-start  text-sm">
+                                            {t('geoEng')}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <textarea
+                                                spellCheck="false"
+                                                className="w-full rounded-md border border-[#828bab] px-3 py-2 text-sm  focus:border-2 focus:border-[#c5758a] focus:outline-none"
+                                                rows={4}
+                                                value={field.value}
+                                                onChange={(value) => field.onChange(value)}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <FormField
+                            control={form.control}
+                            name="images"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{t('profileImage')}</FormLabel>
+                                    <MultiImageUploader field={field} />
+                                </FormItem>
+                            )}
+                        />
 
                         <button type="submit">ატვირთვა</button>
                     </form>
