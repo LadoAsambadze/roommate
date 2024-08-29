@@ -13,7 +13,7 @@ export default function StaticPetStatusRadio({ field }: any) {
                 <RadioGroupItem value="true" id="yes" />
                 <Label
                     htmlFor="yes"
-                    className="text-xs font-medium leading-none text-[#838CAC] peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-xs font-medium leading-none  peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                     {t('yes')}
                 </Label>
@@ -21,7 +21,7 @@ export default function StaticPetStatusRadio({ field }: any) {
                 <RadioGroupItem value="false" id="no" />
                 <Label
                     htmlFor="no"
-                    className="text-xs font-medium leading-none text-[#838CAC] peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-xs font-medium leading-none  peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                     {t('no')}
                 </Label>

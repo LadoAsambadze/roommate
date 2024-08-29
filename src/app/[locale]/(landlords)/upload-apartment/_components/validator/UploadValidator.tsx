@@ -1,6 +1,7 @@
 import { GetPropertiesDataProps } from '@/graphql/query'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { isValidPhoneNumber } from 'react-phone-number-input'
 import { z } from 'zod'
 
 export default function UploadValidator({ data }: { data?: GetPropertiesDataProps }) {
@@ -30,6 +31,12 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
         maxPersonLiving: z.string().min(1),
         petStatus: z.boolean().optional(),
         partyStatus: z.boolean().optional(),
+        depositStatus: z.boolean().optional(),
+        depositAmount: z.string().min(1),
+        price: z.string().min(1),
+        sqm: z.string().min(1),
+        name: z.string().min(1),
+        phone: z.string().refine((value) => isValidPhoneNumber(value)),
     })
 
     type FormSchemaType = z.infer<typeof FormSchema>
@@ -56,6 +63,12 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
             maxPersonLiving: undefined,
             petStatus: undefined,
             partyStatus: undefined,
+            depositStatus: false,
+            depositAmount: undefined,
+            price: undefined,
+            sqm: undefined,
+            name: undefined,
+            phone: undefined,
         },
     })
 
