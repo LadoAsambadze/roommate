@@ -16,9 +16,14 @@ export type Scalars = {
     Boolean: { input: boolean; output: boolean }
     Int: { input: number; output: number }
     Float: { input: number; output: number }
+    /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
     Date: { input: any; output: any }
+    /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
     DateTime: { input: any; output: any }
+    /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
     JSON: { input: any; output: any }
+    RestFunction: { input: any; output: any }
+    /** A tuple of two strings */
     StringTuple: { input: any; output: any }
 }
 
@@ -79,6 +84,7 @@ export type ConversationWithUserObject = {
     id: Scalars['ID']['output']
     sid: Scalars['String']['output']
     status: ConversationStatus
+    unreadMessagesCount: Scalars['Int']['output']
     updatedAt: Scalars['DateTime']['output']
     user?: Maybe<UserPreviewObject>
 }
@@ -146,6 +152,14 @@ export type GenericInputObject = {
     renderAs?: Maybe<RenderAs>
     type: InputType
     variant?: Maybe<Variant>
+}
+
+export type GetPropertiesFilterInput = {
+    areaRange?: InputMaybe<RangeInput>
+    bedroomsRange?: InputMaybe<RangeInput>
+    districtIds?: InputMaybe<Array<Scalars['ID']['input']>>
+    priceRange?: InputMaybe<RangeInput>
+    roomsRange?: InputMaybe<RangeInput>
 }
 
 export type HousingConditionObject = {
@@ -291,6 +305,7 @@ export type Mutation = {
     logConnectionError: Scalars['Boolean']['output']
     lookupOrCreateTwilioUserResource: Scalars['Boolean']['output']
     refreshToken: JwtObject
+    removeProperty: Scalars['Boolean']['output']
     resetPassword: Scalars['Boolean']['output']
     roommateSendResetPasswordVerificationCode: SendResetPasswordVerificationCodeObject
     roommateSignIn: JwtObject
@@ -330,6 +345,11 @@ export type MutationRefreshTokenArgs = {
     input: RefreshTokenInput
 }
 
+export type MutationRemovePropertyArgs = {
+    isSoftRemove?: InputMaybe<Scalars['Boolean']['input']>
+    propertyId: Scalars['String']['input']
+}
+
 export type MutationResetPasswordArgs = {
     input: ResetPasswordInput
 }
@@ -365,7 +385,7 @@ export type MutationUpdateConversationStatusArgs = {
 }
 
 export type MutationUpsertPropertyArgs = {
-    input: PropertyInput
+    input: UpsertPropertyInput
 }
 
 export type MutationVerifyCodeByEmailArgs = {
@@ -402,6 +422,12 @@ export type OldUserObject = {
 export type PaginatedConversationWithUserObject = {
     __typename?: 'PaginatedConversationWithUserObject'
     list?: Maybe<Array<ConversationWithUserObject>>
+    pageInfo: PaginationInfoObject
+}
+
+export type PaginatedFilteredPropertiesObject = {
+    __typename?: 'PaginatedFilteredPropertiesObject'
+    list?: Maybe<Array<PropertyObject>>
     pageInfo: PaginationInfoObject
 }
 
@@ -455,51 +481,18 @@ export type PropertyDepositTranslatedObject = {
     lang: Language
 }
 
-export type PropertyInput = {
-    area?: InputMaybe<Scalars['Float']['input']>
-    availableFrom?: InputMaybe<Scalars['DateTime']['input']>
-    bathroomsInBedroom?: InputMaybe<Scalars['Float']['input']>
-    bathroomsInProperty?: InputMaybe<Scalars['Float']['input']>
-    cadastralCode?: InputMaybe<Scalars['String']['input']>
-    capacity?: InputMaybe<Scalars['Float']['input']>
-    contactName?: InputMaybe<Scalars['String']['input']>
-    contactPhone?: InputMaybe<Scalars['String']['input']>
-    descriptions?: InputMaybe<Array<DescriptionTranslated>>
-    districtId?: InputMaybe<Scalars['ID']['input']>
-    floor?: InputMaybe<Scalars['Float']['input']>
-    hideCadastralCode?: InputMaybe<Scalars['Boolean']['input']>
-    housingConditionId?: InputMaybe<Scalars['ID']['input']>
-    housingHeatingTypeIds?: InputMaybe<Array<Scalars['ID']['input']>>
-    housingLivingSafetyIds?: InputMaybe<Array<Scalars['ID']['input']>>
-    housingStatusId?: InputMaybe<Scalars['ID']['input']>
-    id?: InputMaybe<Scalars['ID']['input']>
-    imageUploadFiles?: InputMaybe<Array<Scalars['String']['input']>>
-    images?: InputMaybe<Array<ImageInput>>
-    minRentalPeriod?: InputMaybe<Scalars['Float']['input']>
-    partyAllowed?: InputMaybe<Scalars['Boolean']['input']>
-    petAllowed?: InputMaybe<Scalars['Boolean']['input']>
-    price?: InputMaybe<Scalars['Float']['input']>
-    propertyAmenityIds?: InputMaybe<Array<Scalars['ID']['input']>>
-    propertyDepositId?: InputMaybe<Scalars['ID']['input']>
-    propertyTypeId?: InputMaybe<Scalars['ID']['input']>
-    rooms?: InputMaybe<Scalars['Float']['input']>
-    street?: InputMaybe<Scalars['String']['input']>
-    titles?: InputMaybe<Array<TitleTranslated>>
-    totalFloors?: InputMaybe<Scalars['Float']['input']>
-    withDeposit?: InputMaybe<Scalars['Boolean']['input']>
-}
-
 export type PropertyObject = {
     __typename?: 'PropertyObject'
     area: Scalars['Float']['output']
     availableFrom?: Maybe<Scalars['DateTime']['output']>
-    bathroomsInBedroom: Scalars['Float']['output']
+    bathroomsInBedroom?: Maybe<Scalars['Float']['output']>
     bathroomsInProperty: Scalars['Float']['output']
+    bedrooms?: Maybe<Scalars['Float']['output']>
     cadastralCode?: Maybe<Scalars['String']['output']>
     capacity?: Maybe<Scalars['Float']['output']>
     contactName?: Maybe<Scalars['String']['output']>
     contactPhone?: Maybe<Scalars['String']['output']>
-    district: DistrictObject
+    district?: Maybe<DistrictObject>
     floor: Scalars['Float']['output']
     hideCadastralCode?: Maybe<Scalars['Boolean']['output']>
     housingCondition?: Maybe<HousingConditionObject>
@@ -556,8 +549,10 @@ export type Query = {
     getHousingHeatingTypes?: Maybe<Array<HousingHeatingTypeObject>>
     getHousingLivingSafeties?: Maybe<Array<HousingLivingSafetyObject>>
     getHousingStatuses?: Maybe<Array<HousingStatusObject>>
+    getLandlordProperties?: Maybe<PaginatedFilteredPropertiesObject>
     getLandlordProperty?: Maybe<PropertyObject>
     getPaginatedFilteredRoommates?: Maybe<PaginatedFilteredRoommatesObject>
+    getProperties?: Maybe<PaginatedFilteredPropertiesObject>
     getProperty?: Maybe<PropertyObject>
     getPropertyAmenities?: Maybe<Array<PropertyAmenityObject>>
     getPropertyDeposits?: Maybe<Array<PropertyDepositObject>>
@@ -616,6 +611,12 @@ export type QueryGetHousingStatusesArgs = {
     locale?: InputMaybe<Language>
 }
 
+export type QueryGetLandlordPropertiesArgs = {
+    filters?: InputMaybe<GetPropertiesFilterInput>
+    lang?: InputMaybe<Scalars['String']['input']>
+    pagination: PaginationInput
+}
+
 export type QueryGetLandlordPropertyArgs = {
     id: Scalars['ID']['input']
     lang?: InputMaybe<Scalars['String']['input']>
@@ -625,6 +626,12 @@ export type QueryGetPaginatedFilteredRoommatesArgs = {
     filters?: InputMaybe<Array<FilterInput>>
     locale?: InputMaybe<Language>
     pagination?: InputMaybe<PaginationInput>
+}
+
+export type QueryGetPropertiesArgs = {
+    filters?: InputMaybe<GetPropertiesFilterInput>
+    lang?: InputMaybe<Scalars['String']['input']>
+    pagination: PaginationInput
 }
 
 export type QueryGetPropertyArgs = {
@@ -694,6 +701,11 @@ export enum QuestionsWithAnswersFor {
     Signup = 'SIGNUP',
 }
 
+export type RangeInput = {
+    from?: InputMaybe<Scalars['Float']['input']>
+    to?: InputMaybe<Scalars['Float']['input']>
+}
+
 export type RefreshTokenInput = {
     refreshToken?: InputMaybe<Scalars['String']['input']>
     sessionId: Scalars['String']['input']
@@ -717,6 +729,8 @@ export enum ResetPasswordResponse {
     SendFailed = 'SEND_FAILED',
     SuccessfullySend = 'SUCCESSFULLY_SEND',
 }
+
+export type RestFunctionOrString = Scalars['RestFunction']['output'] | Scalars['String']['output']
 
 export type RoommateSignUpInput = {
     answeredQuestions: Array<AnsweredQuestionInput>
@@ -811,6 +825,40 @@ export type UniversityTranslatedObject = {
     id: Scalars['ID']['output']
     lang: Language
     name: Scalars['String']['output']
+}
+
+export type UpsertPropertyInput = {
+    area?: InputMaybe<Scalars['Float']['input']>
+    availableFrom?: InputMaybe<Scalars['DateTime']['input']>
+    bathroomsInBedroom?: InputMaybe<Scalars['Float']['input']>
+    bathroomsInProperty?: InputMaybe<Scalars['Float']['input']>
+    cadastralCode?: InputMaybe<Scalars['String']['input']>
+    capacity?: InputMaybe<Scalars['Float']['input']>
+    contactName?: InputMaybe<Scalars['String']['input']>
+    contactPhone?: InputMaybe<Scalars['String']['input']>
+    descriptions?: InputMaybe<Array<DescriptionTranslated>>
+    districtId?: InputMaybe<Scalars['ID']['input']>
+    floor?: InputMaybe<Scalars['Float']['input']>
+    hideCadastralCode?: InputMaybe<Scalars['Boolean']['input']>
+    housingConditionId?: InputMaybe<Scalars['ID']['input']>
+    housingHeatingTypeIds?: InputMaybe<Array<Scalars['ID']['input']>>
+    housingLivingSafetyIds?: InputMaybe<Array<Scalars['ID']['input']>>
+    housingStatusId?: InputMaybe<Scalars['ID']['input']>
+    id?: InputMaybe<Scalars['ID']['input']>
+    imageUploadFiles?: InputMaybe<Array<Scalars['String']['input']>>
+    images?: InputMaybe<Array<ImageInput>>
+    minRentalPeriod?: InputMaybe<Scalars['Float']['input']>
+    partyAllowed?: InputMaybe<Scalars['Boolean']['input']>
+    petAllowed?: InputMaybe<Scalars['Boolean']['input']>
+    price?: InputMaybe<Scalars['Float']['input']>
+    propertyAmenityIds?: InputMaybe<Array<Scalars['ID']['input']>>
+    propertyDepositId?: InputMaybe<Scalars['ID']['input']>
+    propertyTypeId?: InputMaybe<Scalars['ID']['input']>
+    rooms?: InputMaybe<Scalars['Float']['input']>
+    street?: InputMaybe<Scalars['String']['input']>
+    titles?: InputMaybe<Array<TitleTranslated>>
+    totalFloors?: InputMaybe<Scalars['Float']['input']>
+    withDeposit?: InputMaybe<Scalars['Boolean']['input']>
 }
 
 export type UserAnsweredQuestionObject = {

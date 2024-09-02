@@ -1,10 +1,12 @@
 import { TypedDocumentNode, gql } from '@apollo/client'
 import {
     Query,
+    QueryGetConversationsForUserArgs,
     QueryGetCountriesArgs,
     QueryGetGendersArgs,
     QueryGetPaginatedFilteredRoommatesArgs,
     QueryGetQuestionsWithAnswersArgs,
+    QueryGetSharedConversationArgs,
 } from './typesGraphql'
 
 export const getGendersQuery: TypedDocumentNode<
@@ -136,6 +138,64 @@ export const GetPaginatedFilteredRoommatesQuery: TypedDocumentNode<
                 bio
                 age
                 isFavourite
+            }
+        }
+    }
+`
+
+export const getConversationsForUserQuery: TypedDocumentNode<
+    { getConversationsForUser: Query['getConversationsForUser'] },
+    QueryGetConversationsForUserArgs
+> = gql`
+    query GetConversationsForUser($pagination: PaginationInput) {
+        getConversationsForUser(pagination: $pagination) {
+            list {
+                id
+                sid
+                status
+                creatorId
+                createdAt
+                updatedAt
+                unreadMessagesCount @client
+                messages @client
+                user {
+                    id
+                    firstname
+                    lastname
+                    profileImage
+                    conversationStatus
+                }
+            }
+            pageInfo {
+                hasNextPage
+                hasPrevious
+                offset
+                limit
+                total
+                page
+            }
+        }
+    }
+`
+
+export const getSharedConversationQuery: TypedDocumentNode<
+    { getSharedConversation: Query['getSharedConversation'] },
+    QueryGetSharedConversationArgs
+> = gql`
+    query GetSharedConversation($participantId: String!) {
+        getSharedConversation(participantId: $participantId) {
+            id
+            sid
+            status
+            creatorId
+            createdAt
+            updatedAt
+            user {
+                id
+                firstname
+                lastname
+                profileImage
+                conversationStatus
             }
         }
     }
