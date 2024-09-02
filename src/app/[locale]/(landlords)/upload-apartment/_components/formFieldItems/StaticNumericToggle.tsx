@@ -5,10 +5,10 @@ export default function StaticNumericToggle({ field }: any) {
         <ToggleGroup
             className="justify-start"
             type="single"
-            value={field.value}
+            value={field.value?.toString()}
             onValueChange={(value) => {
                 if (value) {
-                    field.onChange(value)
+                    field.onChange(parseFloat(value))
                 }
             }}
         >

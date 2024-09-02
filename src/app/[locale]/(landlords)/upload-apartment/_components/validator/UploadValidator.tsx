@@ -2,7 +2,7 @@ import { GetPropertiesDataProps } from '@/graphql/query'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { isValidPhoneNumber } from 'react-phone-number-input'
-import { z } from 'zod'
+import { string, z } from 'zod'
 
 export default function UploadValidator({ data }: { data?: GetPropertiesDataProps }) {
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/
@@ -12,30 +12,34 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
     const propertySafetyValues = data?.getHousingLivingSafeties?.map((item) => item.id) || []
 
     const FormSchema = z.object({
-        apartmentType: z.enum(apartmentTypeValues as [string, ...string[]]),
+        propertyTypeId: z.enum(apartmentTypeValues as [string, ...string[]]),
         availableFrom: z.string().regex(dateRegex),
-        minRentMonth: z.coerce.number().positive(),
-        apartmentRooms: z.coerce.number().int().positive(),
+        minRentalPeriod: z.number().min(1),
+        rooms: z.coerce.number().int().positive(),
         bathroomsInProperty: z.coerce.number().int().positive(),
         bathroomsInBedroom: z.number().min(1),
-        floorAmount: z.coerce.number().int().positive(),
-        flatFloor: z.coerce.number().int().positive(),
+        totalFloors: z.coerce.number().int().positive(),
+        floor: z.number().min(1),
         status: z.string().min(1),
         condition: z.string().min(1),
-        address: z.string().min(1),
+        street: z.string().min(1),
         cadastralCode: z.string().min(1),
         showCadastral: z.boolean().optional(),
-        propertyAmenities: z.array(z.enum(propertyAmenityValues as [string, ...string[]])).min(1),
-        propertyHeating: z.array(z.enum(propertyHeatingValues as [string, ...string[]])).min(1),
-        propertySafety: z.array(z.enum(propertySafetyValues as [string, ...string[]])).min(1),
+        propertyAmenityIds: z.array(z.enum(propertyAmenityValues as [string, ...string[]])).min(1),
+        housingHeatingTypeIds: z
+            .array(z.enum(propertyHeatingValues as [string, ...string[]]))
+            .min(1),
+        housingLivingSafetyIds: z
+            .array(z.enum(propertySafetyValues as [string, ...string[]]))
+            .min(1),
         maxPersonLiving: z.string().min(1),
-        petStatus: z.boolean(),
-        partyStatus: z.boolean(),
-        depositStatus: z.boolean().optional(),
+        petAllowed: z.boolean(),
+        partyAllowed: z.boolean(),
+        withDeposit: z.boolean().optional(),
         depositAmount: z.string().min(1),
-        price: z.string().min(1),
+        price: z.number().min(1),
         area: z.number().min(1),
-        name: z.string().min(1),
+        contactName: z.string().min(1),
         phone: z.string().refine((value) => isValidPhoneNumber(value)),
         description: z.string().min(1),
         images: z.union([z.any(), z.undefined()]),
@@ -46,30 +50,30 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
     const form = useForm<FormSchemaType>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            apartmentType: undefined,
+            propertyTypeId: undefined,
             availableFrom: undefined,
-            minRentMonth: undefined,
-            apartmentRooms: undefined,
+            minRentalPeriod: undefined,
+            rooms: undefined,
             bathroomsInProperty: undefined,
             bathroomsInBedroom: undefined,
-            floorAmount: undefined,
-            flatFloor: undefined,
+            totalFloors: undefined,
+            floor: undefined,
             status: undefined,
             condition: undefined,
-            address: undefined,
+            street: undefined,
             cadastralCode: undefined,
             showCadastral: false,
-            propertyAmenities: [],
-            propertyHeating: [],
-            propertySafety: [],
+            propertyAmenityIds: [],
+            housingHeatingTypeIds: [],
+            housingLivingSafetyIds: [],
             maxPersonLiving: undefined,
-            petStatus: undefined,
-            partyStatus: undefined,
-            depositStatus: false,
+            petAllowed: undefined,
+            partyAllowed: undefined,
+            withDeposit: false,
             depositAmount: undefined,
             price: undefined,
             area: undefined,
-            name: undefined,
+            contactName: undefined,
             phone: undefined,
             description: undefined,
             images: [],

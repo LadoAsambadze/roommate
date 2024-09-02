@@ -12,7 +12,7 @@ export default function StaticRentMonthSelect({ field }: any) {
     const { t } = useTranslation()
 
     const handleSelectChange = (value: string) => {
-        field.onChange(value)
+        field.onChange(parseFloat(value))
     }
     return (
         <Select onValueChange={handleSelectChange} defaultValue={field.value}>

@@ -23,6 +23,7 @@ import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import MultiImageUploader from './formFieldItems/MultiImageUploader'
 import { UpsertProperty } from '@/graphql/mutation'
 import { Button } from '@/src/components/ui/button'
+import { Language } from '@/graphql/typesGraphql'
 
 export default function ClientWrapper() {
     const params = useParams()
@@ -36,20 +37,63 @@ export default function ClientWrapper() {
     const [uploadProperty] = useMutation(UpsertProperty)
 
     const form = UploadValidator({ data })
-
     console.log(form.getValues())
 
     const onSubmit = async () => {
-        const input = null
-
-        // const { data } = await uploadProperty({
-        //     variables: {
-        //         input: formData,
-        //     },
-        // })
-
         console.log('done')
-        console.log(form.getValues())
+        const { data } = await uploadProperty({
+            variables: {
+                input: {
+                    withDeposit: form.getValues('withDeposit'),
+                    totalFloors: form.getValues('totalFloors'),
+                    titles: [
+                        {
+                            text: 'string',
+                            lang: Language.Ka,
+                        },
+                    ],
+                    street: form.getValues('street'),
+                    rooms: form.getValues('rooms'),
+                    propertyTypeId: form.getValues('propertyTypeId'),
+                    propertyDepositId: null,
+                    propertyAmenityIds: form.getValues('propertyAmenityIds'),
+                    price: form.getValues('price'),
+                    petAllowed: form.getValues('petAllowed'),
+                    partyAllowed: form.getValues('partyAllowed'),
+                    minRentalPeriod: form.getValues('minRentalPeriod'),
+                    images: [
+                        {
+                            thumb: null,
+                            original: 'string',
+                        },
+                    ],
+                    imageUploadFiles: null,
+                    id: null,
+                    housingStatusId: null,
+                    housingLivingSafetyIds: form.getValues('housingLivingSafetyIds'),
+                    housingHeatingTypeIds: form.getValues('housingHeatingTypeIds'),
+                    housingConditionId: null,
+                    hideCadastralCode: null,
+                    floor: form.getValues('minRentalPeriod'),
+                    districtId: null,
+                    descriptions: [
+                        {
+                            text: 'string',
+                            lang: Language.Ka,
+                        },
+                    ],
+                    contactPhone: form.getValues('phone'),
+                    contactName: form.getValues('contactName'),
+                    capacity: null,
+                    cadastralCode: form.getValues('cadastralCode'),
+                    bathroomsInProperty: form.getValues('bathroomsInProperty'),
+                    bathroomsInBedroom: form.getValues('bathroomsInBedroom'),
+                    availableFrom: form.getValues('availableFrom'),
+                    area: form.getValues('area'),
+                },
+            },
+        })
+        console.log(data)
     }
 
     return (
@@ -62,7 +106,7 @@ export default function ClientWrapper() {
                     >
                         <FormField
                             control={form.control}
-                            name="apartmentType"
+                            name="propertyTypeId"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('apartmentType')}</FormLabel>
@@ -93,7 +137,7 @@ export default function ClientWrapper() {
                             />
                             <FormField
                                 control={form.control}
-                                name="minRentMonth"
+                                name="minRentalPeriod"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-xs md:text-sm">
@@ -108,7 +152,7 @@ export default function ClientWrapper() {
                         </div>
                         <FormField
                             control={form.control}
-                            name="apartmentRooms"
+                            name="rooms"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('apartmentRooms')}</FormLabel>
@@ -152,7 +196,7 @@ export default function ClientWrapper() {
                         <div className="flex w-full flex-row items-end gap-2 md:gap-56">
                             <FormField
                                 control={form.control}
-                                name="floorAmount"
+                                name="totalFloors"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-sm md:text-base">
@@ -166,7 +210,7 @@ export default function ClientWrapper() {
                             />
                             <FormField
                                 control={form.control}
-                                name="flatFloor"
+                                name="floor"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-sm md:text-base">
@@ -217,7 +261,7 @@ export default function ClientWrapper() {
                         </div>
                         <FormField
                             control={form.control}
-                            name="address"
+                            name="street"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="flex w-full justify-start  text-sm">
@@ -277,7 +321,7 @@ export default function ClientWrapper() {
                         />
                         <FormField
                             control={form.control}
-                            name="propertyAmenities"
+                            name="propertyAmenityIds"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('propertyAmenities')}</FormLabel>
@@ -292,7 +336,7 @@ export default function ClientWrapper() {
                         />
                         <FormField
                             control={form.control}
-                            name="propertyHeating"
+                            name="housingHeatingTypeIds"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('propertyHeating')}</FormLabel>
@@ -307,7 +351,7 @@ export default function ClientWrapper() {
                         />
                         <FormField
                             control={form.control}
-                            name="propertySafety"
+                            name="housingLivingSafetyIds"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('propertySafety')}</FormLabel>
@@ -340,7 +384,7 @@ export default function ClientWrapper() {
                         />
                         <FormField
                             control={form.control}
-                            name="petStatus"
+                            name="petAllowed"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('petStatus')}</FormLabel>
@@ -352,7 +396,7 @@ export default function ClientWrapper() {
                         />
                         <FormField
                             control={form.control}
-                            name="partyStatus"
+                            name="partyAllowed"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('partyStatus')}</FormLabel>
@@ -396,7 +440,11 @@ export default function ClientWrapper() {
                                                     type="number"
                                                     onWheel={(event) => event.currentTarget.blur()}
                                                     className="h-10 w-full md:w-40"
-                                                    onChange={(value) => field.onChange(value)}
+                                                    onChange={(event) => {
+                                                        field.onChange(
+                                                            parseFloat(event.target.value)
+                                                        )
+                                                    }}
                                                 />
                                             </FormControl>
                                             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-mainGreen text-base text-white md:w-10">
@@ -411,7 +459,7 @@ export default function ClientWrapper() {
                         <div className="relative flex w-full  flex-col items-center gap-4 md:flex-row">
                             <FormField
                                 control={form.control}
-                                name="depositStatus"
+                                name="withDeposit"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormControl className="w-full">
@@ -446,7 +494,7 @@ export default function ClientWrapper() {
                             <div className=" flex w-full flex-row gap-6">
                                 <FormField
                                     control={form.control}
-                                    name="name"
+                                    name="contactName"
                                     render={({ field }) => (
                                         <FormItem className="w-full md:w-full">
                                             <FormLabel className="text-xs md:text-sm">
@@ -478,8 +526,8 @@ export default function ClientWrapper() {
                                                     field={field}
                                                     labels={undefined}
                                                     form={form}
-                                                    onChange={(phone: string) => {
-                                                        form.setValue('phone', phone)
+                                                    onChange={(contactPhone: string) => {
+                                                        form.setValue('phone', contactPhone)
                                                     }}
                                                 />
                                             </FormControl>
@@ -522,9 +570,7 @@ export default function ClientWrapper() {
                             )}
                         />
 
-                        <Button type="submit" className="w-full">
-                            ატვირთვა
-                        </Button>
+                        <Button className="w-full">ატვირთვა</Button>
                     </form>
                 </Form>
             </main>

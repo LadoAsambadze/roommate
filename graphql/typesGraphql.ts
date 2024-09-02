@@ -18,6 +18,7 @@ export type Scalars = {
     Float: { input: number; output: number }
     Date: { input: any; output: any }
     DateTime: { input: any; output: any }
+    JSON: { input: any; output: any }
     StringTuple: { input: any; output: any }
 }
 
@@ -96,6 +97,11 @@ export type CountryTranslatedObject = {
     id: Scalars['ID']['output']
     lang: Language
     name: Scalars['String']['output']
+}
+
+export type DescriptionTranslated = {
+    lang: Language
+    text: Scalars['String']['input']
 }
 
 export type DistrictObject = {
@@ -458,7 +464,7 @@ export type PropertyInput = {
     capacity?: InputMaybe<Scalars['Float']['input']>
     contactName?: InputMaybe<Scalars['String']['input']>
     contactPhone?: InputMaybe<Scalars['String']['input']>
-    description?: InputMaybe<Scalars['String']['input']>
+    descriptions?: InputMaybe<Array<DescriptionTranslated>>
     districtId?: InputMaybe<Scalars['ID']['input']>
     floor?: InputMaybe<Scalars['Float']['input']>
     hideCadastralCode?: InputMaybe<Scalars['Boolean']['input']>
@@ -478,9 +484,50 @@ export type PropertyInput = {
     propertyTypeId?: InputMaybe<Scalars['ID']['input']>
     rooms?: InputMaybe<Scalars['Float']['input']>
     street?: InputMaybe<Scalars['String']['input']>
-    title?: InputMaybe<Scalars['String']['input']>
+    titles?: InputMaybe<Array<TitleTranslated>>
     totalFloors?: InputMaybe<Scalars['Float']['input']>
     withDeposit?: InputMaybe<Scalars['Boolean']['input']>
+}
+
+export type PropertyObject = {
+    __typename?: 'PropertyObject'
+    area: Scalars['Float']['output']
+    availableFrom?: Maybe<Scalars['DateTime']['output']>
+    bathroomsInBedroom: Scalars['Float']['output']
+    bathroomsInProperty: Scalars['Float']['output']
+    cadastralCode?: Maybe<Scalars['String']['output']>
+    capacity?: Maybe<Scalars['Float']['output']>
+    contactName?: Maybe<Scalars['String']['output']>
+    contactPhone?: Maybe<Scalars['String']['output']>
+    district: DistrictObject
+    floor: Scalars['Float']['output']
+    hideCadastralCode?: Maybe<Scalars['Boolean']['output']>
+    housingCondition?: Maybe<HousingConditionObject>
+    housingHeatingTypes?: Maybe<Array<HousingHeatingTypeObject>>
+    housingLivingSafeties?: Maybe<Array<HousingLivingSafetyObject>>
+    housingStatus?: Maybe<HousingStatusObject>
+    id: Scalars['ID']['output']
+    images?: Maybe<Array<Scalars['JSON']['output']>>
+    minRentalPeriod?: Maybe<Scalars['Float']['output']>
+    partyAllowed?: Maybe<Scalars['Boolean']['output']>
+    petAllowed?: Maybe<Scalars['Boolean']['output']>
+    price?: Maybe<Scalars['Float']['output']>
+    propertyAmenities?: Maybe<Array<PropertyAmenityObject>>
+    propertyDeposit?: Maybe<PropertyDepositObject>
+    propertyType?: Maybe<PropertyTypeObject>
+    rooms: Scalars['Float']['output']
+    street: Scalars['String']['output']
+    totalFloors: Scalars['Float']['output']
+    translations?: Maybe<Array<PropertyTranslatedObject>>
+    withDeposit?: Maybe<Scalars['Boolean']['output']>
+}
+
+export type PropertyTranslatedObject = {
+    __typename?: 'PropertyTranslatedObject'
+    description: Scalars['String']['output']
+    id: Scalars['ID']['output']
+    lang: Language
+    title: Scalars['String']['output']
 }
 
 export type PropertyTypeObject = {
@@ -509,7 +556,9 @@ export type Query = {
     getHousingHeatingTypes?: Maybe<Array<HousingHeatingTypeObject>>
     getHousingLivingSafeties?: Maybe<Array<HousingLivingSafetyObject>>
     getHousingStatuses?: Maybe<Array<HousingStatusObject>>
+    getLandlordProperty?: Maybe<PropertyObject>
     getPaginatedFilteredRoommates?: Maybe<PaginatedFilteredRoommatesObject>
+    getProperty?: Maybe<PropertyObject>
     getPropertyAmenities?: Maybe<Array<PropertyAmenityObject>>
     getPropertyDeposits?: Maybe<Array<PropertyDepositObject>>
     getPropertyTypes?: Maybe<Array<PropertyTypeObject>>
@@ -567,10 +616,20 @@ export type QueryGetHousingStatusesArgs = {
     locale?: InputMaybe<Language>
 }
 
+export type QueryGetLandlordPropertyArgs = {
+    id: Scalars['ID']['input']
+    lang?: InputMaybe<Scalars['String']['input']>
+}
+
 export type QueryGetPaginatedFilteredRoommatesArgs = {
     filters?: InputMaybe<Array<FilterInput>>
     locale?: InputMaybe<Language>
     pagination?: InputMaybe<PaginationInput>
+}
+
+export type QueryGetPropertyArgs = {
+    id: Scalars['ID']['input']
+    lang?: InputMaybe<Scalars['String']['input']>
 }
 
 export type QueryGetPropertyAmenitiesArgs = {
@@ -726,6 +785,11 @@ export enum SmsSendStatus {
     AlreadySent = 'ALREADY_SENT',
     Failure = 'FAILURE',
     Success = 'SUCCESS',
+}
+
+export type TitleTranslated = {
+    lang: Language
+    text: Scalars['String']['input']
 }
 
 export type UiFieldInfoObject = {
