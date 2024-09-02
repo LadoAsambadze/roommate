@@ -7,13 +7,13 @@ export default function StaticPetStatusRadio({ field }: any) {
     return (
         <RadioGroup
             value={field.value ? field.value : undefined}
-            onValueChange={(value) => field.onChange(value === 'true')}
+            onValueChange={(value) => field.onChange(!field.value)}
         >
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mt-2">
                 <RadioGroupItem value="true" id="yes" />
                 <Label
                     htmlFor="yes"
-                    className="text-xs font-medium leading-none  peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed  peer-disabled:opacity-70 md:text-sm"
                 >
                     {t('yes')}
                 </Label>
@@ -21,7 +21,7 @@ export default function StaticPetStatusRadio({ field }: any) {
                 <RadioGroupItem value="false" id="no" />
                 <Label
                     htmlFor="no"
-                    className="text-xs font-medium leading-none  peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed  peer-disabled:opacity-70 md:text-sm"
                 >
                     {t('no')}
                 </Label>

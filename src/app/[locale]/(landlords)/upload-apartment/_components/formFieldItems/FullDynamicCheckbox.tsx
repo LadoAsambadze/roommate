@@ -28,7 +28,7 @@ export default function FullDynamicCheckbox({ data, field }: FullDynamicCheckbox
                         }}
                         field={undefined}
                     />
-                    <Label>{item.translations[0].name}</Label>
+                    <Label className="text-xs md:text-sm">{item.translations[0].name}</Label>
                 </div>
             ))}
         </>

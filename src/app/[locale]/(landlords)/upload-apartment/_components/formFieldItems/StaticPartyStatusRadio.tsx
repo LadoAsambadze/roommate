@@ -10,7 +10,7 @@ export default function StaticPartyStatusRadio({ field }: any) {
             value={field.value ? field.value : undefined}
             onValueChange={(value) => field.onChange(value === 'true')}
         >
-            <div className="flex items-center space-x-4">
+            <div className="mt-2 flex items-center space-x-4">
                 <RadioGroupItem value="true" id="yes" />
                 <Label
                     htmlFor="yes"

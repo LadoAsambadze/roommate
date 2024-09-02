@@ -153,6 +153,10 @@ body {
     outline: none !important;
 }
 
+.PhoneInputInput {
+    width: 100% !important;
+}
+
 .PhoneInputCountrySelect {
     color: #484848 !important;
     font-size: 12px !important;

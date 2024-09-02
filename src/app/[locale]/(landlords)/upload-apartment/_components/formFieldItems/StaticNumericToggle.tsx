@@ -13,7 +13,7 @@ export default function StaticNumericToggle({ field }: any) {
             }}
         >
             {Array.from({ length: 10 }, (_, index) => (
-                <ToggleGroupItem key={index + 1} value={(index + 1).toString()}>
+                <ToggleGroupItem className="w-auto" key={index + 1} value={(index + 1).toString()}>
                     {index + 1}
                 </ToggleGroupItem>
             ))}

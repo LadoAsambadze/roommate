@@ -1,6 +1,6 @@
 {
     "apartmentType": "Apartment type",
-    "rentDate": "From what date do you want to rent the apartment",
+    "availableFrom": "From what date do you want to rent the apartment",
     "year": "Year",
     "month": "Month",
     "day": "Day",
@@ -31,7 +31,7 @@
     "partyStatus": "Does the resident have the right to organize a party in the apartment?",
     "withoutDeposit": "I don't require a deposit",
     "withDeposit": "Deposit",
-    "sqm": "Area in square meters",
+    "area": "Area in square meters",
     "price": "Price",
     "contactInfo": "Contact information",
     "name": "Name",

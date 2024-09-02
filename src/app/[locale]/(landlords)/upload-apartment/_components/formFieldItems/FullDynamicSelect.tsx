@@ -22,7 +22,7 @@ export default function FullDynamicSelect({ field, data }: ApartmentStatusProps)
     }
     return (
         <Select onValueChange={handleSelectChange} defaultValue={field.value}>
-            <SelectTrigger className="w-[250px]">
+            <SelectTrigger className="w-full md:w-[250px]">
                 <SelectValue placeholder="-" />
             </SelectTrigger>
             <SelectContent>

@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { FileRejection, useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
-import { Delete, Upload } from 'lucide-react'
 import Image from 'next/image'
 import { AddPhoto, Trash } from '@/src/components/svgs'
 
@@ -72,7 +71,7 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
         <div className="   w-full">
             <div
                 {...getRootProps()}
-                className="cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-4 text-center transition-colors hover:border-gray-400"
+                className="cursor-pointer rounded-lg border  border-[#828bab] p-4 text-center transition-colors hover:border-hoverGreen"
             >
                 <input {...getInputProps()} />
                 {isDragActive ? (

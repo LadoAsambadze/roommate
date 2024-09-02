@@ -13,6 +13,7 @@ import {
     MutationLandlordSendResetPasswordVerificationCodeArgs,
     MutationResetPasswordArgs,
     MutationVerifyResetPasswordVerificationCodeArgs,
+    MutationUpsertPropertyArgs,
 } from './typesGraphql'
 
 export const RoommateSignUpMutation: TypedDocumentNode<
@@ -203,9 +204,16 @@ export const ResetPasswordVerifyCode: TypedDocumentNode<
         verifyResetPasswordVerificationCode(input: $input) {
             status
         }
-
     }
 `
 
-
-
+export const UpsertProperty: TypedDocumentNode<
+    {
+        upsertProperty: Mutation['upsertProperty']
+    },
+    MutationUpsertPropertyArgs
+> = gql`
+    mutation UpsertProperty($input: PropertyInput!) {
+        upsertProperty(input: $input)
+    }
+`

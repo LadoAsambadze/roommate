@@ -11,6 +11,8 @@ import {
     SelectValue,
 } from '@/src/components/ui/shadcnSelect'
 
+import { format } from 'date-fns'
+
 const georgianMonths = [
     'იანვარი',
     'თებერვალი',
@@ -73,6 +75,8 @@ function StaticRentDatePicker({ field }: RentDatePickerProps) {
         if (selectedYear && selectedMonth && selectedDay) {
             const newDate = `${selectedYear}-${selectedMonth.padStart(2, '0')}-${selectedDay.padStart(2, '0')}`
             setDate(newDate)
+            const formattedDate = newDate ? format(newDate, 'yyyy-MM-dd') : null
+            field.onChange(formattedDate)
             field.onChange(newDate)
         }
     }, [selectedYear, selectedMonth, selectedDay])

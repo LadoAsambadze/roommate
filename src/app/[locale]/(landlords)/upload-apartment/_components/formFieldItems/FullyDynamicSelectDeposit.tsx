@@ -29,7 +29,7 @@ export default function FullDynamicSelectDeposit({ field, data, form }: Apartmen
             onValueChange={handleSelectChange}
             defaultValue={field.value}
         >
-            <SelectTrigger className="w-52 text-start ">
+            <SelectTrigger className="w-full text-start md:w-52 ">
                 <SelectValue placeholder="-" />
             </SelectTrigger>
             <SelectContent>

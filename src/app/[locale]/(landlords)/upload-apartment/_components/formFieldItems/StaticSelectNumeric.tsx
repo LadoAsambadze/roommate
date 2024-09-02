@@ -12,12 +12,11 @@ export default function StaticSelectNumeric({ field }: any) {
     const { t } = useTranslation()
 
     const handleSelectChange = (value: string) => {
-        field.onChange(value)
-        console.log(value)
+        field.onChange(parseFloat(value))
     }
     return (
         <Select onValueChange={handleSelectChange} defaultValue={field.value}>
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger className="w-full md:w-[120px]">
                 <SelectValue placeholder="-" />
             </SelectTrigger>
             <SelectContent>

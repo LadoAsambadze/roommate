@@ -11,8 +11,8 @@ export default function StaticDepositRadio({ field }: any) {
             value={field.value ? 'true' : 'false'}
             onValueChange={(value) => field.onChange(value === 'true')}
         >
-            <div className="flex w-full  items-center gap-20">
-                <div className="flex items-center gap-4">
+            <div className="flex w-full flex-col gap-6 md:gap-20 items-start md:flex-row md:items-center ">
+                <div className="flex items-center gap-2">
                     <RadioGroupItem value="false" id="withoutDeposit" />
                     <Label
                         htmlFor="withoutDeposit"
@@ -21,7 +21,7 @@ export default function StaticDepositRadio({ field }: any) {
                         {t('withoutDeposit')}
                     </Label>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                     <RadioGroupItem value="true" id="withDeposit" />
                     <Label
                         htmlFor="withDeposit"
