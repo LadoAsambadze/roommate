@@ -133,8 +133,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                 form.setError('code', { message: t('codeAlreadySent') })
             }
         })()
-    }
-
+    } 
     return (
         <>
             <main className="flex flex-col items-center">

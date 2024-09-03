@@ -45,7 +45,7 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
 
             const updatedFiles = [...files, ...newFiles]
             setFiles(updatedFiles)
-            field.onChange(updatedFiles) // Call the field.onChange with the updated files
+            field.onChange(updatedFiles.map((file) => file.base64)) // Call the field.onChange with the base64 strings
         },
         [files, field, t]
     )
@@ -54,7 +54,7 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
         (fileToDelete: CustomFile) => {
             const updatedFiles = files.filter((file) => file !== fileToDelete)
             setFiles(updatedFiles)
-            field.onChange(updatedFiles) // Call the field.onChange with the updated files
+            field.onChange(updatedFiles.map((file) => file.base64)) // Call the field.onChange with the base64 strings
         },
         [files, field]
     )
@@ -62,11 +62,10 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: {
-            'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
+            'image/*': ['.jpeg', '.jpg', '.png', '.webp', 'avif'],
         },
         maxSize: 5 * 1024 * 1024, // 5MB
     })
-
     return (
         <div className="   w-full">
             <div

@@ -30,39 +30,35 @@ import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import MultiImageUploader from './formFieldItems/MultiImageUploader'
 import { SendCodeBySms, UpsertProperty, VerifyCodeBySms } from '@/graphql/mutation'
 import { Button } from '@/src/components/ui/button'
-import { Language, VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
-import { useState } from 'react'
+import { VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
+import { useEffect, useState } from 'react'
+import DescriptionTextarea from './formFieldItems/DescriptionTextarea'
+import TitleDescription from './formFieldItems/TitleDescription'
+import Loading from '../../../loading'
 
 export default function ClientWrapper() {
     const params = useParams()
     const locale = params.locale
     const { t } = useTranslation()
+
     const [getCodeButtonClicked, setGetCodeButtonClicked] = useState(false)
     const [phoneFormat, setPhoneFormat] = useState(false)
-    const [selectedLangDescription, setSelectedLangDescription] = useState<Language>(Language.En)
-    const [selectedLangTitle, setSelectedLangTitle] = useState<Language>(Language.En)
-
-    const getDescriptionByLangDescription = (lang: Language) => {
-        return (
-            form.getValues('descriptions')?.find((desc) => desc.lang === lang) || { text: '', lang }
-        )
-    }
-    const getDescriptionByLangTitle = (lang: Language) => {
-        return form.getValues('titles')?.find((desc) => desc.lang === lang) || { text: '', lang }
-    }
-    const { data } = useQuery(GetPropertiesData, {
-        variables: { locale: locale },
-    })
+    const [uploaded, setUploaded] = useState(false)
 
     const [uploadProperty] = useMutation(UpsertProperty)
-
-    const form = UploadValidator({ data })
     const [smsSend] = useMutation(SendCodeBySms, {
         fetchPolicy: 'network-only',
     })
     const [smsCheck] = useMutation(VerifyCodeBySms, {
         fetchPolicy: 'network-only',
     })
+    const { data } = useQuery(GetPropertiesData, {
+        variables: { locale: locale },
+    })
+
+    const form = UploadValidator({ data })
+
+    console.log('Form errors:', form.formState.errors)
 
     const getCodeHandler = () => {
         form.handleSubmit(async () => {
@@ -83,10 +79,6 @@ export default function ClientWrapper() {
 
     const onSubmit = async () => {
         try {
-            const images = form.getValues('imageUploadFiles')
-            const base64Strings = images.map((image: any) => image.base64)
-
-            // Verify code before submitting
             const { data: codeData, errors: codeErrors } = await smsCheck({
                 variables: {
                     input: {
@@ -101,10 +93,9 @@ export default function ClientWrapper() {
                 codeData?.verifyCodeBySms?.status !== VerificationCodeValidityStatus.Valid
             ) {
                 form.setError('code', { message: t('invalidCode') })
-                return // Stop form submission if code is invalid
+                return
             }
 
-            // Proceed with form submission
             const { data, errors } = await uploadProperty({
                 variables: {
                     input: {
@@ -120,8 +111,7 @@ export default function ClientWrapper() {
                         petAllowed: form.getValues('petAllowed'),
                         partyAllowed: form.getValues('partyAllowed'),
                         minRentalPeriod: form.getValues('minRentalPeriod'),
-                        images: [{ thumb: '', original: '' }],
-                        imageUploadFiles: base64Strings,
+                        imageUploadFiles: form.getValues('imageUploadFiles'),
                         id: null,
                         housingStatusId: form.getValues('housingStatusId'),
                         housingLivingSafetyIds: form.getValues('housingLivingSafetyIds'),
@@ -129,7 +119,6 @@ export default function ClientWrapper() {
                         housingConditionId: form.getValues('housingConditionId'),
                         hideCadastralCode: form.getValues('hideCadastralCode'),
                         floor: form.getValues('minRentalPeriod'),
-                        districtId: null,
                         descriptions: form.getValues('descriptions'),
                         contactPhone: form.getValues('phone'),
                         contactName: form.getValues('contactName'),
@@ -142,9 +131,6 @@ export default function ClientWrapper() {
                     },
                 },
             })
-
-            console.log(data, 'data')
-            console.log(errors, 'errors')
         } catch (error) {
             console.error('Error during submission:', error)
         }
@@ -152,78 +138,113 @@ export default function ClientWrapper() {
 
     return (
         <>
-            <main className="flex w-full  items-start justify-center overflow-hidden">
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex h-full w-full flex-col gap-6 overflow-auto p-6 md:w-2/3 md:px-10 md:py-10"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="propertyTypeId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t('apartmentType')}</FormLabel>
-                                    <FullDynamicToggle
-                                        field={field}
-                                        data={data?.getPropertyTypes}
-                                    />
-                                </FormItem>
-                            )}
-                        />
-                        <div className="flex flex-col gap-4">
-                            <FormLabel className="-mb-2 text-sm md:text-base">
-                                {t('availability')}
-                            </FormLabel>
+            <main className="flex min-h-screen w-full  flex-col items-center justify-start overflow-hidden py-5">
+                <h1 className="py-5 text-center text-xl">ატვირთე ბინა</h1>
+                {!data ? (
+                    <Loading />
+                ) : !uploaded ? (
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="flex h-full w-full flex-col gap-6 overflow-auto rounded-md  border border-gray-400 p-6 md:w-2/3 md:px-10 md:py-10"
+                        >
                             <FormField
                                 control={form.control}
-                                name="availableFrom"
+                                name="propertyTypeId"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-xs md:text-sm">
-                                            {t('availableFrom')}
-                                        </FormLabel>
-                                        <FormControl>
-                                            <StaticRentDatePicker field={field} />
-                                        </FormControl>
+                                        <FormLabel>{t('apartmentType')}</FormLabel>
+                                        <FullDynamicToggle
+                                            field={field}
+                                            data={data?.getPropertyTypes}
+                                        />
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="minRentalPeriod"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="text-xs md:text-sm">
-                                            {t('minRentMonth')}
-                                        </FormLabel>
-                                        <FormControl>
-                                            <StaticRentMonthSelect field={field} />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <FormField
-                            control={form.control}
-                            name="rooms"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t('apartmentRooms')}</FormLabel>
-                                    <StaticNumericToggle field={field} />
-                                </FormItem>
-                            )}
-                        />
-                        <div className="flex w-full flex-col gap-4">
-                            <FormLabel>{t('bathroomsAmount')}</FormLabel>
-                            <div className="flex w-full flex-row gap-2 md:gap-56">
+                            <div className="flex flex-col gap-4">
+                                <FormLabel className="-mb-2 text-sm md:text-base">
+                                    {t('availability')}
+                                </FormLabel>
                                 <FormField
                                     control={form.control}
-                                    name="bathroomsInProperty"
+                                    name="availableFrom"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="text-xs md:text-sm">
-                                                {t('inApartment')}
+                                                {t('availableFrom')}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <StaticRentDatePicker field={field} />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="minRentalPeriod"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-xs md:text-sm">
+                                                {t('minRentMonth')}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <StaticRentMonthSelect field={field} />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <FormField
+                                control={form.control}
+                                name="rooms"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('apartmentRooms')}</FormLabel>
+                                        <StaticNumericToggle field={field} />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="flex w-full flex-col gap-4">
+                                <FormLabel>{t('bathroomsAmount')}</FormLabel>
+                                <div className="flex w-full flex-row gap-2 md:gap-56">
+                                    <FormField
+                                        control={form.control}
+                                        name="bathroomsInProperty"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="text-xs md:text-sm">
+                                                    {t('inApartment')}
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <StaticSelectNumeric field={field} />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="bathroomsInBedroom"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="text-xs md:text-sm">
+                                                    {t('inBedroom')}
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <StaticSelectNumeric field={field} />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex w-full flex-row items-end gap-2 md:gap-56">
+                                <FormField
+                                    control={form.control}
+                                    name="totalFloors"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-sm md:text-base">
+                                                {t('floorAmount')}
                                             </FormLabel>
                                             <FormControl>
                                                 <StaticSelectNumeric field={field} />
@@ -233,11 +254,11 @@ export default function ClientWrapper() {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="bathroomsInBedroom"
+                                    name="floor"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs md:text-sm">
-                                                {t('inBedroom')}
+                                            <FormLabel className="text-sm md:text-base">
+                                                {t('flatFloor')}
                                             </FormLabel>
                                             <FormControl>
                                                 <StaticSelectNumeric field={field} />
@@ -246,235 +267,161 @@ export default function ClientWrapper() {
                                     )}
                                 />
                             </div>
-                        </div>
-                        <div className="flex w-full flex-row items-end gap-2 md:gap-56">
+                            <div className="flex  flex-col gap-6 md:flex-row md:gap-24">
+                                <FormField
+                                    control={form.control}
+                                    name="housingStatusId"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-sm md:text-base">
+                                                {t('status')}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <FullDynamicSelect
+                                                    field={field}
+                                                    data={data?.getHousingStatuses}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="housingConditionId"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="flex w-full justify-start  text-sm">
+                                                {t('condition')}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <FullDynamicSelect
+                                                    field={field}
+                                                    data={data?.getHousingConditions}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
                             <FormField
                                 control={form.control}
-                                name="totalFloors"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="text-sm md:text-base">
-                                            {t('floorAmount')}
-                                        </FormLabel>
-                                        <FormControl>
-                                            <StaticSelectNumeric field={field} />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="floor"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="text-sm md:text-base">
-                                            {t('flatFloor')}
-                                        </FormLabel>
-                                        <FormControl>
-                                            <StaticSelectNumeric field={field} />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="flex  flex-col gap-6 md:flex-row md:gap-24">
-                            <FormField
-                                control={form.control}
-                                name="housingStatusId"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="text-sm md:text-base">
-                                            {t('status')}
-                                        </FormLabel>
-                                        <FormControl>
-                                            <FullDynamicSelect
-                                                field={field}
-                                                data={data?.getHousingStatuses}
-                                            />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="housingConditionId"
+                                name="street"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="flex w-full justify-start  text-sm">
-                                            {t('condition')}
+                                            {t('address')}
                                         </FormLabel>
                                         <FormControl>
-                                            <FullDynamicSelect
-                                                field={field}
-                                                data={data?.getHousingConditions}
+                                            <Input
+                                                placeholder="ქუჩის დასახელება, ნომერი"
+                                                min="0"
+                                                className="h-10 text-xs md:text-sm"
+                                                onChange={(value) => field.onChange(value)}
                                             />
                                         </FormControl>
                                     </FormItem>
                                 )}
                             />
-                        </div>
-                        <FormField
-                            control={form.control}
-                            name="street"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="flex w-full justify-start  text-sm">
-                                        {t('address')}
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="ქუჩის დასახელება, ნომერი"
-                                            min="0"
-                                            className="h-10 text-xs md:text-sm"
-                                            onChange={(value) => field.onChange(value)}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="cadastralCode"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>{t('cadastralCode')}</FormLabel>
-                                    <span className="text-xs text-[#838CAC] ">
-                                        საკადასტრო კოდის ჩაწერით გაიზრდება სანდოობა, უძრავი ქონების
-                                        საკადასტო შეგიძლიათ ნახოთ ვებგვერდზე
-                                    </span>
-                                    <FormControl>
-                                        <Input
-                                            min="0"
-                                            className="mt-2 h-10 text-xs md:text-sm"
-                                            onChange={(value) => field.onChange(value)}
-                                        />
-                                    </FormControl>
-                                    <FormField
-                                        control={form.control}
-                                        name="hideCadastralCode"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <div className="flex items-center space-x-2">
-                                                        <Checkbox
-                                                            field={field}
-                                                            onCheckedChange={(checked) =>
-                                                                field.onChange(checked)
-                                                            }
-                                                        />
-                                                        <label className=" text-xs font-medium leading-none text-[#838CAC] peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                                            {t('hideCadastralCode')}
-                                                        </label>
-                                                    </div>
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="propertyAmenityIds"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t('propertyAmenities')}</FormLabel>
-                                    <FormControl>
-                                        <FullDynamicCheckbox
-                                            field={field}
-                                            data={data?.getPropertyAmenities}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="housingHeatingTypeIds"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t('propertyHeating')}</FormLabel>
-                                    <FormControl>
-                                        <FullDynamicCheckbox
-                                            field={field}
-                                            data={data?.getHousingHeatingTypes}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="housingLivingSafetyIds"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t('propertySafety')}</FormLabel>
-                                    <FormControl>
-                                        <FullDynamicCheckbox
-                                            field={field}
-                                            data={data?.getHousingLivingSafeties}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="capacity"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t('maxPersonLiving')}</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            min="0"
-                                            type="number"
-                                            onWheel={(event) => event.currentTarget.blur()}
-                                            className="h-10 w-full md:w-28"
-                                            onChange={(e) => field.onChange(Number(e.target.value))}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="petAllowed"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t('petStatus')}</FormLabel>
-                                    <FormControl>
-                                        <StaticPetStatusRadio field={field} />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="partyAllowed"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t('partyStatus')}</FormLabel>
-                                    <FormControl>
-                                        <StaticPartyStatusRadio field={field} />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <div className="flex w-full flex-col gap-4 md:flex-row">
                             <FormField
                                 control={form.control}
-                                name="area"
+                                name="cadastralCode"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-col">
+                                        <FormLabel>{t('cadastralCode')}</FormLabel>
+                                        <span className="text-xs text-[#838CAC] ">
+                                            საკადასტრო კოდის ჩაწერით გაიზრდება სანდოობა, უძრავი
+                                            ქონების საკადასტო შეგიძლიათ ნახოთ ვებგვერდზე
+                                        </span>
+                                        <FormControl>
+                                            <Input
+                                                min="0"
+                                                className="mt-2 h-10 text-xs md:text-sm"
+                                                onChange={(value) => field.onChange(value)}
+                                            />
+                                        </FormControl>
+                                        <FormField
+                                            control={form.control}
+                                            name="hideCadastralCode"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <div className="flex items-center space-x-2">
+                                                            <Checkbox
+                                                                field={field}
+                                                                onCheckedChange={(checked) =>
+                                                                    field.onChange(checked)
+                                                                }
+                                                            />
+                                                            <label className=" text-xs font-medium leading-none text-[#838CAC] peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                                                {t('hideCadastralCode')}
+                                                            </label>
+                                                        </div>
+                                                    </FormControl>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="propertyAmenityIds"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>{t('area')}</FormLabel>
+                                        <FormLabel>{t('propertyAmenities')}</FormLabel>
+                                        <FormControl>
+                                            <FullDynamicCheckbox
+                                                field={field}
+                                                data={data?.getPropertyAmenities}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="housingHeatingTypeIds"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('propertyHeating')}</FormLabel>
+                                        <FormControl>
+                                            <FullDynamicCheckbox
+                                                field={field}
+                                                data={data?.getHousingHeatingTypes}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="housingLivingSafetyIds"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('propertySafety')}</FormLabel>
+                                        <FormControl>
+                                            <FullDynamicCheckbox
+                                                field={field}
+                                                data={data?.getHousingLivingSafeties}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="capacity"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('maxPersonLiving')}</FormLabel>
                                         <FormControl>
                                             <Input
                                                 min="0"
                                                 type="number"
                                                 onWheel={(event) => event.currentTarget.blur()}
-                                                className="h-10 w-full md:w-40"
-                                                onChange={(event) =>
-                                                    field.onChange(parseFloat(event.target.value))
+                                                className="h-10 w-full md:w-28"
+                                                onChange={(e) =>
+                                                    field.onChange(Number(e.target.value))
                                                 }
                                             />
                                         </FormControl>
@@ -483,274 +430,209 @@ export default function ClientWrapper() {
                             />
                             <FormField
                                 control={form.control}
-                                name="price"
+                                name="petAllowed"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>{t('price')}</FormLabel>
-                                        <div className="flex w-full flex-row items-center gap-2 md:gap-0">
+                                        <FormLabel>{t('petStatus')}</FormLabel>
+                                        <FormControl>
+                                            <StaticPetStatusRadio field={field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="partyAllowed"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('partyStatus')}</FormLabel>
+                                        <FormControl>
+                                            <StaticPartyStatusRadio field={field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="flex w-full flex-col gap-4 md:flex-row">
+                                <FormField
+                                    control={form.control}
+                                    name="area"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>{t('area')}</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     min="0"
                                                     type="number"
                                                     onWheel={(event) => event.currentTarget.blur()}
                                                     className="h-10 w-full md:w-40"
-                                                    onChange={(event) => {
+                                                    onChange={(event) =>
                                                         field.onChange(
                                                             parseFloat(event.target.value)
                                                         )
-                                                    }}
-                                                />
-                                            </FormControl>
-                                            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-mainGreen text-base text-white md:w-11">
-                                                $
-                                            </div>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-
-                        <div className="relative flex w-full  flex-col items-center gap-4 md:w-full lg:flex-row">
-                            <FormField
-                                control={form.control}
-                                name="withDeposit"
-                                render={({ field }) => (
-                                    <FormItem className="md:w-full lg:w-full">
-                                        <FormControl className="w-full ">
-                                            <StaticDepositRadio field={field} />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                            <div className="flex w-full flex-row items-center gap-2 ">
-                                <FormField
-                                    control={form.control}
-                                    name="propertyDepositId"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <FullDynamicSelectDeposit
-                                                    field={field}
-                                                    form={form}
-                                                    data={data?.getPropertyDeposits}
+                                                    }
                                                 />
                                             </FormControl>
                                         </FormItem>
                                     )}
                                 />
-                                <div className="flex h-9 w-9 items-center  justify-center rounded-md bg-mainGreen text-base text-white md:w-9">
-                                    $
+                                <FormField
+                                    control={form.control}
+                                    name="price"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>{t('price')}</FormLabel>
+                                            <div className="flex w-full flex-row items-center gap-2 md:gap-0">
+                                                <FormControl>
+                                                    <Input
+                                                        min="0"
+                                                        type="number"
+                                                        onWheel={(event) =>
+                                                            event.currentTarget.blur()
+                                                        }
+                                                        className="h-10 w-full md:w-40"
+                                                        onChange={(event) => {
+                                                            field.onChange(
+                                                                parseFloat(event.target.value)
+                                                            )
+                                                        }}
+                                                    />
+                                                </FormControl>
+                                                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-mainGreen text-base text-white md:w-11">
+                                                    $
+                                                </div>
+                                            </div>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            <div className="relative flex w-full  flex-col items-center gap-4 md:w-full lg:flex-row">
+                                <FormField
+                                    control={form.control}
+                                    name="withDeposit"
+                                    render={({ field }) => (
+                                        <FormItem className="md:w-full lg:w-full">
+                                            <FormControl className="w-full ">
+                                                <StaticDepositRadio field={field} />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                                <div className="flex w-full flex-row items-center gap-2 ">
+                                    <FormField
+                                        control={form.control}
+                                        name="propertyDepositId"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <FullDynamicSelectDeposit
+                                                        field={field}
+                                                        form={form}
+                                                        data={data?.getPropertyDeposits}
+                                                    />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <div className="flex h-9 w-9 items-center  justify-center rounded-md bg-mainGreen text-base text-white md:w-9">
+                                        $
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="flex flex-col gap-4">
-                            {selectedLangTitle && (
-                                <FormField
-                                    control={form.control}
-                                    name="titles"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full">
-                                            <FormLabel>{t('title')}</FormLabel>
-
-                                            <div className="mb-4 flex gap-2">
-                                                <Button
-                                                    type="button"
-                                                    className={`h-auto text-xs hover:text-white ${selectedLangTitle === Language.En ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
-                                                    onClick={() =>
-                                                        setSelectedLangTitle(Language.En)
-                                                    }
-                                                >
-                                                    {t('English')}
-                                                </Button>
-                                                <Button
-                                                    type="button"
-                                                    className={`h-auto text-xs hover:text-white ${selectedLangTitle === Language.Ka ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
-                                                    onClick={() =>
-                                                        setSelectedLangTitle(Language.Ka)
-                                                    }
-                                                >
-                                                    {t('Georgian')}
-                                                </Button>
-                                            </div>
-
-                                            <FormControl>
-                                                <Input
-                                                    value={
-                                                        getDescriptionByLangTitle(selectedLangTitle)
-                                                            .text
-                                                    }
-                                                    onChange={(e) => {
-                                                        const newDescriptions = [...field.value]
-                                                        const index = newDescriptions.findIndex(
-                                                            (desc) =>
-                                                                desc.lang === selectedLangTitle
-                                                        )
-                                                        if (index > -1) {
-                                                            newDescriptions[index] = {
-                                                                ...newDescriptions[index],
-                                                                text: e.target.value,
-                                                            }
-                                                            field.onChange(newDescriptions)
-                                                        }
-                                                    }}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-4">
-                            {selectedLangDescription && (
-                                <FormField
-                                    control={form.control}
-                                    name="descriptions"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full">
-                                            <FormLabel>{t('description')}</FormLabel>
-
-                                            <div className="flex gap-2">
-                                                <Button
-                                                    type="button"
-                                                    className={`  h-auto text-xs hover:text-white ${selectedLangDescription === Language.En ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
-                                                    onClick={() =>
-                                                        setSelectedLangDescription(Language.En)
-                                                    }
-                                                >
-                                                    {t('English')}
-                                                </Button>
-                                                <Button
-                                                    type="button"
-                                                    className={` h-auto text-xs  hover:text-white  ${selectedLangDescription === Language.Ka ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
-                                                    onClick={() =>
-                                                        setSelectedLangDescription(Language.Ka)
-                                                    }
-                                                >
-                                                    {t('Georgian')}
-                                                </Button>
-                                            </div>
-
-                                            <FormControl>
-                                                <textarea
-                                                    spellCheck="false"
-                                                    className="w-full rounded-md border border-[#828bab] px-3 py-2 text-sm focus:border-hoverGreen focus:outline-none"
-                                                    rows={10}
-                                                    value={
-                                                        getDescriptionByLangDescription(
-                                                            selectedLangDescription
-                                                        ).text
-                                                    }
-                                                    onChange={(e) => {
-                                                        const newDescriptions = [...field.value]
-                                                        const index = newDescriptions.findIndex(
-                                                            (desc) =>
-                                                                desc.lang ===
-                                                                selectedLangDescription
-                                                        )
-                                                        if (index > -1) {
-                                                            newDescriptions[index] = {
-                                                                ...newDescriptions[index],
-                                                                text: e.target.value,
-                                                            }
-                                                            field.onChange(newDescriptions)
-                                                        }
-                                                    }}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                            )}
-                        </div>
-                        <FormField
-                            control={form.control}
-                            name="imageUploadFiles"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t('profileImage')}</FormLabel>
-                                    <MultiImageUploader field={field} />
-                                </FormItem>
-                            )}
-                        />
-                        <div className="flex w-full flex-col gap-4">
-                            <FormLabel>{t('contactInfo')}</FormLabel>
-                            <div className=" grid  gap-6 md:grid-cols-2">
-                                <FormField
-                                    control={form.control}
-                                    name="contactName"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full md:w-full">
-                                            <FormLabel className="text-xs md:text-sm">
-                                                {t('name')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    className="h-[38px] w-full"
-                                                    onChange={(value) => field.onChange(value)}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="phone"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full md:w-full">
-                                            <FormLabel className="text-xs md:text-sm">
-                                                {t('phone')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <PhoneInput
-                                                    className="w-full"
-                                                    type="number"
-                                                    defaultCountry="GE"
-                                                    international
-                                                    field={field}
-                                                    labels={undefined}
-                                                    form={form}
-                                                    onChange={(contactPhone: string) => {
-                                                        form.setValue('phone', contactPhone)
-                                                    }}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="code"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="text-xs md:text-sm">
-                                                {t('fillCode')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="number"
-                                                    {...field}
-                                                    value={field.value}
-                                                    getCode
-                                                    setPhoneFormat={setPhoneFormat}
-                                                    getCodeButtonClicked={getCodeButtonClicked}
-                                                    onGetCodeClick={getCodeHandler}
-                                                />
-                                            </FormControl>
-                                            {phoneFormat &&
-                                            field.value !== undefined &&
-                                            field.value !== '' ? (
-                                                <FormMessage />
-                                            ) : null}
-                                        </FormItem>
-                                    )}
-                                />
+                            <TitleDescription form={form} />
+                            <DescriptionTextarea form={form} />
+                            <FormField
+                                control={form.control}
+                                name="imageUploadFiles"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('profileImage')}</FormLabel>
+                                        <MultiImageUploader field={field} />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="flex w-full flex-col gap-4">
+                                <FormLabel>{t('contactInfo')}</FormLabel>
+                                <div className=" grid  gap-6 md:grid-cols-2">
+                                    <FormField
+                                        control={form.control}
+                                        name="contactName"
+                                        render={({ field }) => (
+                                            <FormItem className="w-full md:w-full">
+                                                <FormLabel className="text-xs md:text-sm">
+                                                    {t('name')}
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        className="h-[38px] w-full"
+                                                        onChange={(value) => field.onChange(value)}
+                                                    />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="phone"
+                                        render={({ field }) => (
+                                            <FormItem className="w-full md:w-full">
+                                                <FormLabel className="text-xs md:text-sm">
+                                                    {t('phone')}
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <PhoneInput
+                                                        className="w-full"
+                                                        type="number"
+                                                        defaultCountry="GE"
+                                                        international
+                                                        field={field}
+                                                        labels={undefined}
+                                                        form={form}
+                                                        onChange={(contactPhone: string) => {
+                                                            form.setValue('phone', contactPhone)
+                                                        }}
+                                                    />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="code"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="text-xs md:text-sm">
+                                                    {t('fillCode')}
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        type="number"
+                                                        {...field}
+                                                        value={field.value}
+                                                        getCode
+                                                        setPhoneFormat={setPhoneFormat}
+                                                        getCodeButtonClicked={getCodeButtonClicked}
+                                                        onGetCodeClick={getCodeHandler}
+                                                    />
+                                                </FormControl>
+                                                {phoneFormat &&
+                                                field.value !== undefined &&
+                                                field.value !== '' ? (
+                                                    <FormMessage />
+                                                ) : null}
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
                             </div>
-                        </div>
 
-                        <Button className="w-full">ატვირთვა</Button>
-                    </form>
-                </Form>
+                            <Button className="w-full">ატვირთვა</Button>
+                        </form>
+                    </Form>
+                ) : (
+                    <div>succesfuly uploaded</div>
+                )}
             </main>
         </>
     )
