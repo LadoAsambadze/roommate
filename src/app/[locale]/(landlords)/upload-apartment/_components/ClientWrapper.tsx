@@ -1,6 +1,13 @@
 'use client'
 
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/src/components/ui/form'
 import UploadValidator from './validator/UploadValidator'
 import StaticRentDatePicker from './formFieldItems/StaticRentDatePicker'
 import { useTranslation } from 'react-i18next'
@@ -21,15 +28,28 @@ import FullDynamicSelectDeposit from './formFieldItems/FullyDynamicSelectDeposit
 import StaticDepositRadio from './formFieldItems/StaticDepositRadio'
 import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import MultiImageUploader from './formFieldItems/MultiImageUploader'
-import { UpsertProperty } from '@/graphql/mutation'
+import { SendCodeBySms, UpsertProperty, VerifyCodeBySms } from '@/graphql/mutation'
 import { Button } from '@/src/components/ui/button'
-import { Language } from '@/graphql/typesGraphql'
+import { Language, VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
+import { useState } from 'react'
 
 export default function ClientWrapper() {
     const params = useParams()
     const locale = params.locale
     const { t } = useTranslation()
+    const [getCodeButtonClicked, setGetCodeButtonClicked] = useState(false)
+    const [phoneFormat, setPhoneFormat] = useState(false)
+    const [selectedLangDescription, setSelectedLangDescription] = useState<Language>(Language.En)
+    const [selectedLangTitle, setSelectedLangTitle] = useState<Language>(Language.En)
 
+    const getDescriptionByLangDescription = (lang: Language) => {
+        return (
+            form.getValues('descriptions')?.find((desc) => desc.lang === lang) || { text: '', lang }
+        )
+    }
+    const getDescriptionByLangTitle = (lang: Language) => {
+        return form.getValues('titles')?.find((desc) => desc.lang === lang) || { text: '', lang }
+    }
     const { data } = useQuery(GetPropertiesData, {
         variables: { locale: locale },
     })
@@ -37,63 +57,97 @@ export default function ClientWrapper() {
     const [uploadProperty] = useMutation(UpsertProperty)
 
     const form = UploadValidator({ data })
+    const [smsSend] = useMutation(SendCodeBySms, {
+        fetchPolicy: 'network-only',
+    })
+    const [smsCheck] = useMutation(VerifyCodeBySms, {
+        fetchPolicy: 'network-only',
+    })
     console.log(form.getValues())
-
-    const onSubmit = async () => {
-        console.log('done')
-        const { data } = await uploadProperty({
-            variables: {
-                input: {
-                    withDeposit: form.getValues('withDeposit'),
-                    totalFloors: form.getValues('totalFloors'),
-                    titles: [
-                        {
-                            text: 'string',
-                            lang: Language.Ka,
-                        },
-                    ],
-                    street: form.getValues('street'),
-                    rooms: form.getValues('rooms'),
-                    propertyTypeId: form.getValues('propertyTypeId'),
-                    propertyDepositId: null,
-                    propertyAmenityIds: form.getValues('propertyAmenityIds'),
-                    price: form.getValues('price'),
-                    petAllowed: form.getValues('petAllowed'),
-                    partyAllowed: form.getValues('partyAllowed'),
-                    minRentalPeriod: form.getValues('minRentalPeriod'),
-                    images: [
-                        {
-                            thumb: null,
-                            original: 'string',
-                        },
-                    ],
-                    imageUploadFiles: null,
-                    id: null,
-                    housingStatusId: null,
-                    housingLivingSafetyIds: form.getValues('housingLivingSafetyIds'),
-                    housingHeatingTypeIds: form.getValues('housingHeatingTypeIds'),
-                    housingConditionId: null,
-                    hideCadastralCode: null,
-                    floor: form.getValues('minRentalPeriod'),
-                    districtId: null,
-                    descriptions: [
-                        {
-                            text: 'string',
-                            lang: Language.Ka,
-                        },
-                    ],
-                    contactPhone: form.getValues('phone'),
-                    contactName: form.getValues('contactName'),
-                    capacity: null,
-                    cadastralCode: form.getValues('cadastralCode'),
-                    bathroomsInProperty: form.getValues('bathroomsInProperty'),
-                    bathroomsInBedroom: form.getValues('bathroomsInBedroom'),
-                    availableFrom: form.getValues('availableFrom'),
-                    area: form.getValues('area'),
+    const getCodeHandler = async () => {
+        try {
+            const { data } = await smsSend({
+                variables: {
+                    input: {
+                        phone: form.watch('phone') ?? '',
+                    },
                 },
-            },
-        })
-        console.log(data)
+            })
+            if (data?.sendCodeBySms?.status === 'ALREADY_SENT') {
+                form.setError('code', { message: t('codeAlreadySent') })
+            }
+        } catch (error) {
+            console.error('Error sending code:', error)
+            form.setError('code', { message: t('codeSendError') }) // Handle errors in sending code
+        }
+    }
+    const onSubmit = async () => {
+        try {
+            const images = form.getValues('imageUploadFiles')
+            const base64Strings = images.map((image: any) => image.base64)
+
+            // Verify code before submitting
+            const { data: codeData, errors: codeErrors } = await smsCheck({
+                variables: {
+                    input: {
+                        phone: form.watch('phone') ?? '',
+                        code: form.getValues('code') ?? '',
+                    },
+                },
+            })
+
+            if (
+                codeErrors ||
+                codeData?.verifyCodeBySms?.status !== VerificationCodeValidityStatus.Valid
+            ) {
+                form.setError('code', { message: t('invalidCode') })
+                return // Stop form submission if code is invalid
+            }
+
+            // Proceed with form submission
+            const { data, errors } = await uploadProperty({
+                variables: {
+                    input: {
+                        withDeposit: form.getValues('withDeposit'),
+                        totalFloors: form.getValues('totalFloors'),
+                        titles: form.getValues('titles'),
+                        street: form.getValues('street'),
+                        rooms: form.getValues('rooms'),
+                        propertyTypeId: form.getValues('propertyTypeId'),
+                        propertyDepositId: form.getValues('propertyDepositId'),
+                        propertyAmenityIds: form.getValues('propertyAmenityIds'),
+                        price: form.getValues('price'),
+                        petAllowed: form.getValues('petAllowed'),
+                        partyAllowed: form.getValues('partyAllowed'),
+                        minRentalPeriod: form.getValues('minRentalPeriod'),
+                        images: [{ thumb: '', original: '' }],
+                        imageUploadFiles: base64Strings,
+                        id: null,
+                        housingStatusId: form.getValues('housingStatusId'),
+                        housingLivingSafetyIds: form.getValues('housingLivingSafetyIds'),
+                        housingHeatingTypeIds: form.getValues('housingHeatingTypeIds'),
+                        housingConditionId: form.getValues('housingConditionId'),
+                        hideCadastralCode: form.getValues('hideCadastralCode'),
+                        floor: form.getValues('minRentalPeriod'),
+                        districtId: null,
+                        descriptions: form.getValues('descriptions'),
+                        contactPhone: form.getValues('phone'),
+                        contactName: form.getValues('contactName'),
+                        capacity: form.getValues('capacity'),
+                        cadastralCode: form.getValues('cadastralCode'),
+                        bathroomsInProperty: form.getValues('bathroomsInProperty'),
+                        bathroomsInBedroom: form.getValues('bathroomsInBedroom'),
+                        availableFrom: form.getValues('availableFrom'),
+                        area: form.getValues('area'),
+                    },
+                },
+            })
+
+            console.log(data, 'data')
+            console.log(errors, 'errors')
+        } catch (error) {
+            console.error('Error during submission:', error)
+        }
     }
 
     return (
@@ -226,7 +280,7 @@ export default function ClientWrapper() {
                         <div className="flex  flex-col gap-6 md:flex-row md:gap-24">
                             <FormField
                                 control={form.control}
-                                name="status"
+                                name="housingStatusId"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-sm md:text-base">
@@ -243,7 +297,7 @@ export default function ClientWrapper() {
                             />
                             <FormField
                                 control={form.control}
-                                name="condition"
+                                name="housingConditionId"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="flex w-full justify-start  text-sm">
@@ -297,7 +351,7 @@ export default function ClientWrapper() {
                                     </FormControl>
                                     <FormField
                                         control={form.control}
-                                        name="showCadastral"
+                                        name="hideCadastralCode"
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormControl>
@@ -366,7 +420,7 @@ export default function ClientWrapper() {
                         />
                         <FormField
                             control={form.control}
-                            name="maxPersonLiving"
+                            name="capacity"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('maxPersonLiving')}</FormLabel>
@@ -376,7 +430,7 @@ export default function ClientWrapper() {
                                             type="number"
                                             onWheel={(event) => event.currentTarget.blur()}
                                             className="h-10 w-full md:w-28"
-                                            onChange={(value) => field.onChange(value)}
+                                            onChange={(e) => field.onChange(Number(e.target.value))}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -447,7 +501,7 @@ export default function ClientWrapper() {
                                                     }}
                                                 />
                                             </FormControl>
-                                            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-mainGreen text-base text-white md:w-10">
+                                            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-mainGreen text-base text-white md:w-11">
                                                 $
                                             </div>
                                         </div>
@@ -456,22 +510,22 @@ export default function ClientWrapper() {
                             />
                         </div>
 
-                        <div className="relative flex w-full  flex-col items-center gap-4 md:flex-row">
+                        <div className="relative flex w-full  flex-col items-center gap-4 md:w-full lg:flex-row">
                             <FormField
                                 control={form.control}
                                 name="withDeposit"
                                 render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl className="w-full">
+                                    <FormItem className="md:w-full lg:w-full">
+                                        <FormControl className="w-full ">
                                             <StaticDepositRadio field={field} />
                                         </FormControl>
                                     </FormItem>
                                 )}
                             />
-                            <div className="flex w-full flex-row items-center gap-2 md:w-auto">
+                            <div className="flex w-full flex-row items-center gap-2 ">
                                 <FormField
                                     control={form.control}
-                                    name="depositAmount"
+                                    name="propertyDepositId"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
@@ -484,14 +538,14 @@ export default function ClientWrapper() {
                                         </FormItem>
                                     )}
                                 />
-                                <div className="flex h-9 w-9 items-center justify-center rounded-md bg-mainGreen text-base text-white md:w-9">
+                                <div className="flex h-9 w-9 items-center  justify-center rounded-md bg-mainGreen text-base text-white md:w-9">
                                     $
                                 </div>
                             </div>
                         </div>
                         <div className="flex w-full flex-col gap-4">
                             <FormLabel>{t('contactInfo')}</FormLabel>
-                            <div className=" flex w-full flex-row gap-6">
+                            <div className=" flex w-full flex-col gap-6 md:flex-row">
                                 <FormField
                                     control={form.control}
                                     name="contactName"
@@ -535,33 +589,154 @@ export default function ClientWrapper() {
                                     )}
                                 />
                             </div>
-                        </div>
-                        <div className="flex flex-col gap-4">
-                            <FormLabel>{t('description')}</FormLabel>
                             <FormField
                                 control={form.control}
-                                name="description"
+                                name="code"
                                 render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormLabel className="text-xs md:text-sm">
-                                            {t('geoEng')}
-                                        </FormLabel>
+                                    <FormItem>
+                                        <FormLabel>{t('fillCode')}</FormLabel>
                                         <FormControl>
-                                            <textarea
-                                                spellCheck="false"
-                                                className="w-full rounded-md border border-[#828bab] px-3 py-2 text-sm focus:border-hoverGreen focus:outline-none"
-                                                rows={4}
+                                            <Input
+                                                type="number"
+                                                {...field}
                                                 value={field.value}
-                                                onChange={(value) => field.onChange(value)}
+                                                getCode
+                                                setPhoneFormat={setPhoneFormat}
+                                                getCodeButtonClicked={getCodeButtonClicked}
+                                                onGetCodeClick={getCodeHandler}
                                             />
                                         </FormControl>
+                                        {phoneFormat &&
+                                        field.value !== undefined &&
+                                        field.value !== '' ? (
+                                            <FormMessage />
+                                        ) : null}
                                     </FormItem>
                                 )}
                             />
                         </div>
+                        <div className="flex flex-col gap-4">
+                            {selectedLangTitle && (
+                                <FormField
+                                    control={form.control}
+                                    name="titles"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel>{t('title')}</FormLabel>
+
+                                            <div className="mb-4 flex gap-2">
+                                                <Button
+                                                    type="button"
+                                                    className={`h-auto text-xs hover:text-white ${selectedLangTitle === Language.En ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
+                                                    onClick={() =>
+                                                        setSelectedLangTitle(Language.En)
+                                                    }
+                                                >
+                                                    {t('English')}
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    className={`h-auto text-xs hover:text-white ${selectedLangTitle === Language.Ka ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
+                                                    onClick={() =>
+                                                        setSelectedLangTitle(Language.Ka)
+                                                    }
+                                                >
+                                                    {t('Georgian')}
+                                                </Button>
+                                            </div>
+
+                                            <FormControl>
+                                                <Input
+                                                    value={
+                                                        getDescriptionByLangTitle(selectedLangTitle)
+                                                            .text
+                                                    }
+                                                    onChange={(e) => {
+                                                        const newDescriptions = [...field.value]
+                                                        const index = newDescriptions.findIndex(
+                                                            (desc) =>
+                                                                desc.lang === selectedLangTitle
+                                                        )
+                                                        if (index > -1) {
+                                                            newDescriptions[index] = {
+                                                                ...newDescriptions[index],
+                                                                text: e.target.value,
+                                                            }
+                                                            field.onChange(newDescriptions)
+                                                        }
+                                                    }}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            {selectedLangDescription && (
+                                <FormField
+                                    control={form.control}
+                                    name="descriptions"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel>{t('description')}</FormLabel>
+
+                                            <div className="flex gap-2">
+                                                <Button
+                                                    type="button"
+                                                    className={`  h-auto text-xs hover:text-white ${selectedLangDescription === Language.En ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
+                                                    onClick={() =>
+                                                        setSelectedLangDescription(Language.En)
+                                                    }
+                                                >
+                                                    {t('English')}
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    className={` h-auto text-xs  hover:text-white  ${selectedLangDescription === Language.Ka ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
+                                                    onClick={() =>
+                                                        setSelectedLangDescription(Language.Ka)
+                                                    }
+                                                >
+                                                    {t('Georgian')}
+                                                </Button>
+                                            </div>
+
+                                            <FormControl>
+                                                <textarea
+                                                    spellCheck="false"
+                                                    className="w-full rounded-md border border-[#828bab] px-3 py-2 text-sm focus:border-hoverGreen focus:outline-none"
+                                                    rows={10}
+                                                    value={
+                                                        getDescriptionByLangDescription(
+                                                            selectedLangDescription
+                                                        ).text
+                                                    }
+                                                    onChange={(e) => {
+                                                        const newDescriptions = [...field.value]
+                                                        const index = newDescriptions.findIndex(
+                                                            (desc) =>
+                                                                desc.lang ===
+                                                                selectedLangDescription
+                                                        )
+                                                        if (index > -1) {
+                                                            newDescriptions[index] = {
+                                                                ...newDescriptions[index],
+                                                                text: e.target.value,
+                                                            }
+                                                            field.onChange(newDescriptions)
+                                                        }
+                                                    }}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
+                        </div>
                         <FormField
                             control={form.control}
-                            name="images"
+                            name="imageUploadFiles"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t('profileImage')}</FormLabel>
