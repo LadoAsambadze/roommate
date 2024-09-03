@@ -63,9 +63,11 @@ export default function ClientWrapper() {
     const [smsCheck] = useMutation(VerifyCodeBySms, {
         fetchPolicy: 'network-only',
     })
-    console.log(form.getValues())
-    const getCodeHandler = async () => {
-        try {
+
+    const getCodeHandler = () => {
+        form.handleSubmit(async () => {
+            setGetCodeButtonClicked(true)
+
             const { data } = await smsSend({
                 variables: {
                     input: {
@@ -76,11 +78,9 @@ export default function ClientWrapper() {
             if (data?.sendCodeBySms?.status === 'ALREADY_SENT') {
                 form.setError('code', { message: t('codeAlreadySent') })
             }
-        } catch (error) {
-            console.error('Error sending code:', error)
-            form.setError('code', { message: t('codeSendError') }) // Handle errors in sending code
-        }
+        })()
     }
+
     const onSubmit = async () => {
         try {
             const images = form.getValues('imageUploadFiles')
@@ -543,78 +543,7 @@ export default function ClientWrapper() {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex w-full flex-col gap-4">
-                            <FormLabel>{t('contactInfo')}</FormLabel>
-                            <div className=" flex w-full flex-col gap-6 md:flex-row">
-                                <FormField
-                                    control={form.control}
-                                    name="contactName"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full md:w-full">
-                                            <FormLabel className="text-xs md:text-sm">
-                                                {t('name')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    className="h-[38px] w-full"
-                                                    onChange={(value) => field.onChange(value)}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="phone"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full md:w-full">
-                                            <FormLabel className="text-xs md:text-sm">
-                                                {t('phone')}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <PhoneInput
-                                                    className="w-full"
-                                                    type="number"
-                                                    defaultCountry="GE"
-                                                    international
-                                                    field={field}
-                                                    labels={undefined}
-                                                    form={form}
-                                                    onChange={(contactPhone: string) => {
-                                                        form.setValue('phone', contactPhone)
-                                                    }}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                            <FormField
-                                control={form.control}
-                                name="code"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>{t('fillCode')}</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="number"
-                                                {...field}
-                                                value={field.value}
-                                                getCode
-                                                setPhoneFormat={setPhoneFormat}
-                                                getCodeButtonClicked={getCodeButtonClicked}
-                                                onGetCodeClick={getCodeHandler}
-                                            />
-                                        </FormControl>
-                                        {phoneFormat &&
-                                        field.value !== undefined &&
-                                        field.value !== '' ? (
-                                            <FormMessage />
-                                        ) : null}
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+
                         <div className="flex flex-col gap-4">
                             {selectedLangTitle && (
                                 <FormField
@@ -744,6 +673,80 @@ export default function ClientWrapper() {
                                 </FormItem>
                             )}
                         />
+                        <div className="flex w-full flex-col gap-4">
+                            <FormLabel>{t('contactInfo')}</FormLabel>
+                            <div className=" grid  gap-6 md:grid-cols-2">
+                                <FormField
+                                    control={form.control}
+                                    name="contactName"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full md:w-full">
+                                            <FormLabel className="text-xs md:text-sm">
+                                                {t('name')}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    className="h-[38px] w-full"
+                                                    onChange={(value) => field.onChange(value)}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="phone"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full md:w-full">
+                                            <FormLabel className="text-xs md:text-sm">
+                                                {t('phone')}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <PhoneInput
+                                                    className="w-full"
+                                                    type="number"
+                                                    defaultCountry="GE"
+                                                    international
+                                                    field={field}
+                                                    labels={undefined}
+                                                    form={form}
+                                                    onChange={(contactPhone: string) => {
+                                                        form.setValue('phone', contactPhone)
+                                                    }}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="code"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-xs md:text-sm">
+                                                {t('fillCode')}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    {...field}
+                                                    value={field.value}
+                                                    getCode
+                                                    setPhoneFormat={setPhoneFormat}
+                                                    getCodeButtonClicked={getCodeButtonClicked}
+                                                    onGetCodeClick={getCodeHandler}
+                                                />
+                                            </FormControl>
+                                            {phoneFormat &&
+                                            field.value !== undefined &&
+                                            field.value !== '' ? (
+                                                <FormMessage />
+                                            ) : null}
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        </div>
 
                         <Button className="w-full">ატვირთვა</Button>
                     </form>

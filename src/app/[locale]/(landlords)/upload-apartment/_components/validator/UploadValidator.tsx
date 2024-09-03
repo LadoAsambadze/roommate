@@ -53,7 +53,7 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
         descriptions: z.array(descriptionSchema),
         titles: z.array(titlesSchema),
         imageUploadFiles: z.union([z.any(), z.undefined()]),
-        code: z.string().min(1, { message: '' }),
+        code: z.string().optional(),
     })
 
     type FormSchemaType = z.infer<typeof FormSchema>

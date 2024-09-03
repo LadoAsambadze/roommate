@@ -98,7 +98,11 @@ function StaticRentDatePicker({ field }: RentDatePickerProps) {
     }
 
     const currentYear = new Date().getFullYear()
-    const yearRange = Array.from({ length: 100 }, (_, i) => currentYear - i)
+    const endYear = currentYear + 10
+
+    const yearRange = Array.from({ length: endYear - currentYear + 1 }, (_, i) => currentYear + i)
+
+    const currentDay = new Date().getDate()
 
     return (
         <div className="flex flex-row gap-2">

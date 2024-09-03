@@ -85,7 +85,7 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
             </div>
 
             {files.length > 0 && (
-                <div className="mt-4  grid w-full grid-cols-5 gap-x-2 gap-y-2">
+                <div className="mt-4  grid w-full grid-cols-2  gap-x-2 gap-y-2 md:grid-cols-3 lg:grid-cols-5">
                     {files.map((file: any) => (
                         <div key={file.name} className="relative  h-32 w-full ">
                             <Image
