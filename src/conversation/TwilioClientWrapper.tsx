@@ -1,3 +1,5 @@
+'use client'
+
 import { useInitializeTwilioClient } from './useInitializeTwilioClient'
 import { useInitializeConversationNotification } from './useConversationNotification'
 

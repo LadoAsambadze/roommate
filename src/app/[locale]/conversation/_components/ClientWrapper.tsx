@@ -2,17 +2,17 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import { useQuery, useReactiveVar } from '@apollo/client'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'next/navigation'
 import ConversationsList from '../_components/ConversationsList'
-import { getConversationsForUserQuery } from '../gql/graphqlStatements'
-import { ConversationStatus } from '../gql/graphql'
+
 import Conversation from '../_components/Conversation'
-import { RouterQuery } from '../types'
 import { useMediaQuery } from 'react-responsive'
-import { twilioConnectionStateVar } from '../store/twilioVars'
 import { TwilioDisconnectionAlertDialog } from '../_components/TwilioDisconnectionAlertDialog'
 import { MEDIA_QUERY } from '../constants'
 import { LIMIT, OFFSET } from '@/src/constants/pagination'
+import { twilioConnectionStateVar } from '@/src/conversation/twilioVars'
+import { getConversationsForUserQuery } from '@/graphql/query'
+import { ConversationStatus } from '@/graphql/typesGraphql'
 
 const ClientWrapper = () => {
     const [request, setRequest] = useState(false)
@@ -22,7 +22,8 @@ const ClientWrapper = () => {
     })
 
     const router = useRouter()
-    const { id }: RouterQuery = router.query
+    const searchParams = useSearchParams()
+    const conversationIdFromParam = searchParams.get('id')
 
     const twilioConnectionState = useReactiveVar(twilioConnectionStateVar)
 
@@ -39,7 +40,7 @@ const ClientWrapper = () => {
     )
 
     const filteredConversationsByStatus = useMemo(() => {
-        if (data?.getConversationsForUser.list.length) {
+        if (data?.getConversationsForUser?.list?.length) {
             if (request) {
                 return data.getConversationsForUser.list.filter(
                     (conversation) => conversation.status !== ConversationStatus.Accepted
@@ -55,41 +56,33 @@ const ClientWrapper = () => {
     }, [data, request])
 
     useEffect(() => {
-        if (filteredConversationsByStatus.length && !id && media) {
-            router.replace(`/conversation?id=${filteredConversationsByStatus[0].id}`, undefined, {
-                shallow: true,
-            })
+        if (filteredConversationsByStatus.length && !conversationIdFromParam && media) {
+            router.replace(`/conversation?id=${filteredConversationsByStatus[0].id}`)
         }
 
-        if (filteredConversationsByStatus.length && id) {
-            router.replace(`/conversation?id=${id}`, undefined, {
-                shallow: true,
-            })
+        if (filteredConversationsByStatus.length && conversationIdFromParam) {
+            router.replace(`/conversation?id=${conversationIdFromParam}`)
         }
     }, [filteredConversationsByStatus])
 
     useEffect(() => {
-        if (filteredConversationsByStatus.length && id) {
-            router.replace(`/conversation?id=${filteredConversationsByStatus[0].id}`, undefined, {
-                shallow: true,
-            })
+        if (filteredConversationsByStatus.length && conversationIdFromParam) {
+            router.replace(`/conversation?id=${filteredConversationsByStatus[0].id}`)
         }
-        if (!filteredConversationsByStatus.length && id) {
-            router.replace(`/conversation`, undefined, {
-                shallow: true,
-            })
+        if (!filteredConversationsByStatus.length && conversationIdFromParam) {
+            router.replace(`/conversation`)
         }
     }, [request])
 
     useEffect(() => {
         if (!media) {
-            if (id) {
+            if (conversationIdFromParam) {
                 setMobileOpen(true)
-            } else if (!id) {
+            } else if (!conversationIdFromParam) {
                 setMobileOpen(false)
             }
         }
-    }, [media, id])
+    }, [media, conversationIdFromParam])
 
     const isTwilioConnectionDown =
         twilioConnectionState === 'disconnected' || twilioConnectionState === 'denied'
@@ -110,7 +103,7 @@ const ClientWrapper = () => {
                         fetchMoreConversationsForUser={fetchMoreConversationsForUser}
                     />
                     <Conversation
-                        key={id}
+                        key={conversationIdFromParam}
                         mobileOpen={mobileOpen}
                         setMobileOpen={setMobileOpen}
                         setRequest={setRequest}

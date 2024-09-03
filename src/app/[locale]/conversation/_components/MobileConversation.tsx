@@ -1,16 +1,21 @@
+'use client'
+
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
-import Send from '../../public/newImages/send.svg'
-import ArrowLeft from '../../public/newImages/arrow-left-chat.svg'
+import { Send, ArrowLeft } from '@/src/components/svgs'
 import MessagesList from './MessagesList'
 import { Conversation, ConversationUpdateReason } from '@twilio/conversations'
 import { useApolloClient, useMutation, useReactiveVar } from '@apollo/client'
 import AutosizeTextarea from 'react-textarea-autosize'
 import clsx from 'clsx'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { twilioClientVar } from '@/src/conversation/twilioVars'
 import { useTranslation } from 'react-i18next'
-import { ConversationStatus, ConversationWithUserObject } from '@/graphql/typesGraphql'
+import {
+    ConversationStatus,
+    ConversationWithUserObject,
+    UserPreviewObject,
+} from '@/graphql/typesGraphql'
 import {
     updateConversationResourceStateMutation,
     updateConversationStatusMutation,
@@ -20,8 +25,8 @@ import { getConversationsForUserQuery } from '@/graphql/query'
 type Props = {
     mobileOpen: boolean
     setMobileOpen: React.Dispatch<React.SetStateAction<boolean>>
-    conversationResource: Conversation
-    conversation: ConversationWithUserObject
+    conversationResource: Conversation | null
+    conversation: ConversationWithUserObject | null
     setRequest: any
 }
 
@@ -35,27 +40,28 @@ export default function MobileConversation({
     const [message, setMessage] = useState('')
 
     const headerRef = useRef<HTMLDivElement>(null)
-    const amIUpdaterOfConversationStatus = useRef(null)
+    const amIUpdaterOfConversationStatus = useRef<boolean | null>(null)
 
     const client = useApolloClient()
     const twilioClient = useReactiveVar(twilioClientVar)
 
     const router = useRouter()
 
-    const { t } = useTranslation('common')
+    const { t } = useTranslation('conversation')
+
     const [updateConversationStatus, { loading }] = useMutation(updateConversationStatusMutation, {
         onCompleted: (response) => {
             client.cache.updateQuery({ query: getConversationsForUserQuery }, (data) => {
                 if (!data?.getConversationsForUser?.list) return data
 
                 const updatedList = data.getConversationsForUser.list.map((userConversation) =>
-                    userConversation.id === conversation.id
+                    userConversation.id === conversation?.id
                         ? { ...userConversation, status: response.updateConversationStatus }
                         : userConversation
                 )
 
                 const updatedConversationIndex = updatedList.findIndex(
-                    (userConversation) => userConversation.id === conversation.id
+                    (userConversation) => userConversation.id === conversation?.id
                 )
 
                 let reorderedList = updatedList
@@ -84,48 +90,44 @@ export default function MobileConversation({
         const { conversation, updateReasons } = data
 
         if (
-            updateReasons.includes('state') &&
-            conversation &&
-            !amIUpdaterOfConversationStatus.current
+            !updateReasons.includes('state') ||
+            !conversation ||
+            amIUpdaterOfConversationStatus.current
         ) {
-            client.cache.updateQuery(
-                {
-                    query: getConversationsForUserQuery,
-                },
-                (data) => {
-                    if (data?.getConversationsForUser) {
-                        const updateConversations = data.getConversationsForUser.list.map(
-                            (conversationObject) => {
-                                if (conversation.sid === conversation.sid) {
-                                    return {
-                                        ...conversationObject,
-                                        user: {
-                                            ...conversationObject.user,
-                                            conversationStatus:
-                                                conversation.state.current === 'active'
-                                                    ? ConversationStatus.Accepted
-                                                    : ConversationStatus.Rejected,
-                                        },
-                                    }
-                                }
+            return
+        }
 
-                                return conversationObject
-                            }
-                        )
+        client.cache.updateQuery({ query: getConversationsForUserQuery }, (cacheData) => {
+            if (!cacheData?.getConversationsForUser?.list) return cacheData
 
+            const updateConversations = cacheData.getConversationsForUser.list.map(
+                (conversationObject): ConversationWithUserObject => {
+                    if (conversationObject.sid === conversation.sid) {
                         return {
-                            ...data,
-                            getConversationsForUser: {
-                                ...data.getConversationsForUser,
-                                list: updateConversations,
+                            ...conversationObject,
+                            user: {
+                                ...(conversationObject.user as UserPreviewObject),
+                                conversationStatus:
+                                    conversation?.state?.current === 'active'
+                                        ? ConversationStatus.Accepted
+                                        : ConversationStatus.Rejected,
                             },
                         }
                     }
+                    return conversationObject
                 }
             )
 
-            amIUpdaterOfConversationStatus.current = null
-        }
+            return {
+                ...cacheData,
+                getConversationsForUser: {
+                    ...cacheData.getConversationsForUser,
+                    list: updateConversations,
+                },
+            }
+        })
+
+        amIUpdaterOfConversationStatus.current = null
     }
 
     const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -136,7 +138,7 @@ export default function MobileConversation({
         if (
             conversationResource &&
             message.length &&
-            conversation?.user.conversationStatus !== ConversationStatus.Rejected
+            conversation?.user?.conversationStatus !== ConversationStatus.Rejected
         ) {
             conversationResource.sendMessage(message)
             setMessage('')
@@ -145,9 +147,7 @@ export default function MobileConversation({
 
     const handleBackNavigation = () => {
         setMobileOpen(false)
-        router.push('conversation/', undefined, {
-            shallow: true,
-        })
+        router.push('conversation/')
     }
 
     const handleAcceptClick = () => {
@@ -155,40 +155,44 @@ export default function MobileConversation({
 
         amIUpdaterOfConversationStatus.current = true
 
-        updateConversationStatus({
-            variables: {
-                conversationId: conversation.id,
-                status: ConversationStatus.Accepted,
-            },
-        })
-
-        if (conversationResource.state.current === 'inactive') {
-            updateConversationResourceState({
+        if (conversation) {
+            updateConversationStatus({
                 variables: {
-                    sid: conversationResource.sid,
-                    state: 'active',
+                    conversationId: conversation.id,
+                    status: ConversationStatus.Accepted,
                 },
             })
+
+            if (conversationResource?.state?.current === 'inactive') {
+                updateConversationResourceState({
+                    variables: {
+                        sid: conversationResource.sid,
+                        state: 'active',
+                    },
+                })
+            }
         }
     }
 
     const handleRejectClick = async () => {
         amIUpdaterOfConversationStatus.current = true
 
-        updateConversationStatus({
-            variables: {
-                conversationId: conversation.id,
-                status: ConversationStatus.Rejected,
-            },
-        })
-
-        if (conversationResource.state.current === 'active') {
-            updateConversationResourceState({
+        if (conversation) {
+            updateConversationStatus({
                 variables: {
-                    sid: conversationResource.sid,
-                    state: 'inactive',
+                    conversationId: conversation.id,
+                    status: ConversationStatus.Rejected,
                 },
             })
+
+            if (conversationResource?.state?.current === 'active') {
+                updateConversationResourceState({
+                    variables: {
+                        sid: conversationResource.sid,
+                        state: 'inactive',
+                    },
+                })
+            }
         }
     }
 

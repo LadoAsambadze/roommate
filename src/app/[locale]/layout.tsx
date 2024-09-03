@@ -9,6 +9,7 @@ import { Noto_Sans_Georgian } from 'next/font/google'
 import Footer from '@/src/components/footer/Footer'
 import { ModalWrapper } from './(auth)/_modal/ModalWrapper'
 import { AuthWrapper } from '@/src/auth/authWrapper'
+import TwilioClientWrapper from '@/src/conversation/TwilioClientWrapper'
 
 const georgian = Noto_Sans_Georgian({ subsets: ['latin'] })
 
@@ -67,12 +68,14 @@ export default async function RootLayout({
                 >
                     <ApolloWrapper>
                         <AuthWrapper>
-                            <Suspense fallback={<div>Loading!!...</div>}>
-                                <Header />
-                                <ModalWrapper />
-                            </Suspense>
-                            {children}
-                            <Footer />
+                            <TwilioClientWrapper>
+                                <Suspense fallback={<div>Loading!!...</div>}>
+                                    <Header />
+                                    <ModalWrapper />
+                                </Suspense>
+                                {children}
+                                <Footer />
+                            </TwilioClientWrapper>
                         </AuthWrapper>
                     </ApolloWrapper>
                 </TranslationsProvider>

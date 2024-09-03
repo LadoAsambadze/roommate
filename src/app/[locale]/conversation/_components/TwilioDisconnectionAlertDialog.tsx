@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import {
     AlertDialog,
@@ -15,7 +17,7 @@ type Props = {
 
 export const TwilioDisconnectionAlertDialog = ({ open }: Props) => {
     const [openAlert, setOpenAlert] = useState<boolean>()
-    const { t } = useTranslation('common')
+    const { t } = useTranslation('conversation')
 
     const handleRefresh = () => {
         location.reload()

@@ -1,3 +1,5 @@
+'use client'
+
 import { useApolloClient, useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
 import { Conversation, Message, Client as TwilioClient } from '@twilio/conversations'
 import { useEffect, useRef } from 'react'

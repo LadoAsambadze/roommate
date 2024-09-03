@@ -1,3 +1,5 @@
+'use client'
+
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client'
 import { twilioConnectionStateVar, twilioClientVar } from './twilioVars'
 import { useEffect } from 'react'
