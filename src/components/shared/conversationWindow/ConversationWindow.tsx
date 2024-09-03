@@ -6,14 +6,14 @@ import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import { useMediaQuery } from 'react-responsive'
 import { useLazyQuery, useMutation } from '@apollo/client'
-import { MessageAlertDialog } from './MessageAlertDialog'
-import { MessageSendStatusType } from '../types'
 import { useTranslation } from 'react-i18next'
 import { twilioClientVar } from '@/src/conversation/twilioVars'
 import { getSharedConversationQuery } from '@/graphql/query'
 import { lookupOrCreateTwilioUserResourceMutation } from '@/graphql/mutation'
 import { ConversationWithUserObject } from '@/graphql/typesGraphql'
 import { Spinner } from '@/src/components/ui/spinner'
+import { MessageSendStatusType } from '@/src/types/conversation'
+import { MessageAlertDialog } from './MessageAlertDialog'
 
 type MessageSendStatus = {
     type: MessageSendStatusType

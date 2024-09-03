@@ -11,11 +11,11 @@ import {
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/src/components/ui/button'
-import successIcon from '../../public/imgs/Success.svg'
-import errorIcon from '../../public/imgs/Error.svg'
+import successIcon from '../../../../public/svg/Success.svg'
+import errorIcon from '../../../../public/svg/Error.svg'
 import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
-import { MessageSendStatusType } from '../types'
+import { MessageSendStatusType } from '@/src/types/conversation'
 
 type Props = {
     feedback: string

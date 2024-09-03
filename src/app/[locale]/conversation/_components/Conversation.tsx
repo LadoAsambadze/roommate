@@ -11,7 +11,6 @@ import { ConversationStatus, ConversationWithUserObject } from '@/graphql/typesG
 import { MEDIA_QUERY } from '../constants'
 import { twilioClientVar, twilioConnectionStateVar } from '@/src/conversation/twilioVars'
 import { getConversationsForUserQuery } from '@/graphql/query'
-import { RouterQuery } from '../types'
 
 const ConversationComponent = ({ mobileOpen, setMobileOpen, setRequest }: any) => {
     const [conversation, setConversation] = useState<ConversationWithUserObject | null>(null)
