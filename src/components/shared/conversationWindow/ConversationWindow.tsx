@@ -33,9 +33,10 @@ export default function ConversationWindow({ setIsOpen, name, participantId, ava
     const [messageSendStatus, setMessageSendStatus] = useState<MessageSendStatus | null>(null)
 
     const [isLoading, setIsLoading] = useState(false)
-    let { t } = useTranslation('common')
 
     const ref = useRef<HTMLDivElement>(null)
+
+    let { t } = useTranslation('common')
 
     const media = useMediaQuery({ maxWidth: 768 })
 
@@ -152,76 +153,68 @@ export default function ConversationWindow({ setIsOpen, name, participantId, ava
             setIsOpen={setIsOpen}
         />
     ) : (
-        <>
-            <div
-                ref={ref}
-                className="fixed bottom-0 right-0 z-50 flex h-full w-full flex-col rounded-lg border  bg-[#FFFFFF]  shadow-md md:right-20 md:h-[415px] md:w-[375px]"
-            >
-                <>
-                    <div className="flex w-full flex-row items-center justify-between p-6  shadow-md">
-                        <div className="flex w-full flex-row items-center justify-between">
-                            <div className="flex w-full flex-row   items-center justify-start">
-                                {avatar ? (
-                                    <img
-                                        src={avatar}
-                                        className="h-10 w-10 rounded-full"
-                                        alt="123"
-                                    />
-                                ) : (
-                                    <img
-                                        className="h-10 w-10 rounded-full"
-                                        src="https://www.portmelbournefc.com.au/wp-content/uploads/2022/03/avatar-1.jpeg"
-                                        alt="123"
-                                    />
-                                )}
-                                <div className="ml-6 flex flex-col justify-between">
-                                    <span>{name}</span>
-                                </div>
-                            </div>
-                            <div className="flex h-full items-start justify-between">
-                                <Image
-                                    onClick={handleClose}
-                                    src={CloseCircle}
-                                    alt="123"
-                                    width={32}
-                                    height={32}
-                                    className="cursor-pointer"
-                                />
-                            </div>
+        <div
+            ref={ref}
+            className="fixed bottom-0 right-0 z-50 flex h-full w-full flex-col rounded-lg border  bg-[#FFFFFF]  shadow-md md:right-20 md:h-[415px] md:w-[375px]"
+        >
+            <div className="flex w-full flex-row items-center justify-between p-6  shadow-md">
+                <div className="flex w-full flex-row items-center justify-between">
+                    <div className="flex w-full flex-row   items-center justify-start">
+                        {avatar ? (
+                            <img src={avatar} className="h-10 w-10 rounded-full" alt="123" />
+                        ) : (
+                            <img
+                                className="h-10 w-10 rounded-full"
+                                src="https://www.portmelbournefc.com.au/wp-content/uploads/2022/03/avatar-1.jpeg"
+                                alt="123"
+                            />
+                        )}
+                        <div className="ml-6 flex flex-col justify-between">
+                            <span>{name}</span>
                         </div>
                     </div>
-                    <div className="h-full w-full px-6 "></div>
-                    {isLoading ? (
-                        <div className="flex h-full items-start justify-center">
-                            <Spinner />
-                        </div>
-                    ) : (
-                        <div className=" flex h-auto w-full flex-col items-end justify-end ">
-                            <div className="flex h-full w-full flex-col justify-end px-4 pb-4 pt-5  ">
-                                <div className="mb-5 w-[300px] text-xs">
-                                    <span>{t('aboutChat1', { receiverName: name })}</span>
-                                    <br />
-                                    <br />
-                                    <span> {t('aboutChat2', { receiverName: name })}</span>
-                                </div>
-                                <textarea
-                                    className="text-md h-24 rounded-md border border-[#838CAC] pl-1 pt-1 focus:outline-none"
-                                    value={messageText}
-                                    onChange={handleMessageChange}
-                                    onKeyDown={handleKeyDown}
-                                />
-                                <button
-                                    className="mt-6 flex w-full cursor-pointer flex-row justify-end"
-                                    onClick={handleSendMessage}
-                                    disabled={isLoading}
-                                >
-                                    <Image src={Send} width={24} height={24} alt="send" />
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                </>
+                    <div className="flex h-full items-start justify-between">
+                        <Image
+                            onClick={handleClose}
+                            src={CloseCircle}
+                            alt="123"
+                            width={32}
+                            height={32}
+                            className="cursor-pointer"
+                        />
+                    </div>
+                </div>
             </div>
-        </>
+            <div className="h-full w-full px-6 "></div>
+            {isLoading ? (
+                <div className="flex h-full items-start justify-center">
+                    <Spinner />
+                </div>
+            ) : (
+                <div className=" flex h-auto w-full flex-col items-end justify-end ">
+                    <div className="flex h-full w-full flex-col justify-end px-4 pb-4 pt-5  ">
+                        <div className="mb-5 w-[300px] text-xs">
+                            <span>{t('aboutChat1', { receiverName: name })}</span>
+                            <br />
+                            <br />
+                            <span> {t('aboutChat2', { receiverName: name })}</span>
+                        </div>
+                        <textarea
+                            className="text-md h-24 rounded-md border border-[#838CAC] pl-1 pt-1 focus:outline-none"
+                            value={messageText}
+                            onChange={handleMessageChange}
+                            onKeyDown={handleKeyDown}
+                        />
+                        <button
+                            className="mt-6 flex w-full cursor-pointer flex-row justify-end"
+                            onClick={handleSendMessage}
+                            disabled={isLoading}
+                        >
+                            <Image src={Send} width={24} height={24} alt="send" />
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
     )
 }

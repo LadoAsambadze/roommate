@@ -6,6 +6,7 @@ import { RoommateWithAdditionalInfoObject } from '@/graphql/typesGraphql'
 import { useTranslation } from 'react-i18next'
 import ConversationWindow from '@/src/components/shared/conversationWindow/ConversationWindow'
 import { useState } from 'react'
+import SendMessageButton from '@/src/components/shared/sendMessageButton/SendMessageButton'
 
 type Props = {
     user: RoommateWithAdditionalInfoObject
@@ -15,10 +16,6 @@ const UserCard = ({ user }: Props) => {
     const [isOpenedConversationWindow, setIsOpenedConversationWindow] = useState(false)
 
     const { t } = useTranslation()
-
-    const handleOpenConversationWindow = () => {
-        setIsOpenedConversationWindow(true)
-    }
 
     return (
         <>
@@ -51,13 +48,10 @@ const UserCard = ({ user }: Props) => {
                                 {user.age} {t('yearsOld')}
                             </span>
                         </div>
-                        <button
-                            className="flex flex-row items-center rounded-md bg-[#0A7CFF] px-3 py-2"
-                            onClick={handleOpenConversationWindow}
-                        >
-                            <Sms className="h-4 w-4" />
-                            <span className="ml-2 text-sm text-white">{t('sendMessage')}</span>
-                        </button>
+                        <SendMessageButton
+                            user={user}
+                            setIsOpenedConversationWindow={setIsOpenedConversationWindow}
+                        />
                     </div>
                     <div className="hidden h-[1px] w-full bg-[#E3E3E3] sm:block"></div>
                     <span className=" line-clamp-1 h-full overflow-clip text-ellipsis text-sm sm:line-clamp-2">
