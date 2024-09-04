@@ -69,10 +69,9 @@ export default async function RootLayout({
                     <ApolloWrapper>
                         <AuthWrapper>
                             <TwilioClientWrapper>
-                                <Suspense fallback={<div>Loading!!...</div>}>
-                                    <Header />
-                                    <ModalWrapper />
-                                </Suspense>
+                                <Header />
+                                <ModalWrapper />
+
                                 {children}
                                 <Footer />
                             </TwilioClientWrapper>

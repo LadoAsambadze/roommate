@@ -3,8 +3,8 @@
 import { useApolloClient, useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
 import { Conversation, Message, Client as TwilioClient } from '@twilio/conversations'
 import { useEffect, useRef } from 'react'
-import { twilioClientVar } from './twilioVars'
-import { OFFSET } from '../constants/pagination'
+import { twilioClientVar } from './conversationVars'
+import { LIMIT, OFFSET } from '../constants/pagination'
 import {
     getConversationsForUserQuery,
     getSharedConversationQuery,
@@ -12,7 +12,6 @@ import {
 } from '@/graphql/query'
 import {
     ConversationWithUserObject,
-    Maybe,
     PaginatedConversationWithUserObject,
 } from '@/graphql/typesGraphql'
 
@@ -36,7 +35,7 @@ export const useInitializeConversationNotification = () => {
         variables: {
             pagination: {
                 offset: OFFSET,
-                limit: 1,
+                limit: LIMIT,
             },
         },
     })
@@ -211,31 +210,28 @@ export const useInitializeConversationNotification = () => {
         const cacheData = client.cache.readQuery({ query: getConversationsForUserQuery })
         const conversations = cacheData?.getConversationsForUser?.list ?? []
 
-        if (!conversations.length) return
-
-        let updatedConversations = conversations
-
         if (unreadMessagesCount && receivedMessages[0]?.author) {
-            updatedConversations = await addNewConversationAndUpdateUnreadMessagesToConversations({
-                conversations,
-                sid,
-                participantId: receivedMessages[0].author,
-                unreadMessagesCount,
+            const updatedConversations =
+                await addNewConversationAndUpdateUnreadMessagesToConversations({
+                    conversations,
+                    sid,
+                    participantId: receivedMessages[0].author,
+                    unreadMessagesCount,
+                })
+
+            const reorderedConversations = moveConversationToTop(updatedConversations, sid)
+
+            client.cache.updateQuery({ query: getConversationsForUserQuery }, (existingData) => {
+                if (!existingData?.getConversationsForUser) return existingData
+
+                return {
+                    getConversationsForUser: {
+                        ...existingData.getConversationsForUser,
+                        list: reorderedConversations,
+                    },
+                }
             })
         }
-
-        const reorderedConversations = moveConversationToTop(updatedConversations, sid)
-
-        client.cache.updateQuery({ query: getConversationsForUserQuery }, (existingData) => {
-            if (!existingData?.getConversationsForUser) return existingData
-
-            return {
-                getConversationsForUser: {
-                    ...existingData.getConversationsForUser,
-                    list: reorderedConversations,
-                },
-            }
-        })
     }
 
     const setUnreadMessagesCount = (unreadMessages: PromisedUnreadMessagesCount[]) => {
@@ -273,7 +269,6 @@ export const useInitializeConversationNotification = () => {
     }
 
     const handleMessageAdded = async (message: Message) => {
-        console.log('message')
         updateConversationsCacheWithNewConversationAndUnreadMessagesCount(
             [message],
             message.conversation.sid

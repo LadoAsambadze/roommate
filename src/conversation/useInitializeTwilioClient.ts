@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client'
-import { twilioConnectionStateVar, twilioClientVar } from './twilioVars'
+import { twilioConnectionStateVar, twilioClientVar } from './conversationVars'
 import { useEffect } from 'react'
 import { ConnectionState, Client as TwilioClient } from '@twilio/conversations'
 

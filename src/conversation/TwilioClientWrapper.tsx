@@ -2,6 +2,7 @@
 
 import { useInitializeTwilioClient } from './useInitializeTwilioClient'
 import { useInitializeConversationNotification } from './useConversationNotification'
+import { useConversationStatusUpdate } from './useConversationStatusUpdate'
 
 export default function TwilioClientWrapper({
     children,
@@ -10,6 +11,7 @@ export default function TwilioClientWrapper({
 }>) {
     useInitializeTwilioClient()
     useInitializeConversationNotification()
+    useConversationStatusUpdate()
 
     return <>{children}</>
 }

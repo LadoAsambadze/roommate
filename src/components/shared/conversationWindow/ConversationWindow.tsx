@@ -7,13 +7,14 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import { useMediaQuery } from 'react-responsive'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
-import { twilioClientVar } from '@/src/conversation/twilioVars'
+import { twilioClientVar } from '@/src/conversation/conversationVars'
 import { getSharedConversationQuery } from '@/graphql/query'
 import { lookupOrCreateTwilioUserResourceMutation } from '@/graphql/mutation'
 import { ConversationWithUserObject } from '@/graphql/typesGraphql'
 import { Spinner } from '@/src/components/ui/spinner'
 import { MessageSendStatusType } from '@/src/types/conversation'
 import { MessageAlertDialog } from './MessageAlertDialog'
+import { updateCacheWithNewConversationInFirstPlace } from '@/src/conversation/conversationUtils'
 
 type MessageSendStatus = {
     type: MessageSendStatusType
@@ -223,9 +224,4 @@ export default function ConversationWindow({ setIsOpen, name, participantId, ava
             </div>
         </>
     )
-}
-function updateCacheWithNewConversationInFirstPlace(
-    getSharedConversation: ConversationWithUserObject
-) {
-    throw new Error('Function not implemented.')
 }

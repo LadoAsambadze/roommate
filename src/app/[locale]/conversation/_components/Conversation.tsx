@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import DesktopConversation from './DesktopConversation'
 import MobileConversation from './MobileConversation'
 import { useQuery, useReactiveVar } from '@apollo/client'
@@ -9,7 +9,7 @@ import { Client, Conversation } from '@twilio/conversations'
 import { useMediaQuery } from 'react-responsive'
 import { ConversationStatus, ConversationWithUserObject } from '@/graphql/typesGraphql'
 import { MEDIA_QUERY } from '../constants'
-import { twilioClientVar, twilioConnectionStateVar } from '@/src/conversation/twilioVars'
+import { twilioClientVar, twilioConnectionStateVar } from '@/src/conversation/conversationVars'
 import { getConversationsForUserQuery } from '@/graphql/query'
 
 const ConversationComponent = ({ mobileOpen, setMobileOpen, setRequest }: any) => {
@@ -80,6 +80,7 @@ const ConversationComponent = ({ mobileOpen, setMobileOpen, setRequest }: any) =
     useEffect(() => {
         setIsLoading(false)
     }, [media])
+
     return (
         <>
             {isLoading ? (

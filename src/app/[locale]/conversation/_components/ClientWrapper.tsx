@@ -10,7 +10,7 @@ import { useMediaQuery } from 'react-responsive'
 import { TwilioDisconnectionAlertDialog } from '../_components/TwilioDisconnectionAlertDialog'
 import { MEDIA_QUERY } from '../constants'
 import { LIMIT, OFFSET } from '@/src/constants/pagination'
-import { twilioConnectionStateVar } from '@/src/conversation/twilioVars'
+import { twilioConnectionStateVar } from '@/src/conversation/conversationVars'
 import { getConversationsForUserQuery } from '@/graphql/query'
 import { ConversationStatus } from '@/graphql/typesGraphql'
 

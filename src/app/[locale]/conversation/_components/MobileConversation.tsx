@@ -9,7 +9,7 @@ import { useApolloClient, useMutation, useReactiveVar } from '@apollo/client'
 import AutosizeTextarea from 'react-textarea-autosize'
 import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
-import { twilioClientVar } from '@/src/conversation/twilioVars'
+import { amIUpdaterOfStatusVar, twilioClientVar } from '@/src/conversation/conversationVars'
 import { useTranslation } from 'react-i18next'
 import {
     ConversationStatus,
@@ -40,10 +40,8 @@ export default function MobileConversation({
     const [message, setMessage] = useState('')
 
     const headerRef = useRef<HTMLDivElement>(null)
-    const amIUpdaterOfConversationStatus = useRef<boolean | null>(null)
 
     const client = useApolloClient()
-    const twilioClient = useReactiveVar(twilioClientVar)
 
     const router = useRouter()
 
@@ -83,53 +81,6 @@ export default function MobileConversation({
 
     const [updateConversationResourceState] = useMutation(updateConversationResourceStateMutation)
 
-    const updateConversationStatusInCache = (data: {
-        conversation: Conversation
-        updateReasons: ConversationUpdateReason[]
-    }) => {
-        const { conversation, updateReasons } = data
-
-        if (
-            !updateReasons.includes('state') ||
-            !conversation ||
-            amIUpdaterOfConversationStatus.current
-        ) {
-            return
-        }
-
-        client.cache.updateQuery({ query: getConversationsForUserQuery }, (cacheData) => {
-            if (!cacheData?.getConversationsForUser?.list) return cacheData
-
-            const updateConversations = cacheData.getConversationsForUser.list.map(
-                (conversationObject): ConversationWithUserObject => {
-                    if (conversationObject.sid === conversation.sid) {
-                        return {
-                            ...conversationObject,
-                            user: {
-                                ...(conversationObject.user as UserPreviewObject),
-                                conversationStatus:
-                                    conversation?.state?.current === 'active'
-                                        ? ConversationStatus.Accepted
-                                        : ConversationStatus.Rejected,
-                            },
-                        }
-                    }
-                    return conversationObject
-                }
-            )
-
-            return {
-                ...cacheData,
-                getConversationsForUser: {
-                    ...cacheData.getConversationsForUser,
-                    list: updateConversations,
-                },
-            }
-        })
-
-        amIUpdaterOfConversationStatus.current = null
-    }
-
     const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setMessage(event.target.value)
     }
@@ -153,7 +104,7 @@ export default function MobileConversation({
     const handleAcceptClick = () => {
         setRequest(false)
 
-        amIUpdaterOfConversationStatus.current = true
+        amIUpdaterOfStatusVar(true)
 
         if (conversation) {
             updateConversationStatus({
@@ -175,7 +126,7 @@ export default function MobileConversation({
     }
 
     const handleRejectClick = async () => {
-        amIUpdaterOfConversationStatus.current = true
+        amIUpdaterOfStatusVar(true)
 
         if (conversation) {
             updateConversationStatus({
@@ -195,22 +146,6 @@ export default function MobileConversation({
             }
         }
     }
-
-    // listen conversation status change
-    useEffect(() => {
-        if (twilioClient) {
-            twilioClient.addListener('conversationUpdated', updateConversationStatusInCache)
-        }
-
-        ;() => {
-            if (twilioClient) {
-                return twilioClient.removeListener(
-                    'conversationUpdated',
-                    updateConversationStatusInCache
-                )
-            }
-        }
-    }, [twilioClient])
 
     const containerHeight = headerRef.current?.clientHeight
         ? `calc(100% - ${headerRef.current.clientHeight}px)`

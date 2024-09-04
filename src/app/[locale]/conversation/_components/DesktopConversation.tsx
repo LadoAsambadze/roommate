@@ -3,24 +3,20 @@
 import Image from 'next/image'
 import { Send } from '@/src/components/svgs'
 import MessagesList from './MessagesList'
-import { Conversation, ConversationUpdateReason } from '@twilio/conversations'
-import { useEffect, useRef, useState, KeyboardEvent } from 'react'
+import { Conversation } from '@twilio/conversations'
+import { useRef, useState, KeyboardEvent } from 'react'
 import AutosizeTextarea from 'react-textarea-autosize'
 
-import { useApolloClient, useMutation, useReactiveVar } from '@apollo/client'
+import { useApolloClient, useMutation } from '@apollo/client'
 
-import { twilioClientVar } from '@/src/conversation/twilioVars'
 import {
     updateConversationResourceStateMutation,
     updateConversationStatusMutation,
 } from '@/graphql/mutation'
-import {
-    ConversationStatus,
-    ConversationWithUserObject,
-    UserPreviewObject,
-} from '@/graphql/typesGraphql'
+import { ConversationStatus, ConversationWithUserObject } from '@/graphql/typesGraphql'
 import { getConversationsForUserQuery } from '@/graphql/query'
 import { useTranslation } from 'react-i18next'
+import { amIUpdaterOfStatusVar } from '@/src/conversation/conversationVars'
 
 type Props = {
     conversationResource: Conversation | null
@@ -36,13 +32,10 @@ export default function DesktopConversation({
     const [message, setMessage] = useState('')
 
     const headerRef = useRef<HTMLDivElement>(null)
-    const amIUpdaterOfConversationStatus = useRef<boolean | null>(null)
 
     const { t } = useTranslation('conversation')
 
     const client = useApolloClient()
-
-    const twilioClient = useReactiveVar(twilioClientVar)
 
     const [updateConversationStatus, { loading }] = useMutation(updateConversationStatusMutation, {
         onCompleted: (response) => {
@@ -78,53 +71,6 @@ export default function DesktopConversation({
 
     const [updateConversationResourceState] = useMutation(updateConversationResourceStateMutation)
 
-    const updateConversationStatusInCache = (data: {
-        conversation: Conversation
-        updateReasons: ConversationUpdateReason[]
-    }) => {
-        const { conversation, updateReasons } = data
-
-        if (
-            !updateReasons.includes('state') ||
-            !conversation ||
-            amIUpdaterOfConversationStatus.current
-        ) {
-            return
-        }
-
-        client.cache.updateQuery({ query: getConversationsForUserQuery }, (cacheData) => {
-            if (!cacheData?.getConversationsForUser?.list) return cacheData
-
-            const updateConversations = cacheData.getConversationsForUser.list.map(
-                (conversationObject): ConversationWithUserObject => {
-                    if (conversationObject.sid === conversation.sid) {
-                        return {
-                            ...conversationObject,
-                            user: {
-                                ...(conversationObject.user as UserPreviewObject),
-                                conversationStatus:
-                                    conversation?.state?.current === 'active'
-                                        ? ConversationStatus.Accepted
-                                        : ConversationStatus.Rejected,
-                            },
-                        }
-                    }
-                    return conversationObject
-                }
-            )
-
-            return {
-                ...cacheData,
-                getConversationsForUser: {
-                    ...cacheData.getConversationsForUser,
-                    list: updateConversations,
-                },
-            }
-        })
-
-        amIUpdaterOfConversationStatus.current = null
-    }
-
     const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setMessage(event.target.value)
     }
@@ -148,9 +94,9 @@ export default function DesktopConversation({
     }
 
     const handleAcceptClick = () => {
-        setRequest(false)
+        amIUpdaterOfStatusVar(true)
 
-        amIUpdaterOfConversationStatus.current = true
+        setRequest(false)
 
         if (conversation) {
             updateConversationStatus({
@@ -172,7 +118,7 @@ export default function DesktopConversation({
     }
 
     const handleRejectClick = async () => {
-        amIUpdaterOfConversationStatus.current = true
+        amIUpdaterOfStatusVar(true)
 
         if (conversation) {
             updateConversationStatus({
@@ -192,22 +138,6 @@ export default function DesktopConversation({
             }
         }
     }
-
-    // listen conversation status change
-    useEffect(() => {
-        if (twilioClient) {
-            twilioClient.addListener('conversationUpdated', updateConversationStatusInCache)
-        }
-
-        ;() => {
-            if (twilioClient) {
-                return twilioClient.removeListener(
-                    'conversationUpdated',
-                    updateConversationStatusInCache
-                )
-            }
-        }
-    }, [twilioClient])
 
     const containerHeight = headerRef.current?.clientHeight
         ? `calc(100% - ${headerRef.current.clientHeight}px)`

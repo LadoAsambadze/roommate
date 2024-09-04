@@ -35,7 +35,7 @@ export function MessageAlertDialog({ feedback, setIsOpen, alertType }: Props) {
             case 'messageSendSuccess':
                 return {
                     text: t('keepSearch'),
-                    href: '/search',
+                    href: '/roommates',
                     img: successIcon,
                 }
             case 'messageSendError':

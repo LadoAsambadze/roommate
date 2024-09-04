@@ -25,6 +25,8 @@ export default function Header() {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
+    let unreadMessagesCount = 0
+
     const { data: user, loading: userLoading } = useQuery(getUserQuery, {
         skip: !authStatus.valid,
     })
@@ -81,16 +83,10 @@ export default function Header() {
         router.push(`${pathname}${query}`)
     }, [searchParams, router, pathname])
 
-    const unreadMessagesCount = useMemo(() => {
-        if (data?.getConversationsForUser?.list?.length) {
-            return data?.getConversationsForUser?.list.reduce((acc, conversation) => {
-                const sum = conversation?.unreadMessagesCount ?? 0 + acc
-                return sum
-            }, 0)
-        }
-
-        return 0
-    }, [data])
+    unreadMessagesCount =
+        data?.getConversationsForUser?.list?.reduce((acc, conversation) => {
+            return acc + conversation?.unreadMessagesCount ?? 0
+        }, 0) ?? 0
 
     const renderAuthSection = () => {
         if (!isClient || isLoadingUser) {
