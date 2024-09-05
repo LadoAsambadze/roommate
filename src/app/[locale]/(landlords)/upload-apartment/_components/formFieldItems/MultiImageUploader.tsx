@@ -45,7 +45,7 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
 
             const updatedFiles = [...files, ...newFiles]
             setFiles(updatedFiles)
-            field.onChange(updatedFiles) // Call the field.onChange with the updated files
+            field.onChange(updatedFiles.map((file) => file.base64)) // Call the field.onChange with the base64 strings
         },
         [files, field, t]
     )
@@ -54,7 +54,7 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
         (fileToDelete: CustomFile) => {
             const updatedFiles = files.filter((file) => file !== fileToDelete)
             setFiles(updatedFiles)
-            field.onChange(updatedFiles) // Call the field.onChange with the updated files
+            field.onChange(updatedFiles.map((file) => file.base64)) // Call the field.onChange with the base64 strings
         },
         [files, field]
     )
@@ -62,11 +62,10 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: {
-            'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
+            'image/*': ['.jpeg', '.jpg', '.png', '.webp', 'avif'],
         },
         maxSize: 5 * 1024 * 1024, // 5MB
     })
-
     return (
         <div className="   w-full">
             <div
@@ -85,7 +84,7 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
             </div>
 
             {files.length > 0 && (
-                <div className="mt-4  grid w-full grid-cols-5 gap-x-2 gap-y-2">
+                <div className="mt-4  grid w-full grid-cols-2  gap-x-2 gap-y-2 md:grid-cols-3 lg:grid-cols-5">
                     {files.map((file: any) => (
                         <div key={file.name} className="relative  h-32 w-full ">
                             <Image

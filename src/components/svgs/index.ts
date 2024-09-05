@@ -45,3 +45,7 @@ export { default as Trash } from '../../../public/svg/Trash.svg'
 export { default as AddPhoto } from '../../../public/svg/AddPhoto.svg'
 export { default as Send } from '../../../public/svg/Send.svg'
 export { default as Messenger } from '../../../public/svg/Messenger.svg'
+export { default as ActiveStatus } from '../../../public/svg/ActiveStatus.svg'
+export { default as InactiveStatus } from '../../../public/svg/InactiveStatus.svg'
+export { default as Edit } from '../../../public/svg/Edit.svg'
+

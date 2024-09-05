@@ -7,9 +7,9 @@ export default function StaticPetStatusRadio({ field }: any) {
     return (
         <RadioGroup
             value={field.value ? field.value : undefined}
-            onValueChange={(value) => field.onChange(!field.value)}
+            onValueChange={(value) => field.onChange(!value)}
         >
-            <div className="flex items-center space-x-4 mt-2">
+            <div className="mt-2 flex items-center space-x-4">
                 <RadioGroupItem value="true" id="yes" />
                 <Label
                     htmlFor="yes"
