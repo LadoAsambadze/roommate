@@ -216,7 +216,7 @@ export const UpsertProperty: TypedDocumentNode<
     },
     MutationUpsertPropertyArgs
 > = gql`
-    mutation UpsertProperty($input: PropertyInput!) {
+    mutation UpsertProperty($input: UpsertPropertyInput!) {
         upsertProperty(input: $input)
     }
 `

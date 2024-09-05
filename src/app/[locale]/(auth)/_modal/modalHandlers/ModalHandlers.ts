@@ -9,6 +9,7 @@ export const useModalHandlers = () => {
     const modalCloseHandler = useCallback(() => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
         current.delete('modal')
+    
         const search = current.toString()
         const query = search ? `?${search}` : ''
         router.push(`${pathname}${query}`)
