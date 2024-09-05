@@ -5,7 +5,6 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 import { Conversation, Message, Paginator } from '@twilio/conversations'
 import { useInView } from 'react-intersection-observer'
 import { useApolloClient, useReactiveVar } from '@apollo/client'
-import clsx from 'clsx'
 import mergeRefs from 'merge-refs'
 import { format, isToday, isYesterday } from 'date-fns'
 import { ConversationWithUserObject } from '@/graphql/typesGraphql'
@@ -13,6 +12,7 @@ import { twilioClientVar } from '@/src/conversation/conversationVars'
 import { useDocumentHasFocus } from '@/src/hooks/useDocumentHasFocus'
 import { getConversationsForUserQuery } from '@/graphql/query'
 import { Spinner } from '@/src/components/ui/spinner'
+import { cn } from '@/src/utils/cn'
 
 type Props = {
     conversationResource: Conversation | null
@@ -271,7 +271,7 @@ const MessagesList = ({ conversationResource, conversation }: Props) => {
 
     return (
         <>
-            <div ref={parentDomRef} className="overflow-y-auto ">
+            <div ref={parentDomRef} className="overflow-y-auto">
                 {(paginatedMessagesRef?.current?.hasPrevPage || loading) && (
                     <div className="mb-3 flex w-full justify-center" ref={inViewLoaderDomRef}>
                         <Spinner size="small" />
@@ -299,7 +299,7 @@ const MessagesList = ({ conversationResource, conversation }: Props) => {
                                 key={virtualItem.key}
                                 data-index={virtualItem.index}
                                 ref={virtualItemRef}
-                                className={clsx('absolute  flex w-full flex-col  ', {
+                                className={cn('absolute flex w-full flex-col', {
                                     'left-0 items-start': conversation?.user?.id === message.author,
                                     'right-0 items-end': conversation?.user?.id !== message.author,
                                 })}
@@ -308,8 +308,8 @@ const MessagesList = ({ conversationResource, conversation }: Props) => {
                                 }}
                             >
                                 <div
-                                    className={clsx(
-                                        'text group  relative mx-2 max-w-[65%] bg-[#c5bdff]  p-2 text-sm  text-stone-800 md:max-w-[75%]',
+                                    className={cn(
+                                        'text group relative mx-2 max-w-[65%] bg-[#c5bdff]  p-2 text-sm  text-stone-800 md:max-w-[75%]',
                                         {
                                             'ml-40 rounded-t-[12px] rounded-bl-[12px] rounded-br-[0] text-right ':
                                                 conversation?.user?.id !== message.author,
@@ -321,7 +321,7 @@ const MessagesList = ({ conversationResource, conversation }: Props) => {
                                     {message.body}
 
                                     <span
-                                        className={`absolute bottom-full  right-0 mb-1 w-max rounded bg-black px-2 py-1 text-xs text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
+                                        className={`absolute bottom-full right-0 mb-1 w-max rounded bg-black px-2 py-1 text-xs text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
                                             conversation?.user?.id !== message.author
                                                 ? 'right-0'
                                                 : 'left-0'

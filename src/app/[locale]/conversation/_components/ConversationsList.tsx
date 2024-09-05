@@ -7,7 +7,6 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 
 import { Howl } from 'howler'
 
-import clsx from 'clsx'
 import {
     ConversationStatus,
     ConversationWithUserObject,
@@ -16,6 +15,7 @@ import {
 import { MEDIA_QUERY } from '../constants'
 import { LIMIT } from '@/src/constants/pagination'
 import { Spinner } from '@/src/components/ui/spinner'
+import { cn } from '@/src/utils/cn'
 
 const sound = new Howl({
     src: ['./../sound.mp3'],
@@ -142,7 +142,7 @@ export default function ConversationsList({
             <div className="block w-full">
                 <div className="flex flex-row items-center justify-start gap-6 px-6 py-2 md:flex-col lg:flex-row">
                     <span
-                        className={clsx(
+                        className={cn(
                             'cursor-pointer',
                             !request && 'text-[#0A7CFF]',
                             request && 'text-[#838CAC]'
@@ -152,7 +152,7 @@ export default function ConversationsList({
                         chat
                     </span>
                     <span
-                        className={clsx(
+                        className={cn(
                             'relative cursor-pointer',
                             request && 'text-[#0A7CFF]',
                             !request && 'text-[#838CAC]'
@@ -221,7 +221,7 @@ export default function ConversationsList({
                                         key={virtualRow.index}
                                         data-index={virtualRow.index}
                                         ref={virtualizer.measureElement}
-                                        className={clsx(
+                                        className={cn(
                                             'absolute flex w-full cursor-pointer flex-row items-center justify-center border-b-2 border-[#E3E3E3] px-6 py-2 md:p-0 lg:justify-between lg:px-4 lg:py-2',
                                             conversation?.id === conversationIdFromParam
                                                 ? 'bg-[#e7e7fe]'

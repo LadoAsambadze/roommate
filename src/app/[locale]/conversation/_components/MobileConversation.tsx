@@ -1,26 +1,22 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Send, ArrowLeft } from '@/src/components/svgs'
 import MessagesList from './MessagesList'
-import { Conversation, ConversationUpdateReason } from '@twilio/conversations'
-import { useApolloClient, useMutation, useReactiveVar } from '@apollo/client'
+import { Conversation } from '@twilio/conversations'
+import { useApolloClient, useMutation } from '@apollo/client'
 import AutosizeTextarea from 'react-textarea-autosize'
-import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
-import { amIUpdaterOfStatusVar, twilioClientVar } from '@/src/conversation/conversationVars'
+import { amIUpdaterOfStatusVar } from '@/src/conversation/conversationVars'
 import { useTranslation } from 'react-i18next'
-import {
-    ConversationStatus,
-    ConversationWithUserObject,
-    UserPreviewObject,
-} from '@/graphql/typesGraphql'
+import { ConversationStatus, ConversationWithUserObject } from '@/graphql/typesGraphql'
 import {
     updateConversationResourceStateMutation,
     updateConversationStatusMutation,
 } from '@/graphql/mutation'
 import { getConversationsForUserQuery } from '@/graphql/query'
+import { cn } from '@/src/utils/cn'
 
 type Props = {
     mobileOpen: boolean
@@ -159,7 +155,7 @@ export default function MobileConversation({
     return (
         <>
             <section
-                className={clsx(
+                className={cn(
                     'fixed top-0 z-50  h-full w-screen flex-col overflow-y-hidden overscroll-none bg-[#FFFFFF]',
                     mobileOpen ? 'flex' : 'hidden'
                 )}
