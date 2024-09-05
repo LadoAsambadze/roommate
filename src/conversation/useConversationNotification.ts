@@ -171,7 +171,7 @@ export const useInitializeConversationNotification = () => {
         }
 
         const nextConversations = conversations.map((conversation) => {
-            if (conversation.sid === sid) {
+            if (conversation.sid == sid) {
                 return {
                     ...conversation,
                     unreadMessagesCount: conversation.unreadMessagesCount + unreadMessagesCount,
@@ -194,8 +194,11 @@ export const useInitializeConversationNotification = () => {
 
         if (index <= 0) return conversations // Already at top or not found
 
-        const [movedConversation] = conversations.splice(index, 1)
-        return [movedConversation, ...conversations]
+        let conversationsClone = structuredClone(conversations)
+
+        const [movedConversation] = conversationsClone.splice(index, 1)
+
+        return [movedConversation, ...conversationsClone]
     }
 
     const updateConversationsCacheWithNewConversationAndUnreadMessagesCount = async (
@@ -210,6 +213,8 @@ export const useInitializeConversationNotification = () => {
         const cacheData = client.cache.readQuery({ query: getConversationsForUserQuery })
         const conversations = cacheData?.getConversationsForUser?.list ?? []
 
+        let reorderedConversations = null
+
         if (unreadMessagesCount && receivedMessages[0]?.author) {
             const updatedConversations =
                 await addNewConversationAndUpdateUnreadMessagesToConversations({
@@ -219,19 +224,21 @@ export const useInitializeConversationNotification = () => {
                     unreadMessagesCount,
                 })
 
-            const reorderedConversations = moveConversationToTop(updatedConversations, sid)
-
-            client.cache.updateQuery({ query: getConversationsForUserQuery }, (existingData) => {
-                if (!existingData?.getConversationsForUser) return existingData
-
-                return {
-                    getConversationsForUser: {
-                        ...existingData.getConversationsForUser,
-                        list: reorderedConversations,
-                    },
-                }
-            })
+            reorderedConversations = moveConversationToTop(updatedConversations, sid)
+        } else {
+            reorderedConversations = moveConversationToTop(conversations, sid)
         }
+
+        client.cache.updateQuery({ query: getConversationsForUserQuery }, (existingData) => {
+            if (!existingData?.getConversationsForUser) return existingData
+
+            return {
+                getConversationsForUser: {
+                    ...existingData.getConversationsForUser,
+                    list: reorderedConversations,
+                },
+            }
+        })
     }
 
     const setUnreadMessagesCount = (unreadMessages: PromisedUnreadMessagesCount[]) => {

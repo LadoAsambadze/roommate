@@ -27,7 +27,7 @@ const MESSAGES_PAGE_SIZE = 20
 const MESSAGE_BOX_ESTIMATE_HEIGHT = 50
 const MESSAGE_BOX_ESTIMATE_HEIGHT_FOR_FIRST_PAGE = 250
 
-const GET_NEXT_MESSAGES_MIN_TIMEOUT = 800
+const GET_NEXT_MESSAGES_MIN_TIMEOUT = 400
 
 /*
  * UTILS
@@ -231,8 +231,9 @@ const MessagesList = ({ conversationResource, conversation }: Props) => {
                 : MESSAGE_BOX_ESTIMATE_HEIGHT
 
         const nextOffset =
-            virtualizerRef?.current?.scrollOffset ??
-            0 + delta * messageBoxEstimateHeight + delta * virtualizerRef.current.options.gap
+            (virtualizerRef?.current?.scrollOffset ?? 0) +
+            delta * messageBoxEstimateHeight +
+            delta * virtualizerRef.current.options.gap
 
         virtualizerRef.current.scrollOffset = nextOffset
         virtualizerRef.current.scrollToOffset(nextOffset)
@@ -270,72 +271,70 @@ const MessagesList = ({ conversationResource, conversation }: Props) => {
      */
 
     return (
-        <>
-            <div ref={parentDomRef} className="overflow-y-auto">
-                {(paginatedMessagesRef?.current?.hasPrevPage || loading) && (
-                    <div className="mb-3 flex w-full justify-center" ref={inViewLoaderDomRef}>
-                        <Spinner size="small" />
-                    </div>
-                )}
-
-                <div
-                    className="relative"
-                    style={{
-                        height: virtualizer.getTotalSize(),
-                    }}
-                >
-                    {virtualizerItems.map((virtualItem) => {
-                        const index = reverseIndex(virtualItem.index)
-                        const message = messages[index]
-                        const messageDate = new Date(message.dateCreated ?? '')
-
-                        const virtualItemRef =
-                            messages[0].index === message.index
-                                ? (mergeRefs(virtualizer.measureElement, firstMessageDomRef) as any)
-                                : virtualizer.measureElement
-
-                        return (
-                            <div
-                                key={virtualItem.key}
-                                data-index={virtualItem.index}
-                                ref={virtualItemRef}
-                                className={cn('absolute flex w-full flex-col', {
-                                    'left-0 items-start': conversation?.user?.id === message.author,
-                                    'right-0 items-end': conversation?.user?.id !== message.author,
-                                })}
-                                style={{
-                                    transform: `translateY(${virtualItem.start}px)`,
-                                }}
-                            >
-                                <div
-                                    className={cn(
-                                        'text group relative mx-2 max-w-[65%] bg-[#c5bdff]  p-2 text-sm  text-stone-800 md:max-w-[75%]',
-                                        {
-                                            'ml-40 rounded-t-[12px] rounded-bl-[12px] rounded-br-[0] text-right ':
-                                                conversation?.user?.id !== message.author,
-                                            'mr-40 rounded-t-[12px] rounded-bl-[0] rounded-br-[12px] text-left ':
-                                                conversation?.user?.id === message.author,
-                                        }
-                                    )}
-                                >
-                                    {message.body}
-
-                                    <span
-                                        className={`absolute bottom-full right-0 mb-1 w-max rounded bg-black px-2 py-1 text-xs text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
-                                            conversation?.user?.id !== message.author
-                                                ? 'right-0'
-                                                : 'left-0'
-                                        }`}
-                                    >
-                                        {formatTime(messageDate)} {formatDate(messageDate)}
-                                    </span>
-                                </div>
-                            </div>
-                        )
-                    })}
+        <div ref={parentDomRef} className="overflow-y-auto">
+            {(paginatedMessagesRef?.current?.hasPrevPage || loading) && (
+                <div className="mb-3 flex w-full justify-center" ref={inViewLoaderDomRef}>
+                    <Spinner size="small" />
                 </div>
+            )}
+
+            <div
+                className="relative"
+                style={{
+                    height: virtualizer.getTotalSize(),
+                }}
+            >
+                {virtualizerItems.map((virtualItem) => {
+                    const index = reverseIndex(virtualItem.index)
+                    const message = messages[index]
+                    const messageDate = new Date(message.dateCreated ?? '')
+
+                    const virtualItemRef =
+                        messages[0].index === message.index
+                            ? (mergeRefs(virtualizer.measureElement, firstMessageDomRef) as any)
+                            : virtualizer.measureElement
+
+                    return (
+                        <div
+                            key={virtualItem.key}
+                            data-index={virtualItem.index}
+                            ref={virtualItemRef}
+                            className={cn('absolute flex w-full flex-col', {
+                                'left-0 items-start': conversation?.user?.id === message.author,
+                                'right-0 items-end': conversation?.user?.id !== message.author,
+                            })}
+                            style={{
+                                transform: `translateY(${virtualItem.start}px)`,
+                            }}
+                        >
+                            <div
+                                className={cn(
+                                    'text group relative mx-2 max-w-[65%] bg-[#c5bdff]  p-2 text-sm  text-stone-800 md:max-w-[75%]',
+                                    {
+                                        'ml-40 rounded-t-[12px] rounded-bl-[12px] rounded-br-[0] text-right ':
+                                            conversation?.user?.id !== message.author,
+                                        'mr-40 rounded-t-[12px] rounded-bl-[0] rounded-br-[12px] text-left ':
+                                            conversation?.user?.id === message.author,
+                                    }
+                                )}
+                            >
+                                {message.body}
+
+                                <span
+                                    className={`absolute bottom-full right-0 mb-1 w-max rounded bg-black px-2 py-1 text-xs text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
+                                        conversation?.user?.id !== message.author
+                                            ? 'right-0'
+                                            : 'left-0'
+                                    }`}
+                                >
+                                    {formatTime(messageDate)} {formatDate(messageDate)}
+                                </span>
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
-        </>
+        </div>
     )
 }
 
