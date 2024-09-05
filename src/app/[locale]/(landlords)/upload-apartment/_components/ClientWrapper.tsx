@@ -75,7 +75,6 @@ export default function ClientWrapper() {
                     housingConditionId: null,
                     hideCadastralCode: null,
                     floor: form.getValues('minRentalPeriod'),
-                    districtId: null,
                     descriptions: [
                         {
                             text: 'string',
