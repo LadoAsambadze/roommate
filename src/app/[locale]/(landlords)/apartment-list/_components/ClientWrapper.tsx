@@ -14,7 +14,6 @@ import {
 } from '@/src/components/svgs'
 import { useQuery } from '@apollo/client'
 import CoverImage from '@images/ApartmentCover.png'
-import { DollarSignIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useSearchParams } from 'next/navigation'
 
