@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Filter from './filter/Filter'
-import UserCard from './userCard/UserCard'
+import USerList from './userList/UserList'
 import { FilterIcon } from '@/src/components/svgs'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'next/navigation'
@@ -77,7 +77,7 @@ function ClientWrapper() {
                     />
                 ) : null}
                 <div className="hidden h-screen w-[1px] bg-[#E3E3E3] xl:block"></div>
-                <UserCard transformedParams={transformedParams} />
+                <USerList transformedParams={transformedParams} />
             </main>
         </>
     )

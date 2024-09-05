@@ -16,9 +16,14 @@ export type Scalars = {
     Boolean: { input: boolean; output: boolean }
     Int: { input: number; output: number }
     Float: { input: number; output: number }
+    /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
     Date: { input: any; output: any }
+    /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
     DateTime: { input: any; output: any }
+    /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
     JSON: { input: any; output: any }
+    RestFunction: { input: any; output: any }
+    /** A tuple of two strings */
     StringTuple: { input: any; output: any }
 }
 
@@ -79,6 +84,7 @@ export type ConversationWithUserObject = {
     id: Scalars['ID']['output']
     sid: Scalars['String']['output']
     status: ConversationStatus
+    unreadMessagesCount: Scalars['Int']['output']
     updatedAt: Scalars['DateTime']['output']
     user?: Maybe<UserPreviewObject>
 }
@@ -724,6 +730,8 @@ export enum ResetPasswordResponse {
     SuccessfullySend = 'SUCCESSFULLY_SEND',
 }
 
+export type RestFunctionOrString = Scalars['RestFunction']['output'] | Scalars['String']['output']
+
 export type RoommateSignUpInput = {
     answeredQuestions: Array<AnsweredQuestionInput>
     birthDate: Scalars['DateTime']['input']
@@ -829,6 +837,7 @@ export type UpsertPropertyInput = {
     contactName?: InputMaybe<Scalars['String']['input']>
     contactPhone?: InputMaybe<Scalars['String']['input']>
     descriptions?: InputMaybe<Array<DescriptionTranslated>>
+    districtId?: InputMaybe<Scalars['ID']['input']>
     floor?: InputMaybe<Scalars['Float']['input']>
     hideCadastralCode?: InputMaybe<Scalars['Boolean']['input']>
     housingConditionId?: InputMaybe<Scalars['ID']['input']>

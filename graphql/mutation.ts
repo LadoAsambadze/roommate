@@ -14,6 +14,9 @@ import {
     MutationResetPasswordArgs,
     MutationVerifyResetPasswordVerificationCodeArgs,
     MutationUpsertPropertyArgs,
+    MutationUpdateConversationStatusArgs,
+    MutationLookupOrCreateTwilioUserResourceArgs,
+    MutationUpdateConversationResourceStateArgs,
 } from './typesGraphql'
 
 export const RoommateSignUpMutation: TypedDocumentNode<
@@ -215,5 +218,56 @@ export const UpsertProperty: TypedDocumentNode<
 > = gql`
     mutation UpsertProperty($input: UpsertPropertyInput!) {
         upsertProperty(input: $input)
+    }
+`
+
+export const generateTwilioAccessTokenMutation = gql`
+    mutation GenerateTwilioAccessToken {
+        generateTwilioAccessToken
+    }
+`
+
+export const logConnectionErrorMutation = gql`
+    mutation LogConnectionError($error: String!) {
+        logConnectionError(error: $error)
+    }
+`
+
+export const updateConversationStatusMutation: TypedDocumentNode<
+    { updateConversationStatus: Mutation['updateConversationStatus'] },
+    MutationUpdateConversationStatusArgs
+> = gql`
+    mutation UpdateConversationStatusMutation(
+        $conversationId: String!
+        $status: ConversationStatus!
+    ) {
+        updateConversationStatus(conversationId: $conversationId, status: $status)
+    }
+`
+
+export const lookupOrCreateTwilioUserResourceMutation: TypedDocumentNode<
+    {
+        lookupOrCreateTwilioUserResource: Mutation['lookupOrCreateTwilioUserResource']
+    },
+    MutationLookupOrCreateTwilioUserResourceArgs
+> = gql`
+    mutation Mutation($userId: String!) {
+        lookupOrCreateTwilioUserResource(userId: $userId)
+    }
+`
+
+export const updateConversationResourceStateMutation: TypedDocumentNode<
+    {
+        updateConversationResourceState: Mutation['updateConversationResourceState']
+    },
+    MutationUpdateConversationResourceStateArgs
+> = gql`
+    mutation UpdateConversationResourceState($sid: String!, $state: String!) {
+        updateConversationResourceState(sid: $sid, state: $state) {
+            sid
+            state
+            dateCreated
+            dateUpdated
+        }
     }
 `

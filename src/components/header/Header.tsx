@@ -1,17 +1,18 @@
 'use client'
 
 import { useTranslation } from 'react-i18next'
-import { Bell2, Logo, UserIcon2 } from '../svgs'
+import { Bell2, Logo, Messenger, UserIcon2 } from '../svgs'
 import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
-import { useCallback, useEffect, useState } from 'react'
+import { MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { usePathname } from 'next/navigation'
-import { useApolloClient, useQuery, useReactiveVar } from '@apollo/client'
+import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
 import { isAuthenticatedVar } from '@/src/auth/isAuthenticatedVar'
-import { getUserQuery } from '@/graphql/query'
+import { getConversationsForUserQuery, getUserQuery } from '@/graphql/query'
 import { signOutHandler } from '@/src/auth/signOut'
+import { LIMIT, OFFSET } from '@/src/constants/pagination'
 
 export default function Header() {
     const { t } = useTranslation()
@@ -23,8 +24,21 @@ export default function Header() {
     const router = useRouter()
     const pathname = usePathname()
     const searchParams = useSearchParams()
+
+    let unreadMessagesCount = 0
+
     const { data: user, loading: userLoading } = useQuery(getUserQuery, {
         skip: !authStatus.valid,
+    })
+
+    const [getConversationsForUser, { data }] = useLazyQuery(getConversationsForUserQuery, {
+        variables: {
+            pagination: {
+                limit: LIMIT,
+                offset: OFFSET,
+            },
+        },
+        fetchPolicy: 'cache-only',
     })
 
     useEffect(() => {
@@ -34,6 +48,24 @@ export default function Header() {
     useEffect(() => {
         setIsLoadingUser(false)
     }, [userLoading])
+
+    useEffect(() => {
+        if (user) {
+            getConversationsForUser()
+        }
+    }, [user])
+
+    const handleLinkClick = (e: MouseEvent<HTMLButtonElement>, href: string) => {
+        if (pathname === '/signup') {
+            e.preventDefault()
+            const leave = window.confirm(t('leavePageQuestion') + '\n' + t('leavingPageAlert'))
+            if (leave) {
+                router.push(href)
+            }
+        } else {
+            router.push(href)
+        }
+    }
 
     const signinModalHandler = useCallback(() => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
@@ -50,6 +82,11 @@ export default function Header() {
         const query = search ? `?${search}` : ''
         router.push(`${pathname}${query}`)
     }, [searchParams, router, pathname])
+
+    unreadMessagesCount =
+        data?.getConversationsForUser?.list?.reduce((acc, conversation) => {
+            return acc + conversation?.unreadMessagesCount ?? 0
+        }, 0) ?? 0
 
     const renderAuthSection = () => {
         if (!isClient || isLoadingUser) {
@@ -122,9 +159,22 @@ export default function Header() {
                         className="cursor-pointer rounded-lg bg-[#f2f5ff] p-2 text-xs    lg:p-2 xl:text-base"
                         spanClassname="text-xs xl:text-base text-[#838CAC]"
                     />
-                    <button className=" hidden h-full  rounded-lg bg-[#f2f5ff] p-2 md:flex md:items-center md:justify-center  ">
-                        <Bell2 className=" h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
-                    </button>
+                    {user?.me?.id ? (
+                        <button
+                            className="pointer relative flex h-8 w-8 items-center justify-center rounded-lg bg-[#f2f5ff]"
+                            onClick={(e) => {
+                                handleLinkClick(e, '/conversation')
+                            }}
+                        >
+                            <Messenger />
+
+                            {!!unreadMessagesCount && (
+                                <div className="absolute -right-2.5 -top-2.5 flex h-5  w-5 items-center justify-center rounded-full bg-red-500 text-xs  font-semibold text-white">
+                                    {unreadMessagesCount}
+                                </div>
+                            )}
+                        </button>
+                    ) : null}
                     <button className="ml-2 block md:hidden">
                         <MobileNavBar />
                     </button>
