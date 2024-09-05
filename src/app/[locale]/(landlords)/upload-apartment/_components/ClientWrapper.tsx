@@ -31,7 +31,7 @@ import MultiImageUploader from './formFieldItems/MultiImageUploader'
 import { SendCodeBySms, UpsertProperty, VerifyCodeBySms } from '@/graphql/mutation'
 import { Button } from '@/src/components/ui/button'
 import { VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import DescriptionTextarea from './formFieldItems/DescriptionTextarea'
 import TitleDescription from './formFieldItems/TitleDescription'
 import Loading from '../../../loading'
@@ -58,13 +58,11 @@ export default function ClientWrapper() {
 
     const form = UploadValidator({ data })
 
-    console.log('Form errors:', form.formState.errors)
-
     const getCodeHandler = () => {
         form.handleSubmit(async () => {
             setGetCodeButtonClicked(true)
 
-            const { data } = await smsSend({
+            const { data, errors } = await smsSend({
                 variables: {
                     input: {
                         phone: form.watch('phone') ?? '',

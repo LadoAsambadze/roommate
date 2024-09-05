@@ -829,7 +829,6 @@ export type UpsertPropertyInput = {
     contactName?: InputMaybe<Scalars['String']['input']>
     contactPhone?: InputMaybe<Scalars['String']['input']>
     descriptions?: InputMaybe<Array<DescriptionTranslated>>
-    districtId?: InputMaybe<Scalars['ID']['input']>
     floor?: InputMaybe<Scalars['Float']['input']>
     hideCadastralCode?: InputMaybe<Scalars['Boolean']['input']>
     housingConditionId?: InputMaybe<Scalars['ID']['input']>

@@ -1,9 +1,13 @@
 import { TypedDocumentNode, gql } from '@apollo/client'
 import {
+    PaginatedFilteredPropertiesObject,
+    PropertyObject,
     Query,
     QueryGetCountriesArgs,
     QueryGetGendersArgs,
+    QueryGetLandlordPropertiesArgs,
     QueryGetPaginatedFilteredRoommatesArgs,
+    QueryGetPropertiesArgs,
     QueryGetQuestionsWithAnswersArgs,
 } from './typesGraphql'
 
@@ -209,6 +213,125 @@ export const GetPropertiesData: TypedDocumentNode<GetPropertiesDataProps> = gql`
                 id
                 description
                 lang
+            }
+        }
+    }
+`
+
+export const getLandlordProperties: TypedDocumentNode<
+    { getLandlordProperties: Query['getLandlordProperties'] },
+    QueryGetLandlordPropertiesArgs
+> = gql`
+    query GetProperties(
+        $pagination: PaginationInput!
+        $filters: GetPropertiesFilterInput
+        $lang: String
+    ) {
+        getLandlordProperties(pagination: $pagination, filters: $filters, lang: $lang) {
+            pageInfo {
+                hasNextPage
+                hasPrevious
+                offset
+                limit
+                total
+                page
+            }
+            list {
+                id
+                propertyType {
+                    id
+                    translations {
+                        id
+                        name
+                        lang
+                    }
+                }
+                district {
+                    id
+                    visible
+                    translations {
+                        id
+                        name
+                        lang
+                    }
+                }
+                availableFrom
+                minRentalPeriod
+                rooms
+                bathroomsInProperty
+                bathroomsInBedroom
+                totalFloors
+                floor
+                bedrooms
+                housingStatus {
+                    id
+                    translations {
+                        id
+                        name
+                        lang
+                    }
+                }
+                housingCondition {
+                    id
+                    translations {
+                        id
+                        name
+                        lang
+                    }
+                }
+                street
+                cadastralCode
+                hideCadastralCode
+                propertyAmenities {
+                    id
+                    translations {
+                        id
+                        name
+                        lang
+                    }
+                }
+                housingHeatingTypes {
+                    id
+                    translations {
+                        id
+                        name
+                        lang
+                    }
+                }
+                housingLivingSafeties {
+                    id
+                    translations {
+                        id
+                        name
+                        lang
+                    }
+                }
+                capacity
+                petAllowed
+                partyAllowed
+                area
+                price
+                withDeposit
+                propertyDeposit {
+                    id
+                    amount
+                    percentage
+                    currency
+                    translations {
+                        id
+                        description
+                        lang
+                    }
+                }
+                contactName
+                contactPhone
+                translations {
+                    id
+                    title
+                    description
+                    lang
+                }
+                images
             }
         }
     }
