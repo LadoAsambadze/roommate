@@ -48,4 +48,6 @@ export { default as Messenger } from '../../../public/svg/Messenger.svg'
 export { default as ActiveStatus } from '../../../public/svg/ActiveStatus.svg'
 export { default as InactiveStatus } from '../../../public/svg/InactiveStatus.svg'
 export { default as Edit } from '../../../public/svg/Edit.svg'
-
+export { default as ProfileRentIcon } from '../../../public/svg/ProfileRentIcon.svg'
+export { default as Hand } from '../../../public/svg/Hand.svg'
+export { default as ProfileContractIcon } from '../../../public/svg/ProfileContractIcon.svg'
