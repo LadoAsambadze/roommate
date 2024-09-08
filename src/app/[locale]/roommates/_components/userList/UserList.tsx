@@ -10,7 +10,7 @@ type UserCardProps = {
     transformedParams: FilterInput[]
 }
 
-export default function USerList({ transformedParams }: UserCardProps) {
+export default function UserList({ transformedParams }: UserCardProps) {
     const params = useParams()
     const searchParams = useSearchParams()
     const page = searchParams.get('page') || '1'

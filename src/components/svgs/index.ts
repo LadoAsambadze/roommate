@@ -48,4 +48,4 @@ export { default as Messenger } from '../../../public/svg/Messenger.svg'
 export { default as ActiveStatus } from '../../../public/svg/ActiveStatus.svg'
 export { default as InactiveStatus } from '../../../public/svg/InactiveStatus.svg'
 export { default as Edit } from '../../../public/svg/Edit.svg'
-
+export { default as RequestConversation } from '../../../public/svg/RequestConversation.svg'

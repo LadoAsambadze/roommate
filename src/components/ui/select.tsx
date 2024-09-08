@@ -14,8 +14,6 @@ import { useState } from 'react'
 import { useRootCssVar } from '@/src/hooks/useRootCssVar'
 import { useTranslation } from 'react-i18next'
 
-// !!! TODO: must return after setting up proper color design structure
-
 type DropdownIndicatorProps = ReactSelectDropdownIndicatorProps<
     unknown,
     boolean,
