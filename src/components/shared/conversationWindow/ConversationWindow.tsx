@@ -168,7 +168,7 @@ export default function ConversationWindow({ setIsOpen, name, participantId, ava
                             alt="Fallback Avatar"
                             priority
                         />
-                        <div className="ml-6 flex flex-col justify-between">
+                        <div className="ml-4 flex flex-col justify-between">
                             <span>{name}</span>
                         </div>
                     </div>
@@ -188,7 +188,7 @@ export default function ConversationWindow({ setIsOpen, name, participantId, ava
                 <div className="flex h-auto w-full flex-col items-end justify-end">
                     <div className="flex h-full w-full flex-col justify-end px-4 pb-4 pt-5">
                         <div className="mb-5 w-[300px] text-xs">
-                            <p>{t('aboutChat1', { receiverName: name })}</p>
+                            <p className="mb-2">{t('aboutChat1', { receiverName: name })}</p>
                             <p>{t('aboutChat2', { receiverName: name })}</p>
                         </div>
                         <textarea
