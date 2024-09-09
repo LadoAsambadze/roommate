@@ -185,31 +185,29 @@ export default function ConversationsList({
                         const conversation = conversations[virtualRow.index]
 
                         return (
-                            <>
+                            <div
+                                key={virtualRow.index}
+                                data-index={virtualRow.index}
+                                ref={virtualizer.measureElement}
+                                className={cn(
+                                    'absolute flex w-full cursor-pointer flex-row items-center justify-center border-b-2 border-[#E3E3E3] px-6 py-2 md:p-0 lg:justify-between lg:px-4 lg:py-2',
+                                    conversation?.id === conversationIdFromParam
+                                        ? 'bg-[#e7e7fe]'
+                                        : ''
+                                )}
+                                style={{
+                                    transform: `translateY(${virtualRow.start}px)`,
+                                }}
+                                onClick={() =>
+                                    !isLoaderRow ? handleClickConversation(conversation.id) : {}
+                                }
+                            >
                                 {isLoaderRow ? (
-                                    <div className="flex h-full w-full items-center justify-center">
+                                    <div className="relative flex h-full w-full flex-row items-center justify-center md:justify-center md:py-2 lg:justify-start lg:py-0">
                                         <Spinner size="small" />
                                     </div>
                                 ) : (
-                                    <div
-                                        key={virtualRow.index}
-                                        data-index={virtualRow.index}
-                                        ref={virtualizer.measureElement}
-                                        className={cn(
-                                            'absolute flex w-full cursor-pointer flex-row items-center justify-center border-b-2 border-[#E3E3E3] px-6 py-2 md:p-0 lg:justify-between lg:px-4 lg:py-2',
-                                            conversation?.id === conversationIdFromParam
-                                                ? 'bg-[#e7e7fe]'
-                                                : ''
-                                        )}
-                                        style={{
-                                            transform: `translateY(${virtualRow.start}px)`,
-                                        }}
-                                        onClick={() =>
-                                            !isLoaderRow
-                                                ? handleClickConversation(conversation.id)
-                                                : {}
-                                        }
-                                    >
+                                    <>
                                         <div className="relative flex h-full w-full flex-row items-center justify-start md:justify-center md:py-2 lg:justify-start lg:py-0">
                                             <div className="relative h-10 w-10 overflow-hidden rounded-[50%]">
                                                 <Image
@@ -246,9 +244,9 @@ export default function ConversationsList({
                                                 </span>
                                             </div>
                                         )}
-                                    </div>
+                                    </>
                                 )}
-                            </>
+                            </div>
                         )
                     })}
                 </div>

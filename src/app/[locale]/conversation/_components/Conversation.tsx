@@ -6,12 +6,9 @@ import DesktopConversation from './DesktopConversation'
 import MobileConversation from './MobileConversation'
 import { useQuery, useReactiveVar } from '@apollo/client'
 import { Client, Conversation } from '@twilio/conversations'
-import { useMediaQuery } from 'react-responsive'
 import { ConversationStatus, ConversationWithUserObject } from '@/graphql/typesGraphql'
-import { MEDIA_QUERY } from '../constants'
 import { twilioClientVar, twilioConnectionStateVar } from '@/src/conversation/conversationVars'
 import { getConversationsForUserQuery } from '@/graphql/query'
-import { Spinner } from '@/src/components/ui/spinner'
 import dynamic from 'next/dynamic'
 
 const MediaQuery = dynamic(() => import('react-responsive'), {
@@ -21,10 +18,6 @@ const MediaQuery = dynamic(() => import('react-responsive'), {
 const ConversationComponent = ({ mobileOpen, setMobileOpen, setRequest }: any) => {
     const [conversation, setConversation] = useState<ConversationWithUserObject | null>(null)
     const [conversationResource, setConversationResource] = useState<Conversation | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const media = useMediaQuery({
-        query: MEDIA_QUERY,
-    })
 
     const twilioClient = useReactiveVar(twilioClientVar)
     const twilioClientState = useReactiveVar(twilioConnectionStateVar)
