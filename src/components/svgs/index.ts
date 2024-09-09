@@ -52,3 +52,7 @@ export { default as RequestConversation } from '../../../public/svg/RequestConve
 export { default as ProfileRentIcon } from '../../../public/svg/ProfileRentIcon.svg'
 export { default as Hand } from '../../../public/svg/Hand.svg'
 export { default as ProfileContractIcon } from '../../../public/svg/ProfileContractIcon.svg'
+export { default as House } from '../../../public/svg/House.svg'
+export { default as Blank } from '../../../public/svg/Blank.svg'
+export { default as Lamp } from '../../../public/svg/Lamp.svg'
+export { default as Audio } from '../../../public/svg/Audio.svg'
