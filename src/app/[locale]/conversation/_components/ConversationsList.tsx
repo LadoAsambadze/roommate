@@ -203,7 +203,7 @@ export default function ConversationsList({
                                 }
                             >
                                 {isLoaderRow ? (
-                                    <div className="relative flex h-full w-full flex-row items-center justify-center md:justify-center md:py-2 lg:justify-start lg:py-0">
+                                    <div className="relative flex h-full w-full flex-row items-center justify-center">
                                         <Spinner size="small" />
                                     </div>
                                 ) : (
