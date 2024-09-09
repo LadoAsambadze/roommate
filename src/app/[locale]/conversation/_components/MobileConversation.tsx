@@ -18,6 +18,7 @@ import {
 import { getConversationsForUserQuery } from '@/graphql/query'
 import { cn } from '@/src/utils/cn'
 import { useLockBodyScroll } from '@/src/components/hooks/useLockBodyScroll'
+import Avatar from '@images/UniversalAvatar.webp'
 
 type Props = {
     mobileOpen: boolean
@@ -168,28 +169,24 @@ export default function MobileConversation({
                     className="flex w-full flex-row items-center  justify-between px-6 pb-4 pt-4 shadow-md "
                 >
                     <div className="flex flex-row items-center ">
-                        <div onClick={handleBackNavigation} className="mr-4">
-                            <Image src={ArrowLeft} alt="avatar" />
-                        </div>
+                        <button onClick={handleBackNavigation} className="mr-4 cursor-pointer">
+                            <ArrowLeft className="h-6 w-6" />
+                        </button>
 
                         <div className="relative h-10 w-10 overflow-hidden rounded-[50%]">
-                            {conversation?.user?.profileImage ? (
-                                <img
-                                    src={conversation?.user?.profileImage}
-                                    alt="User Avatar"
-                                    className=" h-full w-full object-cover"
-                                />
-                            ) : (
-                                <img
-                                    src="./../newImages/default-avatar.png"
-                                    alt="Fallback Avatar"
-                                    className=" h-full w-full object-cover"
-                                />
-                            )}
+                            <Image
+                                fill
+                                src={
+                                    conversation?.user?.profileImage
+                                        ? conversation?.user?.profileImage
+                                        : Avatar
+                                }
+                                alt="Fallback Avatar"
+                                priority
+                            />
                         </div>
                         <div className="ml-4 flex flex-col justify-between">
                             <span>{participantFullName}</span>
-                            {/* <span>active now</span> */}
                         </div>
                     </div>
                 </div>
@@ -211,20 +208,18 @@ export default function MobileConversation({
                                     ConversationStatus.Rejected ? (
                                     <div className="flex h-auto w-full flex-row items-center px-3 py-4">
                                         <AutosizeTextarea
-                                            placeholder="send message"
+                                            placeholder={t('sendMessage')}
                                             className="scrollable-content inset-0 mr-2 max-h-20 w-full rounded-xl border border-[gray]  px-3 py-2 text-[14px] focus:outline-[#838CAC]"
                                             value={message}
                                             onChange={handleMessageChange}
                                         />
 
-                                        <Image
-                                            src={Send}
-                                            width={24}
-                                            height={24}
-                                            alt="send message"
-                                            className="cursor-pointer"
+                                        <button
                                             onClick={handleSendMessage}
-                                        />
+                                            className="cursor-pointer"
+                                        >
+                                            <Send className="h-6 w-6" />
+                                        </button>
                                     </div>
                                 ) : (
                                     <div className="flex h-auto w-full flex-row items-center justify-center px-3 py-4 text-center text-sm ">

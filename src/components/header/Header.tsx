@@ -1,11 +1,11 @@
 'use client'
 
 import { useTranslation } from 'react-i18next'
-import { Bell2, Logo, Messenger, UserIcon2 } from '../svgs'
+import { Logo, Messenger, UserIcon2 } from '../svgs'
 import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
-import { MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import { MouseEvent, useCallback, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
@@ -100,7 +100,7 @@ export default function Header() {
         if (authStatus.valid && user) {
             return (
                 <>
-                    <button className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 md:flex   xl:px-3 xl:py-2">
+                    <button className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 md:flex xl:px-3 xl:py-2">
                         <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
                         <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
                             {user.me.firstname}
@@ -108,7 +108,7 @@ export default function Header() {
                     </button>
                     <button
                         onClick={signOutHandler}
-                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 md:flex   xl:px-3 xl:py-2"
+                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 md:flex xl:px-3 xl:py-2"
                     >
                         <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
                             {t('signOut')}
@@ -147,29 +147,29 @@ export default function Header() {
 
     return (
         <>
-            <header className="flex  w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md   sm:px-16  md:px-20 md:py-3 xl:px-24 xl:py-6">
+            <header className="flex w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md sm:px-16 md:px-20 md:py-3 xl:px-24 xl:py-6">
                 <Link href="/">
-                    <Logo className="h-6  w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
+                    <Logo className="h-6 w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
                 </Link>
 
                 <div className="flex flex-row items-center gap-2 md:gap-4">
                     {renderAuthSection()}
 
                     <LangChoose
-                        className="cursor-pointer rounded-lg bg-[#f2f5ff] p-2 text-xs    lg:p-2 xl:text-base"
+                        className="cursor-pointer rounded-lg bg-[#f2f5ff] p-2 text-xs lg:p-2 xl:text-base"
                         spanClassname="text-xs xl:text-base text-[#838CAC]"
                     />
                     {user?.me?.id ? (
                         <button
-                            className="pointer relative flex h-8 w-8 items-center justify-center rounded-lg bg-[#f2f5ff]"
+                            className="pointer relative flex items-center justify-center rounded-lg bg-[#f2f5ff] p-2 md:flex xl:px-3 xl:py-2"
                             onClick={(e) => {
                                 handleLinkClick(e, '/conversation')
                             }}
                         >
-                            <Messenger />
+                            <Messenger className="h-4 w-4 xl:h-6 xl:w-6" />
 
                             {!!unreadMessagesCount && (
-                                <div className="absolute -right-2.5 -top-2.5 flex h-5  w-5 items-center justify-center rounded-full bg-red-500 text-xs  font-semibold text-white">
+                                <div className="absolute -right-2.5 -top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs  font-semibold text-white">
                                     {unreadMessagesCount}
                                 </div>
                             )}

@@ -4,7 +4,6 @@ import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 're
 import { useMediaQuery } from 'react-responsive'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { Howl } from 'howler'
 import {
     ConversationStatus,
     ConversationWithUserObject,
@@ -17,10 +16,7 @@ import { cn } from '@/src/utils/cn'
 import Avatar from '@images/UniversalAvatar.webp'
 import Image from 'next/image'
 import { RequestConversation } from '@/src/components/svgs'
-
-const sound = new Howl({
-    src: ['./../sound.mp3'],
-})
+import { useTranslation } from 'react-i18next'
 
 type Props = {
     request: boolean
@@ -45,6 +41,8 @@ export default function ConversationsList({
     data,
     fetchMoreConversationsForUser,
 }: Props) {
+    const [requestMessage, setRequestMessage] = useState(false)
+
     const parentDomRef = useRef<HTMLDivElement>(null)
 
     const router = useRouter()
@@ -52,9 +50,9 @@ export default function ConversationsList({
     const searchParams = useSearchParams()
     const conversationIdFromParam = searchParams.get('id')
 
-    const [requestMessage, setRequestMessage] = useState(false)
-
     const media = useMediaQuery({ query: MEDIA_QUERY })
+
+    const { t } = useTranslation()
 
     const virtualizer = useVirtualizer({
         count: pageInfo?.hasNextPage ? conversations.length + 1 : conversations.length,
@@ -98,13 +96,6 @@ export default function ConversationsList({
             })
         }
     }, [pageInfo?.hasNextPage, virtualizer.getVirtualItems(), conversations.length])
-
-    useEffect(() => {
-        const hasUnreadMessages = conversations.some((item: any) => item?.unreadMessagesCount > 0)
-        if (hasUnreadMessages) {
-            sound.play()
-        }
-    }, [conversations])
 
     useEffect(() => {
         const hasRequested =
@@ -151,8 +142,7 @@ export default function ConversationsList({
                         )}
                         onClick={chatClickHandler}
                     >
-                        {/** TODO: should be changed with translatable */}
-                        chat
+                        {t('chat')}
                     </span>
                     <span
                         className={cn(
@@ -162,8 +152,7 @@ export default function ConversationsList({
                         )}
                         onClick={requestClickHandler}
                     >
-                        {/** TODO: should be changed with translatable */}
-                        request
+                        {t('request')}
                         {requestMessage && (
                             <div className="absolute -right-4 -top-1.5 z-50 ">
                                 <RequestConversation className="h-4 w-4" />
