@@ -11,11 +11,9 @@ import {
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/src/components/ui/button'
-import successIcon from '../../../../public/svg/Success.svg'
-import errorIcon from '../../../../public/svg/Error.svg'
-import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
 import { MessageSendStatusType } from '@/src/types/conversation'
+import { Success, Error } from '../../svgs'
 
 type Props = {
     feedback: string
@@ -36,19 +34,19 @@ export function MessageAlertDialog({ feedback, setIsOpen, alertType }: Props) {
                 return {
                     text: t('keepSearch'),
                     href: '/roommates',
-                    img: successIcon,
+                    icon: <Success className="h-6 w-6" />,
                 }
             case 'messageSendError':
                 return {
                     text: t('checkMessages'),
                     href: '/conversation',
-                    img: errorIcon,
+                    icon: <Error className="h-6 w-6" />,
                 }
             default:
                 return {
                     text: t('supportTeam'),
                     href: 'https://www.facebook.com/RoommateGeorgia.ge',
-                    img: errorIcon,
+                    icon: <Error className="h-6 w-6" />,
                     target: '_blank',
                     cancel: t('cancel'),
                 }
@@ -71,9 +69,7 @@ export function MessageAlertDialog({ feedback, setIsOpen, alertType }: Props) {
         <AlertDialog open={openAlert}>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>
-                        <Image src={type.img} width={100} height={100} alt={''} />
-                    </AlertDialogTitle>
+                    <AlertDialogTitle className="flex justify-center">{type.icon}</AlertDialogTitle>
                     <AlertDialogDescription className="text-center">
                         {feedback}
                     </AlertDialogDescription>
@@ -85,15 +81,12 @@ export function MessageAlertDialog({ feedback, setIsOpen, alertType }: Props) {
                                 setOpenAlert(false)
                                 setIsOpen(false)
                             }}
-                            className="mt-4 w-auto text-xs sm:mt-0 md:text-sm lg:w-auto lg:text-sm "
+                            className="mt-4 w-auto text-xs sm:mt-0 md:text-sm lg:w-auto lg:text-sm"
                         >
                             {type.cancel}
                         </Button>
                     )}
-                    <Button
-                        className="w-auto text-xs  md:text-sm lg:text-sm "
-                        onClick={handleClose}
-                    >
+                    <Button className="w-auto text-xs md:text-sm lg:text-sm" onClick={handleClose}>
                         {type.text}
                     </Button>
                 </AlertDialogFooter>

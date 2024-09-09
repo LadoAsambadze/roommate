@@ -6,9 +6,8 @@ import MessagesList from './MessagesList'
 import { Conversation } from '@twilio/conversations'
 import { useRef, useState, KeyboardEvent } from 'react'
 import AutosizeTextarea from 'react-textarea-autosize'
-
+import Avatar from '@images/UniversalAvatar.webp'
 import { useApolloClient, useMutation } from '@apollo/client'
-
 import {
     updateConversationResourceStateMutation,
     updateConversationStatusMutation,
@@ -157,24 +156,20 @@ export default function DesktopConversation({
                 >
                     <div className="flex flex-row items-center">
                         <div className="relative h-10 w-10 overflow-hidden rounded-[50%]">
-                            {conversation?.user?.profileImage ? (
-                                <img
-                                    src={conversation?.user?.profileImage}
-                                    alt="User Avatar"
-                                    className=" h-full w-full object-cover"
-                                />
-                            ) : (
-                                <img
-                                    src="./../newImages/default-avatar.png"
-                                    alt="Fallback Avatar"
-                                    className=" h-full w-full object-cover"
-                                />
-                            )}
+                            <Image
+                                fill
+                                src={
+                                    conversation?.user?.profileImage
+                                        ? conversation?.user?.profileImage
+                                        : Avatar
+                                }
+                                alt="Fallback Avatar"
+                                priority
+                            />
                         </div>
 
                         <div className="ml-4 flex flex-col justify-between">
                             <span>{participantFullName}</span>
-                            {/* <span>active now</span> */}
                         </div>
                     </div>
                 </div>
@@ -203,14 +198,7 @@ export default function DesktopConversation({
                                             onKeyDown={handleKeyDown}
                                         />
 
-                                        <Image
-                                            src={Send}
-                                            width={24}
-                                            height={24}
-                                            alt="send message"
-                                            className="cursor-pointer"
-                                            onClick={handleSendMessage}
-                                        />
+                                        <Send className="h-6 w-6" />
                                     </div>
                                 ) : (
                                     <div className="flex h-auto w-full flex-row items-center justify-center px-3 py-4 text-center ">

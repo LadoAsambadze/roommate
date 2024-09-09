@@ -6,19 +6,18 @@ import DesktopConversation from './DesktopConversation'
 import MobileConversation from './MobileConversation'
 import { useQuery, useReactiveVar } from '@apollo/client'
 import { Client, Conversation } from '@twilio/conversations'
-import { useMediaQuery } from 'react-responsive'
 import { ConversationStatus, ConversationWithUserObject } from '@/graphql/typesGraphql'
-import { MEDIA_QUERY } from '../constants'
 import { twilioClientVar, twilioConnectionStateVar } from '@/src/conversation/conversationVars'
 import { getConversationsForUserQuery } from '@/graphql/query'
+import dynamic from 'next/dynamic'
+
+const MediaQuery = dynamic(() => import('react-responsive'), {
+    ssr: false,
+})
 
 const ConversationComponent = ({ mobileOpen, setMobileOpen, setRequest }: any) => {
     const [conversation, setConversation] = useState<ConversationWithUserObject | null>(null)
     const [conversationResource, setConversationResource] = useState<Conversation | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const media = useMediaQuery({
-        query: MEDIA_QUERY,
-    })
 
     const twilioClient = useReactiveVar(twilioClientVar)
     const twilioClientState = useReactiveVar(twilioConnectionStateVar)
@@ -77,21 +76,16 @@ const ConversationComponent = ({ mobileOpen, setMobileOpen, setRequest }: any) =
         }
     }, [conversation, twilioClientState])
 
-    useEffect(() => {
-        setIsLoading(false)
-    }, [media])
-
     return (
         <>
-            {isLoading ? (
-                <div className="flex h-full w-full items-center justify-center">...Loading</div>
-            ) : media ? (
+            <MediaQuery minWidth={768}>
                 <DesktopConversation
                     conversationResource={conversationResource}
                     conversation={conversation}
                     setRequest={setRequest}
                 />
-            ) : (
+            </MediaQuery>
+            <MediaQuery maxWidth={768}>
                 <MobileConversation
                     conversationResource={conversationResource}
                     conversation={conversation}
@@ -99,7 +93,7 @@ const ConversationComponent = ({ mobileOpen, setMobileOpen, setRequest }: any) =
                     setMobileOpen={setMobileOpen}
                     setRequest={setRequest}
                 />
-            )}
+            </MediaQuery>
         </>
     )
 }

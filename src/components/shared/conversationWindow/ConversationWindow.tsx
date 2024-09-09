@@ -10,11 +10,11 @@ import { useTranslation } from 'react-i18next'
 import { twilioClientVar } from '@/src/conversation/conversationVars'
 import { getSharedConversationQuery } from '@/graphql/query'
 import { lookupOrCreateTwilioUserResourceMutation } from '@/graphql/mutation'
-import { ConversationWithUserObject } from '@/graphql/typesGraphql'
 import { Spinner } from '@/src/components/ui/spinner'
 import { MessageSendStatusType } from '@/src/types/conversation'
 import { MessageAlertDialog } from './MessageAlertDialog'
 import { updateCacheWithNewConversationInFirstPlace } from '@/src/conversation/conversationUtils'
+import Avatar from '@images/UniversalAvatar.webp'
 
 type MessageSendStatus = {
     type: MessageSendStatusType
@@ -155,33 +155,27 @@ export default function ConversationWindow({ setIsOpen, name, participantId, ava
     ) : (
         <div
             ref={ref}
-            className="fixed bottom-0 right-0 z-50 flex h-full w-full flex-col rounded-lg border  bg-[#FFFFFF]  shadow-md md:right-20 md:h-[415px] md:w-[375px]"
+            className="fixed bottom-0 right-0 z-50 flex h-full w-full flex-col rounded-lg border bg-[#FFFFFF] shadow-md md:right-20 md:h-[415px] md:w-[375px]"
         >
-            <div className="flex w-full flex-row items-center justify-between p-6  shadow-md">
+            <div className="flex w-full flex-row items-center justify-between p-6 shadow-md">
                 <div className="flex w-full flex-row items-center justify-between">
-                    <div className="flex w-full flex-row   items-center justify-start">
-                        {avatar ? (
-                            <img src={avatar} className="h-10 w-10 rounded-full" alt="123" />
-                        ) : (
-                            <img
-                                className="h-10 w-10 rounded-full"
-                                src="https://www.portmelbournefc.com.au/wp-content/uploads/2022/03/avatar-1.jpeg"
-                                alt="123"
-                            />
-                        )}
+                    <div className="flex w-full flex-row items-center justify-start">
+                        <Image
+                            width={40}
+                            height={40}
+                            src={avatar ? avatar : Avatar}
+                            className="rounded-full"
+                            alt="Fallback Avatar"
+                            priority
+                        />
                         <div className="ml-6 flex flex-col justify-between">
                             <span>{name}</span>
                         </div>
                     </div>
                     <div className="flex h-full items-start justify-between">
-                        <Image
-                            onClick={handleClose}
-                            src={CloseCircle}
-                            alt="123"
-                            width={32}
-                            height={32}
-                            className="cursor-pointer"
-                        />
+                        <button onClick={handleClose} className="cursor-pointer">
+                            <CloseCircle className="h-6 w-6" />
+                        </button>
                     </div>
                 </div>
             </div>
@@ -191,13 +185,11 @@ export default function ConversationWindow({ setIsOpen, name, participantId, ava
                     <Spinner />
                 </div>
             ) : (
-                <div className=" flex h-auto w-full flex-col items-end justify-end ">
-                    <div className="flex h-full w-full flex-col justify-end px-4 pb-4 pt-5  ">
+                <div className="flex h-auto w-full flex-col items-end justify-end">
+                    <div className="flex h-full w-full flex-col justify-end px-4 pb-4 pt-5">
                         <div className="mb-5 w-[300px] text-xs">
-                            <span>{t('aboutChat1', { receiverName: name })}</span>
-                            <br />
-                            <br />
-                            <span> {t('aboutChat2', { receiverName: name })}</span>
+                            <p>{t('aboutChat1', { receiverName: name })}</p>
+                            <p>{t('aboutChat2', { receiverName: name })}</p>
                         </div>
                         <textarea
                             className="text-md h-24 rounded-md border border-[#838CAC] pl-1 pt-1 focus:outline-none"
@@ -210,7 +202,7 @@ export default function ConversationWindow({ setIsOpen, name, participantId, ava
                             onClick={handleSendMessage}
                             disabled={isLoading}
                         >
-                            <Image src={Send} width={24} height={24} alt="send" />
+                            <Send className="h-6 w-6" />
                         </button>
                     </div>
                 </div>

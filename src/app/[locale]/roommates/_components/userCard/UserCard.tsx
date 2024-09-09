@@ -1,5 +1,5 @@
 import Avatar from '@images/UniversalAvatar.webp'
-import { Heart, Location, Sms } from '@/src/components/svgs'
+import { Heart, Location } from '@/src/components/svgs'
 import Link from 'next/link'
 import Image from 'next/image'
 import { RoommateWithAdditionalInfoObject } from '@/graphql/typesGraphql'
