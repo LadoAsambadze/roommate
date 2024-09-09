@@ -17,6 +17,7 @@ import {
 } from '@/graphql/mutation'
 import { getConversationsForUserQuery } from '@/graphql/query'
 import { cn } from '@/src/utils/cn'
+import { useLockBodyScroll } from '@/src/components/hooks/useLockBodyScroll'
 
 type Props = {
     mobileOpen: boolean
@@ -33,6 +34,8 @@ export default function MobileConversation({
     conversation,
     setRequest,
 }: Props) {
+    useLockBodyScroll(mobileOpen)
+
     const [message, setMessage] = useState('')
 
     const headerRef = useRef<HTMLDivElement>(null)
@@ -156,7 +159,7 @@ export default function MobileConversation({
         <>
             <section
                 className={cn(
-                    'fixed top-0 z-50  h-full w-screen flex-col overflow-y-hidden overscroll-none bg-[#FFFFFF]',
+                    'fixed top-0 z-50 h-full w-screen flex-col overflow-y-hidden overscroll-none bg-[#FFFFFF]',
                     mobileOpen ? 'flex' : 'hidden'
                 )}
             >

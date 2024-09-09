@@ -1,10 +1,9 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useQuery, useReactiveVar } from '@apollo/client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import ConversationsList from '../_components/ConversationsList'
-
 import Conversation from '../_components/Conversation'
 import { useMediaQuery } from 'react-responsive'
 import { TwilioDisconnectionAlertDialog } from '../_components/TwilioDisconnectionAlertDialog'
@@ -13,11 +12,14 @@ import { LIMIT, OFFSET } from '@/src/constants/pagination'
 import { twilioConnectionStateVar } from '@/src/conversation/conversationVars'
 import { getConversationsForUserQuery } from '@/graphql/query'
 import { ConversationStatus } from '@/graphql/typesGraphql'
+import { Spinner } from '@/src/components/ui/spinner'
 
 const ClientWrapper = () => {
     const [request, setRequest] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
-    const media = useMediaQuery({
+    const [isLoading, setIsLoading] = useState(true)
+
+    const isDesktop = useMediaQuery({
         query: MEDIA_QUERY,
     })
 
@@ -56,7 +58,7 @@ const ClientWrapper = () => {
     }, [data, request])
 
     useEffect(() => {
-        if (filteredConversationsByStatus.length && !conversationIdFromParam && media) {
+        if (filteredConversationsByStatus.length && !conversationIdFromParam && isDesktop) {
             router.replace(`/conversation?id=${filteredConversationsByStatus[0].id}`)
         }
 
@@ -75,22 +77,34 @@ const ClientWrapper = () => {
     }, [request])
 
     useEffect(() => {
-        if (!media) {
+        if (!isDesktop) {
             if (conversationIdFromParam) {
                 setMobileOpen(true)
             } else if (!conversationIdFromParam) {
                 setMobileOpen(false)
             }
         }
-    }, [media, conversationIdFromParam])
+    }, [isDesktop, conversationIdFromParam])
+
+    useEffect(() => {
+        setIsLoading(false)
+    }, [])
 
     const isTwilioConnectionDown =
         twilioConnectionState === 'disconnected' || twilioConnectionState === 'denied'
 
+    if (isLoading) {
+        return (
+            <div className="flex h-20 w-full items-center justify-center">
+                <Spinner />
+            </div>
+        )
+    }
+
     return (
         <>
             <TwilioDisconnectionAlertDialog open={isTwilioConnectionDown} />
-            <main className="flex h-full w-full flex-col overflow-hidden overscroll-none md:h-screen ">
+            <main className="flex h-full w-full flex-col overflow-hidden overscroll-none md:h-screen">
                 <div className="relative flex h-full flex-grow flex-row overflow-hidden bg-[#F5F5F5] md:px-20 md:pt-6 xl:px-24">
                     <ConversationsList
                         data={data?.getConversationsForUser}
@@ -102,6 +116,7 @@ const ClientWrapper = () => {
                         pageInfo={data?.getConversationsForUser?.pageInfo ?? null}
                         fetchMoreConversationsForUser={fetchMoreConversationsForUser}
                     />
+
                     <Conversation
                         key={conversationIdFromParam}
                         mobileOpen={mobileOpen}

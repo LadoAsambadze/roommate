@@ -53,6 +53,7 @@ export default function ConversationsList({
     const conversationIdFromParam = searchParams.get('id')
 
     const [requestMessage, setRequestMessage] = useState(false)
+
     const media = useMediaQuery({ query: MEDIA_QUERY })
 
     const virtualizer = useVirtualizer({
@@ -139,7 +140,7 @@ export default function ConversationsList({
     }, [data])
 
     return (
-        <section className="flex w-full flex-col items-start rounded-md  border-[gray] bg-[#FFFFFF]  md:w-[100px] md:border-b-4 lg:w-[400px]">
+        <section className="flex w-full flex-col items-start rounded-md border-[gray] bg-[#FFFFFF] md:w-[100px] md:border-b-4 lg:w-[400px]">
             <div className="block w-full">
                 <div className="flex flex-row items-center justify-start gap-6 px-6 py-2 md:flex-col lg:flex-row">
                     <span
@@ -170,7 +171,6 @@ export default function ConversationsList({
                         )}
                     </span>
                 </div>
-                <div className="h-[1px] w-full bg-[#E3E3E3]"></div>
             </div>
             <div className="w-full overflow-auto" ref={parentDomRef}>
                 <div
