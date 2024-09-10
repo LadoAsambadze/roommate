@@ -16,7 +16,6 @@ import {
     Wallet,
 } from '@/src/components/svgs'
 import { useQuery } from '@apollo/client'
-
 import Image from 'next/image'
 import { useParams, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
@@ -49,12 +48,8 @@ export default function ClientWrapper() {
         },
     })
 
-    console.log(data)
-    console.log(error)
-
     if (error) {
-        console.error('Error fetching properties:', error)
-        return <div>Error loading properties</div>
+        return null
     }
 
     const paginatedData = data?.getProperties as PaginatedFilteredPropertiesObject
@@ -151,7 +146,6 @@ export default function ClientWrapper() {
                         </div>
                     </div>
                 ))}
-
                 <Pagination data={paginatedData} />
             </div>
         </main>

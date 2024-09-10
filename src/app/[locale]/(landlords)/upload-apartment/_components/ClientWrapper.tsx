@@ -35,8 +35,9 @@ import { useState } from 'react'
 import DescriptionTextarea from './formFieldItems/DescriptionTextarea'
 import TitleDescription from './formFieldItems/TitleDescription'
 import Loading from '../../../loading'
+import { withAuth } from '@/src/auth/withAuth'
 
-export default function ClientWrapper() {
+function ClientWrapper() {
     const params = useParams()
     const locale = params.locale
     const { t } = useTranslation()
@@ -635,3 +636,5 @@ export default function ClientWrapper() {
         </>
     )
 }
+
+export default withAuth(ClientWrapper)

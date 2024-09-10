@@ -41,11 +41,35 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
                 user?.me.userTypes.includes(UserType.Landlord) &&
                 pathname === `/${locale}/roommates`
             ) {
-                router.replace('/landlords')
-            } else if (!userLoading && user?.me.userTypes.includes(UserType.Roommate)) {
-                router.replace('/roommates')
+                router.replace('/?modal=signinRoommates')
+            } else if (
+                !userLoading &&
+                user?.me.userTypes.includes(UserType.Landlord) &&
+                pathname === `/${locale}/profile`
+            ) {
+                router.replace('/?modal=signinRoommates')
+            } else if (
+                !userLoading &&
+                user?.me.userTypes.includes(UserType.Roommate) &&
+                pathname === `/${locale}/upload-apartment`
+            ) {
+                router.replace('/?modal=signinLandlords')
+            } else if (
+                !userLoading &&
+                user?.me.userTypes.includes(UserType.Roommate) &&
+                pathname === `/${locale}/apartment-list`
+            ) {
+                router.replace('/?modal=signinLandlords')
+            } else if (
+                !userLoading &&
+                user?.me.userTypes.includes(UserType.Roommate) &&
+                pathname === `/${locale}/landlord-profile`
+            ) {
+                router.replace('/?modal=signinLandlords')
             } else if (!userLoading && user?.me.userTypes.includes(UserType.Landlord)) {
                 router.replace('/landlords')
+            } else if (!userLoading && user?.me.userTypes.includes(UserType.Roommate)) {
+                router.replace('/')
             }
         }, [isAuthenticated.valid, user, userLoading, pathname])
 

@@ -13,6 +13,7 @@ import { twilioConnectionStateVar } from '@/src/conversation/conversationVars'
 import { getConversationsForUserQuery } from '@/graphql/query'
 import { ConversationStatus } from '@/graphql/typesGraphql'
 import { Spinner } from '@/src/components/ui/spinner'
+import { withAuth } from '@/src/auth/withAuth'
 
 const ClientWrapper = () => {
     const [request, setRequest] = useState(false)
@@ -129,4 +130,4 @@ const ClientWrapper = () => {
     )
 }
 
-export default ClientWrapper
+export default withAuth(ClientWrapper)

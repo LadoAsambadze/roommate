@@ -1,3 +1,4 @@
+import { GetPropertiesFilterInput } from '@/graphql/typesGraphql'
 import { CloseCircle } from '@/src/components/svgs'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
@@ -5,28 +6,20 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-interface Range {
-    from: string | null
-    to: string | null
+type Range = {
+    from: null | number
+    to: null | number
 }
-
-interface Ranges {
+type Ranges = {
     priceRanges: Range[]
     bedroomsRanges: Range[]
     areaRanges: Range[]
 }
 
-interface GetPropertiesFilterInput {
-    priceRange?: Range
-    bedroomsRange?: Range
-    areaRange?: Range
-    districtIds?: string[]
-}
-
-interface FilterProps {
+type FilterProps = {
     isOpen: boolean
     setIsOpen: (isOpen: boolean) => void
-    setFilterInputParams: any
+    setFilterInputParams: Dispatch<SetStateAction<GetPropertiesFilterInput | undefined>>
 }
 
 export default function Filter({ isOpen, setIsOpen, setFilterInputParams }: FilterProps) {
@@ -98,9 +91,10 @@ export default function Filter({ isOpen, setIsOpen, setFilterInputParams }: Filt
 
         Object.entries(ranges).forEach(([rangeType, rangeArray]) => {
             rangeArray.forEach((range, index) => {
-                if (range.from !== null) params.set(`${rangeType}[${index}]From`, range.from)
+                if (range.from !== null)
+                    params.set(`${rangeType}[${index}]From`, range.from.toString())
                 else params.delete(`${rangeType}[${index}]From`)
-                if (range.to !== null) params.set(`${rangeType}[${index}]To`, range.to)
+                if (range.to !== null) params.set(`${rangeType}[${index}]To`, range.to.toString())
                 else params.delete(`${rangeType}[${index}]To`)
             })
         })

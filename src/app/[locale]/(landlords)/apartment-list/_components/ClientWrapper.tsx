@@ -1,6 +1,7 @@
 'use client'
 import { getLandlordProperties } from '@/graphql/query'
 import { Language, PaginatedFilteredPropertiesObject } from '@/graphql/typesGraphql'
+import { withAuth } from '@/src/auth/withAuth'
 import Pagination from '@/src/components/shared/pagination/Pagination'
 import {
     ActiveStatus,
@@ -17,7 +18,7 @@ import CoverImage from '@images/ApartmentCover.png'
 import Image from 'next/image'
 import { useParams, useSearchParams } from 'next/navigation'
 
-export default function ClientWrapper() {
+function ClientWrapper() {
     const params = useParams()
     const locale = params.locale as Language
     const searchParams = useSearchParams()
@@ -129,3 +130,5 @@ export default function ClientWrapper() {
         </main>
     )
 }
+
+export default withAuth(ClientWrapper)

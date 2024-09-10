@@ -1,3 +1,4 @@
+import { withAuth } from '@/src/auth/withAuth'
 import {
     Audio,
     Blank,
