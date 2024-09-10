@@ -1,23 +1,35 @@
 'use client'
 import { getProperiesList } from '@/graphql/query'
-import { Language, PaginatedFilteredPropertiesObject } from '@/graphql/typesGraphql'
+import {
+    GetPropertiesFilterInput,
+    Language,
+    PaginatedFilteredPropertiesObject,
+} from '@/graphql/typesGraphql'
 import Pagination from '@/src/components/shared/pagination/Pagination'
 import {
     ActiveStatus,
     Door,
-    Edit,
+    FilterIcon,
     InactiveStatus,
     Location,
     Square,
-    Trash,
     Wallet,
 } from '@/src/components/svgs'
 import { useQuery } from '@apollo/client'
-import CoverImage from '@images/ApartmentCover.png'
+
 import Image from 'next/image'
 import { useParams, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Filter from './Filter'
+import { useLockBodyScroll } from '@/src/components/hooks/useLockBodyScroll'
 
 export default function ClientWrapper() {
+    const [isOpen, setIsOpen] = useState(false)
+    const [filterInputParams, setFilterInputParams] = useState<GetPropertiesFilterInput>()
+    const { t } = useTranslation()
+    useLockBodyScroll(isOpen)
+
     const params = useParams()
     const locale = params.locale as Language
     const searchParams = useSearchParams()
@@ -33,8 +45,12 @@ export default function ClientWrapper() {
                 offset,
             },
             lang: locale,
+            filters: filterInputParams,
         },
     })
+
+    console.log(data)
+    console.log(error)
 
     if (error) {
         console.error('Error fetching properties:', error)
@@ -44,8 +60,30 @@ export default function ClientWrapper() {
     const paginatedData = data?.getProperties as PaginatedFilteredPropertiesObject
 
     return (
-        <main className="flex min-h-screen w-full flex-col items-center gap-10 bg-[#F5F5F5]  px-6 py-10 md:flex-row md:items-start md:px-20">
-            <div className="  h-[400px] w-[450px] bg-[gray] ">filter</div>
+        <main className="flex min-h-screen w-full flex-col items-center gap-10 bg-[#F5F5F5]  px-6 pb-10 md:flex-row md:items-start md:px-20 md:py-10">
+            <div className="flex h-auto w-full justify-start   pt-6   md:pt-10    lg:hidden lg:px-0">
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="flex  flex-row items-center   rounded-lg border border-[#838CAC] bg-[#F2F5FF] px-4 py-2 "
+                >
+                    <FilterIcon className="h-6 w-6" />
+                    <span className="ml-2 text-sm text-[#838CAC]">{t('filter')}</span>
+                </button>
+            </div>
+            <div className="hidden h-full lg:block lg:w-1/2 xl:w-[30%] ">
+                <Filter
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    setFilterInputParams={setFilterInputParams}
+                />
+            </div>
+            {isOpen ? (
+                <Filter
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    setFilterInputParams={setFilterInputParams}
+                />
+            ) : null}
             <div className="hidden min-h-screen w-[1px] bg-gray-200 md:block"></div>
             <div className="grid  w-full  flex-col items-center  gap-10 md:w-auto md:grid-cols-2">
                 {data?.getProperties?.list?.map((item, index) => (
