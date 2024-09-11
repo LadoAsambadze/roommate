@@ -66,10 +66,6 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
                 pathname === `/${locale}/landlord-profile`
             ) {
                 router.replace('/?modal=signinLandlords')
-            } else if (!userLoading && user?.me.userTypes.includes(UserType.Landlord)) {
-                router.replace('/landlords')
-            } else if (!userLoading && user?.me.userTypes.includes(UserType.Roommate)) {
-                router.replace('/')
             }
         }, [isAuthenticated.valid, user, userLoading, pathname])
 

@@ -95,6 +95,7 @@ function ClientWrapper() {
                 return
             }
 
+            
             const { data, errors } = await uploadProperty({
                 variables: {
                     input: {
@@ -130,10 +131,12 @@ function ClientWrapper() {
                     },
                 },
             })
+
         } catch (error) {
             console.error('Error during submission:', error)
         }
     }
+
 
     return (
         <>

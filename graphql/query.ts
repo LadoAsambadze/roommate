@@ -9,6 +9,7 @@ import {
     QueryGetLandlordPropertiesArgs,
     QueryGetPaginatedFilteredRoommatesArgs,
     QueryGetPropertiesArgs,
+    QueryGetPropertyArgs,
     QueryGetQuestionsWithAnswersArgs,
     QueryGetSharedConversationArgs,
 } from './typesGraphql'
@@ -512,6 +513,111 @@ export const getProperiesList: TypedDocumentNode<
                 }
                 images
             }
+        }
+    }
+`
+
+export const getPropertyById: TypedDocumentNode<
+    { getProperty: Query['getProperty'] },
+    QueryGetPropertyArgs
+> = gql`
+    query GetProperty($getPropertyId: ID!, $lang: String) {
+        getProperty(id: $getPropertyId, lang: $lang) {
+            id
+            propertyType {
+                id
+                translations {
+                    id
+                    name
+                    lang
+                }
+            }
+            district {
+                id
+                visible
+                translations {
+                    id
+                    name
+                    lang
+                }
+            }
+            availableFrom
+            minRentalPeriod
+            rooms
+            bathroomsInProperty
+            bathroomsInBedroom
+            totalFloors
+            floor
+            bedrooms
+            housingStatus {
+                id
+                translations {
+                    id
+                    name
+                    lang
+                }
+            }
+            housingCondition {
+                id
+                translations {
+                    id
+                    name
+                    lang
+                }
+            }
+            street
+            cadastralCode
+            hideCadastralCode
+            propertyAmenities {
+                id
+                translations {
+                    id
+                    name
+                    lang
+                }
+            }
+            housingHeatingTypes {
+                id
+                translations {
+                    id
+                    name
+                    lang
+                }
+            }
+            housingLivingSafeties {
+                id
+                translations {
+                    id
+                    name
+                    lang
+                }
+            }
+            capacity
+            petAllowed
+            partyAllowed
+            area
+            price
+            withDeposit
+            propertyDeposit {
+                id
+                amount
+                percentage
+                currency
+                translations {
+                    id
+                    description
+                    lang
+                }
+            }
+            contactName
+            contactPhone
+            translations {
+                id
+                title
+                description
+                lang
+            }
+            images
         }
     }
 `

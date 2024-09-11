@@ -22,6 +22,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Filter from './Filter'
 import { useLockBodyScroll } from '@/src/components/hooks/useLockBodyScroll'
+import Link from 'next/link'
 
 export default function ClientWrapper() {
     const [isOpen, setIsOpen] = useState(false)
@@ -54,8 +55,6 @@ export default function ClientWrapper() {
 
     const paginatedData = data?.getProperties as PaginatedFilteredPropertiesObject
 
-    console.log(filterInputParams)
-
     return (
         <main className="flex min-h-screen w-full flex-col items-center gap-10 bg-[#F5F5F5]  px-6 pb-10 md:flex-row md:items-start md:px-20 md:py-10">
             <div className="flex h-auto w-full justify-start   pt-6   md:pt-10    lg:hidden lg:px-0">
@@ -85,67 +84,71 @@ export default function ClientWrapper() {
             <div className="grid  w-full  flex-col items-center  gap-10 md:w-auto md:grid-cols-2">
                 {data?.getProperties?.list?.map((item, index) => (
                     <div className="flex w-full flex-col gap-4 md:w-[320px]">
-                        <div
-                            key={index}
-                            className="flex w-full flex-col overflow-hidden rounded-md bg-[#FFFFFF] shadow-md"
-                        >
-                            <Image
-                                width={320}
-                                height={180}
-                                alt="propert image"
-                                className="h-[200px] w-full object-cover"
-                                src={item.images && item.images[0].thumb}
-                            />
-                            <div className="flex w-full flex-col gap-4 px-4  py-6">
-                                <div className="flex w-full justify-between">
-                                    <h1 className="text-base font-bold">
-                                        <span>{item?.price} ₾</span>
-                                    </h1>
-                                    {true ? (
-                                        <div className="flex items-center gap-1 rounded-md bg-[#CFF1E6] px-2 py-1">
-                                            <span className="text-xs ">აქტიური</span>
-                                            <ActiveStatus className="h-4 w-4 fill-mainGreen" />
+                        <Link href={`/apartments/${item.id}`}>
+                            <div
+                                key={index}
+                                className="flex w-full flex-col overflow-hidden rounded-md bg-[#FFFFFF] shadow-md"
+                            >
+                                <Image
+                                    width={320}
+                                    height={180}
+                                    alt="propert image"
+                                    className="h-[200px] w-full object-cover"
+                                    src={item.images && item.images[0].thumb}
+                                />
+                                <div className="flex w-full flex-col gap-4 px-4  py-6">
+                                    <div className="flex w-full justify-between">
+                                        <h1 className="text-base font-bold">
+                                            <span>{item?.price} ₾</span>
+                                        </h1>
+                                        {true ? (
+                                            <div className="flex items-center gap-1 rounded-md bg-[#CFF1E6] px-2 py-1">
+                                                <span className="text-xs ">აქტიური</span>
+                                                <ActiveStatus className="h-4 w-4 fill-mainGreen" />
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center gap-1 rounded-md bg-[#FFDEDE] px-2 py-1">
+                                                <span className="text-xs text-[red] ">
+                                                    ვადაგასული
+                                                </span>
+                                                <InactiveStatus className="h-3 w-3 fill-[red]" />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex w-full justify-between">
+                                        <div className="flex w-full flex-row items-center gap-1">
+                                            <Door className="h-4 w-4 md:h-6 md:w-6" />
+                                            <span>ოთახების :</span>
+                                            {item.rooms}
                                         </div>
-                                    ) : (
-                                        <div className="flex items-center gap-1 rounded-md bg-[#FFDEDE] px-2 py-1">
-                                            <span className="text-xs text-[red] ">ვადაგასული</span>
-                                            <InactiveStatus className="h-3 w-3 fill-[red]" />
+                                        <div
+                                            className="flex w-full flex-row  items-center gap-1
+                                    "
+                                        >
+                                            <Square className="h-4 w-4 md:h-6 md:w-6" />
+                                            <span>ფართი :</span>
+                                            {item.area}
                                         </div>
-                                    )}
-                                </div>
-                                <div className="flex w-full justify-between">
-                                    <div className="flex w-full flex-row items-center gap-1">
-                                        <Door className="h-4 w-4 md:h-6 md:w-6" />
-                                        <span>ოთახების :</span>
-                                        {item.rooms}
                                     </div>
                                     <div
-                                        className="flex w-full flex-row  items-center gap-1
-                                    "
-                                    >
-                                        <Square className="h-4 w-4 md:h-6 md:w-6" />
-                                        <span>ფართი :</span>
-                                        {item.area}
-                                    </div>
-                                </div>
-                                <div
-                                    className="flex w-full flex-col
+                                        className="flex w-full flex-col
                                 "
-                                >
-                                    <div className="flex w-full flex-row items-center justify-start gap-1">
-                                        <Location className="h-4 w-4 md:h-6 md:w-6" />
-                                        <span className="line-clamp-1 text-ellipsis">
-                                            მისამართი :{item.street}
-                                        </span>
-                                    </div>
-                                    <div className="hidden  w-1/2 flex-row items-center justify-start gap-1 md:hidden">
-                                        <Wallet className="h-4 w-4 md:h-6 md:w-6" />
-                                        <span>ფასი:</span>
-                                        {item.price}
+                                    >
+                                        <div className="flex w-full flex-row items-center justify-start gap-1">
+                                            <Location className="h-4 w-4 md:h-6 md:w-6" />
+                                            <span className="line-clamp-1 text-ellipsis">
+                                                მისამართი :{item.street}
+                                            </span>
+                                        </div>
+                                        <div className="hidden  w-1/2 flex-row items-center justify-start gap-1 md:hidden">
+                                            <Wallet className="h-4 w-4 md:h-6 md:w-6" />
+                                            <span>ფასი:</span>
+                                            {item.price}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 ))}
                 <Pagination data={paginatedData} />

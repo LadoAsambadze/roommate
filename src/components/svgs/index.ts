@@ -56,3 +56,10 @@ export { default as House } from '../../../public/svg/House.svg'
 export { default as Blank } from '../../../public/svg/Blank.svg'
 export { default as Lamp } from '../../../public/svg/Lamp.svg'
 export { default as Audio } from '../../../public/svg/Audio.svg'
+export { default as PropertySqm } from '../../../public/svg/PropertySqm.svg'
+
+export { default as PropertyDoor } from '../../../public/svg/PropertyDoor.svg'
+
+export { default as PropertyBed } from '../../../public/svg/PropertyBed.svg'
+
+export { default as PropertyLedder } from '../../../public/svg/PropertyLedder.svg'

@@ -7,6 +7,7 @@ import { string, z } from 'zod'
 
 export default function UploadValidator({ data }: { data?: GetPropertiesDataProps }) {
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+    const cadastralCodeRegex = /^\d{2}.\d{2}.\d{2}.\d{3}.\d{3}$/
     const apartmentTypeValues = data?.getPropertyTypes?.map((item) => item.id) || []
     const propertyAmenityValues = data?.getPropertyAmenities?.map((item) => item.id) || []
     const propertyHeatingValues = data?.getHousingHeatingTypes?.map((item) => item.id) || []
@@ -32,7 +33,7 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
         housingStatusId: z.string().min(1),
         housingConditionId: z.string().min(1),
         street: z.string().min(1),
-        cadastralCode: z.string().min(1),
+        cadastralCode: z.string().regex(cadastralCodeRegex).optional(),
         hideCadastralCode: z.boolean().optional(),
         propertyAmenityIds: z.array(z.enum(propertyAmenityValues as [string, ...string[]])).min(1),
         housingHeatingTypeIds: z
