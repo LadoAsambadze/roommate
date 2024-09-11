@@ -44,14 +44,12 @@ export default function Filter({ isOpen, setIsOpen, setFilterInputParams }: Filt
         Object.keys(newRanges).forEach((rangeType) => {
             let index = 0
             while (true) {
-                const fromValue = searchParams.get(`${rangeType}[${index}]From`)
+                const fromValue = searchParams.get(`${rangeType}[${index}]From`) || 0
                 const toValue = searchParams.get(`${rangeType}[${index}]To`)
 
-                // If both fromValue and toValue are null or undefined, break the loop
                 if (!fromValue && !toValue) break
 
-                // Parse both fromValue and toValue as numbers
-                const parsedFrom = fromValue ? parseFloat(fromValue) : null
+                const parsedFrom = fromValue ? parseFloat(fromValue) : 0
                 const parsedTo = toValue ? parseFloat(toValue) : null
 
                 if (index === 0) {
@@ -65,7 +63,6 @@ export default function Filter({ isOpen, setIsOpen, setFilterInputParams }: Filt
         })
         setRanges(newRanges)
 
-        // Update filter input params with first range for each
         const filterParams: GetPropertiesFilterInput = {
             priceRange: newRanges.priceRanges[0],
             bedroomsRange: newRanges.bedroomsRanges[0],
