@@ -521,8 +521,8 @@ export const getPropertyById: TypedDocumentNode<
     { getProperty: Query['getProperty'] },
     QueryGetPropertyArgs
 > = gql`
-    query GetProperty($getPropertyId: ID!, $lang: String) {
-        getProperty(id: $getPropertyId, lang: $lang) {
+    query GetProperty($id: ID!, $lang: String) {
+        getProperty(id: $id, lang: $lang) {
             id
             propertyType {
                 id

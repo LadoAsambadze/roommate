@@ -27,15 +27,13 @@ import { useParams } from 'next/navigation'
 export default function ClientWrapper() {
     const params = useParams()
     const locale = params.locale
-    const id = params.id
+    const id = params.id as string
     const { data, error } = useQuery(getPropertyById, {
         variables: {
             lang: locale as Language,
-            getPropertyId: id,
+            id: id,
         },
     })
-
-    console.log(data?.getProperty?.images?.map((item) => item.original))
 
     return (
         <main className="flex min-h-screen w-full flex-col gap-10  px-6 pb-10 pt-5 lg:px-[280px]">
