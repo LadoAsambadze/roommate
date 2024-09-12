@@ -77,6 +77,7 @@ function ClientWrapper() {
     }
 
     const onSubmit = async () => {
+        console.log(form.getValues())
         try {
             const { data: codeData, errors: codeErrors } = await smsCheck({
                 variables: {
@@ -94,8 +95,8 @@ function ClientWrapper() {
                 form.setError('code', { message: t('invalidCode') })
                 return
             }
+            console.log(codeData, codeErrors)
 
-            
             const { data, errors } = await uploadProperty({
                 variables: {
                     input: {
@@ -131,12 +132,14 @@ function ClientWrapper() {
                     },
                 },
             })
-
+            if (data?.upsertProperty) {
+                setUploaded(true)
+            }
+            console.log(data)
         } catch (error) {
             console.error('Error during submission:', error)
         }
     }
-
 
     return (
         <>

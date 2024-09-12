@@ -63,3 +63,4 @@ export { default as PropertyDoor } from '../../../public/svg/PropertyDoor.svg'
 export { default as PropertyBed } from '../../../public/svg/PropertyBed.svg'
 
 export { default as PropertyLedder } from '../../../public/svg/PropertyLedder.svg'
+export { default as Checkbox } from '../../../public/svg/Checkbox.svg'

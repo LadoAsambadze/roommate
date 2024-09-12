@@ -42,7 +42,7 @@ export default function FullDynamicSelectDeposit({ field, data, form }: Apartmen
                                 item.amount
                                     ? item.amount.toString()
                                     : item.translations && item.translations[0]
-                                      ? item.translations[0].description
+                                      ? item.translations[0].id
                                       : 'No description available'
                             }
                         >
