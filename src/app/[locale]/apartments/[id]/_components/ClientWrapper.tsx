@@ -69,7 +69,7 @@ export default function ClientWrapper() {
                             <div className="relative flex-[0_0_100%]" key={index}>
                                 <div className="relative flex justify-center p-0">
                                     <div
-                                        className="absolute inset-0 z-0"
+                                        className="absolute inset-0 z-0 hidden md:block"
                                         style={{
                                             backgroundImage: `url(${item.thumb})`,
                                             backgroundSize: '150%',
@@ -78,8 +78,8 @@ export default function ClientWrapper() {
                                             filter: 'blur(10px)',
                                         }}
                                     />
-                                    <div className="relative z-10 overflow-hidden">
-                                        <div className="relative aspect-square h-[500px] w-auto">
+                                    <div className="relative z-10 w-full overflow-hidden md:w-auto">
+                                        <div className="relative aspect-square h-[300px] w-full md:h-[500px] md:w-auto">
                                             <Image
                                                 fill
                                                 src={item.original}
@@ -94,24 +94,24 @@ export default function ClientWrapper() {
                     </div>
                 </div>
                 <button
-                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md"
+                    className="absolute left-4 top-1/2 hidden -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md md:block"
                     onClick={scrollPrev}
                 >
                     <ChevronLeft size={24} />
                 </button>
                 <button
-                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md"
+                    className="absolute right-4 top-1/2 hidden -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md md:block"
                     onClick={scrollNext}
                 >
                     <ChevronRight size={24} />
                 </button>
             </div>
 
-            <div className=" flex space-x-2 overflow-x-auto">
+            <div className=" hidden space-x-3 overflow-x-auto md:flex">
                 {images.map((item, index) => (
                     <div
                         key={index}
-                        className={`h-28 w-28 cursor-pointer overflow-x-auto ${index === selectedIndex ? 'border-2 border-blue-500' : ''}`}
+                        className={`h-20 w-24 cursor-pointer rounded-md overflow-x-auto ${index === selectedIndex ? 'border-2 border-blue-500' : ''}`}
                         onClick={() => handleThumbClick(index)}
                         onMouseEnter={() => handleThumbClick(index)}
                     >
@@ -122,6 +122,7 @@ export default function ClientWrapper() {
                             height={160}
                             className="h-full w-full object-cover"
                         />
+
                     </div>
                 ))}
             </div>
