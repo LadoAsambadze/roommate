@@ -31,8 +31,10 @@ const config = {
                 mainGreen: 'hsl(var(--mainGreen))',
                 hoverGreen: 'hsl(var(--hoverGreen))',
                 mainGreen400: 'hsl(var(--mainGreen-400))',
-
+                mainOrange: 'hsl(var(--mainOrange))',
+                hoverOrange: 'hsl(var(--hoverOrange))',
                 pressedGreen: 'hsl(var(--pressedGreen))',
+                pressedOrange: 'hsl(var(--pressedOrange))',
                 headerBg: 'hsl(var(--headerBg))',
                 textColor: 'hsl(var(--textColor))',
                 borderColor: 'hsl(var(--borderColor))',

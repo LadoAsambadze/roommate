@@ -20,6 +20,9 @@ body {
         --headerBg: 0, 0%, 100%;
         --mainGreen: 152, 73%, 43%;
         --hoverGreen: 152, 73%, 35%;
+        --mainOrange: 38, 92%, 50%;
+        --hoverOrange: 38, 92%, 40%;
+        --pressedOrange: 38, 92%, 30%;
 
         --pressedGreen: 152, 73%, 26%;
         --borderColor: 227, 20%, 59%;
@@ -60,6 +63,7 @@ body {
         --mainGreen-300: 152, 73%, 73%;
         --mainGreen-400: 152, 73%, 63%;
         --mainGreen-500: 152, 73%, 53%;
+        --mainOrange-100: 38, 92%, 50%;
     }
 
     .dark {
