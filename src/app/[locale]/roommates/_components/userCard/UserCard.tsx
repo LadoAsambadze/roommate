@@ -49,7 +49,7 @@ const UserCard = ({ user }: Props) => {
                             </span>
                         </div>
                         <SendMessageButton
-                            user={user}
+                            userId={user.id}
                             setIsOpenedConversationWindow={setIsOpenedConversationWindow}
                         />
                     </div>
