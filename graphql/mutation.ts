@@ -17,6 +17,7 @@ import {
     MutationUpdateConversationStatusArgs,
     MutationLookupOrCreateTwilioUserResourceArgs,
     MutationUpdateConversationResourceStateArgs,
+    MutationIdentityVerificationImagesUploadArgs,
 } from './typesGraphql'
 
 export const RoommateSignUpMutation: TypedDocumentNode<
@@ -269,5 +270,16 @@ export const updateConversationResourceStateMutation: TypedDocumentNode<
             dateCreated
             dateUpdated
         }
+    }
+`
+
+export const identityVerificationImagesUpload: TypedDocumentNode<
+    {
+        identityVerificationImagesUpload: Mutation['identityVerificationImagesUpload']
+    },
+    MutationIdentityVerificationImagesUploadArgs
+> = gql`
+    mutation IdentityVerificationImagesUpload($input: IdentityUploadInput!) {
+        identityVerificationImagesUpload(input: $input)
     }
 `

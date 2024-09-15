@@ -162,6 +162,24 @@ export type GetPropertiesFilterInput = {
     roomsRange?: InputMaybe<RangeInput>
 }
 
+export type GetRoommateObject = {
+    __typename?: 'GetRoommateObject'
+    age?: Maybe<Scalars['Float']['output']>
+    apartmentDurationArrangement?: Maybe<Scalars['String']['output']>
+    budget?: Maybe<Scalars['Float']['output']>
+    createdAt: Scalars['DateTime']['output']
+    districts?: Maybe<Array<Scalars['String']['output']>>
+    firstname: Scalars['String']['output']
+    genderOpenLiving?: Maybe<Scalars['String']['output']>
+    interests?: Maybe<Array<Scalars['String']['output']>>
+    lastname: Scalars['String']['output']
+    pet?: Maybe<Scalars['String']['output']>
+    profileImage?: Maybe<Scalars['String']['output']>
+    startDateLiving?: Maybe<StartDateLivingTuple>
+    university?: Maybe<Scalars['String']['output']>
+    verified: Scalars['Boolean']['output']
+}
+
 export type HousingConditionObject = {
     __typename?: 'HousingConditionObject'
     id: Scalars['ID']['output']
@@ -212,6 +230,12 @@ export type HousingStatusTranslatedObject = {
     id: Scalars['ID']['output']
     lang: Language
     name: Scalars['String']['output']
+}
+
+export type IdentityUploadInput = {
+    idBackImage?: InputMaybe<Scalars['String']['input']>
+    idFrontImage?: InputMaybe<Scalars['String']['input']>
+    selfie?: InputMaybe<Scalars['String']['input']>
 }
 
 export type ImageInput = {
@@ -299,6 +323,7 @@ export type MeWithJwtObject = {
 export type Mutation = {
     __typename?: 'Mutation'
     generateTwilioAccessToken: Scalars['String']['output']
+    identityVerificationImagesUpload: Scalars['Boolean']['output']
     landlordSendResetPasswordVerificationCode: SendResetPasswordVerificationCodeObject
     landlordSignIn: JwtObject
     landlordSignUp: MeWithJwtObject
@@ -319,6 +344,10 @@ export type Mutation = {
     verifyCodeByEmail: VerifyCodeByEmailObject
     verifyCodeBySms: VerifyCodeBySmsObject
     verifyResetPasswordVerificationCode: VerifyResetPasswordVerificationCodeObject
+}
+
+export type MutationIdentityVerificationImagesUploadArgs = {
+    input: IdentityUploadInput
 }
 
 export type MutationLandlordSendResetPasswordVerificationCodeArgs = {
@@ -558,9 +587,11 @@ export type Query = {
     getPropertyDeposits?: Maybe<Array<PropertyDepositObject>>
     getPropertyTypes?: Maybe<Array<PropertyTypeObject>>
     getQuestionsWithAnswers?: Maybe<Array<QuestionObject>>
+    getRoommate?: Maybe<GetRoommateObject>
     getSharedConversation?: Maybe<ConversationWithUserObject>
     getUniversities?: Maybe<Array<UniversityObject>>
     getUniversity?: Maybe<UniversityObject>
+    getVerificationStatus?: Maybe<RoommateVerification>
     me: MeObject
 }
 
@@ -656,6 +687,11 @@ export type QueryGetQuestionsWithAnswersArgs = {
     lang?: InputMaybe<Language>
 }
 
+export type QueryGetRoommateArgs = {
+    id: Scalars['ID']['input']
+    lang?: InputMaybe<Language>
+}
+
 export type QueryGetSharedConversationArgs = {
     participantId: Scalars['String']['input']
 }
@@ -746,6 +782,12 @@ export type RoommateSignUpInput = {
     profileImage?: InputMaybe<Scalars['String']['input']>
 }
 
+export type RoommateVerification = {
+    __typename?: 'RoommateVerification'
+    blockIdentityImagesUpload?: Maybe<Scalars['Boolean']['output']>
+    verified?: Maybe<Scalars['Boolean']['output']>
+}
+
 export type RoommateWithAdditionalInfoObject = {
     __typename?: 'RoommateWithAdditionalInfoObject'
     age: Scalars['Float']['output']
@@ -756,6 +798,7 @@ export type RoommateWithAdditionalInfoObject = {
     firstname: Scalars['String']['output']
     id: Scalars['ID']['output']
     isFavourite: Scalars['Boolean']['output']
+    isVerified: Scalars['Boolean']['output']
     lastname: Scalars['String']['output']
     profileImage?: Maybe<Scalars['String']['output']>
 }
@@ -799,6 +842,12 @@ export enum SmsSendStatus {
     AlreadySent = 'ALREADY_SENT',
     Failure = 'FAILURE',
     Success = 'SUCCESS',
+}
+
+export type StartDateLivingTuple = {
+    __typename?: 'StartDateLivingTuple'
+    end: Scalars['DateTime']['output']
+    start: Scalars['DateTime']['output']
 }
 
 export type TitleTranslated = {

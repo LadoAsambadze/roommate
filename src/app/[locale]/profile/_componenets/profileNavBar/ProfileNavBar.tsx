@@ -55,6 +55,13 @@ export default function ProfileNavBar() {
                 </button>
                 <button className="flex w-full flex-row items-center justify-between rounded-lg bg-[#FFFFFF] p-4  shadow-md md:bg-[#F5F5F5] md:p-0 md:shadow-none">
                     <div className="flex flex-row items-center">
+                        <Note className=" h-6 w-6" />
+                        <span className="ml-3">{t('verification')}</span>
+                    </div>
+                    <ArrowRight className="h-6 w-6 md:hidden" />
+                </button>
+                <button className="flex w-full flex-row items-center justify-between rounded-lg bg-[#FFFFFF] p-4  shadow-md md:bg-[#F5F5F5] md:p-0 md:shadow-none">
+                    <div className="flex flex-row items-center">
                         <Setting className=" h-6 w-6" />
                         <span className="ml-3">{t('editProfile')}</span>
                     </div>
