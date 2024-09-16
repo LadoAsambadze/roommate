@@ -19,5 +19,6 @@
     "pet": "Pet",
     "interests": "Interests",
     "university": "University",
-    "roommate": "Roommate"
+    "roommate": "Roommate",
+    "inMonth": "month"
 }

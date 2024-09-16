@@ -646,6 +646,11 @@ export const getRoommate: TypedDocumentNode<
             interests
             university
             genderOpenLiving
+            bio
+            housingSituationDescriptionAndBedroomPreferences {
+                name
+                checked
+            }
         }
     }
 `
