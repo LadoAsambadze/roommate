@@ -55,6 +55,7 @@ function ClientWrapper() {
     })
     const { data } = useQuery(GetPropertiesData, {
         variables: { locale: locale },
+        fetchPolicy: 'no-cache',
     })
 
     const form = UploadValidator({ data })
@@ -144,14 +145,14 @@ function ClientWrapper() {
     return (
         <>
             <main className="flex min-h-screen w-full  flex-col items-center justify-start overflow-hidden py-5">
-                <h1 className="py-5 text-center text-xl">ატვირთე ბინა</h1>
+                <h1 className="py-5 text-center text-xl">{t('uploadApartment')}</h1>
                 {!data ? (
                     <Loading />
                 ) : !uploaded ? (
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
-                            className="flex h-full w-full flex-col gap-6 overflow-auto rounded-md  border border-gray-400 p-6 md:w-2/3 md:px-10 md:py-10"
+                            className="flex h-full w-full flex-col gap-6 overflow-auto rounded-md p-6 md:w-2/3 md:px-10 md:py-10"
                         >
                             <FormField
                                 control={form.control}
