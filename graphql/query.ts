@@ -11,6 +11,7 @@ import {
     QueryGetPropertiesArgs,
     QueryGetPropertyArgs,
     QueryGetQuestionsWithAnswersArgs,
+    QueryGetRoommateArgs,
     QueryGetSharedConversationArgs,
 } from './typesGraphql'
 
@@ -618,6 +619,38 @@ export const getPropertyById: TypedDocumentNode<
                 lang
             }
             images
+        }
+    }
+`
+
+export const getRoommate: TypedDocumentNode<
+    { getRoommate: Query['getRoommate'] },
+    QueryGetRoommateArgs
+> = gql`
+    query GetRoommate($id: ID!, $lang: Language) {
+        getRoommate(id: $id, lang: $lang) {
+            firstname
+            lastname
+            profileImage
+            createdAt
+            verified
+            budget
+            startDateLiving {
+                start
+                end
+            }
+            age
+            apartmentDurationArrangement
+            districts
+            pet
+            interests
+            university
+            genderOpenLiving
+            bio
+            housingSituationDescriptionAndBedroomPreferences {
+                name
+                checked
+            }
         }
     }
 `

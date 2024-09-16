@@ -6,5 +6,19 @@
     "sendMessage": "მიწერა",
     "filter": "ფილტრი",
     "clearFilters": "ფილტრის გასუფთავება",
-    "searchBtn": "ძებნა"
+    "searchBtn": "ძებნა",
+    "leaveMessage": "დატოვე შეტყობინება",
+    "aboutMe": "ჩემს შესახებ",
+    "idCard": "პირადობის მოწმობა",
+    "verifiedUser": "ვერიფიცირებული მომხმარებელი",
+    "userNotVerified": "მომხმარებელი არ არის ვერიფიცირებული",
+    "inSearch": "ვეძებ",
+    "available": "ხელმისაწვდომია",
+    "duration": "ხანგრძლივობა",
+    "pet": "შინაური ცხოველი",
+    "interests": "ინტერესები",
+    "university": "სასწავლებელი",
+    "roommate": "Roommate",
+    "inMonth": "თვეში",
+    "location": "ლოკაცია"
 }

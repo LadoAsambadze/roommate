@@ -166,11 +166,14 @@ export type GetRoommateObject = {
     __typename?: 'GetRoommateObject'
     age?: Maybe<Scalars['Float']['output']>
     apartmentDurationArrangement?: Maybe<Scalars['String']['output']>
+    bio?: Maybe<Scalars['String']['output']>
     budget?: Maybe<Scalars['Float']['output']>
     createdAt: Scalars['DateTime']['output']
     districts?: Maybe<Array<Scalars['String']['output']>>
     firstname: Scalars['String']['output']
     genderOpenLiving?: Maybe<Scalars['String']['output']>
+    housingSituationDescriptionAndBedroomPreferences: Array<HousingSituationDescriptionAndBedroomPreferencesObject>
+    id: Scalars['ID']['output']
     interests?: Maybe<Array<Scalars['String']['output']>>
     lastname: Scalars['String']['output']
     pet?: Maybe<Scalars['String']['output']>
@@ -216,6 +219,12 @@ export type HousingLivingSafetyTranslatedObject = {
     __typename?: 'HousingLivingSafetyTranslatedObject'
     id: Scalars['ID']['output']
     lang: Language
+    name: Scalars['String']['output']
+}
+
+export type HousingSituationDescriptionAndBedroomPreferencesObject = {
+    __typename?: 'HousingSituationDescriptionAndBedroomPreferencesObject'
+    checked: Scalars['Boolean']['output']
     name: Scalars['String']['output']
 }
 

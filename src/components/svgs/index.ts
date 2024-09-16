@@ -57,10 +57,10 @@ export { default as Blank } from '../../../public/svg/Blank.svg'
 export { default as Lamp } from '../../../public/svg/Lamp.svg'
 export { default as Audio } from '../../../public/svg/Audio.svg'
 export { default as PropertySqm } from '../../../public/svg/PropertySqm.svg'
-
 export { default as PropertyDoor } from '../../../public/svg/PropertyDoor.svg'
-
 export { default as PropertyBed } from '../../../public/svg/PropertyBed.svg'
-
 export { default as PropertyLedder } from '../../../public/svg/PropertyLedder.svg'
 export { default as Checkbox } from '../../../public/svg/Checkbox.svg'
+export { default as Check } from '../../../public/svg/Check.svg'
+export { default as Minus } from '../../../public/svg/Minus.svg'
+export { default as Sex } from '../../../public/svg/Sex.svg'

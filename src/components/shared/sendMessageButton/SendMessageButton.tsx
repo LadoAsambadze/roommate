@@ -1,21 +1,20 @@
 import { checkConversationExistence } from '@/src/conversation/conversationUtils'
 import { Sms } from '../../svgs'
-import { RoommateWithAdditionalInfoObject } from '@/graphql/typesGraphql'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 import { Dispatch, SetStateAction } from 'react'
 
 type Props = {
-    user: RoommateWithAdditionalInfoObject
+    userId: string
     setIsOpenedConversationWindow: Dispatch<SetStateAction<boolean>>
 }
 
-const SendMessageButton = ({ user, setIsOpenedConversationWindow }: Props) => {
+const SendMessageButton = ({ userId, setIsOpenedConversationWindow }: Props) => {
     const router = useRouter()
     const { t } = useTranslation()
 
     const handleOpenConversationWindow = async () => {
-        const conversation = await checkConversationExistence(String(user.id))
+        const conversation = await checkConversationExistence(userId)
 
         if (conversation) {
             router.push(`/conversation?id=${conversation.id}`)
