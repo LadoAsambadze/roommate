@@ -17,6 +17,8 @@ const buttonVariants = cva(
                 link: 'text-primary underline-offset-4 hover:underline',
                 filter: 'bg-mainGreen text-[#FFFFFF] text-sm hover:bg-hoverGreen',
                 modalButton: 'bg-mainGreen text-[#FFFFFF] text-sm hover:bg-hoverGreen',
+                landlordButton:
+                    'bg-mainOrange   text-[#FFFFFF] text-sm hover:bg-hoverOrange focus:bg-pressedOrange',
             },
             size: {
                 sm: 'w-12 h-9 px-10 py-2',

@@ -12,9 +12,24 @@ import {
     ShieldSlash,
     UserIcon2,
 } from '@/src/components/svgs'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback } from 'react'
 
 export default function ProfileNavBar() {
     const { t } = useTranslation()
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    const pathname = usePathname()
+
+    const sectionClickHandler = useCallback(
+        (name: string, value: string) => {
+            const params = new URLSearchParams()
+            params.set(name, value)
+            const query = params.toString()
+            router.push(`${pathname}?${query}`)
+        },
+        [pathname, router]
+    )
     return (
         <section className="h-full w-full md:w-[300px]">
             <div className="flex h-full w-full flex-col items-center pb-6 md:flex-row">
@@ -50,6 +65,16 @@ export default function ProfileNavBar() {
                     <div className="flex flex-row items-center">
                         <Note className=" h-6 w-6" />
                         <span className="ml-3">{t('aboutMe')}</span>
+                    </div>
+                    <ArrowRight className="h-6 w-6 md:hidden" />
+                </button>
+                <button
+                    onClick={() => sectionClickHandler('verification', 'true')}
+                    className="flex w-full flex-row items-center justify-between rounded-lg bg-[#FFFFFF] p-4  shadow-md md:bg-[#F5F5F5] md:p-0 md:shadow-none"
+                >
+                    <div className="flex flex-row items-center">
+                        <Note className=" h-6 w-6" />
+                        <span className="ml-3">{t('verification')}</span>
                     </div>
                     <ArrowRight className="h-6 w-6 md:hidden" />
                 </button>

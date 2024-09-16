@@ -5,24 +5,18 @@ import {
     Call,
     Checkbox,
     Location,
-    PhoneIcon,
     PropertyBed,
     PropertyDoor,
     PropertyLedder,
     PropertySqm,
 } from '@/src/components/svgs'
-import { Card, CardContent } from '@/src/components/ui/card'
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from '@/src/components/ui/carousel'
+
 import { useQuery } from '@apollo/client'
-import { Check } from 'lucide-react'
+import { Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import useEmblaCarousel from 'embla-carousel-react'
 
 export default function ClientWrapper() {
     const params = useParams()
@@ -34,42 +28,104 @@ export default function ClientWrapper() {
             id: id,
         },
     })
+    const [selectedIndex, setSelectedIndex] = useState(0)
+    const images = data?.getProperty?.images || []
+
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
+
+    const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
+    const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
+
+    const handleThumbClick = useCallback(
+        (index: number) => {
+            setSelectedIndex(index)
+            emblaApi && emblaApi.scrollTo(index)
+        },
+        [emblaApi]
+    )
+
+    const onSelect = useCallback(() => {
+        if (!emblaApi) return
+        setSelectedIndex(emblaApi.selectedScrollSnap())
+    }, [emblaApi])
+
+    useEffect(() => {
+        if (!emblaApi) return
+        onSelect()
+        emblaApi.on('select', onSelect)
+        emblaApi.on('reInit', onSelect)
+        return () => {
+            emblaApi.off('select', onSelect)
+            emblaApi.off('reInit', onSelect)
+        }
+    }, [emblaApi, onSelect])
 
     return (
-        <main className="flex min-h-screen w-full flex-col gap-10  px-6 pb-10 pt-5 lg:px-[280px]">
-            <Carousel className="w-full">
-                <CarouselContent>
-                    {data?.getProperty?.images &&
-                        data?.getProperty?.images.map((item, index) => (
-                            <CarouselItem key={index}>
+        <main className="flex min-h-screen w-full flex-col px-6 pb-10 pt-5 lg:px-[280px]">
+            <div className="relative w-full overflow-hidden rounded-md">
+                <div className="overflow-hidden" ref={emblaRef}>
+                    <div className="flex">
+                        {images.map((item, index) => (
+                            <div className="relative flex-[0_0_100%]" key={index}>
                                 <div className="relative flex justify-center p-0">
-                                    {/* Background Layer */}
                                     <div
-                                        className="absolute inset-0 z-0"
+                                        className="absolute inset-0 z-0 hidden md:block"
                                         style={{
                                             backgroundImage: `url(${item.thumb})`,
-                                            backgroundSize: '150%', // Zoomed-in background
+                                            backgroundSize: '150%',
                                             backgroundPosition: 'center',
-                                            filter: 'blur(10px)', // Blur effect
-                                            transform: 'scale(1.2)', // Slight zoom
+                                            objectFit: 'fill',
+                                            filter: 'blur(10px)',
                                         }}
                                     />
-                                    {/* Foreground Image */}
-                                    <CardContent className="relative z-10 flex aspect-square h-[500px] w-auto items-center justify-center p-0">
-                                        <Image
-                                            fill
-                                            src={item.original}
-                                            alt={`Image ${index}`}
-                                            className="h-full w-full"
-                                        />
-                                    </CardContent>
+                                    <div className="relative z-10 w-full overflow-hidden md:w-auto">
+                                        <div className="relative aspect-square h-[300px] w-full md:h-[500px] md:w-auto">
+                                            <Image
+                                                fill
+                                                src={item.original}
+                                                alt={`Image ${index}`}
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            </CarouselItem>
+                            </div>
                         ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-            </Carousel>
+                    </div>
+                </div>
+                <button
+                    className="absolute left-4 top-1/2 hidden -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md md:block"
+                    onClick={scrollPrev}
+                >
+                    <ChevronLeft size={24} />
+                </button>
+                <button
+                    className="absolute right-4 top-1/2 hidden -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md md:block"
+                    onClick={scrollNext}
+                >
+                    <ChevronRight size={24} />
+                </button>
+            </div>
+
+            <div className=" hidden space-x-3 overflow-x-auto md:flex">
+                {images.map((item, index) => (
+                    <div
+                        key={index}
+                        className={`h-20 w-24 cursor-pointer rounded-md overflow-x-auto ${index === selectedIndex ? 'border-2 border-blue-500' : ''}`}
+                        onClick={() => handleThumbClick(index)}
+                        onMouseEnter={() => handleThumbClick(index)}
+                    >
+                        <Image
+                            src={item.thumb}
+                            alt={`Thumbnail ${index}`}
+                            width={160}
+                            height={160}
+                            className="h-full w-full object-cover"
+                        />
+
+                    </div>
+                ))}
+            </div>
 
             <div className="flex w-full flex-col gap-4 rounded-lg border border-[#E3E3E3] px-4 py-8 shadow-lg md:flex-col md:p-8">
                 <div className="flex w-full flex-col items-start  gap-2 md:flex-row md:gap-40">

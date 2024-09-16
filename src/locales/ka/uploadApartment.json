@@ -1,4 +1,5 @@
 {
+    "uploadApartment": "ატვირთე ბინა",
     "apartmentType": "უძრავი ქონების ტიპი",
     "availableFrom": "რა თარიღიდან გსურს ბინის გაქირავება",
     "year": "წელი",
@@ -9,12 +10,13 @@
     "twelweMonth": "12 თვე",
     "selectPeriod": "აირჩიე თვე",
     "minRentMonth": "მინიმალური გაქირავების პერიოდი",
+
     "apartmentRooms": "სულ რამდენ ოთახიანია სახლი",
     "inApartment": "სახლში",
     "inBedroom": "საძინებელში",
     "bathroomsAmount": "სველი წერტილების რაოდენობა",
     "availability": "ხელმისაწვდომობა",
-    "floorAmount": "სართულები",
+    "floorAmount": "სართულების რაოდენობა",
     "flatFloor": "რომელ სართულზეა ბინა",
     "status": "სტატუსი",
     "condition": "მდგომარეობა",
