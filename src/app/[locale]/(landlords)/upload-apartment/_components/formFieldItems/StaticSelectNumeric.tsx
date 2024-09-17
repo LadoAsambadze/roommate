@@ -20,7 +20,7 @@ export default function StaticSelectNumeric({ field }: any) {
                 <SelectGroup>
                     {Array.from({ length: 10 }, (_, index) => (
                         <SelectItem value={index.toString()} key={index}>
-                            {index}
+                            {index.toString()}
                         </SelectItem>
                     ))}
                 </SelectGroup>
