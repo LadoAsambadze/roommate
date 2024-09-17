@@ -38,7 +38,10 @@ const LangChoose = ({ className, spanClassname }: LangChooseProps) => {
 
     return (
         <>
-            <div className={`${className}`} onClick={handleLangSwitch}>
+            <div
+                className={`${className} ${currentPathname.includes('/landlords') ? 'bg-mainOrange text-white' : 'bg-[#F2F5FF] text-[#838CAC]'}`}
+                onClick={handleLangSwitch}
+            >
                 <span className={`${spanClassname}`}>{newLocale === 'ka' ? 'GEO' : 'ENG'}</span>
             </div>
         </>

@@ -1,12 +1,11 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useModalHandlers } from '../modalHandlers/ModalHandlers'
 import Img from '@images/Img.jpg'
 import Image from 'next/image'
-import { useMediaQuery } from 'react-responsive'
 import SigninChooseType from './contentTypes/SigninChooseType'
 import SignupChooseType from './contentTypes/SignupChooseType'
 import SignupLandlords from './contentTypes/SignupLandlords'

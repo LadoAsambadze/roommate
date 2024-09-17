@@ -13,17 +13,21 @@ import { isAuthenticatedVar } from '@/src/auth/isAuthenticatedVar'
 import { getConversationsForUserQuery, getUserQuery } from '@/graphql/query'
 import { signOutHandler } from '@/src/auth/signOut'
 import { LIMIT, OFFSET } from '@/src/constants/pagination'
+import { UserType } from '@/graphql/typesGraphql'
 
 export default function Header() {
     const { t } = useTranslation()
 
     const [isClient, setIsClient] = useState(false)
-    const [isLoadingUser, setIsLoadingUser] = useState(true) // New state to track user data loading
+    const [isLoadingUser, setIsLoadingUser] = useState(true)
     const authStatus = useReactiveVar(isAuthenticatedVar)
 
     const router = useRouter()
     const pathname = usePathname()
     const searchParams = useSearchParams()
+
+    const isLandlordsPath = pathname.includes('/landlords')
+    const isRoommatesPath = !isLandlordsPath // Opposite of landlords path
 
     let unreadMessagesCount = 0
 
@@ -98,21 +102,80 @@ export default function Header() {
         }
 
         if (authStatus.valid && user) {
+            if (isLandlordsPath && user.me.userTypes.includes(UserType.Landlord)) {
+                return (
+                    <>
+                        <button className="hidden flex-row items-center rounded-lg bg-mainOrange p-2 text-white md:flex xl:px-3 xl:py-2">
+                            <UserIcon2 className="h-4 w-4 fill-white xl:h-6 xl:w-6" />
+                            <span className="ml-1 text-xs xl:text-base">{user.me.firstname}</span>
+                        </button>
+                        <button
+                            onClick={signOutHandler}
+                            className="hidden flex-row items-center rounded-lg bg-mainOrange p-2 text-white md:flex xl:px-3 xl:py-2"
+                        >
+                            <span className="ml-1 text-xs xl:text-base">{t('signOut')}</span>
+                        </button>
+                    </>
+                )
+            }
+
+            if (isRoommatesPath && user.me.userTypes.includes(UserType.Roommate)) {
+                return (
+                    <>
+                        <button className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2">
+                            <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                            <span className="ml-1 text-xs xl:text-base">{user.me.firstname}</span>
+                        </button>
+                        <button
+                            onClick={signOutHandler}
+                            className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
+                        >
+                            <span className="ml-1 text-xs xl:text-base">{t('signOut')}</span>
+                        </button>
+                    </>
+                )
+            }
+        }
+
+        if (isLandlordsPath && user?.me.userTypes.includes(UserType.Roommate)) {
             return (
                 <>
-                    <button className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 md:flex xl:px-3 xl:py-2">
-                        <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
-                        <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
-                            {user.me.firstname}
-                        </span>
-                    </button>
                     <button
-                        onClick={signOutHandler}
-                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 md:flex xl:px-3 xl:py-2"
+                        onClick={signupModalHandler}
+                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
                     >
-                        <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
-                            {t('signOut')}
-                        </span>
+                        <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                        <span className="ml-1 text-xs xl:text-base">{t('signUp')}</span>
+                    </button>
+
+                    <button
+                        onClick={signinModalHandler}
+                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
+                    >
+                        <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                        <span className="ml-1 text-xs xl:text-base">{t('signIn')}</span>
+                    </button>
+                </>
+            )
+        }
+
+        if (isRoommatesPath && user?.me.userTypes.includes(UserType.Landlord)) {
+            return (
+                <>
+                    <button
+                        onClick={signupModalHandler}
+                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
+                    >
+                        <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                        <span className="ml-1 text-xs xl:text-base">{t('signUp')}</span>
+                    </button>
+
+                    <button
+                        onClick={signinModalHandler}
+                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
+                    >
+                        <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                        <span className="ml-1 text-xs xl:text-base">{t('signIn')}</span>
                     </button>
                 </>
             )
@@ -123,22 +186,18 @@ export default function Header() {
                 <>
                     <button
                         onClick={signupModalHandler}
-                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 md:flex xl:px-3 xl:py-2"
+                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
                     >
                         <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
-                        <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
-                            {t('signUp')}
-                        </span>
+                        <span className="ml-1 text-xs xl:text-base">{t('signUp')}</span>
                     </button>
 
                     <button
                         onClick={signinModalHandler}
-                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 md:flex xl:px-3 xl:py-2"
+                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
                     >
                         <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
-                        <span className="ml-1 text-xs text-[#838CAC] xl:text-base">
-                            {t('auth')}
-                        </span>
+                        <span className="ml-1 text-xs xl:text-base">{t('signIn')}</span>
                     </button>
                 </>
             )
@@ -147,9 +206,15 @@ export default function Header() {
 
     return (
         <>
-            <header className="flex w-full flex-row items-center justify-between bg-headerBg px-6 py-3 shadow-md sm:px-16 md:px-20 md:py-3 xl:px-24 xl:py-6">
+            <header
+                className={`flex w-full flex-row items-center justify-between px-6 py-3 shadow-md sm:px-16 md:px-20 md:py-3 xl:px-24 xl:py-6 ${
+                    pathname.includes('/landlords') ? 'bg-[#C0DBFC]' : 'bg-[headerBg]'
+                }`}
+            >
                 <Link href="/">
-                    <Logo className="h-6 w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
+                    <Logo
+                        className={` ${pathname.includes('/landlords') ? 'fill-mainOrange' : 'fill-mainGreen'} h-6 w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]`}
+                    />
                 </Link>
 
                 <div className="flex flex-row items-center gap-2 md:gap-4">
@@ -157,9 +222,9 @@ export default function Header() {
 
                     <LangChoose
                         className="cursor-pointer rounded-lg bg-[#f2f5ff] p-2 text-xs lg:p-2 xl:text-base"
-                        spanClassname="text-xs xl:text-base text-[#838CAC]"
+                        spanClassname="text-xs xl:text-base"
                     />
-                    {user?.me?.id ? (
+                    {user?.me?.id && user?.me.userTypes.includes(UserType.Roommate) ? (
                         <button
                             className="pointer relative flex items-center justify-center rounded-lg bg-[#f2f5ff] p-2 md:flex xl:px-3 xl:py-2"
                             onClick={(e) => {
