@@ -119,10 +119,10 @@ export default function Filter({ isOpen, setIsOpen, setFilterInputParams }: Filt
             {ranges[rangeType].map((range, index) => (
                 <div key={index} className="flex gap-2">
                     <div>
-                        <label htmlFor={`${rangeType}[${index}]From`}>{t('from')}</label>
                         <Input
                             type="number"
                             id={`${rangeType}[${index}]From`}
+                            placeholder={t('from')}
                             value={range.from ?? ''}
                             onChange={(e) =>
                                 handleRangeChange(rangeType, index, 'from', e.target.value)
@@ -131,11 +131,11 @@ export default function Filter({ isOpen, setIsOpen, setFilterInputParams }: Filt
                         />
                     </div>
                     <div>
-                        <label htmlFor={`${rangeType}[${index}]To`}>{t('to')}</label>
                         <Input
                             type="number"
                             id={`${rangeType}[${index}]To`}
                             value={range.to ?? ''}
+                            placeholder={t('to')}
                             onChange={(e) =>
                                 handleRangeChange(rangeType, index, 'to', e.target.value)
                             }
@@ -149,7 +149,7 @@ export default function Filter({ isOpen, setIsOpen, setFilterInputParams }: Filt
 
     return (
         <section
-            className={`${isOpen ? 'fixed h-screen w-full  overflow-auto border-t-2 px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'relative p-0'} flex h-full w-full flex-col items-center gap-4 rounded-md  bg-white p-6 md:gap-6 md:shadow-xl`}
+            className={`${isOpen ? 'fixed h-screen w-full  overflow-auto border-t-2 px-6 py-6 sm:px-16 md:px-20 md:py-10' : 'relative p-0'} flex h-full w-full flex-col items-center gap-4 rounded-md  bg-white p-6 md:gap-6 md:shadow-md`}
         >
             {isOpen && (
                 <div className="flex h-auto w-full flex-row items-center justify-end gap-3">

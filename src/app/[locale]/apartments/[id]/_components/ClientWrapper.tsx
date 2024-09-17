@@ -61,7 +61,7 @@ export default function ClientWrapper() {
     }, [emblaApi, onSelect])
 
     return (
-        <main className="flex min-h-screen w-full flex-col px-6 pb-10 pt-5 lg:px-[280px]">
+        <main className="flex min-h-screen w-full flex-col gap-5 px-6 pb-10 pt-5 md:gap-10 lg:px-[280px]">
             <div className="relative w-full overflow-hidden rounded-md">
                 <div className="overflow-hidden" ref={emblaRef}>
                     <div className="flex">
@@ -94,24 +94,24 @@ export default function ClientWrapper() {
                     </div>
                 </div>
                 <button
-                    className="absolute left-4 top-1/2 hidden -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md md:block"
+                    className="absolute left-1 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md md:left-4 md:block"
                     onClick={scrollPrev}
                 >
                     <ChevronLeft size={24} />
                 </button>
                 <button
-                    className="absolute right-4 top-1/2 hidden -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md md:block"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-800 shadow-md md:right-4 md:block"
                     onClick={scrollNext}
                 >
                     <ChevronRight size={24} />
                 </button>
             </div>
 
-            <div className=" hidden space-x-3 overflow-x-auto md:flex">
+            <div className=" -mt-8 hidden space-x-2 overflow-x-auto md:flex">
                 {images.map((item, index) => (
                     <div
                         key={index}
-                        className={`h-20 w-24 cursor-pointer rounded-md overflow-x-auto ${index === selectedIndex ? 'border-2 border-blue-500' : ''}`}
+                        className={`h-20 w-24 cursor-pointer overflow-x-auto rounded-md ${index === selectedIndex ? 'border-2 border-mainGreen' : ''}`}
                         onClick={() => handleThumbClick(index)}
                         onMouseEnter={() => handleThumbClick(index)}
                     >
@@ -122,7 +122,6 @@ export default function ClientWrapper() {
                             height={160}
                             className="h-full w-full object-cover"
                         />
-
                     </div>
                 ))}
             </div>
