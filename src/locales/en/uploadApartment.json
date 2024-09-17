@@ -25,9 +25,9 @@
     "hideCadastralCode": "Hide cadastral code",
     "propertyAmenities": "Specify what is in the apartment",
     "propertyHeating": "What type of heating do you have?",
-    "propertySafety": "A safe environment to live in",
-    "maxPersonLiving": "How many people can live",
-    "petStatus": "Does the resident have the right to have an animal in the apartment?",
+    "propertySafety": "Safe living environment",
+    "maxPersonLiving": "How many people can the apartment accommodate?",
+    "petStatus": "Are pets allowed in the apartment?",
     "yes": "Yes",
     "no": "No",
     "partyStatus": "Does the resident have the right to organize a party in the apartment?",
@@ -40,5 +40,12 @@
     "geoEng": "Georgian / English",
     "description": "Description",
     "dragDropOrClick": "Upload or drag and drop file here",
-    "phone": "Phone number"
+    "phone": "Phone number",
+    "addressDetails": "Street name, Number",
+    "cadastralDetails": "By including the cadastral code, you will increase the credibility of your listing. You can find the property's cadastral code on the website.",
+    "title": "Title",
+    "validNumber": "Please enter a valid phone number",
+    "requiredFields": "Please fill all required fields correctly",
+    "availableFromError": "The available from date must be later than today.",
+    "upload": "Upload"
 }

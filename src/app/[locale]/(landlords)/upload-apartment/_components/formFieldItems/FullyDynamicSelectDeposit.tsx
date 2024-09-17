@@ -20,6 +20,7 @@ export default function FullDynamicSelectDeposit({ field, data, form }: Apartmen
 
     const handleSelectChange = (value: string) => {
         field.onChange(value)
+        
     }
     const depositStatus = form.getValues('withDeposit')
 

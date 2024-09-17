@@ -3,7 +3,7 @@ import { Language } from '@/graphql/typesGraphql'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { isValidPhoneNumber } from 'react-phone-number-input'
-import { string, z } from 'zod'
+import { z } from 'zod'
 
 export default function UploadValidator({ data }: { data?: GetPropertiesDataProps }) {
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/
@@ -33,7 +33,7 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
         housingStatusId: z.string().min(1),
         housingConditionId: z.string().min(1),
         street: z.string().min(1),
-        cadastralCode: z.string().regex(cadastralCodeRegex).optional(),
+        cadastralCode: z.string().regex(cadastralCodeRegex).optional().nullish(),
         hideCadastralCode: z.boolean().optional(),
         propertyAmenityIds: z.array(z.enum(propertyAmenityValues as [string, ...string[]])).min(1),
         housingHeatingTypeIds: z
@@ -53,7 +53,7 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
         phone: z.string().refine((value) => isValidPhoneNumber(value)),
         descriptions: z.array(descriptionSchema),
         titles: z.array(titlesSchema),
-        imageUploadFiles: z.union([z.any(), z.undefined()]),
+        imageUploadFiles: z.array(z.any()).min(1),
         code: z.string().optional(),
     })
 
@@ -73,7 +73,7 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
             housingStatusId: undefined,
             housingConditionId: undefined,
             street: undefined,
-            cadastralCode: undefined,
+            cadastralCode: null,
             hideCadastralCode: false,
             propertyAmenityIds: [],
             housingHeatingTypeIds: [],

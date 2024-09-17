@@ -36,6 +36,7 @@ import DescriptionTextarea from './formFieldItems/DescriptionTextarea'
 import TitleDescription from './formFieldItems/TitleDescription'
 import Loading from '../../../loading'
 import { withAuth } from '@/src/auth/withAuth'
+import { UploadDialog } from './dialogWindow/UploadDialog'
 
 function ClientWrapper() {
     const params = useParams()
@@ -43,8 +44,9 @@ function ClientWrapper() {
     const { t } = useTranslation()
 
     const [getCodeButtonClicked, setGetCodeButtonClicked] = useState(false)
-    const [phoneFormat, setPhoneFormat] = useState(false)
     const [uploaded, setUploaded] = useState(false)
+    const [openAlert, setOpenAlert] = useState(false)
+    const [alertMessage, setAlertMessage] = useState('')
 
     const [uploadProperty] = useMutation(UpsertProperty)
     const [smsSend] = useMutation(SendCodeBySms, {
@@ -60,25 +62,31 @@ function ClientWrapper() {
 
     const form = UploadValidator({ data })
 
-    const getCodeHandler = () => {
-        form.handleSubmit(async () => {
-            setGetCodeButtonClicked(true)
+    const getCodeHandler = async () => {
+        await form.trigger(['phone'])
+        const phoneError = form.formState.errors.phone
 
-            const { data, errors } = await smsSend({
-                variables: {
-                    input: {
-                        phone: form.watch('phone') ?? '',
-                    },
+        if (phoneError) {
+            setOpenAlert(true)
+            setAlertMessage('validNumber')
+        }
+
+        setGetCodeButtonClicked(true)
+
+        const { data: smsSendData, errors } = await smsSend({
+            variables: {
+                input: {
+                    phone: form.watch('phone') ?? '',
                 },
-            })
-            if (data?.sendCodeBySms?.status === 'ALREADY_SENT') {
-                form.setError('code', { message: t('codeAlreadySent') })
-            }
-        })()
+            },
+        })
+        console.log(smsSendData)
+        if (smsSendData?.sendCodeBySms?.status === 'ALREADY_SENT') {
+            form.setError('code', { message: t('codeAlreadySent') })
+        }
     }
 
     const onSubmit = async () => {
-        console.log(form.getValues())
         try {
             const { data: codeData, errors: codeErrors } = await smsCheck({
                 variables: {
@@ -94,14 +102,15 @@ function ClientWrapper() {
                 codeData?.verifyCodeBySms?.status !== VerificationCodeValidityStatus.Valid
             ) {
                 form.setError('code', { message: t('invalidCode') })
-                return
             }
-            console.log(codeData, codeErrors)
+
+            const formValues = form.getValues()
+            const withDeposit = formValues.propertyDepositId ? true : formValues.withDeposit
 
             const { data, errors } = await uploadProperty({
                 variables: {
                     input: {
-                        withDeposit: form.getValues('withDeposit'),
+                        withDeposit: withDeposit,
                         totalFloors: form.getValues('totalFloors'),
                         titles: form.getValues('titles'),
                         street: form.getValues('street'),
@@ -134,21 +143,52 @@ function ClientWrapper() {
                 },
             })
             if (data?.upsertProperty) {
-                setUploaded(true)
+                setOpenAlert(true)
+                setAlertMessage('success')
             }
-            console.log(data)
+            if (errors) {
+                setOpenAlert(true)
+                setAlertMessage('requiredFields')
+                const errorCodes = errors[0]?.extensions?.errorCode
+
+                if (
+                    Array.isArray(errorCodes) &&
+                    errorCodes.includes('AVAILABLE_FROM__MIN_DATE:TODAY')
+                ) {
+                    form.setError('availableFrom', {
+                        type: 'manual',
+                        message: t('availableFromError'),
+                    })
+                }
+            }
         } catch (error) {
             console.error('Error during submission:', error)
         }
     }
 
+    const checkErrorsHandler = async () => {
+        await form.trigger()
+        if (!form.formState.isValid) {
+            setOpenAlert(true)
+            setAlertMessage('requiredFields')
+        }
+    }
+
     return (
         <>
+            {openAlert && (
+                <UploadDialog
+                    setOpenAlert={setOpenAlert}
+                    openAlert={openAlert}
+                    alertMessage={alertMessage}
+                />
+            )}
+
             <main className="flex min-h-screen w-full  flex-col items-center justify-start overflow-hidden py-5">
                 <h1 className="py-5 text-center text-xl">{t('uploadApartment')}</h1>
                 {!data ? (
                     <Loading />
-                ) : !uploaded ? (
+                ) : (
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
@@ -182,6 +222,7 @@ function ClientWrapper() {
                                             <FormControl>
                                                 <StaticRentDatePicker field={field} />
                                             </FormControl>
+                                            <FormMessage />
                                         </FormItem>
                                     )}
                                 />
@@ -319,7 +360,7 @@ function ClientWrapper() {
                                         </FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="ქუჩის დასახელება, ნომერი"
+                                                placeholder={t('addressDetails')}
                                                 min="0"
                                                 className="h-10 text-xs md:text-sm"
                                                 onChange={(value) => field.onChange(value)}
@@ -335,8 +376,7 @@ function ClientWrapper() {
                                     <FormItem className="flex flex-col">
                                         <FormLabel>{t('cadastralCode')}</FormLabel>
                                         <span className="text-xs text-[#838CAC] ">
-                                            საკადასტრო კოდის ჩაწერით გაიზრდება სანდოობა, უძრავი
-                                            ქონების საკადასტო შეგიძლიათ ნახოთ ვებგვერდზე
+                                            {t('cadastralDetails')}
                                         </span>
                                         <FormControl>
                                             <Input
@@ -617,27 +657,24 @@ function ClientWrapper() {
                                                         {...field}
                                                         value={field.value}
                                                         getCode
-                                                        setPhoneFormat={setPhoneFormat}
+                                                        setPhoneFormat={undefined}
                                                         getCodeButtonClicked={getCodeButtonClicked}
                                                         onGetCodeClick={getCodeHandler}
                                                     />
                                                 </FormControl>
-                                                {phoneFormat &&
-                                                field.value !== undefined &&
-                                                field.value !== '' ? (
-                                                    <FormMessage />
-                                                ) : null}
+
+                                                <FormMessage />
                                             </FormItem>
                                         )}
                                     />
                                 </div>
                             </div>
 
-                            <Button className="w-full">ატვირთვა</Button>
+                            <Button onClick={checkErrorsHandler} type="submit" className="w-full">
+                                {t('upload')}
+                            </Button>
                         </form>
                     </Form>
-                ) : (
-                    <div>succesfuly uploaded</div>
                 )}
             </main>
         </>
