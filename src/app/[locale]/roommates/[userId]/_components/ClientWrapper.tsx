@@ -80,7 +80,7 @@ const ClientWrapper = () => {
                                 alt="Fallback Avatar"
                             />
                         </div>
-                        <div className="z-10 -mt-5 flex h-auto w-full flex-col overflow-scroll overscroll-none rounded-t-3xl bg-[#FFFFFF] md:mt-0 md:rounded-xl md:border md:border-[#E3E3E3] md:shadow-sm">
+                        <div className="overscroll-y-none-none z-10 -mt-5 flex h-auto w-full flex-col overflow-x-auto rounded-t-3xl bg-[#FFFFFF] md:mt-0 md:rounded-xl md:border md:border-[#E3E3E3] md:shadow-sm">
                             <div className="p-6">
                                 <div className="flex w-full flex-row items-start justify-between">
                                     <p className="text-base font-semibold md:text-sm">
@@ -110,7 +110,7 @@ const ClientWrapper = () => {
                                 <div className="w-full border-b border-[#E3E3E3]"></div>
                             </div>
                             <div className="p-6">
-                                <p className="mb-4 text-sm text-[#838CAC]">{t('aboutMe')}</p>
+                                <p className="mb-3 text-sm text-[#838CAC]">{t('aboutMe')}</p>
                                 <p className="text-sm">{user?.bio ?? ''}</p>
                             </div>
                         </div>
