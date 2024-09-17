@@ -79,11 +79,13 @@ function ClientWrapper() {
                 },
             },
         })
-        console.log(smsSendData)
+
         if (smsSendData?.sendCodeBySms?.status === 'ALREADY_SENT') {
             form.setError('code', { message: t('codeAlreadySent') })
         }
     }
+
+    const formValues = form.getValues()
 
     const onSubmit = async () => {
         try {
@@ -563,7 +565,7 @@ function ClientWrapper() {
                                         </FormItem>
                                     )}
                                 />
-                                <div className="flex w-full flex-row items-center gap-2 ">
+                                <div className="flex w-full flex-row items-center gap-2">
                                     <FormField
                                         control={form.control}
                                         name="propertyDepositId"

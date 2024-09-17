@@ -62,7 +62,7 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: {
-            'image/*': ['.jpeg', '.jpg', '.png', '.webp', 'avif'],
+            'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.avif'],
         },
         maxSize: 5 * 1024 * 1024, // 5MB
     })
@@ -85,8 +85,8 @@ const MultiImageUploader: React.FC<MultiImageUploaderProps> = ({ field }) => {
 
             {files.length > 0 && (
                 <div className="mt-4  grid w-full grid-cols-2  gap-x-2 gap-y-2 md:grid-cols-3 lg:grid-cols-5">
-                    {files.map((file: any) => (
-                        <div key={file.name} className="relative  h-32 w-full ">
+                    {files.map((file: any, index: number) => (
+                        <div key={index} className="relative  h-32 w-full ">
                             <Image
                                 fill
                                 src={file.preview}
