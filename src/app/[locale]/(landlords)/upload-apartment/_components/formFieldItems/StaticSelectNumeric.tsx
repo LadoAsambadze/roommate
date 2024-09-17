@@ -6,11 +6,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/src/components/ui/shadcnSelect'
-import { useTranslation } from 'react-i18next'
 
 export default function StaticSelectNumeric({ field }: any) {
-    const { t } = useTranslation()
-
     const handleSelectChange = (value: string) => {
         field.onChange(parseFloat(value))
     }
@@ -22,7 +19,9 @@ export default function StaticSelectNumeric({ field }: any) {
             <SelectContent>
                 <SelectGroup>
                     {Array.from({ length: 10 }, (_, index) => (
-                        <SelectItem value={index.toString()}>{index}</SelectItem>
+                        <SelectItem value={index.toString()} key={index}>
+                            {index}
+                        </SelectItem>
                     ))}
                 </SelectGroup>
             </SelectContent>

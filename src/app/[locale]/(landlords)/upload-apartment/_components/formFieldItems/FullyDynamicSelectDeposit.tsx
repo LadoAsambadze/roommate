@@ -20,7 +20,6 @@ export default function FullDynamicSelectDeposit({ field, data, form }: Apartmen
 
     const handleSelectChange = (value: string) => {
         field.onChange(value)
-        
     }
     const depositStatus = form.getValues('withDeposit')
 
@@ -36,17 +35,7 @@ export default function FullDynamicSelectDeposit({ field, data, form }: Apartmen
             <SelectContent>
                 <SelectGroup>
                     {data?.map((item, index) => (
-                        <SelectItem
-                            className="text-start"
-                            key={index}
-                            value={
-                                item.amount
-                                    ? item.amount.toString()
-                                    : item.translations && item.translations[0]
-                                      ? item.translations[0].id
-                                      : 'No description available'
-                            }
-                        >
+                        <SelectItem className="text-start" key={index} value={item.id}>
                             {item.amount
                                 ? item.amount
                                 : item.translations && item.translations[0]
