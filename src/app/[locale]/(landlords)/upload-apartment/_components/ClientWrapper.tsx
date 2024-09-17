@@ -44,7 +44,6 @@ function ClientWrapper() {
     const { t } = useTranslation()
 
     const [getCodeButtonClicked, setGetCodeButtonClicked] = useState(false)
-    const [uploaded, setUploaded] = useState(false)
     const [openAlert, setOpenAlert] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
 

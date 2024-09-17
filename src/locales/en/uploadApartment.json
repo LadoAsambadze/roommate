@@ -47,5 +47,6 @@
     "validNumber": "Please enter a valid phone number",
     "requiredFields": "Please fill all required fields correctly",
     "availableFromError": "The available from date must be later than today.",
-    "upload": "Upload"
+    "upload": "Upload",
+    "success": "Successfully uploaded"
 }

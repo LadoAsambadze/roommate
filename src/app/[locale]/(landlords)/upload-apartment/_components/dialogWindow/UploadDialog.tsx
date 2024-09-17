@@ -20,7 +20,7 @@ export function UploadDialog({ setOpenAlert, openAlert, alertMessage }: any) {
     const handleClose = () => {
         setOpenAlert(false)
         if (alertMessage === 'success') {
-            router.refresh()
+            router.push('/upload-apartment')
         }
     }
 
