@@ -1,6 +1,6 @@
 import { Language } from '@/graphql/typesGraphql'
 import { Button } from '@/src/components/ui/button'
-import { FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -67,6 +67,7 @@ export default function DescriptionTextarea({ form }: any) {
                                         }}
                                     />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />
