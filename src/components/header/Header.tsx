@@ -26,7 +26,12 @@ export default function Header() {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    const isLandlordsPath = pathname.includes('/landlords')
+    const isLandlordsPath =
+        pathname.includes('/landlords') ||
+        pathname.includes('/upload-apartment') ||
+        pathname.includes('/apartment-list') ||
+        pathname.includes('/landlord-profile')
+
     const isRoommatesPath = !isLandlordsPath // Opposite of landlords path
 
     let unreadMessagesCount = 0
@@ -137,7 +142,10 @@ export default function Header() {
             }
         }
 
-        if (isLandlordsPath && user?.me.userTypes.includes(UserType.Roommate)) {
+        if (
+            isRoommatesPath &&
+            (user?.me.userTypes.includes(UserType.Landlord) || !authStatus.valid)
+        ) {
             return (
                 <>
                     <button
@@ -159,44 +167,25 @@ export default function Header() {
             )
         }
 
-        if (isRoommatesPath && user?.me.userTypes.includes(UserType.Landlord)) {
+        if (
+            isLandlordsPath &&
+            (user?.me.userTypes.includes(UserType.Roommate) || !authStatus.valid)
+        ) {
             return (
                 <>
                     <button
                         onClick={signupModalHandler}
-                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
+                        className="hidden flex-row items-center rounded-lg bg-mainOrange p-2 text-white md:flex xl:px-3 xl:py-2"
                     >
-                        <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                        <UserIcon2 className="h-4 w-4 fill-white xl:h-6 xl:w-6" />
                         <span className="ml-1 text-xs xl:text-base">{t('signUp')}</span>
                     </button>
 
                     <button
                         onClick={signinModalHandler}
-                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
+                        className="hidden flex-row items-center rounded-lg bg-mainOrange p-2 text-white md:flex xl:px-3 xl:py-2"
                     >
-                        <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
-                        <span className="ml-1 text-xs xl:text-base">{t('signIn')}</span>
-                    </button>
-                </>
-            )
-        }
-
-        if (!authStatus.valid) {
-            return (
-                <>
-                    <button
-                        onClick={signupModalHandler}
-                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
-                    >
-                        <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
-                        <span className="ml-1 text-xs xl:text-base">{t('signUp')}</span>
-                    </button>
-
-                    <button
-                        onClick={signinModalHandler}
-                        className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
-                    >
-                        <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                        <UserIcon2 className="h-4 w-4 fill-white xl:h-6 xl:w-6" />
                         <span className="ml-1 text-xs xl:text-base">{t('signIn')}</span>
                     </button>
                 </>
@@ -218,10 +207,41 @@ export default function Header() {
                 </Link>
 
                 <div className="flex flex-row items-center gap-2 md:gap-4">
+                    {isLandlordsPath && (
+                        <>
+                            <Link href="/">
+                                <button className="text-base">რუმმეითებისთვის</button>
+                            </Link>
+                            {user?.me.userTypes.includes(UserType.Landlord) && authStatus.valid && (
+                                <>
+                                    <Link href="/upload-apartment">
+                                        <button className="text-base">ატვირთე ბინა</button>
+                                    </Link>
+                                    <Link href="/apartment-list">
+                                        <button className="text-base">ჩემი განცხადებები</button>
+                                    </Link>
+                                </>
+                            )}
+                        </>
+                    )}
+                    {isRoommatesPath && (
+                        <>
+                            <Link href="/landlords">
+                                <button className="text-base">ბინის მეპატრონეებისთის</button>
+                            </Link>
+                            <Link href="/roommates">
+                                <button className="text-base">იპოვე ოთახის მეზობელი</button>
+                            </Link>
+                            <Link href="/apartments">
+                                <button className="text-base">იქირავე ბინა</button>
+                            </Link>
+                        </>
+                    )}
+
                     {renderAuthSection()}
 
                     <LangChoose
-                        className="cursor-pointer rounded-lg bg-[#f2f5ff] p-2 text-xs lg:p-2 xl:text-base"
+                        className={` ${isLandlordsPath ? 'border border-mainOrange' : ' '} cursor-pointer rounded-lg bg-[#f2f5ff] p-2 text-xs text-[#838CAC] lg:p-2 xl:text-base`}
                         spanClassname="text-xs xl:text-base"
                     />
                     {user?.me?.id && user?.me.userTypes.includes(UserType.Roommate) ? (
