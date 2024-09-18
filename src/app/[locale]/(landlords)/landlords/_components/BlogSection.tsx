@@ -20,28 +20,28 @@ export default function BlogSection() {
     const { t } = useTranslation()
     const data = [
         {
-            header: t('blogHeader1'),
-            text: t('blogText1'),
+            header: t('landlordBlogHeader1'),
+            text: t('landlordBlogText1'),
             image: BlogFirst,
-            buttonText: t('findMore'),
+            buttonText: t('learnMore'),
             link: 'https://www.roommate.blog/',
             width: 400,
             height: 444,
         },
         {
-            header: t('blogHeader2'),
-            text: t('blogText2'),
+            header: t('landlordBlogHeader2'),
+            text: t('landlordBlogText2'),
             image: BlogSecond,
-            buttonText: t('findMore'),
+            buttonText: t('learnMore'),
             link: 'https://www.roommate.blog/post/a-comprehensive-guide-to-accommodation-options-and-prices-for-international-students-in-tbilisi-geo',
             width: 144,
             height: 144,
         },
         {
-            header: t('blogHeader3'),
-            text: t('blogText3'),
+            header: t('landlordBlogHeader3'),
+            text: t('landlordBlogText3'),
             image: BlogThirth,
-            buttonText: t('findMore'),
+            buttonText: t('learnMore'),
             link: 'https://www.roommate.blog/',
             width: 144,
             height: 144,
@@ -53,7 +53,7 @@ export default function BlogSection() {
     })
     return (
         <section className="my-12 flex h-full w-full flex-col items-start px-6 sm:px-16 md:px-20 lg:my-24 xl:px-24">
-            <h1 className="font-bgCaps text-xl text-[#484848]">{t('blogMainHead')}</h1>
+            <h1 className="font-bgCaps text-xl text-[#484848]">{t('blogMainHeadLandlord')}</h1>
 
             <Carousel
                 opts={{
@@ -71,7 +71,7 @@ export default function BlogSection() {
                                     <div className="mt-2 flex h-full flex-col justify-end md:mt-2 md:justify-end">
                                         <span className="z-50 text-xs">{item.text}</span>
                                         <Link href={item.link}>
-                                            <Button className="bottom-0 z-50 mt-4 w-32">
+                                            <Button className="bottom-0 z-50 mt-4 w-32 bg-mainOrange hover:bg-hoverOrange focus:bg-pressedOrange">
                                                 {item.buttonText}
                                             </Button>
                                         </Link>

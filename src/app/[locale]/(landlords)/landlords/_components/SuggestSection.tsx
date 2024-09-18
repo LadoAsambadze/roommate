@@ -14,23 +14,23 @@ export default function SuggestSection() {
     const { t } = useTranslation()
     const data = [
         {
-            header: t('whyUsHassleH'),
-            text: t('whyUsHassle'),
+            header: t('whyUs1'),
+
             image: BankIcon,
         },
         {
-            header: t('whyUsRoommatesH'),
-            text: t('whyUsRoommates'),
+            header: t('whyUs2'),
+
             image: BankIcon,
         },
         {
-            header: t('whyUsHomeListingH'),
-            text: t('whyUsHomeListnig'),
+            header: t('whyUs3'),
+
             image: BankIcon,
         },
         {
-            header: t('whyUsSearchH'),
-            text: t('whyUsSearch'),
+            header: t('whyUs4'),
+
             image: BankIcon,
         },
     ]
@@ -39,7 +39,7 @@ export default function SuggestSection() {
         <section className="flex w-full flex-col items-start bg-[#FFF6E4] p-6 sm:px-16 md:px-20 lg:flex-row lg:items-center lg:py-12 xl:px-24">
             <div className="flex flex-col items-start lg:w-2/3 ">
                 <h1 className="font-bgCaps text-2xl   text-[#484848] lg:text-[28px]">
-                    {t('whyUs')}
+                    {t('whyUsLandlord')}
                 </h1>
             </div>
             <Carousel
@@ -54,7 +54,6 @@ export default function SuggestSection() {
                             <div className="flex h-full w-full flex-col items-start rounded-xl bg-[#c0dbfc] py-4 pl-4 pr-8">
                                 <item.image alt="Bank Icon" className="h-8 w-8" />
                                 <p className="mt-4 text-xs font-semibold">{item.header}</p>
-                                <p className="mt-2 text-xs">{item.text}</p>
                             </div>
                         </CarouselItem>
                     ))}
@@ -74,7 +73,6 @@ export default function SuggestSection() {
                     >
                         <item.image alt="Bank Icon" className="h-12 w-12" />
                         <h1 className="mt-6 text-left font-semibold">{item.header}</h1>
-                        <h2 className="mt-2 text-left">{item.text}</h2>
                     </div>
                 ))}
             </div>

@@ -112,10 +112,14 @@ export default function Header() {
             if (isLandlordsPath && user.me.userTypes.includes(UserType.Landlord)) {
                 return (
                     <>
-                        <button className="hidden flex-row items-center rounded-lg bg-mainOrange p-2 text-white md:flex xl:px-3 xl:py-2">
-                            <UserIcon2 className="h-4 w-4 fill-white xl:h-6 xl:w-6" />
-                            <span className="ml-1 text-xs xl:text-base">{user.me.firstname}</span>
-                        </button>
+                        <Link href="/landlord-profile">
+                            <button className="hidden flex-row items-center rounded-lg bg-mainOrange p-2 text-white md:flex xl:px-3 xl:py-2">
+                                <UserIcon2 className="h-4 w-4 fill-white xl:h-6 xl:w-6" />
+                                <span className="ml-1 text-xs xl:text-base">
+                                    {user.me.firstname}
+                                </span>
+                            </button>
+                        </Link>
                         <button
                             onClick={signOutHandler}
                             className="hidden flex-row items-center rounded-lg bg-mainOrange p-2 text-white md:flex xl:px-3 xl:py-2"
@@ -129,10 +133,14 @@ export default function Header() {
             if (isRoommatesPath && user.me.userTypes.includes(UserType.Roommate)) {
                 return (
                     <>
-                        <button className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2">
-                            <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
-                            <span className="ml-1 text-xs xl:text-base">{user.me.firstname}</span>
-                        </button>
+                        <Link href="/profile">
+                            <button className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2">
+                                <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
+                                <span className="ml-1 text-xs xl:text-base">
+                                    {user.me.firstname}
+                                </span>
+                            </button>
+                        </Link>
                         <button
                             onClick={signOutHandler}
                             className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
@@ -210,13 +218,13 @@ export default function Header() {
                     pathname.includes('/landlords') ? 'bg-[#C0DBFC]' : 'bg-[headerBg]'
                 }`}
             >
-                <div className="flex items-center gap-10">
-                    <Link href="/">
+                <div className=" items-center gap-10 md:flex">
+                    <Link href={isLandlordsPath ? '/landlords' : '/'}>
                         <Logo
                             className={` ${isLandlordsPath ? 'fill-mainOrange' : 'fill-mainGreen'} h-6 w-[120px] cursor-pointer  md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]`}
                         />
                     </Link>
-                    <div className="flex items-center gap-5">
+                    <div className="hidden items-center gap-5 md:flex">
                         <Label
                             htmlFor="navigation-switch"
                             className={`transition-opacity  ${!isLandlordsPath ? ' text-mainGreen opacity-100' : 'opacity-50'}`}

@@ -13,11 +13,11 @@ export default function FeatureSection() {
                     <div className="mt-4 flex flex-col">
                         <div className=" flex h-12  w-full items-start md:h-20 xl:h-12">
                             <h1 className="break-words text-center text-xs text-[#838cac] lg:text-left lg:text-lg lg:font-semibold lg:text-[#484848]">
-                                {t('findRoommate')}
+                                {t('Register')}
                             </h1>
                         </div>
-                        <p className="hidden text-base font-normal lg:mt-2 lg:block xl:-mt-2">
-                            {t('findRoommateText')}
+                        <p className="hidden text-base font-normal lg:mt-2 lg:block xl:mt-3">
+                            {t('createAccount')}
                         </p>
                     </div>
                 </div>
@@ -26,11 +26,11 @@ export default function FeatureSection() {
                     <div className="mt-4 flex flex-col">
                         <div className=" flex  h-12 w-full items-start md:h-20 xl:h-12">
                             <h1 className="break-words text-center text-xs text-[#838cac] lg:text-left lg:text-lg lg:font-semibold lg:text-[#484848]">
-                                {t('roommateMatching')}
+                                {t('uploadProperty')}
                             </h1>
                         </div>
-                        <p className="hidden text-base lg:mt-2 lg:block xl:-mt-2">
-                            {t('roommateMatchingText')}
+                        <p className="hidden text-base lg:mt-2 lg:block xl:mt-3">
+                            {t('uploadMap')}
                         </p>
                     </div>
                 </div>
@@ -39,11 +39,11 @@ export default function FeatureSection() {
                     <div className="mt-4 flex flex-col">
                         <div className=" flex h-12  w-full items-start md:h-20 xl:h-12">
                             <h1 className="break-words text-center text-xs text-[#838cac] lg:text-left lg:text-lg lg:font-semibold lg:text-[#484848]">
-                                {t('support')}
+                                {t('waitForTenants')}
                             </h1>
                         </div>
-                        <p className="hidden text-base lg:mt-2 lg:block xl:-mt-2">
-                            {t('supportText')}
+                        <p className="hidden text-base lg:mt-2 lg:block xl:mt-3">
+                            {t('tenantsContact')}
                         </p>
                     </div>
                 </div>
@@ -55,10 +55,12 @@ export default function FeatureSection() {
                     <div className="mt-4 flex flex-col">
                         <div className=" flex  h-12 w-full items-start md:h-20 xl:h-12">
                             <span className="break-words text-center text-xs text-[#838cac] lg:text-left lg:text-lg lg:font-semibold lg:text-[#484848]">
-                                5.0
+                                {t('support')}
                             </span>
                         </div>
-                        <p className="hidden text-base lg:mt-2 lg:block xl:-mt-2">{t('rate')}</p>
+                        <p className="hidden text-base lg:mt-2 lg:block xl:mt-3">
+                            {t('suppoertDescribe')}
+                        </p>
                     </div>
                 </div>
             </section>

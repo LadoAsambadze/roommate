@@ -17,23 +17,23 @@ export default function ReviewSection() {
     const { t } = useTranslation()
     const data = [
         {
-            header: t('reviewName1'),
-            text: t('reviewText1'),
+            header: t('landlordReviewName1'),
+            text: t('landlordReviewText1'),
             image: FemaleAvatar,
         },
         {
-            header: t('reviewName2'),
-            text: t('reviewText2'),
+            header: t('landlordReviewName2'),
+            text: t('landlordReviewText2'),
             image: FemaleAvatar,
         },
         {
-            header: t('reviewName3'),
-            text: t('reviewText3'),
+            header: t('landlordReviewName3'),
+            text: t('landlordReviewText3'),
             image: MaleAvatar,
         },
         {
-            header: t('reviewName4'),
-            text: t('reviewText4'),
+            header: t('landlordReviewName4'),
+            text: t('landlordReviewText4'),
             image: FemaleAvatar,
         },
     ]

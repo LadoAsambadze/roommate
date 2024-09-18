@@ -17,19 +17,19 @@ export default function CoverSection() {
                         </p>
                     </div>
                     <div className=" hidden flex-row justify-start gap-x-4 pl-4 pt-6 md:flex xl:pt-12">
-                        <Link href={false ? '/#' : '/signup'}>
+                        <Link href="/roommates">
                             <Button className="w-auto   lg:text-base ">{t('findRoommate')}</Button>
                         </Link>
-                        <Link href="/#">
+                        <Link href="/apartments">
                             <Button className="w-auto lg:text-base">{t('rentApartment')}</Button>
                         </Link>
                     </div>
                 </div>
                 <div className="mt-4 flex flex-row justify-between gap-x-4 md:hidden">
-                    <Link className="w-full" href={false ? '/#' : '/signup'}>
+                    <Link className="w-full" href="/roommates">
                         <Button className="w-full px-2 md:text-base">{t('findRoommate')}</Button>
                     </Link>
-                    <Link className="w-full" href="/#">
+                    <Link className="w-full" href="/apartments">
                         <Button className="w-full px-0 md:text-base">{t('rentApartment')}</Button>
                     </Link>
                 </div>
