@@ -1,11 +1,11 @@
 import { Language } from '@/graphql/typesGraphql'
 import { Button } from '@/src/components/ui/button'
-import { FormControl, FormField, FormItem, FormLabel } from '@/src/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export default function TitleDescription({ form }: any) {
+export default function TitleTextarea({ form }: any) {
     const { t } = useTranslation()
     const [selectedLangTitle, setSelectedLangTitle] = useState<Language>(Language.En)
     const getDescriptionByLangTitle = (lang: Language) => {
@@ -57,6 +57,7 @@ export default function TitleDescription({ form }: any) {
                                     }}
                                 />
                             </FormControl>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />

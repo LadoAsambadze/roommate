@@ -7,7 +7,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/src/components/ui/shadcnSelect'
-import { useTranslation } from 'react-i18next'
 
 type ApartmentStatusProps = {
     field: any
@@ -16,22 +15,17 @@ type ApartmentStatusProps = {
 }
 
 export default function FullDynamicSelectDeposit({ field, data, form }: ApartmentStatusProps) {
-    const { t } = useTranslation()
-
     const handleSelectChange = (value: string) => {
-        field.onChange(value)
+        if (value !== '') field.onChange(value)
     }
     const depositStatus = form.getValues('withDeposit')
 
     return (
-        <Select
-            disabled={!depositStatus}
-            onValueChange={handleSelectChange}
-            defaultValue={field.value}
-        >
-            <SelectTrigger className="w-full text-start md:w-52 ">
+        <Select disabled={!depositStatus} onValueChange={handleSelectChange} value={field.value}>
+            <SelectTrigger className="w-full text-start md:w-52">
                 <SelectValue placeholder="-" />
             </SelectTrigger>
+
             <SelectContent>
                 <SelectGroup>
                     {data?.map((item, index) => (
