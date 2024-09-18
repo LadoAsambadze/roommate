@@ -7,6 +7,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
+    useFormField,
 } from '@/src/components/ui/form'
 import UploadValidator from './validator/UploadValidator'
 import StaticRentDatePicker from './formFieldItems/StaticRentDatePicker'
@@ -31,7 +32,7 @@ import MultiImageUploader from './formFieldItems/MultiImageUploader'
 import { SendCodeBySms, UpsertProperty, VerifyCodeBySms } from '@/graphql/mutation'
 import { Button } from '@/src/components/ui/button'
 import { VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DescriptionTextarea from './formFieldItems/DescriptionTextarea'
 import TitleDescription from './formFieldItems/TitleDescription'
 import Loading from '../../../loading'
@@ -85,8 +86,6 @@ function ClientWrapper() {
         }
     }
 
-    const formValues = form.getValues()
-
     const onSubmit = async () => {
         try {
             const { data: codeData, errors: codeErrors } = await smsCheck({
@@ -113,6 +112,7 @@ function ClientWrapper() {
                     input: {
                         withDeposit: withDeposit,
                         totalFloors: form.getValues('totalFloors'),
+                        floor: form.getValues('floor'),
                         titles: form.getValues('titles'),
                         street: form.getValues('street'),
                         rooms: form.getValues('rooms'),
@@ -130,7 +130,6 @@ function ClientWrapper() {
                         housingHeatingTypeIds: form.getValues('housingHeatingTypeIds'),
                         housingConditionId: form.getValues('housingConditionId'),
                         hideCadastralCode: form.getValues('hideCadastralCode'),
-                        floor: form.getValues('minRentalPeriod'),
                         descriptions: form.getValues('descriptions'),
                         contactPhone: form.getValues('phone'),
                         contactName: form.getValues('contactName'),
@@ -185,8 +184,7 @@ function ClientWrapper() {
                 />
             )}
 
-            <main className="flex min-h-screen w-full  flex-col items-center justify-start overflow-hidden py-5">
-                <h1 className="py-5 text-center text-xl">{t('uploadApartment')}</h1>
+            <main className="flex min-h-screen w-full flex-col items-center justify-start overflow-hidden py-5">
                 {!data ? (
                     <Loading />
                 ) : (
@@ -295,7 +293,15 @@ function ClientWrapper() {
                                                 {t('floorAmount')}
                                             </FormLabel>
                                             <FormControl>
-                                                <StaticSelectNumeric field={field} />
+                                                <Input
+                                                    min="0"
+                                                    type="number"
+                                                    onWheel={(event) => event.currentTarget.blur()}
+                                                    className="h-10 w-full md:w-28"
+                                                    onChange={(e) =>
+                                                        field.onChange(Number(e.target.value))
+                                                    }
+                                                />
                                             </FormControl>
                                         </FormItem>
                                     )}
@@ -309,8 +315,17 @@ function ClientWrapper() {
                                                 {t('flatFloor')}
                                             </FormLabel>
                                             <FormControl>
-                                                <StaticSelectNumeric field={field} />
+                                                <Input
+                                                    min="0"
+                                                    type="number"
+                                                    onWheel={(event) => event.currentTarget.blur()}
+                                                    className="h-10 w-full md:w-28"
+                                                    onChange={(e) =>
+                                                        field.onChange(Number(e.target.value))
+                                                    }
+                                                />
                                             </FormControl>
+                                            <FormMessage />
                                         </FormItem>
                                     )}
                                 />
