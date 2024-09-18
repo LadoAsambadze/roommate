@@ -14,7 +14,7 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
         const router = useRouter()
         const pathname = usePathname()
         const params = useParams()
-        const locale = params.locale
+        const locale = params.locale as string
         const [isValidating, setIsValidating] = useState(true)
         const isAuthenticated = useReactiveVar(isAuthenticatedVar)
         const { data: user, loading: userLoading } = useQuery(getUserQuery)
@@ -34,40 +34,54 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
         }, [])
 
         useEffect(() => {
+            const roommatePaths = ['/roommates', '/profile']
+            const landlordPaths = [
+                '/upload-apartment',
+                '/apartment-list',
+                '/landlord-profile',
+                '/landlords',
+            ]
+
+            const isLandlordPath = landlordPaths.some((path) => {
+                const pathWithoutLocale = pathname.replace(`/${locale}`, '')
+                return pathWithoutLocale === path || pathname === path
+            })
+
+            const isRoommatePath = roommatePaths.some((path) => {
+                const pathWithoutLocale = pathname.replace(`/${locale}`, '')
+                return pathWithoutLocale === path || pathname === path
+            })
+
             if (!isAuthenticated.valid) {
-                router.replace('/?modal=signinChooseType')
-            } else if (
-                !userLoading &&
-                user?.me.userTypes.includes(UserType.Landlord) &&
-                pathname === `/${locale}/roommates`
-            ) {
-                router.replace('/?modal=signinRoommates')
-            } else if (
-                !userLoading &&
-                user?.me.userTypes.includes(UserType.Landlord) &&
-                pathname === `/${locale}/profile`
-            ) {
-                router.replace('/?modal=signinRoommates')
-            } else if (
-                !userLoading &&
-                user?.me.userTypes.includes(UserType.Roommate) &&
-                pathname === `/${locale}/upload-apartment`
-            ) {
-                router.replace('/?modal=signinLandlords')
-            } else if (
-                !userLoading &&
-                user?.me.userTypes.includes(UserType.Roommate) &&
-                pathname === `/${locale}/apartment-list`
-            ) {
-                router.replace('/?modal=signinLandlords')
-            } else if (
-                !userLoading &&
-                user?.me.userTypes.includes(UserType.Roommate) &&
-                pathname === `/${locale}/landlord-profile`
-            ) {
-                router.replace('/?modal=signinLandlords')
+                if (isLandlordPath) {
+                    router.replace('/landlords?modal=signinLandlords')
+                } else if (isRoommatePath) {
+                    router.replace('/?modal=signinRoommates')
+                } else {
+                    router.replace('/?modal=signinChooseType')
+                }
+                return
             }
-        }, [isAuthenticated.valid, user, userLoading, pathname])
+
+            if (userLoading) return
+
+            const checkPathAndRedirect = (paths: string[], redirectPath: string) => {
+                const matchPath = paths.some((path) => {
+                    const pathWithoutLocale = pathname.replace(`/${locale}`, '')
+                    return pathWithoutLocale === path || pathname === path
+                })
+
+                if (matchPath) {
+                    router.replace(redirectPath)
+                }
+            }
+
+            if (user?.me.userTypes.includes(UserType.Landlord)) {
+                checkPathAndRedirect(roommatePaths, '/?modal=signinRoommates')
+            } else if (user?.me.userTypes.includes(UserType.Roommate)) {
+                checkPathAndRedirect(landlordPaths, '/?modal=signinLandlords')
+            }
+        }, [isAuthenticated.valid, user, userLoading, pathname, locale, router])
 
         if (isValidating || userLoading) {
             return <Loading />

@@ -6,7 +6,7 @@ import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
 import { MouseEvent, useCallback, useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { redirect, useRouter, useSearchParams } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
 import { isAuthenticatedVar } from '@/src/auth/isAuthenticatedVar'
@@ -14,6 +14,8 @@ import { getConversationsForUserQuery, getUserQuery } from '@/graphql/query'
 import { signOutHandler } from '@/src/auth/signOut'
 import { LIMIT, OFFSET } from '@/src/constants/pagination'
 import { UserType } from '@/graphql/typesGraphql'
+import { Label } from '../ui/label'
+import { Switch } from '../ui/switch'
 
 export default function Header() {
     const { t } = useTranslation()
@@ -193,6 +195,14 @@ export default function Header() {
         }
     }
 
+    const handleToggle = () => {
+        if (isLandlordsPath) {
+            router.push('/')
+        } else {
+            router.push('/landlords')
+        }
+    }
+
     return (
         <>
             <header
@@ -200,44 +210,34 @@ export default function Header() {
                     pathname.includes('/landlords') ? 'bg-[#C0DBFC]' : 'bg-[headerBg]'
                 }`}
             >
-                <Link href="/">
-                    <Logo
-                        className={` ${pathname.includes('/landlords') ? 'fill-mainOrange' : 'fill-mainGreen'} h-6 w-[120px] cursor-pointer md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]`}
-                    />
-                </Link>
+                <div className="flex items-center gap-10">
+                    <Link href="/">
+                        <Logo
+                            className={` ${isLandlordsPath ? 'fill-mainOrange' : 'fill-mainGreen'} h-6 w-[120px] cursor-pointer  md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]`}
+                        />
+                    </Link>
+                    <div className="flex items-center gap-5">
+                        <Label
+                            htmlFor="navigation-switch"
+                            className={`transition-opacity  ${!isLandlordsPath ? ' text-mainGreen opacity-100' : 'opacity-50'}`}
+                        >
+                            {t('lookingForRoommate')}
+                        </Label>
+                        <Switch
+                            id="navigation-switch"
+                            checked={isLandlordsPath}
+                            onCheckedChange={handleToggle}
+                        />
+                        <Label
+                            htmlFor="navigation-switch"
+                            className={`transition-opacity  ${isLandlordsPath ? ' text-mainOrange opacity-100' : 'opacity-50'}`}
+                        >
+                            {t('propertyOwner')}
+                        </Label>
+                    </div>
+                </div>
 
                 <div className="flex flex-row items-center gap-2 md:gap-4">
-                    {isLandlordsPath && (
-                        <>
-                            <Link href="/">
-                                <button className="text-base">რუმმეითებისთვის</button>
-                            </Link>
-                            {user?.me.userTypes.includes(UserType.Landlord) && authStatus.valid && (
-                                <>
-                                    <Link href="/upload-apartment">
-                                        <button className="text-base">ატვირთე ბინა</button>
-                                    </Link>
-                                    <Link href="/apartment-list">
-                                        <button className="text-base">ჩემი განცხადებები</button>
-                                    </Link>
-                                </>
-                            )}
-                        </>
-                    )}
-                    {isRoommatesPath && (
-                        <>
-                            <Link href="/landlords">
-                                <button className="text-base">ბინის მეპატრონეებისთის</button>
-                            </Link>
-                            <Link href="/roommates">
-                                <button className="text-base">იპოვე ოთახის მეზობელი</button>
-                            </Link>
-                            <Link href="/apartments">
-                                <button className="text-base">იქირავე ბინა</button>
-                            </Link>
-                        </>
-                    )}
-
                     {renderAuthSection()}
 
                     <LangChoose

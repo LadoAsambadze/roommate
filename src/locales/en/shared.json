@@ -31,5 +31,8 @@
     "area": "Area M2",
     "bedrooms": "Bedroom",
     "from": "From",
-    "to": "To"
+    "to": "To",
+    "lookingForRoommate": "Roommate",
+    "propertyOwner": "Landlord",
+    "signOut": "Sign out"
 }
