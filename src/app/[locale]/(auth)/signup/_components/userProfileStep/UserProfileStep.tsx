@@ -85,6 +85,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                         width={22}
                         height={16}
                         alt={country?.translations?.[0]?.name || 'Country flag'}
+                        priority={false}
                         className="h-auto w-auto"
                     />
                     <span></span>
@@ -133,7 +134,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                 form.setError('code', { message: t('codeAlreadySent') })
             }
         })()
-    } 
+    }
     return (
         <>
             <main className="flex flex-col items-center">

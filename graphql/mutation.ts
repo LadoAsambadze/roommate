@@ -24,7 +24,7 @@ export const RoommateSignUpMutation: TypedDocumentNode<
     { roommateSignUp: Mutation['roommateSignUp'] },
     MutationRoommateSignUpArgs
 > = gql`
-    mutation RoommateSignUp($input: SignUpInput!) {
+    mutation RoommateSignUp($input: RoommateSignUpInput!) {
         roommateSignUp(input: $input) {
             id
             email
