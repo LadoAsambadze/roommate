@@ -5,7 +5,45 @@ import { isAfter, startOfDay } from 'date-fns'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { isValidPhoneNumber } from 'react-phone-number-input'
-import { NEVER, z } from 'zod'
+import { z } from 'zod'
+
+export const uploadPropertyInitialValues = {
+    propertyTypeId: undefined,
+    availableFrom: undefined,
+    minRentalPeriod: undefined,
+    rooms: undefined,
+    bathroomsInProperty: undefined,
+    bathroomsInBedroom: undefined,
+    totalFloors: undefined,
+    floor: undefined,
+    housingStatusId: undefined,
+    housingConditionId: undefined,
+    street: undefined,
+    cadastralCode: null,
+    hideCadastralCode: false,
+    propertyAmenityIds: [],
+    housingHeatingTypeIds: [],
+    housingLivingSafetyIds: [],
+    capacity: undefined,
+    petAllowed: undefined,
+    partyAllowed: undefined,
+    withDeposit: false,
+    propertyDepositId: null,
+    price: undefined,
+    area: undefined,
+    contactName: undefined,
+    phone: undefined,
+    code: undefined,
+    descriptions: [
+        { text: '', lang: Language.En },
+        { text: '', lang: Language.Ka },
+    ],
+    titles: [
+        { text: '', lang: Language.En },
+        { text: '', lang: Language.Ka },
+    ],
+    imageUploadFiles: [],
+}
 
 export default function UploadValidator({ data }: { data?: GetPropertiesDataProps }) {
     const { t } = useTranslation()
@@ -153,43 +191,7 @@ export default function UploadValidator({ data }: { data?: GetPropertiesDataProp
         resolver: zodResolver(FormSchema),
         mode: 'onChange',
         reValidateMode: 'onChange',
-        defaultValues: {
-            propertyTypeId: undefined,
-            availableFrom: undefined,
-            minRentalPeriod: undefined,
-            rooms: undefined,
-            bathroomsInProperty: undefined,
-            bathroomsInBedroom: undefined,
-            totalFloors: undefined,
-            floor: undefined,
-            housingStatusId: undefined,
-            housingConditionId: undefined,
-            street: undefined,
-            cadastralCode: null,
-            hideCadastralCode: false,
-            propertyAmenityIds: [],
-            housingHeatingTypeIds: [],
-            housingLivingSafetyIds: [],
-            capacity: undefined,
-            petAllowed: undefined,
-            partyAllowed: undefined,
-            withDeposit: false,
-            propertyDepositId: null,
-            price: undefined,
-            area: undefined,
-            contactName: undefined,
-            phone: undefined,
-            code: undefined,
-            descriptions: [
-                { text: '', lang: Language.En },
-                { text: '', lang: Language.Ka },
-            ],
-            titles: [
-                { text: '', lang: Language.En },
-                { text: '', lang: Language.Ka },
-            ],
-            imageUploadFiles: [],
-        },
+        defaultValues: uploadPropertyInitialValues,
     })
 
     return form

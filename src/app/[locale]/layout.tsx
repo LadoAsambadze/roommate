@@ -35,6 +35,7 @@ export default async function RootLayout({
         'uploadApartment',
         'conversation',
         'landlords',
+        'common',
     ]
 
     const { resources } = await initTranslations(locale, i18nNamespaces)
