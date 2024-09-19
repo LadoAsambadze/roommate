@@ -10,17 +10,17 @@ export default function StaticDepositRadio({ field }: any) {
             value={field.value ? 'true' : 'false'}
             onValueChange={(value) => field.onChange(value === 'true')}
         >
-            <div className="flex w-full flex-col items-start gap-6 lg:flex-row lg:items-center lg:gap-10 ">
-                <div className="flex w-full items-center gap-2">
+            <div className="flex w-full flex-col items-start gap-6 lg:flex-row lg:items-center lg:gap-10">
+                <div className="flex w-1/2 items-center gap-2">
                     <RadioGroupItem value="false" id="withoutDeposit" />
                     <Label
                         htmlFor="withoutDeposit"
-                        className="w-full text-sm  font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        className="w-full text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
                         {t('withoutDeposit')}
                     </Label>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex w-1/2 items-center gap-2">
                     <RadioGroupItem value="true" id="withDeposit" />
                     <Label
                         htmlFor="withDeposit"
