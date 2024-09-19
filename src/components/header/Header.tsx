@@ -226,9 +226,7 @@ export default function Header() {
         }
     }
 
-    console.log(!user?.me.userTypes.includes(UserType.Roommate))
-
-    console.log(!user?.me.userTypes.includes(UserType.Landlord))
+    
 
     return (
         <>

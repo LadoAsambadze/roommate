@@ -35,5 +35,15 @@
     "landlordReviewText1": "This new platform made listing my property quick and easy. I’ve already secured a long-term tenant. Great job for a startup!",
     "landlordReviewText2": "გრძელვადიანი მდგმურები ვიპოვე პლატფორმაზე, roommate.ge-მ მოგვაწოდა კონტრაქტები და ყველა საჭირო ინფორმაცია რისკების შესამცირებლად. ",
     "landlordReviewText3": "The platform helped me find a great long-term tenant quickly. Very satisfied with this new service.",
-    "landlordReviewText4": "A solid choice for landlords."
+    "landlordReviewText4": "A solid choice for landlords.",
+    "hello": "Hello",
+    "rentOut": "To rent out",
+    "rentOutDescribe": "Want to rent out your property? Upload your home, room, or hotel to find potential tenants",
+    "downloadContract": "Download Contract",
+    "contractDescribe": "Download detailed, ready-to-use contract template",
+    "contactLandlord": "Contact us",
+    "supportQuestions": "If you have any questions, contact our customer support",
+    "aboutBlog": "Explore our blogs and recommendations on renting",
+    "contract": "Contract",
+    "myListings": "My Listings"
 }

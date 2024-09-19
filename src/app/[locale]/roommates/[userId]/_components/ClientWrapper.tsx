@@ -51,13 +51,13 @@ const ClientWrapper = () => {
     const fullName = user?.firstname && user?.lastname ? `${user?.firstname} ${user?.lastname}` : ''
     // prettier-ignore
     const available = user?.startDateLiving
-        ? `${format(user.startDateLiving.start, 'd MMMM yyyy', { locale: locale === Language.Ka ? ka : undefined })} - 
+        ? `${format(user.startDateLiving.start, 'd MMMM yyyy', { locale: locale === Language.Ka ? ka : undefined })} -
         ${format(user.startDateLiving.end, 'd MMMM yyyy', { locale: locale === Language.Ka ? ka : undefined})}`
         : ''
     const concatDistricts = user?.districts?.join(', ') ?? ''
     const concatInterests = user?.interests?.join(', ') ?? ''
 
-    console.log(user)
+     
 
     return (
         <>

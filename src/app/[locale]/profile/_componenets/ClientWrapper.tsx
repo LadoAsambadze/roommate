@@ -13,7 +13,7 @@ function ClientWrapper() {
     const searchParams = useSearchParams()
 
     const verification = searchParams.get('verification')
-    console.log(verification === 'true')
+  
 
     return (
         <main className="mt-1 flex min-h-screen w-full flex-col items-center bg-[#F5F5F5] px-6 pb-8 pt-6 md:flex-row md:items-start md:gap-6 md:px-24">
