@@ -112,6 +112,11 @@ export default function Header() {
             if (isLandlordsPath && user.me.userTypes.includes(UserType.Landlord)) {
                 return (
                     <>
+                        <Link href="/upload-apartment">
+                            <span className="cursor-pointer  text-base text-[#838CAC]">
+                                {t('uploadApartment')}
+                            </span>
+                        </Link>
                         <Link href="/landlord-profile">
                             <button className="hidden flex-row items-center rounded-lg bg-mainOrange p-2 text-white md:flex xl:px-3 xl:py-2">
                                 <UserIcon2 className="h-4 w-4 fill-white xl:h-6 xl:w-6" />
@@ -133,6 +138,16 @@ export default function Header() {
             if (isRoommatesPath && user.me.userTypes.includes(UserType.Roommate)) {
                 return (
                     <>
+                        <Link href="/roommates">
+                            <span className="cursor-pointer  text-base text-[#838CAC]">
+                                {t('findRoommate')}
+                            </span>
+                        </Link>
+                        <Link href="/apartments">
+                            <span className="cursor-pointer  text-base text-[#838CAC]">
+                                {t('rentApartment')}
+                            </span>
+                        </Link>
                         <Link href="/profile">
                             <button className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2">
                                 <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
@@ -211,11 +226,15 @@ export default function Header() {
         }
     }
 
+    console.log(!user?.me.userTypes.includes(UserType.Roommate))
+
+    console.log(!user?.me.userTypes.includes(UserType.Landlord))
+
     return (
         <>
             <header
                 className={`flex w-full flex-row items-center justify-between px-6 py-3 shadow-md sm:px-16 md:px-20 md:py-3 xl:px-24 xl:py-6 ${
-                    pathname.includes('/landlords') ? 'bg-[#C0DBFC]' : 'bg-[headerBg]'
+                    isLandlordsPath ? 'bg-[#C0DBFC]' : 'bg-[headerBg]'
                 }`}
             >
                 <div className=" items-center gap-10 md:flex">
@@ -224,25 +243,28 @@ export default function Header() {
                             className={` ${isLandlordsPath ? 'fill-mainOrange' : 'fill-mainGreen'} h-6 w-[120px] cursor-pointer  md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]`}
                         />
                     </Link>
-                    <div className="hidden items-center gap-5 md:flex">
-                        <Label
-                            htmlFor="navigation-switch"
-                            className={`transition-opacity  ${!isLandlordsPath ? ' text-mainGreen opacity-100' : 'opacity-50'}`}
-                        >
-                            {t('lookingForRoommate')}
-                        </Label>
-                        <Switch
-                            id="navigation-switch"
-                            checked={isLandlordsPath}
-                            onCheckedChange={handleToggle}
-                        />
-                        <Label
-                            htmlFor="navigation-switch"
-                            className={`transition-opacity  ${isLandlordsPath ? ' text-mainOrange opacity-100' : 'opacity-50'}`}
-                        >
-                            {t('propertyOwner')}
-                        </Label>
-                    </div>
+                    {!user?.me.userTypes.includes(UserType.Roommate) &&
+                    !user?.me.userTypes.includes(UserType.Landlord) ? (
+                        <div className="hidden items-center gap-5 md:flex">
+                            <Label
+                                htmlFor="navigation-switch"
+                                className={`transition-opacity ${!isLandlordsPath ? 'text-mainGreen opacity-100' : 'opacity-50'}`}
+                            >
+                                {t('lookingForRoommate')}
+                            </Label>
+                            <Switch
+                                id="navigation-switch"
+                                checked={isLandlordsPath}
+                                onCheckedChange={handleToggle}
+                            />
+                            <Label
+                                htmlFor="navigation-switch"
+                                className={`transition-opacity ${isLandlordsPath ? 'text-mainOrange opacity-100' : 'opacity-50'}`}
+                            >
+                                {t('propertyOwner')}
+                            </Label>
+                        </div>
+                    ) : null}
                 </div>
 
                 <div className="flex flex-row items-center gap-2 md:gap-4">
