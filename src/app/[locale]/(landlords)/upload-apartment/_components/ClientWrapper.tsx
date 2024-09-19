@@ -204,14 +204,14 @@ function ClientWrapper() {
                 />
             )}
 
-            <main className="flex min-h-screen w-full flex-col items-center justify-start overflow-hidden py-5">
+            <main className="m-auto flex min-h-screen w-full flex-col items-center justify-start overflow-hidden px-6 py-10 sm:px-16 md:max-w-[770px]">
                 {!data ? (
                     <Loading />
                 ) : (
                     <Form {...form}>
                         <form
                             onSubmit={handleSubmit(onSubmit)}
-                            className="flex h-full w-full flex-col gap-6 overflow-auto rounded-md p-6 md:w-2/3 md:px-10 md:py-10"
+                            className="flex h-full w-full flex-col gap-6 overflow-auto rounded-md"
                         >
                             <FormField
                                 control={control}
@@ -270,14 +270,14 @@ function ClientWrapper() {
                                     </FormItem>
                                 )}
                             />
-                            <div className="flex w-full flex-col gap-4">
+                            <div className="flex w-full flex-col">
                                 <FormLabel>{t('bathroomsAmount')}</FormLabel>
-                                <div className="flex w-full flex-row gap-2 md:gap-56">
+                                <div className="mt-2 flex w-full flex-row gap-4">
                                     <FormField
                                         control={control}
                                         name="bathroomsInProperty"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem className="md:w-1/2">
                                                 <FormLabel className="text-xs md:text-sm">
                                                     {t('inApartment')}
                                                 </FormLabel>
@@ -291,7 +291,7 @@ function ClientWrapper() {
                                         control={control}
                                         name="bathroomsInBedroom"
                                         render={({ field }) => (
-                                            <FormItem>
+                                            <FormItem className="md:w-1/2">
                                                 <FormLabel className="text-xs md:text-sm">
                                                     {t('inBedroom')}
                                                 </FormLabel>
@@ -303,12 +303,12 @@ function ClientWrapper() {
                                     />
                                 </div>
                             </div>
-                            <div className="flex w-full flex-row items-end gap-2 md:gap-56">
+                            <div className="flex w-full flex-row items-start gap-4">
                                 <FormField
                                     control={control}
                                     name="totalFloors"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="md:w-1/2">
                                             <FormLabel className="text-sm md:text-base">
                                                 {t('floorAmount')}
                                             </FormLabel>
@@ -330,7 +330,7 @@ function ClientWrapper() {
                                     control={control}
                                     name="floor"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="md:w-1/2">
                                             <FormLabel className="text-sm md:text-base">
                                                 {t('flatFloor')}
                                             </FormLabel>
@@ -350,12 +350,12 @@ function ClientWrapper() {
                                     )}
                                 />
                             </div>
-                            <div className="flex  flex-col gap-6 md:flex-row md:gap-24">
+                            <div className="flex flex-col gap-4 md:flex-row">
                                 <FormField
                                     control={control}
                                     name="housingStatusId"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="md:w-1/2">
                                             <FormLabel className="text-sm md:text-base">
                                                 {t('status')}
                                             </FormLabel>
@@ -372,7 +372,7 @@ function ClientWrapper() {
                                     control={control}
                                     name="housingConditionId"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="md:w-1/2">
                                             <FormLabel className="flex w-full justify-start  text-sm">
                                                 {t('condition')}
                                             </FormLabel>
@@ -592,7 +592,7 @@ function ClientWrapper() {
                                 />
                             </div>
 
-                            <div className="relative flex w-full flex-col items-center gap-4 md:w-full lg:flex-row">
+                            <div className="relative flex w-full flex-col items-start gap-4 md:w-full md:flex-row">
                                 <FormField
                                     control={control}
                                     name="withDeposit"
@@ -604,26 +604,28 @@ function ClientWrapper() {
                                         </FormItem>
                                     )}
                                 />
-                                <div className="flex w-full flex-row items-center gap-2">
+                                <div className="flex w-full flex-row items-center self-end">
                                     <FormField
                                         control={control}
                                         name="propertyDepositId"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormControl>
-                                                    <FullDynamicSelectDeposit
-                                                        field={field}
-                                                        form={form}
-                                                        data={data?.getPropertyDeposits}
-                                                    />
-                                                </FormControl>
+                                                <div className="flex">
+                                                    <FormControl>
+                                                        <FullDynamicSelectDeposit
+                                                            field={field}
+                                                            form={form}
+                                                            data={data?.getPropertyDeposits}
+                                                        />
+                                                    </FormControl>
+                                                    <div className="ml-3 flex h-9 w-9 items-center justify-center rounded-md bg-mainGreen text-base text-white md:w-9">
+                                                        $
+                                                    </div>
+                                                </div>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
-                                    <div className="flex h-9 w-9 items-center justify-center rounded-md bg-mainGreen text-base text-white md:w-9">
-                                        $
-                                    </div>
                                 </div>
                             </div>
 
