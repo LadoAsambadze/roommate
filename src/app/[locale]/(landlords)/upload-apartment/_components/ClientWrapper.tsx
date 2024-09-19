@@ -70,26 +70,36 @@ function ClientWrapper() {
     const { trigger, formState, getValues, setError, watch, setValue, control, handleSubmit } = form
 
     const getCodeHandler = async () => {
-        await trigger(['phone'])
-        const phoneError = formState.errors.phone
+        const isValid = await trigger('phone')
 
-        if (phoneError) {
+        if (!isValid) {
             setOpenAlert(true)
             setAlertMessage('validNumber')
-        }
+        } else {
+            setGetCodeButtonClicked(true)
 
-        setGetCodeButtonClicked(true)
-
-        const { data: smsSendData, errors } = await smsSend({
-            variables: {
-                input: {
-                    phone: getValues('phone') ?? '',
+            const { data: smsSendData, errors } = await smsSend({
+                variables: {
+                    input: {
+                        phone: getValues('phone') ?? '',
+                    },
                 },
-            },
-        })
+            })
 
-        if (smsSendData?.sendCodeBySms?.status === 'ALREADY_SENT') {
-            setError('code', { message: t('codeAlreadySent') })
+            if (errors?.length) {
+                const sendFailed = errors.find(
+                    (error) => error?.extensions?.code === 'INTERNAL_SERVER_ERROR'
+                )
+
+                if (sendFailed) {
+                    setAlertMessage(t('SMS__SENDING_FAILED'))
+                    setOpenAlert(true)
+                }
+            }
+
+            if (smsSendData?.sendCodeBySms?.status === 'ALREADY_SENT') {
+                setError('code', { message: t('codeAlreadySent') })
+            }
         }
     }
 
@@ -109,63 +119,52 @@ function ClientWrapper() {
                 codeData?.verifyCodeBySms?.status !== VerificationCodeValidityStatus.Valid
             ) {
                 setError('code', { message: t('invalidCode') })
-            }
+            } else {
+                const formValues = getValues()
+                const withDeposit = formValues.propertyDepositId ? true : formValues.withDeposit
 
-            const formValues = getValues()
-            const withDeposit = formValues.propertyDepositId ? true : formValues.withDeposit
-
-            const { data, errors } = await uploadProperty({
-                variables: {
-                    input: {
-                        id: null,
-                        withDeposit: withDeposit,
-                        totalFloors: getValues('totalFloors'),
-                        floor: getValues('floor'),
-                        titles: getValues('titles'),
-                        street: getValues('street'),
-                        rooms: getValues('rooms'),
-                        propertyTypeId: getValues('propertyTypeId'),
-                        propertyDepositId: getValues('propertyDepositId'),
-                        propertyAmenityIds: getValues('propertyAmenityIds'),
-                        price: getValues('price'),
-                        petAllowed: getValues('petAllowed'),
-                        partyAllowed: getValues('partyAllowed'),
-                        minRentalPeriod: getValues('minRentalPeriod'),
-                        imageUploadFiles: getValues('imageUploadFiles'),
-                        housingStatusId: getValues('housingStatusId'),
-                        housingLivingSafetyIds: getValues('housingLivingSafetyIds'),
-                        housingHeatingTypeIds: getValues('housingHeatingTypeIds'),
-                        housingConditionId: getValues('housingConditionId'),
-                        hideCadastralCode: getValues('hideCadastralCode'),
-                        descriptions: getValues('descriptions'),
-                        contactPhone: getValues('phone'),
-                        contactName: getValues('contactName'),
-                        capacity: getValues('capacity'),
-                        cadastralCode: getValues('cadastralCode'),
-                        bathroomsInProperty: getValues('bathroomsInProperty'),
-                        bathroomsInBedroom: getValues('bathroomsInBedroom'),
-                        availableFrom: getValues('availableFrom'),
-                        area: getValues('area'),
+                const { data, errors } = await uploadProperty({
+                    variables: {
+                        input: {
+                            id: null,
+                            withDeposit: withDeposit,
+                            totalFloors: getValues('totalFloors'),
+                            floor: getValues('floor'),
+                            titles: getValues('titles'),
+                            street: getValues('street'),
+                            rooms: getValues('rooms'),
+                            propertyTypeId: getValues('propertyTypeId'),
+                            propertyDepositId: getValues('propertyDepositId'),
+                            propertyAmenityIds: getValues('propertyAmenityIds'),
+                            price: getValues('price'),
+                            petAllowed: getValues('petAllowed'),
+                            partyAllowed: getValues('partyAllowed'),
+                            minRentalPeriod: getValues('minRentalPeriod'),
+                            imageUploadFiles: getValues('imageUploadFiles'),
+                            housingStatusId: getValues('housingStatusId'),
+                            housingLivingSafetyIds: getValues('housingLivingSafetyIds'),
+                            housingHeatingTypeIds: getValues('housingHeatingTypeIds'),
+                            housingConditionId: getValues('housingConditionId'),
+                            hideCadastralCode: getValues('hideCadastralCode'),
+                            descriptions: getValues('descriptions'),
+                            contactPhone: getValues('phone'),
+                            contactName: getValues('contactName'),
+                            capacity: getValues('capacity'),
+                            cadastralCode: getValues('cadastralCode'),
+                            bathroomsInProperty: getValues('bathroomsInProperty'),
+                            bathroomsInBedroom: getValues('bathroomsInBedroom'),
+                            availableFrom: getValues('availableFrom'),
+                            area: getValues('area'),
+                        },
                     },
-                },
-            })
-            if (data?.upsertProperty) {
-                setOpenAlert(true)
-                setAlertMessage('success')
-            }
-            if (errors) {
-                setOpenAlert(true)
-                setAlertMessage('requiredFields')
-                const errorCodes = errors[0]?.extensions?.errorCode
-
-                if (
-                    Array.isArray(errorCodes) &&
-                    errorCodes.includes('AVAILABLE_FROM__MIN_DATE:TODAY')
-                ) {
-                    setError('availableFrom', {
-                        type: 'manual',
-                        message: t('availableFromError'),
-                    })
+                })
+                if (data?.upsertProperty) {
+                    setOpenAlert(true)
+                    setAlertMessage('success')
+                }
+                if (errors?.length) {
+                    setOpenAlert(true)
+                    setAlertMessage(t('canNotUpload'))
                 }
             }
         } catch (error) {
@@ -189,10 +188,6 @@ function ClientWrapper() {
             }
             if (name === 'totalFloors' && typeof value.floor === 'number') {
                 trigger(['floor'])
-            }
-
-            if (name === 'titles') {
-                trigger('titles')
             }
         })
 
