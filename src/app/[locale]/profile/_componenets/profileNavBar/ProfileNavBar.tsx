@@ -36,12 +36,14 @@ export default function ProfileNavBar() {
         <section className="h-full w-full md:w-[300px]">
             <div className="flex h-full w-full flex-col items-center pb-6 md:flex-row">
                 <h1 className="md:hidden">{t('profile')}</h1>
-
-                <Image
-                    src={Avatar}
-                    className="  mt-4 h-24 w-24 rounded-full object-cover"
-                    alt="Image"
-                />
+                <div className="relative mt-4 h-24 w-24">
+                    <Image
+                        fill
+                        src={user?.me.profileImage ? user?.me.profileImage : Avatar}
+                        className=" h-full w-full rounded-full object-cover"
+                        alt="Image"
+                    />
+                </div>
                 <div className="flex h-full w-full  flex-col items-center md:ml-6 md:items-start">
                     <span className="mt-4">
                         {user?.me.firstname} {user?.me.lastname}
