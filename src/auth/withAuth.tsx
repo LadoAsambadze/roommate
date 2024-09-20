@@ -34,7 +34,9 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
         }, [])
 
         useEffect(() => {
-            const roommatePaths = ['/roommates', '/profile']
+            const roommatePaths = ['/profile']
+            const roommatesOnly = ['/roommates']
+
             const landlordPaths = [
                 '/upload-apartment',
                 '/apartment-list',
@@ -52,13 +54,18 @@ export const withAuth = (WrappedComponent: React.ComponentType) => {
                 return pathWithoutLocale === path || pathname === path
             })
 
+            const separatlyRoommates = roommatesOnly.some((path) => {
+                const pathWithoutLocale = pathname.replace(`/${locale}`, '')
+                return pathWithoutLocale === path || pathname === path
+            })
+
             if (!isAuthenticated.valid) {
                 if (isLandlordPath) {
                     router.replace('/landlords?modal=signinLandlords')
                 } else if (isRoommatePath) {
                     router.replace('/?modal=signinRoommates')
-                } else {
-                    router.replace('/?modal=signinChooseType')
+                } else if (separatlyRoommates) {
+                    router.replace('/signup')
                 }
                 return
             }

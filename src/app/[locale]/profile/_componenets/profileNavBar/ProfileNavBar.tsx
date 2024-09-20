@@ -12,14 +12,16 @@ import {
     ShieldSlash,
     UserIcon2,
 } from '@/src/components/svgs'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useCallback } from 'react'
+import { useQuery } from '@apollo/client'
+import { getUserQuery } from '@/graphql/query'
 
 export default function ProfileNavBar() {
     const { t } = useTranslation()
-    const searchParams = useSearchParams()
     const router = useRouter()
     const pathname = usePathname()
+    const { data: user, loading: userLoading } = useQuery(getUserQuery)
 
     const sectionClickHandler = useCallback(
         (name: string, value: string) => {
@@ -34,15 +36,19 @@ export default function ProfileNavBar() {
         <section className="h-full w-full md:w-[300px]">
             <div className="flex h-full w-full flex-col items-center pb-6 md:flex-row">
                 <h1 className="md:hidden">{t('profile')}</h1>
-
-                <Image
-                    src={Avatar}
-                    className="  mt-4 h-24 w-24 rounded-full object-cover"
-                    alt="Image"
-                />
+                <div className="relative mt-4 h-24 w-24">
+                    <Image
+                        fill
+                        src={user?.me.profileImage ? user?.me.profileImage : Avatar}
+                        className=" h-full w-full rounded-full object-cover"
+                        alt="Image"
+                    />
+                </div>
                 <div className="flex h-full w-full  flex-col items-center md:ml-6 md:items-start">
-                    <span className="mt-4">ანასტასია დოლიძე</span>
-                    <span className="mt-2">+995 565 23 23 23</span>
+                    <span className="mt-4">
+                        {user?.me.firstname} {user?.me.lastname}
+                    </span>
+                    <span className="mt-2">{user?.me.phone}</span>
                 </div>
             </div>
             <div className="mb-4 hidden h-[1px] w-full bg-[#E5E5E5] md:block"></div>

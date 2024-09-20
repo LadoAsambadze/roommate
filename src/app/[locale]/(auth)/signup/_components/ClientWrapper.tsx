@@ -17,7 +17,8 @@ import {
     NewAnsweredQuestion,
 } from '../types'
 import { RoommateSignUpMutation } from '@/graphql/mutation'
-import { setRefreshToken, setSessionId, setAccessToken } from '@/src/auth/authHelpers'
+
+import { signIn } from '@/src/auth/signIn'
 
 export default function ClientWrapper() {
     const [step, setStep] = useState(1)
@@ -123,9 +124,7 @@ export default function ClientWrapper() {
                 })
 
                 if (data?.roommateSignUp.jwt) {
-                    setAccessToken(data.roommateSignUp.jwt.accessToken)
-                    setRefreshToken(data.roommateSignUp.jwt.refreshToken)
-                    setSessionId(data.roommateSignUp.jwt.sessionId)
+                    signIn(data.roommateSignUp.jwt)
                     router.push('/roommates')
                 }
             } catch (error: unknown | CustomError) {

@@ -12,5 +12,9 @@
     "notGetCode": "Did not get code?",
     "resendCode": "Resend code",
     "verify": "Verification",
-    "signupModal": "Sign up"
+    "signupModal": "Sign up",
+    "userNotFound": "User not found",
+    "invalidPhone": "Please enter phone number",
+    "noSendCode": "Code not sent",
+    "invalidPhoneOrMail": "Please enter phone or email"
 }

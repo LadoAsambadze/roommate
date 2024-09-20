@@ -43,8 +43,6 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
         },
     })
 
-
-
     const handleCommonErrors = (errors: readonly GraphQLFormattedError[], form: any) => {
         const firstError = errors[0]
         if (firstError?.extensions?.code === 'BAD_REQUEST') {
@@ -52,7 +50,7 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
 
             if (typeof errorCode === 'string') {
                 const errorMessages: { [key: string]: string } = {
-                    USER__EXISTS_WITH_EMAIL: 'USER__EXISTS_WITH_EMAIL',
+                    USER__EXISTS_WITH_EMAIL: t('userExistsWithMail'),
                     EMAIL__INVALID: 'EMAIL__INVALID',
                     'FIRSTNAME__MAX:30': 'FIRSTNAME__MAX:30',
                     'LASTNAME__MAX:100': 'LASTNAME__MAX:100',
@@ -60,10 +58,10 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
                     'PASSWORD__MIN:6': 'PASSWORD__MIN:6',
                     'PASSWORD__MAX:30': 'PASSWORD__MAX:30',
                     CONFIRM_PASSWORD__NOT_EQUAL: 'CONFIRM_PASSWORD__NOT_EQUAL',
-                    USER__EXISTS_WITH_PHONE: 'USER__EXISTS_WITH_PHONE',
+                    USER__EXISTS_WITH_PHONE: t('userExistsWithPhone'),
                     PHONE_OR_EMAIL__REQUIRED: 'PHONE_OR_EMAIL__REQUIRED',
                     'USER__EXISTS_WITH_PHONE:roommate':
-                        'ამ ნომრით უკვე ხარ რუმმეითზე დარეგისტრირებული',
+                        t("phoneUsedOnRoommate"),
                 }
 
                 if (errorCode in errorMessages) {
@@ -151,11 +149,9 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
 
                     if (signupDataSmsErrors) {
                         handleCommonErrors(signupDataSmsErrors, form)
-
                     } else if (signupDataSms) {
                         signIn(signupDataSms?.landlordSignUp?.jwt)
                         router.push('/landlords')
-
                     }
                 } else if (verifySms?.verifyCodeBySms?.status === 'INVALID') {
                     form.setError('code', { message: t('expired') })

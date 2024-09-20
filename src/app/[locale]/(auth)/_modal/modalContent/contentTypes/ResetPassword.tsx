@@ -18,25 +18,41 @@ type ResetPasswordProps = {
     modalType: string
 }
 
-const phoneFormFormSchema = z.object({
-    phone: z.string().min(6, {
-        message: 'required',
-    }),
-})
-
-const identifierFormSchema = z.object({
-    identifier: z.string().min(6, {
-        message: 'required',
-    }),
-})
 export default function ResetPassword({
     signinRoommatesHandler,
     signinLandlordsHandler,
     modalType,
 }: ResetPasswordProps) {
-    const { t } = useTranslation()
-
     const [verifyCode, setVerifyCode] = useState(false)
+    const { t } = useTranslation()
+    const phoneFormFormSchema = z.object({
+        phone: z
+            .string()
+            .trim()
+            .min(1, { message: '' })
+            .refine(
+                (value) => {
+                    const isPhone = /^\d+$/.test(value)
+                    return isPhone
+                },
+                { message: t('invalidPhone') }
+            ),
+    })
+
+    const identifierFormSchema = z.object({
+        identifier: z
+            .string()
+            .trim()
+            .min(1, { message: '' })
+            .refine(
+                (value) => {
+                    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+                    const isPhone = /^\d+$/.test(value)
+                    return isEmail || isPhone
+                },
+                { message: t('invalidPhoneOrMail') }
+            ),
+    })
 
     const phoneForm = useForm<z.infer<typeof phoneFormFormSchema>>({
         resolver: zodResolver(phoneFormFormSchema),
@@ -68,13 +84,9 @@ export default function ResetPassword({
 
             if (errors) {
                 if (errors[0].extensions?.errorCode === 'USER__NOT_FOUND') {
-                    phoneForm.setError('phone', { message: 'მომხარებელი არ მოიძებნა' })
-                } else if (
-                    errors[0].extensions?.errorCode === 'IDENTIFIER__INVALID:EMAIL_OR_PHONE'
-                ) {
-                    phoneForm.setError('phone', { message: 'IDENTIFIER__INVALID:EMAIL_OR_PHONE' })
+                    phoneForm.setError('phone', { message: t('userNotFound') })
                 } else if (errors[0].extensions?.errorCode === 'IDENTIFIER__INVALID:PHONE') {
-                    phoneForm.setError('phone', { message: 'IDENTIFIER__INVALID:PHONE' })
+                    phoneForm.setError('phone', { message: t('invalidPhone') })
                 }
             } else if (data) {
                 if (
@@ -85,7 +97,7 @@ export default function ResetPassword({
                     setVerifyCode(true)
                 } else {
                     if (data?.roommateSendResetPasswordVerificationCode?.status === 'SEND_FAILED') {
-                        phoneForm.setError('phone', { message: 'ar gaigzavna' })
+                        phoneForm.setError('phone', { message: t('noSendCode') })
                     }
                 }
             }
@@ -96,15 +108,13 @@ export default function ResetPassword({
 
             if (errors) {
                 if (errors[0].extensions?.errorCode === 'USER__NOT_FOUND') {
-                    identifierForm.setError('identifier', { message: 'მომხარებელი არ მოიძებნა' })
+                    identifierForm.setError('identifier', { message: t('userNotFound') })
                 } else if (
                     errors[0].extensions?.errorCode === 'IDENTIFIER__INVALID:EMAIL_OR_PHONE'
                 ) {
                     identifierForm.setError('identifier', {
-                        message: 'IDENTIFIER__INVALID:EMAIL_OR_PHONE',
+                        message: t('invalidPhoneOrMail'),
                     })
-                } else if (errors[0].extensions?.errorCode === 'IDENTIFIER__INVALID:PHONE') {
-                    identifierForm.setError('identifier', { message: 'IDENTIFIER__INVALID:PHONE' })
                 }
             } else if (data) {
                 if (
@@ -115,7 +125,7 @@ export default function ResetPassword({
                     setVerifyCode(true)
                 } else {
                     if (data?.landlordSendResetPasswordVerificationCode.status === 'SEND_FAILED') {
-                        identifierForm.setError('identifier', { message: 'ar gaigzavna' })
+                        identifierForm.setError('identifier', { message: t('noSendCode') })
                     }
                 }
             }
@@ -138,7 +148,7 @@ export default function ResetPassword({
                             <span className="mb-1 text-xs text-[#838CAC]">{t('back')}</span>
                         </button>
                     </div>
-                    <h1 className="text-center text-base">პაროლის აღდგენა</h1>
+                    <h1 className="text-center text-base">{t('resetPassword')}</h1>
                     <div className="flex w-full flex-col gap-2">
                         <Form {...phoneForm}>
                             <form onSubmit={phoneForm.handleSubmit(onSubmit)}>
@@ -170,8 +180,8 @@ export default function ResetPassword({
                             className="flex cursor-pointer flex-row items-center gap-1 outline-none"
                             onClick={
                                 modalType === 'resetPasswordLandlords'
-                                    ? signinRoommatesHandler
-                                    : signinLandlordsHandler
+                                    ? signinLandlordsHandler
+                                    : signinRoommatesHandler
                             }
                         >
                             <ArrowLeft className="h-5 w-5" />
@@ -179,7 +189,7 @@ export default function ResetPassword({
                         </button>
                     </div>
 
-                    <h1 className="text-center text-base">პაროლის აღდგენა</h1>
+                    <h1 className="text-center text-base">{t('resetPassword')}</h1>
                     <Form {...identifierForm}>
                         <form onSubmit={identifierForm.handleSubmit(onSubmit)}>
                             <FormField
