@@ -239,23 +239,20 @@ const MessagesList = ({ conversationResource, conversation }: Props) => {
         virtualizerRef.current.scrollToOffset(nextOffset)
     }
 
-    const reverseIndex = useCallback((index: number) => count - 1 - index, [count])
+    const reverseIndex = (index: number) => count - 1 - index
 
     const virtualizer = useVirtualizer({
         getScrollElement: () => parentDomRef.current,
         count,
-        estimateSize: useCallback(() => {
+        estimateSize: () => {
             if (messages.length <= MESSAGES_PAGE_SIZE) {
                 return MESSAGE_BOX_ESTIMATE_HEIGHT_FOR_FIRST_PAGE
             }
 
             return MESSAGE_BOX_ESTIMATE_HEIGHT
-        }, [messages]),
-        getItemKey: useCallback(
-            (index: number) => messages[reverseIndex(index)].index,
-            [messages, reverseIndex]
-        ),
-        overscan: 5,
+        },
+        getItemKey: (index: number) => messages[reverseIndex(index)].index,
+        overscan: messages.length <= MESSAGES_PAGE_SIZE ? 33 : 5,
         paddingEnd: 3,
         paddingStart: 3,
         gap: 10,
@@ -266,12 +263,13 @@ const MessagesList = ({ conversationResource, conversation }: Props) => {
     })
 
     const virtualizerItems = virtualizer.getVirtualItems()
+
     /*
      * VIRTUALIZER CODE END
      */
 
     return (
-        <div ref={parentDomRef} className="overflow-y-auto">
+        <div ref={parentDomRef} className="overflow-y-auto overscroll-none">
             {(paginatedMessagesRef?.current?.hasPrevPage || loading) && (
                 <div className="mb-3 flex w-full justify-center" ref={inViewLoaderDomRef}>
                     <Spinner size="small" />
@@ -309,7 +307,7 @@ const MessagesList = ({ conversationResource, conversation }: Props) => {
                         >
                             <div
                                 className={cn(
-                                    'text group relative mx-2 max-w-[65%] bg-[#c5bdff]  p-2 text-sm  text-stone-800 md:max-w-[75%]',
+                                    'text group relative mx-2 max-w-[65%] bg-[#c5bdff] p-2 text-sm text-stone-800 md:max-w-[75%]',
                                     {
                                         'ml-40 rounded-t-[12px] rounded-bl-[12px] rounded-br-[0] text-right ':
                                             conversation?.user?.id !== message.author,

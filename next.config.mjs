@@ -10,12 +10,18 @@ const nextConfig = {
     },
 
     images: {
-        domains: ['img.roommategeorgia.ge', 'flagcdn.com'],
+        domains: ['img.roommategeorgia.ge', 'flagcdn.com', 'localhost'],
         remotePatterns: [
             {
                 protocol: 'https',
                 hostname: 'img.roommategeorgia.ge',
                 port: '',
+                pathname: '/public/static/images/**',
+            },
+            {
+                protocol: 'http',
+                hostname: 'localhost',
+                port: '7777',
                 pathname: '/public/static/images/**',
             },
         ],

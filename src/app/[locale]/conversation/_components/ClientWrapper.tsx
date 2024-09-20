@@ -105,8 +105,8 @@ const ClientWrapper = () => {
     return (
         <>
             <TwilioDisconnectionAlertDialog open={isTwilioConnectionDown} />
-            <main className="flex h-full w-full flex-col overflow-hidden overscroll-none md:h-screen">
-                <div className="relative flex h-full flex-grow flex-row overflow-hidden bg-[#F5F5F5] md:px-20 md:pt-6 xl:px-24">
+            <main className="flex h-full w-full flex-col overflow-hidden overscroll-none md:h-[calc(100vh-150px)]">
+                <div className="relative flex h-full flex-grow flex-row overflow-hidden bg-[#F5F5F5] md:px-20 md:py-6 xl:px-24">
                     <ConversationsList
                         data={data?.getConversationsForUser}
                         request={request}
