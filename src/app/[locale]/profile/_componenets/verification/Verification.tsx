@@ -8,59 +8,6 @@ import { fileToBase64 } from '@/src/utils/fileToBase64'
 import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-
-const FileUpload = ({ onFileUpload, title, preview }: any) => {
-    const { t } = useTranslation()
-    const onDrop = useCallback(
-        async (acceptedFiles: any) => {
-            if (acceptedFiles.length > 1) {
-                alert('You can only upload one image at a time.')
-                return
-            }
-
-            const file = acceptedFiles[0]
-
-            if (file.size > MAX_FILE_SIZE) {
-                alert('File size exceeds 5MB. Please upload a smaller file.')
-                return
-            }
-
-            const base64 = await fileToBase64(file)
-            onFileUpload(base64)
-        },
-        [onFileUpload]
-    )
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, maxFiles: 1 })
-
-    return (
-        <div className="space-y-2">
-            <div
-                {...getRootProps()}
-                className="cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-4 text-center transition-colors hover:border-blue-500"
-            >
-                <input {...getInputProps()} />
-                {isDragActive ? (
-                    <p>Drop the file here ...</p>
-                ) : (
-                    <p>Drag and drop {title} here, or click to select file</p>
-                )}
-            </div>
-            {preview && (
-                <div className="relative mt-2 h-52 w-full bg-slate-100">
-                    <Image
-                        src={preview}
-                        fill
-                        alt={`${title} preview`}
-                        className=" h-52 w-full rounded-md object-contain"
-                    />
-                </div>
-            )}
-        </div>
-    )
-}
-
 export default function Verification() {
     const { t } = useTranslation()
     const [selfie, setSelfie] = useState(null)
@@ -80,10 +27,59 @@ export default function Verification() {
                     },
                 },
             })
-            console.log('Upload result:', result)
         } catch (err) {
             console.error('Upload error:', err)
         }
+    }
+
+    const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+
+    const FileUpload = ({ onFileUpload, title, preview }: any) => {
+        const { t } = useTranslation()
+        const onDrop = useCallback(
+            async (acceptedFiles: any) => {
+                if (acceptedFiles.length > 1) {
+                    alert(t('minImage'))
+                    return
+                }
+
+                const file = acceptedFiles[0]
+
+                if (file.size > MAX_FILE_SIZE) {
+                    alert(t('minMb'))
+                    return
+                }
+
+                const base64 = await fileToBase64(file)
+                onFileUpload(base64)
+            },
+            [onFileUpload]
+        )
+
+        const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, maxFiles: 1 })
+
+        return (
+            <div className="space-y-2">
+                <div
+                    {...getRootProps()}
+                    className="cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-4 text-center transition-colors hover:border-blue-500"
+                >
+                    <input {...getInputProps()} />
+
+                    <p>{t('dragDrop')}</p>
+                </div>
+                {preview && (
+                    <div className="relative mt-2 h-52 w-full bg-slate-100">
+                        <Image
+                            src={preview}
+                            fill
+                            alt={`${title} preview`}
+                            className=" h-52 w-full rounded-md object-contain"
+                        />
+                    </div>
+                )}
+            </div>
+        )
     }
 
     return (
@@ -107,7 +103,7 @@ export default function Verification() {
                         <FileUpload onFileUpload={setBackId} title="back ID" preview={backId} />
                     </div>
                     <Button type="submit" className="w-full" disabled={loading}>
-                        {loading ? 'Uploading...' : 'Submit'}
+                        {loading ? t('uploading') : t('submit')}
                     </Button>
                     {error && <p className="mt-2 text-red-500">Error: {error.message}</p>}
                 </form>
