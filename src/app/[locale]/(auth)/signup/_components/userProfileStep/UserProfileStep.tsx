@@ -29,6 +29,7 @@ import ImageUploader from '../imageUploader/ImageUploader'
 import { DatePicker } from '@/src/components/shared/datePicker/DatePicker'
 import { FormDataProps } from '../../types'
 import { SendCodeBySms, VerifyCodeBySms } from '@/graphql/mutation'
+import Reactdatepicker from '@/src/components/shared/datePicker/TestDatePicker'
 
 type StepOneProps = {
     formData?: FormDataProps
@@ -236,13 +237,26 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                                 )}
                             />
 
-                            <FormField
+                            {/* <FormField
                                 control={form.control}
                                 name="birthDate"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t('age')}</FormLabel>
                                         <DatePicker field={field} />
+                                        {field.value !== undefined && field.value !== '' && (
+                                            <FormMessage />
+                                        )}
+                                    </FormItem>
+                                )}
+                            /> */}
+                            <FormField
+                                control={form.control}
+                                name="birthDate"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t('age')}</FormLabel>
+                                        <Reactdatepicker field={field} />
                                         {field.value !== undefined && field.value !== '' && (
                                             <FormMessage />
                                         )}

@@ -226,8 +226,6 @@ export default function Header() {
         }
     }
 
-    
-
     return (
         <>
             <header
@@ -241,8 +239,8 @@ export default function Header() {
                             className={` ${isLandlordsPath ? 'fill-mainOrange' : 'fill-mainGreen'} h-6 w-[120px] cursor-pointer  md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]`}
                         />
                     </Link>
-                    {!user?.me.userTypes.includes(UserType.Roommate) &&
-                    !user?.me.userTypes.includes(UserType.Landlord) ? (
+                    {!(user?.me.userTypes.includes(UserType.Roommate) && isRoommatesPath) &&
+                    !(user?.me.userTypes.includes(UserType.Landlord) && isLandlordsPath) ? (
                         <div className="hidden items-center gap-5 md:flex">
                             <Label
                                 htmlFor="navigation-switch"

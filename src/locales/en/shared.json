@@ -34,5 +34,10 @@
     "to": "To",
     "lookingForRoommate": "Roommate",
     "propertyOwner": "Landlord",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "verification": "Verification",
+    "verifyText": "Verified users are more trustworthy, making it safer to connect. To find the right roommate easily, we recommend verification. ",
+    "selfie": "Selfie",
+    "frontId": "Front ID",
+    "backId": "Back ID"
 }

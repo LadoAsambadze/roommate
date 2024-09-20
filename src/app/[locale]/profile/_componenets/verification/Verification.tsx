@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useMutation } from '@apollo/client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card'
@@ -6,10 +6,12 @@ import { Button } from '@/src/components/ui/button'
 import { identityVerificationImagesUpload } from '@/graphql/mutation'
 import { fileToBase64 } from '@/src/utils/fileToBase64'
 import Image from 'next/image'
+import { useTranslation } from 'react-i18next'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
 const FileUpload = ({ onFileUpload, title, preview }: any) => {
+    const { t } = useTranslation()
     const onDrop = useCallback(
         async (acceptedFiles: any) => {
             if (acceptedFiles.length > 1) {
@@ -46,7 +48,7 @@ const FileUpload = ({ onFileUpload, title, preview }: any) => {
                 )}
             </div>
             {preview && (
-                <div className="relative mt-2 w-full h-52 bg-slate-100">
+                <div className="relative mt-2 h-52 w-full bg-slate-100">
                     <Image
                         src={preview}
                         fill
@@ -60,6 +62,7 @@ const FileUpload = ({ onFileUpload, title, preview }: any) => {
 }
 
 export default function Verification() {
+    const { t } = useTranslation()
     const [selfie, setSelfie] = useState(null)
     const [frontId, setFrontId] = useState(null)
     const [backId, setBackId] = useState(null)
@@ -86,20 +89,21 @@ export default function Verification() {
     return (
         <Card className=" w-full border-none ">
             <CardHeader>
-                <CardTitle>Verification</CardTitle>
+                <CardTitle>{t('verification')}</CardTitle>
+                <p className="mt-4">{t('verifyText')}</p>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="grid  gap-4 md:grid-cols-1 lg:grid-cols-3">
                     <div className="max-w-80">
-                        <h3 className="mb-2 font-semibold">Selfie</h3>
+                        <h3 className="mb-2 font-semibold">{t('selfie')}</h3>
                         <FileUpload onFileUpload={setSelfie} title="selfie" preview={selfie} />
                     </div>
                     <div className="max-w-80">
-                        <h3 className="mb-2 font-semibold">Front ID</h3>
+                        <h3 className="mb-2 font-semibold">{t('frontId')}</h3>
                         <FileUpload onFileUpload={setFrontId} title="front ID" preview={frontId} />
                     </div>
                     <div className="max-w-80">
-                        <h3 className="mb-2 font-semibold">Back ID</h3>
+                        <h3 className="mb-2 font-semibold">{t('backId')}</h3>
                         <FileUpload onFileUpload={setBackId} title="back ID" preview={backId} />
                     </div>
                     <Button type="submit" className="w-full" disabled={loading}>

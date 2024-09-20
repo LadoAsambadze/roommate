@@ -28,21 +28,18 @@ type otpType = {
     identifier: string
 }
 
-const codeFormSchema = z.object({
-    code: z.string().min(6, {
-        message: 'Your one-time password must be 6 characters.',
-    }),
-})
-const resetPasswordFormSchema = z.object({
-    password: z.string().min(6, {
-        message: 'Your one-time password must be 6 characters.',
-    }),
-    confirmPassword: z.string().min(6, {
-        message: 'Your one-time password must be 6 characters.',
-    }),
-})
-
 export function InputOTPForm({ setVerifyCode, identifier, modalType }: otpType) {
+    const { t } = useTranslation()
+    const [newPassword, setNewPassword] = useState(false)
+
+    const [verifyCode] = useMutation(ResetPasswordVerifyCode)
+    const [resetPasswordSubmit] = useMutation(ResetPassword)
+    const router = useRouter()
+
+    const codeFormSchema = z.object({
+        code: z.string().min(6),
+    })
+
     const codeForm = useForm<z.infer<typeof codeFormSchema>>({
         resolver: zodResolver(codeFormSchema),
         defaultValues: {
@@ -50,20 +47,30 @@ export function InputOTPForm({ setVerifyCode, identifier, modalType }: otpType) 
         },
     })
 
-    const resetPasswordForm = useForm<z.infer<typeof resetPasswordFormSchema>>({
+    const resetPasswordFormSchema = z
+        .object({
+            password: z
+                .string()
+                .min(6, { message: t('minPassword') })
+                .regex(/(?=.*[0-9])(?=.*[^0-9]).{6,30}/, {
+                    message: t('passwordValidationError'),
+                }),
+            confirmPassword: z.string(),
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+            message: t('passwordMatchError'),
+            path: ['confirmPassword'], // Set the error path to 'confirmPassword'
+        })
+
+    type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>
+
+    const resetPasswordForm = useForm<ResetPasswordFormSchema>({
         resolver: zodResolver(resetPasswordFormSchema),
         defaultValues: {
             password: '',
             confirmPassword: '',
         },
     })
-
-    const { t } = useTranslation()
-    const [newPassword, setNewPassword] = useState(false)
-
-    const [verifyCode] = useMutation(ResetPasswordVerifyCode)
-    const [resetPasswordSubmit] = useMutation(ResetPassword)
-    const router = useRouter()
 
     const verifyCodeHandler = async () => {
         const code = codeForm.getValues().code
@@ -82,12 +89,12 @@ export function InputOTPForm({ setVerifyCode, identifier, modalType }: otpType) 
             data?.verifyResetPasswordVerificationCode?.status ===
             VerificationCodeValidityStatus.Invalid
         ) {
-            codeForm.setError('code', { message: 'code expired' })
+            codeForm.setError('code', { message: t('codeExpired') })
         } else if (
             data?.verifyResetPasswordVerificationCode?.status ===
             VerificationCodeValidityStatus.NotFound
         ) {
-            codeForm.setError('code', { message: 'incorrect code' })
+            codeForm.setError('code', { message: t('invalidCode') })
         }
     }
 
@@ -138,7 +145,7 @@ export function InputOTPForm({ setVerifyCode, identifier, modalType }: otpType) 
                                     <FormItem>
                                         <FormLabel className="flex w-full justify-center py-6">
                                             <span className="text-center leading-6">
-                                                {t('codeSentOn')} <br /> 555 135856 <br />
+                                                {t('codeSentOn')} <br /> {identifier} <br />
                                                 {t('fillField')}
                                             </span>
                                         </FormLabel>
