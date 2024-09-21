@@ -16,6 +16,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 import { useQuery } from '@apollo/client'
 import { getUserQuery } from '@/graphql/query'
+import { signOutHandler } from '@/src/auth/signOut'
 
 export default function ProfileNavBar() {
     const { t } = useTranslation()
@@ -91,7 +92,10 @@ export default function ProfileNavBar() {
                     </div>
                     <ArrowRight className="h-6 w-6 md:hidden" />
                 </button>
-                <button className="flex w-full flex-row items-center justify-between rounded-lg bg-[#FFFFFF] p-4  shadow-md md:bg-[#F5F5F5] md:p-0 md:shadow-none">
+                <button
+                    onClick={signOutHandler}
+                    className="flex w-full flex-row items-center justify-between rounded-lg bg-[#FFFFFF] p-4  shadow-md md:bg-[#F5F5F5] md:p-0 md:shadow-none"
+                >
                     <div className="flex flex-row items-center">
                         <Logout className=" h-6 w-6" />
                         <span className="ml-3 text-[#DB0505]">{t('logOut')}</span>

@@ -34,11 +34,15 @@ export default function Header() {
         pathname.includes('/apartment-list') ||
         pathname.includes('/landlord-profile')
 
-    const isRoommatesPath = !isLandlordsPath // Opposite of landlords path
+    const isRoommatesPath = !isLandlordsPath
 
     let unreadMessagesCount = 0
 
-    const { data: user, loading: userLoading } = useQuery(getUserQuery, {
+    const {
+        data: user,
+        loading: userLoading,
+        refetch: refetchUser,
+    } = useQuery(getUserQuery, {
         skip: !authStatus.valid,
     })
 
@@ -65,6 +69,10 @@ export default function Header() {
             getConversationsForUser()
         }
     }, [user])
+
+    useEffect(() => {
+        refetchUser()
+    }, [authStatus])
 
     const handleLinkClick = (e: MouseEvent<HTMLButtonElement>, href: string) => {
         if (pathname === '/signup') {
