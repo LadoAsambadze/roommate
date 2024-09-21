@@ -13,12 +13,13 @@ export default function Verification() {
     const [selfie, setSelfie] = useState(null)
     const [frontId, setFrontId] = useState(null)
     const [backId, setBackId] = useState(null)
+    const [message, setMessage] = useState('')
     const [uploadImages, { loading, error }] = useMutation(identityVerificationImagesUpload)
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
         try {
-            const result = await uploadImages({
+            const { data: result, errors: errors } = await uploadImages({
                 variables: {
                     input: {
                         selfie,
@@ -27,6 +28,29 @@ export default function Verification() {
                     },
                 },
             })
+            if (result) {
+                if (result.identityVerificationImagesUpload) {
+                    setMessage('successUpload')
+                    setSelfie(null)
+                    setFrontId(null)
+                    setBackId(null)
+                }
+            } else if (errors) {
+                console.log(errors)
+                if (errors[0]?.message === 'IDENTITY_IMAGES__REQUIRED') {
+                    setMessage('requiredAllImage')
+                } else if (errors[0]?.message === 'USERVERIFIED ') {
+                    setMessage('alreadyVerified')
+                } else if (errors[0]?.message === 'USER__UNDER_REVIEW') {
+                    setMessage('inReview')
+                } else if (errors[0]?.message === 'ID_FRONT_IMAGEREQUIRED') {
+                    setMessage('frontIdRequired')
+                } else if (errors[0]?.message === 'ID_BACK_IMAGEREQUIRED') {
+                    setMessage('backIdRequired')
+                } else if (errors[0]?.message === 'SELFIE__REQUIRED') {
+                    setMessage('selfieRequired')
+                }
+            }
         } catch (err) {
             console.error('Upload error:', err)
         }
@@ -39,14 +63,14 @@ export default function Verification() {
         const onDrop = useCallback(
             async (acceptedFiles: any) => {
                 if (acceptedFiles.length > 1) {
-                    alert(t('minImage'))
+                    alert(t('maxImage'))
                     return
                 }
 
                 const file = acceptedFiles[0]
 
                 if (file.size > MAX_FILE_SIZE) {
-                    alert(t('minMb'))
+                    alert(t('maxMb'))
                     return
                 }
 
@@ -105,7 +129,9 @@ export default function Verification() {
                     <Button type="submit" className="w-full" disabled={loading}>
                         {loading ? t('uploading') : t('submit')}
                     </Button>
-                    {error && <p className="mt-2 text-red-500">Error: {error.message}</p>}
+                    <p className={`${error ? 'text-red-500' : 'text-mainGreen'} mt-2 `}>
+                        {t(message)}
+                    </p>
                 </form>
             </CardContent>
         </Card>
