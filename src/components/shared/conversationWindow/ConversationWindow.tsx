@@ -159,15 +159,16 @@ export default function ConversationWindow({ setIsOpen, name, participantId, ava
         >
             <div className="flex w-full flex-row items-center justify-between p-6 shadow-md">
                 <div className="flex w-full flex-row items-center justify-between">
-                    <div className="flex w-full flex-row items-center justify-start">
-                        <Image
-                            width={40}
-                            height={40}
-                            src={avatar ? avatar : Avatar}
-                            className="rounded-full"
-                            alt="Fallback Avatar"
-                            priority
-                        />
+                    <div className=" flex w-full flex-row items-center justify-start">
+                        <div className="relative h-12 w-12">
+                            <Image
+                                fill
+                                src={avatar ? avatar : Avatar}
+                                className="rounded-full object-cover"
+                                alt="Fallback Avatar"
+                                priority
+                            />
+                        </div>
                         <div className="ml-4 flex flex-col justify-between">
                             <span>{name}</span>
                         </div>
