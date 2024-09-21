@@ -236,8 +236,16 @@ input::file-selector-button {
 }
 .react-datepicker__navigation--years {
     color: black !important;
+    background-color: red !important;
 }
 
+.react-datepicker__navigation--years-upcoming {
+    display: none !important;
+}
+
+.react-datepicker__navigation--years-previous {
+    display: none !important;
+}
 .react-datepicker__day:hover {
     background-color: #f0f0f0;
 }
