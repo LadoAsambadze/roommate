@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { format } from 'date-fns'
 import { Input } from '../../ui/input'
 
+
 interface ReactDatepickerProps {
     field?: {
         onChange: (date: string | null) => void
@@ -21,23 +22,31 @@ function ReactDatepicker({ field }: ReactDatepickerProps) {
         }
     }
 
-    console.log(field)
+    const renderYearContent = (year: number) => {
+        const currentYear = new Date().getFullYear()
+        return (
+            <span className="react-datepicker__year-text">
+                {year}
+                {year < currentYear && <span className="year-label past">Past</span>}
+                {year > currentYear && <span className="year-label future">Future</span>}
+            </span>
+        )
+    }
 
     return (
-        <div className="row w-full">
-            <form className="row w-full">
-                <div className="row mb-0 w-full">
+        <div className="w-full">
+            <form className="w-full">
+                <div className="w-full">
                     <DatePicker
                         className="custom-datepicker w-full"
-                        customInput={<Input className="w-full" />}
-                        selected={selectedDate}
+M                        selected={selectedDate}
                         onChange={handleDateChange}
                         dateFormat="dd-MM-yyyy"
                         showYearDropdown
+                        scrollableYearDropdown
+                        yearDropdownItemNumber={15}
                         calendarClassName="custom-calendar"
-                        // dayClassName={(date) =>
-                        //     date.getDay() === 0 || date.getDay() === 6 ? 'weekend-day' : undefined
-                        // }
+                        renderYearContent={renderYearContent}
                     />
                 </div>
             </form>

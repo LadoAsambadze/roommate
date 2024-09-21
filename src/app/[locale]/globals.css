@@ -221,6 +221,7 @@ input::file-selector-button {
     font-family: Arial, sans-serif;
     overflow: hidden !important;
     background-color: #ffffff !important;
+    height: 320px !important;
 }
 
 .react-datepicker__month-container {
@@ -232,6 +233,9 @@ input::file-selector-button {
     margin: 0.2rem;
     border-radius: 0.3rem;
     color: #000;
+}
+.react-datepicker__navigation--years {
+    color: black !important;
 }
 
 .react-datepicker__day:hover {
