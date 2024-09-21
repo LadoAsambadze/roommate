@@ -68,7 +68,8 @@ export default function MobileNavBar({ isRoommatesPath, isLandlordsPath, handleT
                                 <span
                                     className="text-xs"
                                     style={{
-                                        fontWeight: pathnameWithoutLocale === '/' ? 'bold' : '',
+                                        fontWeight:
+                                            pathnameWithoutLocale === '/profile' ? 'bold' : '',
                                     }}
                                 >
                                     {t('profile')}
@@ -79,7 +80,10 @@ export default function MobileNavBar({ isRoommatesPath, isLandlordsPath, handleT
                                 <span
                                     className="text-xs"
                                     style={{
-                                        fontWeight: pathnameWithoutLocale === '/' ? 'bold' : '',
+                                        fontWeight:
+                                            pathnameWithoutLocale === '/landlord-profile'
+                                                ? 'bold'
+                                                : '',
                                     }}
                                 >
                                     {t('profile')}
