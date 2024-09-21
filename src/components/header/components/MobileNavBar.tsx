@@ -63,7 +63,7 @@ export default function MobileNavBar({ isRoommatesPath, isLandlordsPath, handleT
                         </Link>
                     </SheetTrigger>
                     <SheetTrigger asChild>
-                        {!user?.me.userTypes.includes(UserType.Roommate) ? (
+                        {user?.me.userTypes.includes(UserType.Roommate) ? (
                             <Link href="/profile">
                                 <span
                                     className="text-xs"
