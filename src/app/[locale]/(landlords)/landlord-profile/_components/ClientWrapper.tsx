@@ -12,6 +12,7 @@ import {
     ProfileRentIcon,
 } from '@/src/components/svgs'
 import { Button } from '@/src/components/ui/button'
+import { FACEBOOK_URL } from '@/src/constants/links'
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
@@ -76,20 +77,24 @@ function ClientWrapper() {
             </div>
             <div className="h-[1px] w-full bg-[#E3E3E3]"></div>
             <div className="flex w-full flex-col gap-8">
-                <div className="flex w-full flex-row items-center gap-2 ">
-                    <Lamp className="h-10 w-32" />
-                    <div className="flex flex-col gap-3">
-                        <h1 className="text-base font-semibold">{t('contactLandlord')}</h1>
-                        <span className="text-sm leading-5">{t('supportQuestions')}</span>
+                <Link href={FACEBOOK_URL}>
+                    <div className="flex w-full flex-row items-center gap-2 ">
+                        <Lamp className="h-10 w-32" />
+                        <div className="flex flex-col gap-3">
+                            <h1 className="text-base font-semibold">{t('contactLandlord')}</h1>
+                            <span className="text-sm leading-5">{t('supportQuestions')}</span>
+                        </div>
                     </div>
-                </div>
-                <div className="flex flex-row items-center gap-2">
-                    <Audio className="h-10 w-32" />
-                    <div className="flex flex-col gap-3">
-                        <h1 className="text-base font-semibold">{t('blog')}</h1>
-                        <span className="text-sm leading-5">{t('aboutBlog')}</span>
+                </Link>
+                <Link target="_blank" href="https://www.roommate.blog">
+                    <div className="flex flex-row items-center gap-2">
+                        <Audio className="h-10 w-32" />
+                        <div className="flex flex-col gap-3">
+                            <h1 className="text-base font-semibold">{t('blog')}</h1>
+                            <span className="text-sm leading-5">{t('aboutBlog')}</span>
+                        </div>
                     </div>
-                </div>
+                </Link>
             </div>
         </main>
     )
