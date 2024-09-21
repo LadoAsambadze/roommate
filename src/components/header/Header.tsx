@@ -138,18 +138,18 @@ export default function Header() {
             if (isRoommatesPath && user.me.userTypes.includes(UserType.Roommate)) {
                 return (
                     <>
-                        <Link href="/roommates">
-                            <span className="cursor-pointer  text-base text-[#838CAC]">
+                        <Link href="/roommates" className="hidden md:block">
+                            <span className="cursor-pointertext-base text-sm text-[#838CAC]">
                                 {t('findRoommate')}
                             </span>
                         </Link>
-                        <Link href="/apartments">
-                            <span className="cursor-pointer  text-base text-[#838CAC]">
+                        <Link href="/apartments" className="hidden md:block">
+                            <span className="cursor-pointer text-sm text-[#838CAC]">
                                 {t('rentApartment')}
                             </span>
                         </Link>
                         <Link href="/profile">
-                            <button className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2">
+                            <button className=" flex flex-row  items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2">
                                 <UserIcon2 className="h-4 w-4 fill-[#838CAC] xl:h-6 xl:w-6" />
                                 <span className="ml-1 text-xs xl:text-base">
                                     {user.me.firstname}
@@ -239,28 +239,26 @@ export default function Header() {
                             className={` ${isLandlordsPath ? 'fill-mainOrange' : 'fill-mainGreen'} h-6 w-[120px] cursor-pointer  md:h-7 md:w-[140px] xl:block xl:h-10 xl:w-[200px]`}
                         />
                     </Link>
-                    {!(user?.me.userTypes.includes(UserType.Roommate) && isRoommatesPath) &&
-                    !(user?.me.userTypes.includes(UserType.Landlord) && isLandlordsPath) ? (
-                        <div className="hidden items-center gap-5 md:flex">
-                            <Label
-                                htmlFor="navigation-switch"
-                                className={`transition-opacity ${!isLandlordsPath ? 'text-mainGreen opacity-100' : 'opacity-50'}`}
-                            >
-                                {t('lookingForRoommate')}
-                            </Label>
-                            <Switch
-                                id="navigation-switch"
-                                checked={isLandlordsPath}
-                                onCheckedChange={handleToggle}
-                            />
-                            <Label
-                                htmlFor="navigation-switch"
-                                className={`transition-opacity ${isLandlordsPath ? 'text-mainOrange opacity-100' : 'opacity-50'}`}
-                            >
-                                {t('propertyOwner')}
-                            </Label>
-                        </div>
-                    ) : null}
+
+                    <div className="hidden items-center gap-2  md:flex">
+                        <Label
+                            htmlFor="navigation-switch"
+                            className={`transition-opacity ${!isLandlordsPath ? 'text-mainGreen opacity-100' : 'opacity-50'} md:text-sm `}
+                        >
+                            {t('lookingForRoommate')}
+                        </Label>
+                        <Switch
+                            id="navigation-switch"
+                            checked={isLandlordsPath}
+                            onCheckedChange={handleToggle}
+                        />
+                        <Label
+                            htmlFor="navigation-switch"
+                            className={`transition-opacity ${isLandlordsPath ? 'text-mainOrange opacity-100' : 'opacity-50'} md:text-sm `}
+                        >
+                            {t('propertyOwner')}
+                        </Label>
+                    </div>
                 </div>
 
                 <div className="flex flex-row items-center gap-2 md:gap-4">
@@ -287,7 +285,11 @@ export default function Header() {
                         </button>
                     ) : null}
                     <button className="ml-2 block md:hidden">
-                        <MobileNavBar />
+                        <MobileNavBar
+                            isRoommatesPath={isRoommatesPath}
+                            isLandlordsPath={isLandlordsPath}
+                            handleToggle={handleToggle}
+                        />
                     </button>
                 </div>
             </header>

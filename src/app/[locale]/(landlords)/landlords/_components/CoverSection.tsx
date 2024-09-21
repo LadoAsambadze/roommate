@@ -2,7 +2,6 @@
 
 import { Button } from '@/src/components/ui/button'
 import Link from 'next/link'
-
 import { useTranslation } from 'react-i18next'
 
 export default function CoverSection() {
