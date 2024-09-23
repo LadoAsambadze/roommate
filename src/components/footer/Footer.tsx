@@ -18,15 +18,21 @@ export default function Footer() {
     const pathname = usePathname()
     const localePattern = /^\/(en|ka)(\/|$)/
     const pathnameWithoutLocale = pathname.replace(localePattern, '/')
+    const isLandlordsPath =
+        pathname.includes('/landlords') ||
+        pathname.includes('/upload-apartment') ||
+        pathname.includes('/apartment-list') ||
+        pathname.includes('/landlord-profile')
 
     return (
         <div className="flex h-full w-full flex-col pt-12">
             <div className="flex flex-col px-6 sm:px-16 md:flex-row md:items-start md:justify-between md:px-20 xl:px-24">
-                <div>
-                    <Link href="/">
-                        <Logo className="h-6  w-[120px] cursor-pointer md:h-9 md:w-[140px] xl:block xl:h-10 xl:w-[200px]" />
-                    </Link>
-                </div>
+                <Link href={`${isLandlordsPath ? '/landlords' : '/'} `} className="w-auto">
+                    <Logo
+                        className={` ${isLandlordsPath ? 'fill-mainOrange' : 'fill-mainGreen'} h-6  w-[120px] cursor-pointer md:h-9 md:w-[140px] lg:block xl:h-10 xl:w-[200px]`}
+                    />
+                </Link>
+
                 <div className="mt-8 flex flex-col  gap-y-4 md:mt-0">
                     <Link href="/">
                         <span

@@ -11,14 +11,17 @@ import {
 import { Button } from '@/src/components/ui/button'
 import { useTranslation } from 'react-i18next'
 import { Error, Success } from '../../../../../../components/svgs'
+import { useRouter } from 'next/navigation'
 
 export function UploadDialog({ setOpenAlert, openAlert, alertMessage }: any) {
     const { t } = useTranslation()
+    const router = useRouter()
 
     const handleClose = () => {
         setOpenAlert(false)
         if (alertMessage === 'success' && typeof location !== 'undefined') {
             location.reload()
+            router.push('/landlord-profile')
         }
     }
 
