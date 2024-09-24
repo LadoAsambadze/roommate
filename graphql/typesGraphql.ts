@@ -55,9 +55,14 @@ export type AnsweredQuestionInput = {
     questionId: Scalars['String']['input']
 }
 
+export type CheckUserExistenceInput = {
+    identifier: Scalars['String']['input']
+}
+
 /** Code purpose enumeration */
 export enum CodePurpose {
     LandlordSignUp = 'landlord_sign_up',
+    LandlordUploadApartment = 'landlord_upload_apartment',
     ResetPassword = 'reset_password',
     RoommateSignUp = 'roommate_sign_up',
 }
@@ -576,6 +581,7 @@ export type PropertyTypeTranslatedObject = {
 
 export type Query = {
     __typename?: 'Query'
+    checkUserExistence: Scalars['Boolean']['output']
     getConversationsForUser?: Maybe<PaginatedConversationWithUserObject>
     getCountries?: Maybe<Array<CountryObject>>
     getCountry?: Maybe<CountryObject>
@@ -602,6 +608,10 @@ export type Query = {
     getUniversity?: Maybe<UniversityObject>
     getVerificationStatus?: Maybe<RoommateVerification>
     me: MeObject
+}
+
+export type QueryCheckUserExistenceArgs = {
+    input: CheckUserExistenceInput
 }
 
 export type QueryGetConversationsForUserArgs = {

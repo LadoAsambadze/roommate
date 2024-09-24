@@ -16,6 +16,7 @@ import { Input } from '@/src/components/ui/input'
 import { Button } from '@/src/components/ui/button'
 
 import {
+    CodePurpose,
     CountryObject,
     GenderObject,
     Language,
@@ -26,7 +27,6 @@ import Image from 'next/legacy/image'
 import PhoneInput from '@/src/components/shared/phoneInput/PhoneInput'
 import Select from '@/src/components/ui/select'
 import ImageUploader from '../imageUploader/ImageUploader'
-import { DatePicker } from '@/src/components/shared/datePicker/DatePicker'
 import { FormDataProps } from '../../types'
 import { SendCodeBySms, VerifyCodeBySms } from '@/graphql/mutation'
 import Reactdatepicker from '@/src/components/shared/datePicker/TestDatePicker'
@@ -89,7 +89,6 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                         priority={false}
                         className="h-auto w-auto"
                     />
-                    <span></span>
                     {country?.translations?.[0]?.name}
                 </div>
             ),
@@ -102,6 +101,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                 input: {
                     phone: form.watch('phone') ?? '',
                     code: data.code,
+                    codePurpose: CodePurpose.RoommateSignUp,
                 },
             },
         })
@@ -128,6 +128,7 @@ export default function UserProfileStep({ formData, setStep, updateFormData }: S
                 variables: {
                     input: {
                         phone: form.watch('phone') ?? '',
+                        codePurpose: CodePurpose.RoommateSignUp,
                     },
                 },
             })

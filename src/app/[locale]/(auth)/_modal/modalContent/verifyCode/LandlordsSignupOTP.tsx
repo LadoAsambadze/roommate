@@ -20,7 +20,7 @@ import { signIn } from '@/src/auth/signIn'
 import { useRouter } from 'next/navigation'
 import { GraphQLFormattedError } from 'graphql'
 import { ArrowLeft } from '@/src/components/svgs'
-import { VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
+import { CodePurpose, VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
 
 const FormSchema = z.object({
     code: z.string().min(6, {
@@ -60,8 +60,7 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
                     CONFIRM_PASSWORD__NOT_EQUAL: 'CONFIRM_PASSWORD__NOT_EQUAL',
                     USER__EXISTS_WITH_PHONE: t('userExistsWithPhone'),
                     PHONE_OR_EMAIL__REQUIRED: 'PHONE_OR_EMAIL__REQUIRED',
-                    'USER__EXISTS_WITH_PHONE:roommate':
-                        t("phoneUsedOnRoommate"),
+                    'USER__EXISTS_WITH_PHONE:roommate': t('phoneUsedOnRoommate'),
                 }
 
                 if (errorCode in errorMessages) {
@@ -85,6 +84,7 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
                         input: {
                             code,
                             email,
+                            codePurpose: CodePurpose.LandlordSignUp,
                         },
                     },
                 })
@@ -128,6 +128,7 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
                         input: {
                             code,
                             phone,
+                            codePurpose: CodePurpose.LandlordSignUp,
                         },
                     },
                 })

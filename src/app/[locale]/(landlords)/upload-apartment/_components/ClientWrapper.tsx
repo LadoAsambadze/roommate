@@ -29,7 +29,7 @@ import StaticDepositRadio from './formFieldItems/StaticDepositRadio'
 import MultiImageUploader from './formFieldItems/MultiImageUploader'
 import { SendCodeBySms, UpsertProperty, VerifyCodeBySms } from '@/graphql/mutation'
 import { Button } from '@/src/components/ui/button'
-import { VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
+import { CodePurpose, VerificationCodeValidityStatus } from '@/graphql/typesGraphql'
 import { useEffect, useState } from 'react'
 import DescriptionTextarea from './formFieldItems/DescriptionTextarea'
 import TitleTextarea from './formFieldItems/TitleTextarea'
@@ -82,6 +82,7 @@ function ClientWrapper() {
                 variables: {
                     input: {
                         phone: getValues('phone') ?? '',
+                        codePurpose: CodePurpose.LandlordUploadApartment,
                     },
                 },
             })
@@ -110,6 +111,7 @@ function ClientWrapper() {
                     input: {
                         phone: watch('phone') ?? '',
                         code: getValues('code') ?? '',
+                        codePurpose: CodePurpose.LandlordUploadApartment,
                     },
                 },
             })
