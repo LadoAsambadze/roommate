@@ -18,7 +18,7 @@ export default function StaticSelectNumeric({ field }: any) {
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
-                    {Array.from({ length: 10 }, (_, index) => (
+                    {Array.from({ length: 2 }, (_, index) => (
                         <SelectItem value={index.toString()} key={index}>
                             {index.toString()}
                         </SelectItem>
