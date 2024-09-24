@@ -114,9 +114,9 @@ export function LandlordsSignupOTP({ signupMethod, setSignupMethod, formData }: 
                 } else if (
                     verifyEmail?.verifyCodeByEmail.status === VerificationCodeValidityStatus.Invalid
                 ) {
-                    form.setError('code', { message: t('expired') })
+                    form.setError('code', { message: t('codeExpired') })
                 } else if (verifyEmail?.verifyCodeByEmail.status === 'NOT_FOUND') {
-                    form.setError('code', { message: t('incorrect code') })
+                    form.setError('code', { message: t('incorrectCode') })
                 }
             } else if (signupMethod === 'verifyCodeBySms') {
                 const { code } = form.getValues()
