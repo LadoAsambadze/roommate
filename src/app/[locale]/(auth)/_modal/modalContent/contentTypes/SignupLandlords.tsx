@@ -10,6 +10,7 @@ import { useMutation } from '@apollo/client'
 import { LandlordsSignupOTP } from '../verifyCode/LandlordsSignupOTP'
 import { LandlordSignUpPhoneValidator } from '../validators/landlordSignupPhone'
 import { LandlordSignupEmailValidator } from '../validators/landlordSignupEmail'
+import { CodePurpose } from '@/graphql/typesGraphql'
 
 type SignupLandlordsProps = {
     signupChoosTypeHandler: () => void
@@ -46,7 +47,7 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
             } else if (signupMethod === 'phone') {
                 const { phone } = form.getValues()
                 const { data, errors } = await sendCodeSms({
-                    variables: { input: { phone } },
+                    variables: { input: { phone, codePurpose: CodePurpose.LandlordSignUp } },
                 })
 
                 if (errors) {
@@ -65,8 +66,6 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
             console.error('Submission error:', error)
         }
     }
-
-
 
     return (
         <>
@@ -90,7 +89,7 @@ export default function SignupLandlords({ signupChoosTypeHandler }: SignupLandlo
                         <span>{t('withPhone')}</span>
                     </button>
                     <button
-                        className="flex cursor-pointer flex-row items-center gap-1 mt-2 outline-none"
+                        className="mt-2 flex cursor-pointer flex-row items-center gap-1 outline-none"
                         onClick={signupChoosTypeHandler}
                     >
                         <ArrowLeft className="h-5 w-5" />
