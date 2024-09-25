@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 export default function TitleTextarea({ form }: any) {
     const { t } = useTranslation()
-    const [selectedLangTitle, setSelectedLangTitle] = useState<Language>(Language.En)
+    const [selectedLangTitle, setSelectedLangTitle] = useState<Language>(Language.Ka)
     const getDescriptionByLangTitle = (lang: Language) => {
         return (
             form.getValues('titles')?.find((desc: any) => desc.lang === lang) || { text: '', lang }
@@ -26,17 +26,17 @@ export default function TitleTextarea({ form }: any) {
                             <div className="mb-4 flex gap-2">
                                 <Button
                                     type="button"
-                                    className={`h-auto text-xs hover:text-white ${selectedLangTitle === Language.En ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
-                                    onClick={() => setSelectedLangTitle(Language.En)}
-                                >
-                                    {t('English')}
-                                </Button>
-                                <Button
-                                    type="button"
                                     className={`h-auto text-xs hover:text-white ${selectedLangTitle === Language.Ka ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
                                     onClick={() => setSelectedLangTitle(Language.Ka)}
                                 >
                                     {t('Georgian')}
+                                </Button>
+                                <Button
+                                    type="button"
+                                    className={`h-auto text-xs hover:text-white ${selectedLangTitle === Language.En ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
+                                    onClick={() => setSelectedLangTitle(Language.En)}
+                                >
+                                    {t('English')}
                                 </Button>
                             </div>
                             <FormControl>

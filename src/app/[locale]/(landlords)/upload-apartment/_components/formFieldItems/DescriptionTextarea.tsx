@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 export default function DescriptionTextarea({ form }: any) {
     const { t } = useTranslation()
-    const [selectedLangDescription, setSelectedLangDescription] = useState<Language>(Language.En)
+    const [selectedLangDescription, setSelectedLangDescription] = useState<Language>(Language.Ka)
     const getDescriptionByLangDescription = (lang: Language) => {
         return (
             form.getValues('descriptions')?.find((desc: any) => desc.lang === lang) || {
@@ -29,17 +29,17 @@ export default function DescriptionTextarea({ form }: any) {
                                 <div className="flex gap-2">
                                     <Button
                                         type="button"
-                                        className={`  h-auto text-xs hover:text-white ${selectedLangDescription === Language.En ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
-                                        onClick={() => setSelectedLangDescription(Language.En)}
-                                    >
-                                        {t('English')}
-                                    </Button>
-                                    <Button
-                                        type="button"
                                         className={` h-auto text-xs  hover:text-white  ${selectedLangDescription === Language.Ka ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
                                         onClick={() => setSelectedLangDescription(Language.Ka)}
                                     >
                                         {t('Georgian')}
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        className={`  h-auto text-xs hover:text-white ${selectedLangDescription === Language.En ? 'bg-mainGreen text-white' : 'bg-gray-200 text-black'}`}
+                                        onClick={() => setSelectedLangDescription(Language.En)}
+                                    >
+                                        {t('English')}
                                     </Button>
                                 </div>
 

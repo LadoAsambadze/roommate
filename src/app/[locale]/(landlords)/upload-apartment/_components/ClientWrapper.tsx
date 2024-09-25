@@ -37,6 +37,7 @@ import Loading from '../../../loading'
 import { withAuth } from '@/src/auth/withAuth'
 import { UploadDialog } from './dialogWindow/UploadDialog'
 import PhoneInput, { Value as E164Number } from 'react-phone-number-input'
+import { isEmpty } from '@/src/utils/isEmpty'
 
 function ClientWrapper() {
     const [getCodeButtonClicked, setGetCodeButtonClicked] = useState(false)
@@ -152,7 +153,9 @@ function ClientWrapper() {
                             contactPhone: getValues('phone'),
                             contactName: getValues('contactName'),
                             capacity: getValues('capacity'),
-                            cadastralCode: getValues('cadastralCode'),
+                            cadastralCode: isEmpty(getValues('cadastralCode'))
+                                ? null
+                                : getValues('cadastralCode'),
                             bathroomsInProperty: getValues('bathroomsInProperty'),
                             bathroomsInBedroom: getValues('bathroomsInBedroom'),
                             availableFrom: getValues('availableFrom'),
