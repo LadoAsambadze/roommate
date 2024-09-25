@@ -60,5 +60,6 @@
     "withoutDeposit": "Without deposit",
     "avaiableForRent": "Available for rent",
     "partyAllowed": "Party",
-    "petAllowed": "Pet allowed"
+    "petAllowed": "Pet allowed",
+    "depositAmount": "Deposit"
 }

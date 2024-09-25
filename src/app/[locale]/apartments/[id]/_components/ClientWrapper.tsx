@@ -81,8 +81,7 @@ export default function ClientWrapper() {
         }
     }, [emblaApi, onSelect])
 
-    console.log(dataById?.getProperty)
-
+     
     return (
         <main className="flex min-h-screen w-full flex-col gap-5 px-6 pb-10 pt-5 md:gap-10 lg:px-[280px]">
             <div className="relative w-full overflow-hidden rounded-md">
@@ -197,11 +196,11 @@ export default function ClientWrapper() {
                     <span>
                         {t('minRentPeriond')}: {dataById?.getProperty?.minRentalPeriod}
                     </span>
-                    {dataById?.getProperty?.withDeposit ? (
+                    {!dataById?.getProperty?.withDeposit ? (
                         <div className="w-auto bg-[#CFF1E6] p-2">{t('withoutDeposit')}</div>
                     ) : (
                         <div className="bg-[#CFF1E]">
-                            {dataById?.getProperty?.propertyDeposit?.amount}
+                            {t('depositAmount')}: {dataById?.getProperty?.propertyDeposit?.amount} $
                         </div>
                     )}
                 </div>

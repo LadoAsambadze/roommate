@@ -21,7 +21,7 @@ function ReactDatepicker({ field }: ReactDatepickerProps) {
         }
     }
 
-    console.log(field)
+ 
 
     const renderYearContent = (year: number) => {
         const currentYear = new Date().getFullYear()

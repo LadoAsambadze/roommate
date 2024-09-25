@@ -60,5 +60,6 @@
     "withoutDeposit": "დეპოზიტის გარეშე",
     "avaiableForRent": "ქირაობა ხელმისაწვდომია",
     "partyAllowed": "წვეულება",
-    "petAllowed": "შინაური ცხოველები"
+    "petAllowed": "შინაური ცხოველები",
+    "depositAmount": "დეპოზიტი"
 }
