@@ -54,31 +54,39 @@ function ClientWrapper() {
                         <span className="text-center  text-sm font-medium">
                             {t('contractDescribe')}
                         </span>
-                        <Button className="w-auto bg-[#F59E0B] hover:bg-[#F59E0B] focus:bg-[#F59E0B]">
-                            {t('downloadContract')}
-                        </Button>
+                        <a href="/files/Landlord_x_Student_ENG.GEO.docx" download>
+                            <Button className="w-auto bg-[#F59E0B] hover:bg-[#F59E0B] focus:bg-[#F59E0B]">
+                                {t('downloadContract')}
+                            </Button>
+                        </a>
                     </div>
                 </div>
             </div>
             <div className="h-[1px] w-full bg-[#E3E3E3]"></div>
             <div className="flex w-full flex-col gap-4 md:items-start">
                 <div className="flex flex-row gap-4">
-                    <Link href="/apartment-list">
+                    <Link href="/apartment-list" className="hover:bg-slate-100">
                         <button className="flex h-full items-center justify-center gap-2 rounded-md border border-[#838CAC] p-2 text-[#838CAC] md:w-52">
                             <House className="h-5 w-5" />
                             <span className="text-xs">{t('myListings')}</span>
                         </button>
                     </Link>
-                    <button className="flex h-full  items-center  justify-center  gap-2 rounded-md border border-[#838CAC] p-3 text-[#838CAC] md:w-52">
-                        <Blank className="h-5 w-5" />
-                        <span className="text-xs">{t('contract')}</span>
-                    </button>
+                    <a
+                        href="/files/Landlord_x_Student_ENG.GEO.docx"
+                        className="hover:bg-slate-100"
+                        download
+                    >
+                        <button className="flex h-full items-center justify-center gap-2 rounded-md border border-[#838CAC] p-3 text-[#838CAC] md:w-52">
+                            <Blank className="h-5 w-5" />
+                            <span className="text-xs">{t('contract')}</span>
+                        </button>
+                    </a>
                 </div>
             </div>
             <div className="h-[1px] w-full bg-[#E3E3E3]"></div>
             <div className="flex w-full flex-col gap-8">
-                <Link href={FACEBOOK_URL}>
-                    <div className="flex w-full flex-row items-center gap-2 ">
+                <Link target="_blank" href={FACEBOOK_URL} className="hover:bg-slate-100">
+                    <div className="flex w-full flex-row items-center gap-2 rounded-md border border-[#838CAC]  p-3 ">
                         <Lamp className="h-10 w-32" />
                         <div className="flex flex-col gap-3">
                             <h1 className="text-base font-semibold">{t('contactLandlord')}</h1>
@@ -86,8 +94,12 @@ function ClientWrapper() {
                         </div>
                     </div>
                 </Link>
-                <Link target="_blank" href="https://www.roommate.blog">
-                    <div className="flex flex-row items-center gap-2">
+                <Link
+                    target="_blank"
+                    href="https://www.roommate.blog"
+                    className="hover:bg-slate-100"
+                >
+                    <div className="flex flex-row items-center gap-2 rounded-md border border-[#838CAC] p-3">
                         <Audio className="h-10 w-32" />
                         <div className="flex flex-col gap-3">
                             <h1 className="text-base font-semibold">{t('blog')}</h1>
