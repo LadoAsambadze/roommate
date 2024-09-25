@@ -1,5 +1,5 @@
 'use client'
-import { getPropertyById } from '@/graphql/query'
+import { GetPropertiesData, getPropertyById } from '@/graphql/query'
 import { Language } from '@/graphql/typesGraphql'
 import {
     Call,
@@ -12,24 +12,41 @@ import {
 } from '@/src/components/svgs'
 
 import { useQuery } from '@apollo/client'
-import { Check, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Check, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
+import { useTranslation } from 'react-i18next'
 
 export default function ClientWrapper() {
+    const { t } = useTranslation()
     const params = useParams()
     const locale = params.locale
     const id = params.id as string
-    const { data, error } = useQuery(getPropertyById, {
+    const { data: dataById, error } = useQuery(getPropertyById, {
+        variables: {
+            lang: locale as Language,
+            id: id,
+        },
+    })
+
+    const { data: property, error: propertyErorr } = useQuery(GetPropertiesData, {
         variables: {
             lang: locale as Language,
             id: id,
         },
     })
     const [selectedIndex, setSelectedIndex] = useState(0)
-    const images = data?.getProperty?.images || []
+    const images = dataById?.getProperty?.images || []
+
+    const allAmenities = property?.getPropertyAmenities || []
+
+    // Assuming dataById.getProperty.propertyAmenities is an array of included amenities
+    const includedAmenities = dataById?.getProperty?.propertyAmenities || []
+
+    // Create a Set of included amenity IDs for faster lookup
+    const includedAmenityIds = new Set(includedAmenities.map((amenity) => amenity.id))
 
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
 
@@ -130,28 +147,28 @@ export default function ClientWrapper() {
                 <div className="flex w-full flex-col items-start  gap-2 md:flex-row md:gap-40">
                     <div className="flex w-full flex-col gap-2 md:w-1/2 md:gap-4">
                         <span className="text-lg">
-                            {data?.getProperty?.translations &&
-                                data?.getProperty?.translations[0].title}
+                            {dataById?.getProperty?.translations &&
+                                dataById?.getProperty?.translations[0].title}
                         </span>
                         <span className="text-sm text-[#838CAC]">
-                            {data?.getProperty?.propertyType?.translations[0].name}
+                            {dataById?.getProperty?.propertyType?.translations[0].name}
                         </span>
-                        <span className="md:text-base">{data?.getProperty?.price} $ </span>
+                        <span className="md:text-base">{dataById?.getProperty?.price} $ </span>
                     </div>
                     <div className="flex w-full flex-col gap-2 md:w-auto md:gap-4">
                         <div className="flex flex-row  items-center  gap-2">
                             <Location className="h-4 w-4" />
-                            <span className="text-base">{data?.getProperty?.street}</span>
+                            <span className="text-base">{dataById?.getProperty?.street}</span>
                         </div>
                         <div className="flex w-full md:w-auto">
                             <div className="flex w-full cursor-pointer  items-center gap-2 rounded-md bg-mainGreen px-4 py-2  text-white  md:w-auto">
                                 <a
-                                    href={`tel:${data?.getProperty?.contactPhone}`}
+                                    href={`tel:${dataById?.getProperty?.contactPhone}`}
                                     className="flex items-center gap-2"
                                 >
                                     <Call className="h-5 w-5 fill-white" />
                                     <span className=" text-sm md:text-base">
-                                        {data?.getProperty?.contactPhone}
+                                        {dataById?.getProperty?.contactPhone}
                                     </span>
                                 </a>
                             </div>
@@ -160,13 +177,15 @@ export default function ClientWrapper() {
                 </div>
                 <div className="h-[1px] w-full bg-[#E3E3E3]"></div>
                 <div className="flex w-auto flex-col gap-2">
-                    <span>ქირაობა ხელმისაწვდომია: {data?.getProperty?.availableFrom}</span>
-                    <span>მინიმალური დარჩენის ვადა: {data?.getProperty?.minRentalPeriod}</span>
-                    {data?.getProperty?.withDeposit ? (
+                    <span>ქირაობა ხელმისაწვდომია: {dataById?.getProperty?.availableFrom}</span>
+                    <span>
+                        {t('minRentPeriond')}: {dataById?.getProperty?.minRentalPeriod}
+                    </span>
+                    {dataById?.getProperty?.withDeposit ? (
                         <div className="w-auto bg-[#CFF1E6] p-2">დეპოზიტის გარეშე</div>
                     ) : (
                         <div className="bg-[#CFF1E]">
-                            {data?.getProperty?.propertyDeposit?.amount}
+                            {dataById?.getProperty?.propertyDeposit?.amount}
                         </div>
                     )}
                 </div>
@@ -175,43 +194,54 @@ export default function ClientWrapper() {
             <div className="grid h-auto  w-full grid-cols-1 gap-4 rounded-lg border border-[#E3E3E3] p-4 shadow-lg md:grid-cols-3 md:gap-y-8  md:p-8">
                 <div className="flex flex-row items-center gap-2 md:gap-3">
                     <PropertySqm className="h-5 w-5" />
-                    <span className="md:text-sm">ფართი: {data?.getProperty?.area}</span>
+                    <span className="md:text-sm">ფართი: {dataById?.getProperty?.area}</span>
                 </div>
                 <div className="flex flex-row items-center gap-2 md:gap-3">
                     <PropertyDoor className="h-5 w-5" />
-                    <span className="md:text-sm">ოთახები: {data?.getProperty?.rooms}</span>
+                    <span className="md:text-sm">ოთახები: {dataById?.getProperty?.rooms}</span>
                 </div>
                 <div className="flex flex-row items-center gap-2 md:gap-3">
                     <PropertyBed className="h-5 w-5" />
-                    <span className="md:text-sm">საძინებელი: {data?.getProperty?.bedrooms}</span>
+                    <span className="md:text-sm">
+                        საძინებელი: {dataById?.getProperty?.bedrooms}
+                    </span>
                 </div>
                 <div className="flex flex-row items-center gap-2 md:gap-3">
                     <PropertyDoor className="h-5 w-5" />
-                    <span className="md:text-sm">ტევადობა: {data?.getProperty?.bedrooms}</span>
+                    <span className="md:text-sm">ტევადობა: {dataById?.getProperty?.bedrooms}</span>
                 </div>
                 <div className="flex flex-row items-center gap-2 md:gap-3">
                     <PropertyLedder className="h-5 w-5" />
                     <span className="md:text-sm">
-                        სართულები: {data?.getProperty?.totalFloors}/{data?.getProperty?.floor}
+                        სართულები: {dataById?.getProperty?.totalFloors}/
+                        {dataById?.getProperty?.floor}
                     </span>
                 </div>
             </div>
             <div className="flex h-auto w-full flex-col gap-2 rounded-lg border border-[#E3E3E3] p-4 shadow-lg md:gap-4 md:p-8 ">
                 <h2 className="text-base md:text-lg">აღწერა</h2>
                 <p className="text-sm">
-                    {data?.getProperty?.translations &&
-                        data?.getProperty?.translations[0].description}
+                    {dataById?.getProperty?.translations &&
+                        dataById?.getProperty?.translations[0].description}
                 </p>
             </div>
             <div className="flex h-auto w-full flex-col gap-2 rounded-lg border  border-[#E3E3E3] p-4 shadow-lg md:gap-6 md:p-8 ">
-                <h2 className="text-base md:text-lg">მახასიათებლები</h2>
+                <h2 className="text-base md:text-lg">{t('amenities')}</h2>
                 <div className="grid-cols-1 gap-y-3 md:grid md:grid-flow-row md:auto-rows-auto md:grid-cols-3  md:grid-rows-[repeat(auto-fill,minmax(0,1fr))]">
-                    {data?.getProperty?.propertyAmenities?.map((item, index) => (
+                    {allAmenities.map((item, index) => (
                         <div
                             className="mb-2 flex w-full flex-row items-center gap-2 md:mb-0"
                             key={index}
                         >
-                            <Checkbox className="h-4 w-4 md:h-5 md:w-5" />
+                            {includedAmenityIds.has(item.id) ? (
+                                <Checkbox
+                                    className="h-4 w-4 md:h-5 md:w-5"
+                                    checked={true}
+                                    readOnly
+                                />
+                            ) : (
+                                <X className="h-4 w-4 text-red-500 md:h-5 md:w-5" />
+                            )}
                             <span className="md:text-sm">{item.translations[0].name}</span>
                         </div>
                     ))}
@@ -221,7 +251,7 @@ export default function ClientWrapper() {
                 <div className="w-full bg-mainGreen px-8  py-3 text-white">
                     საცხოვრებლად უსაფრთხო გარემო
                 </div>
-                {data?.getProperty?.housingLivingSafeties?.map((item, index) => (
+                {dataById?.getProperty?.housingLivingSafeties?.map((item, index) => (
                     <div
                         className="flex w-full flex-row items-center gap-2 px-4 md:px-8"
                         key={index}

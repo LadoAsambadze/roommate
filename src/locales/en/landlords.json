@@ -46,5 +46,8 @@
     "aboutBlog": "Explore our blogs and recommendations on renting",
     "contract": "Contract",
     "myListings": "My Listings",
-    "incorrectCode": "Incorrect code"
+    "incorrectCode": "Incorrect code",
+    "allList": "All Listings",
+    "amenities": "Amenities",
+    "minRentPeriond": "Minimum rental period"
 }

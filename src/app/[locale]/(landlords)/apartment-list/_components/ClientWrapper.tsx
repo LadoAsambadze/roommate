@@ -17,8 +17,10 @@ import { useQuery } from '@apollo/client'
 import CoverImage from '@images/ApartmentCover.png'
 import Image from 'next/image'
 import { useParams, useSearchParams } from 'next/navigation'
+import { useTranslation } from 'react-i18next'
 
 function ClientWrapper() {
+    const { t } = useTranslation()
     const params = useParams()
     const locale = params.locale as Language
     const searchParams = useSearchParams()
@@ -45,12 +47,13 @@ function ClientWrapper() {
     const paginatedData = data?.getLandlordProperties as PaginatedFilteredPropertiesObject
 
     return (
-        <main className="flex min-h-screen w-full flex-col items-center gap-16 bg-[#F5F5F5] pb-10">
+        <main className="flex min-h-screen w-full flex-col items-center gap-10 bg-[#F5F5F5] pb-10">
             <Image
                 src={CoverImage}
                 alt="cover image"
-                className=" h-[150px]   w-full object-cover object-center md:h-auto"
+                className=" h-[150px] w-full object-cover object-center md:h-auto"
             />
+            <h1 className="py-4 text-center  text-base font-semibold md:text-xl">{t('allList')}</h1>
             {data?.getLandlordProperties?.list?.map((item, index) => (
                 <div className="flex w-full flex-col gap-4  px-6 md:w-auto">
                     <div

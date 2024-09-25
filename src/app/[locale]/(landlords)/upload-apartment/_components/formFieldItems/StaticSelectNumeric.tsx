@@ -7,7 +7,7 @@ import {
     SelectValue,
 } from '@/src/components/ui/shadcnSelect'
 
-export default function StaticSelectNumeric({ field }: any) {
+export default function StaticSelectNumeric({ field, amount }: any) {
     const handleSelectChange = (value: string) => {
         field.onChange(parseFloat(value))
     }
@@ -18,7 +18,7 @@ export default function StaticSelectNumeric({ field }: any) {
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
-                    {Array.from({ length: 2 }, (_, index) => (
+                    {Array.from({ length: amount }, (_, index) => (
                         <SelectItem value={index.toString()} key={index}>
                             {index.toString()}
                         </SelectItem>

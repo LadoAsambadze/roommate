@@ -20,7 +20,6 @@ export function UploadDialog({ setOpenAlert, openAlert, alertMessage }: any) {
     const handleClose = () => {
         setOpenAlert(false)
         if (alertMessage === 'success' && typeof location !== 'undefined') {
-            location.reload()
             router.push('/landlord-profile')
         }
     }

@@ -13,7 +13,7 @@ import StaticRentDatePicker from './formFieldItems/StaticRentDatePicker'
 import { useTranslation } from 'react-i18next'
 import { useMutation, useQuery } from '@apollo/client'
 import { GetPropertiesData } from '@/graphql/query'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import FullDynamicToggle from './formFieldItems/FullDynamicToggle'
 import StaticRentMonthSelect from './formFieldItems/StaticRentMonthSelect'
 import StaticNumericToggle from './formFieldItems/StaticNumericToggle'
@@ -284,7 +284,7 @@ function ClientWrapper() {
                                                     {t('inApartment')}
                                                 </FormLabel>
                                                 <FormControl>
-                                                    <StaticSelectNumeric field={field} />
+                                                    <StaticSelectNumeric field={field} amount={5} />
                                                 </FormControl>
                                             </FormItem>
                                         )}
@@ -298,7 +298,7 @@ function ClientWrapper() {
                                                     {t('inBedroom')}
                                                 </FormLabel>
                                                 <FormControl>
-                                                    <StaticSelectNumeric field={field} />
+                                                    <StaticSelectNumeric field={field} amount={2} />
                                                 </FormControl>
                                             </FormItem>
                                         )}
