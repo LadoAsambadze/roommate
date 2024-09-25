@@ -2,9 +2,8 @@
 
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useModalHandlers } from '../modalHandlers/ModalHandlers'
-import Img from '@images/Img.jpg'
+import ModalImage from '@images/ModalImage.webp'
 import Image from 'next/image'
 import SigninChooseType from './contentTypes/SigninChooseType'
 import SignupChooseType from './contentTypes/SignupChooseType'
@@ -14,7 +13,6 @@ import SigninLandlords from './contentTypes/SigninLandlords'
 import ResetPassword from './contentTypes/ResetPassword'
 
 export const ContentWrapper = () => {
-    const { t } = useTranslation()
     const [modalType, setModalType] = useState('')
     const searchParams = useSearchParams()
 
@@ -50,7 +48,7 @@ export const ContentWrapper = () => {
 
     return (
         <>
-            <div className="flex h-full w-full  flex-col items-center    gap-4 gap-y-4 p-6 md:w-[460px] md:p-12">
+            <div className="flex h-full w-full  flex-col items-center  gap-4 gap-y-4    overflow-hidden border-none p-6 md:w-[460px] md:p-12">
                 {modalType === 'signinChooseType' ? (
                     <SigninChooseType
                         signinRoommatesHandler={signinRoommatesHandler}
@@ -82,8 +80,8 @@ export const ContentWrapper = () => {
                     />
                 ) : null}
             </div>
-            <div className="hidden h-full w-full md:block md:w-[460px]">
-                <Image src={Img} alt="Temporray" className="h-full w-full object-cover" />
+            <div className="hidden h-full w-full overflow-hidden md:block md:w-[460px]">
+                <Image src={ModalImage} alt="Temporray" className="h-full w-full object-cover" />
             </div>
         </>
     )
