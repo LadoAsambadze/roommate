@@ -6,12 +6,11 @@ import LangChoose from './components/LangChoose'
 import MobileNavBar from './components/MobileNavBar'
 import Link from 'next/link'
 import { MouseEvent, useCallback, useEffect, useState } from 'react'
-import { redirect, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client'
 import { isAuthenticatedVar } from '@/src/auth/isAuthenticatedVar'
 import { getConversationsForUserQuery, getUserQuery } from '@/graphql/query'
-import { signOutHandler } from '@/src/auth/signOut'
 import { LIMIT, OFFSET } from '@/src/constants/pagination'
 import { UserType } from '@/graphql/typesGraphql'
 import { Label } from '../ui/label'
@@ -133,12 +132,6 @@ export default function Header() {
                                 </span>
                             </button>
                         </Link>
-                        <button
-                            onClick={signOutHandler}
-                            className="hidden flex-row items-center rounded-lg bg-mainOrange p-2 text-white md:flex xl:px-3 xl:py-2"
-                        >
-                            <span className="ml-1 text-xs xl:text-base">{t('signOut')}</span>
-                        </button>
                     </>
                 )
             }
@@ -164,12 +157,6 @@ export default function Header() {
                                 </span>
                             </button>
                         </Link>
-                        <button
-                            onClick={signOutHandler}
-                            className="hidden flex-row items-center rounded-lg bg-[#F2F5FF] p-2 text-[#838CAC] md:flex xl:px-3 xl:py-2"
-                        >
-                            <span className="ml-1 text-xs xl:text-base">{t('signOut')}</span>
-                        </button>
                     </>
                 )
             }
