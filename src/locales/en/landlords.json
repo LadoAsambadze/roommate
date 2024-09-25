@@ -49,5 +49,14 @@
     "incorrectCode": "Incorrect code",
     "allList": "All Listings",
     "amenities": "Amenities",
-    "minRentPeriond": "Minimum rental period"
+    "minRentPeriond": "Minimum rental period",
+    "livingSafety": "A safe environment to live in",
+    "capacity": "Capacity",
+    "description": "Description",
+    "floors": "Floors",
+    "bedroom": "Bedroom",
+    "rooms": "Rooms",
+    "area": "Area",
+    "withoutDeposit": "Without deposit",
+    "avaiableForRent": "Available for rent"
 }

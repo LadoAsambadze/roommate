@@ -177,12 +177,22 @@ export default function ClientWrapper() {
                 </div>
                 <div className="h-[1px] w-full bg-[#E3E3E3]"></div>
                 <div className="flex w-auto flex-col gap-2">
-                    <span>ქირაობა ხელმისაწვდომია: {dataById?.getProperty?.availableFrom}</span>
+                    <span>
+                        {t('avaiableForRent')}: &nbsp;
+                        {new Date(dataById?.getProperty?.availableFrom).toLocaleDateString(
+                            'en-GB',
+                            {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                            }
+                        )}
+                    </span>
                     <span>
                         {t('minRentPeriond')}: {dataById?.getProperty?.minRentalPeriod}
                     </span>
                     {dataById?.getProperty?.withDeposit ? (
-                        <div className="w-auto bg-[#CFF1E6] p-2">დეპოზიტის გარეშე</div>
+                        <div className="w-auto bg-[#CFF1E6] p-2">{t('withoutDeposit')}</div>
                     ) : (
                         <div className="bg-[#CFF1E]">
                             {dataById?.getProperty?.propertyDeposit?.amount}
@@ -194,32 +204,38 @@ export default function ClientWrapper() {
             <div className="grid h-auto  w-full grid-cols-1 gap-4 rounded-lg border border-[#E3E3E3] p-4 shadow-lg md:grid-cols-3 md:gap-y-8  md:p-8">
                 <div className="flex flex-row items-center gap-2 md:gap-3">
                     <PropertySqm className="h-5 w-5" />
-                    <span className="md:text-sm">ფართი: {dataById?.getProperty?.area}</span>
-                </div>
-                <div className="flex flex-row items-center gap-2 md:gap-3">
-                    <PropertyDoor className="h-5 w-5" />
-                    <span className="md:text-sm">ოთახები: {dataById?.getProperty?.rooms}</span>
-                </div>
-                <div className="flex flex-row items-center gap-2 md:gap-3">
-                    <PropertyBed className="h-5 w-5" />
                     <span className="md:text-sm">
-                        საძინებელი: {dataById?.getProperty?.bedrooms}
+                        {t('area')}: {dataById?.getProperty?.area}
                     </span>
                 </div>
                 <div className="flex flex-row items-center gap-2 md:gap-3">
                     <PropertyDoor className="h-5 w-5" />
-                    <span className="md:text-sm">ტევადობა: {dataById?.getProperty?.bedrooms}</span>
+                    <span className="md:text-sm">
+                        {t('rooms')}: {dataById?.getProperty?.rooms}
+                    </span>
+                </div>
+                <div className="flex flex-row items-center gap-2 md:gap-3">
+                    <PropertyBed className="h-5 w-5" />
+                    <span className="md:text-sm">
+                        {t('bedroom')}: {dataById?.getProperty?.bedrooms}
+                    </span>
+                </div>
+                <div className="flex flex-row items-center gap-2 md:gap-3">
+                    <PropertyDoor className="h-5 w-5" />
+                    <span className="md:text-sm">
+                        {t('capacity')}: {dataById?.getProperty?.bedrooms}
+                    </span>
                 </div>
                 <div className="flex flex-row items-center gap-2 md:gap-3">
                     <PropertyLedder className="h-5 w-5" />
                     <span className="md:text-sm">
-                        სართულები: {dataById?.getProperty?.totalFloors}/
+                        {t('floors')}: {dataById?.getProperty?.totalFloors}/
                         {dataById?.getProperty?.floor}
                     </span>
                 </div>
             </div>
             <div className="flex h-auto w-full flex-col gap-2 rounded-lg border border-[#E3E3E3] p-4 shadow-lg md:gap-4 md:p-8 ">
-                <h2 className="text-base md:text-lg">აღწერა</h2>
+                <h2 className="text-base md:text-lg">{t('description')}</h2>
                 <p className="text-sm">
                     {dataById?.getProperty?.translations &&
                         dataById?.getProperty?.translations[0].description}
@@ -249,7 +265,7 @@ export default function ClientWrapper() {
             </div>
             <div className="flex w-full flex-col gap-4 overflow-hidden rounded-lg border  border-[#E3E3E3] pb-8 shadow-lg md:pb-8">
                 <div className="w-full bg-mainGreen px-8  py-3 text-white">
-                    საცხოვრებლად უსაფრთხო გარემო
+                    {t('livingSafety')}{' '}
                 </div>
                 {dataById?.getProperty?.housingLivingSafeties?.map((item, index) => (
                     <div

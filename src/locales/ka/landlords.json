@@ -49,5 +49,14 @@
     "incorrectCode": "არასწორი კოდი",
     "allList": "ყველა განცხადება",
     "amenities": "მახასიათებლები",
-    "minRentPeriond": "მინიმალური გაქირავების პერიოდი"
+    "minRentPeriond": "მინიმალური გაქირავების პერიოდი",
+    "livingSafety": "საცხოვრებლად უსაფრთხო გარემო",
+    "capacity": "ტევადობა",
+    "description": "აღწერა",
+    "floors": "სართულები",
+    "bedroom": "საძინებელი",
+    "rooms": "ოთახებო",
+    "area": "ფართი",
+    "withoutDeposit": "დეპოზიტის გარეშე",
+    "avaiableForRent": "ქირაობა ხელმისაწვდომია"
 }
